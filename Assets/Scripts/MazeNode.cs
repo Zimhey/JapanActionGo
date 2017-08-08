@@ -16,4 +16,33 @@ public class MazeNode
     public int Row;
     public int Col;
 
+    public void connectLeft(MazeNode n)
+    {
+        this.Left = n;
+    }
+
+    public void connectRight(MazeNode n)
+    {
+        this.Right = n;
+    }
+
+    public void connectForward(MazeNode n)
+    {
+        this.Forward = n;
+    }
+
+    public void connectBackward(MazeNode n)
+    {
+        this.Backward = n;
+    }
+
+    public void connectAbove(MazeNode n)
+    {
+        this.Above = n;
+    }
+
+    public void connectBelow(MazeNode n)
+    {
+        this.Below = n;
+    }
 }
