@@ -24,7 +24,7 @@ public class MazeNode : MonoBehaviour
     public MazeNode Above;
     public MazeNode Below;
 
-    public bool Bottleneck;
+    public bool ExitNode;
 
     public int Row;
     public int Col;
