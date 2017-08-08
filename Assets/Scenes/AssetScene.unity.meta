@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Scenes/AssetScene.unity.meta
 guid: 32993f5691d055748892de52f3b95049
 timeCreated: 1502202466
+=======
+guid: a659cffcb2deb0e4491c8239a041208b
+timeCreated: 1502162090
+>>>>>>> bccf1e69e9622ee4f22f31cb68d1b265cceae152:Assets/Scenes/AssetScene.unity.meta
 licenseType: Free
 DefaultImporter:
   userData: 
