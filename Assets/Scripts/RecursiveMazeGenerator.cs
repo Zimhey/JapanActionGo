@@ -17,5 +17,8 @@ public class RecursiveMazeGenerator : MonoBehaviour
 		
 	}
 
-    public static MazeNode GenerateMaze(int seed);
+    public static MazeNode GenerateMaze(int seed)
+    {
+        return new MazeNode();
+    }
 }
