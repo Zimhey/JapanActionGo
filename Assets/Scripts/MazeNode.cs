@@ -178,7 +178,7 @@ public class MazeNode
             case CellType.Fourway:
                 return "Prefabs/NoWallPrefab";
             default:
-                return ""; // ERROR TODO add error model and log
+                return "Prefabs/OrphanTextPrefab";
         }
     }
 

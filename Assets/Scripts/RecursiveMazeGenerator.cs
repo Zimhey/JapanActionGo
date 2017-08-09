@@ -23,8 +23,16 @@ public class RecursiveMazeGenerator : MonoBehaviour
         int rowCounter, columnCounter;
         MazeNode[,] maze = new MazeNode[rows,columns];
         MazeNode n;
-        return new MazeNode();
-        for(rowCounter = 0; rowCounter < rows; rowCounter++)
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                maze[i, j] = new MazeNode(i, j);
+            }
+        }
+
+        for (rowCounter = 0; rowCounter < rows; rowCounter++)
         {
             for(columnCounter = 0; columnCounter < columns; columnCounter++)
             {

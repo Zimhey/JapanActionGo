@@ -11,9 +11,7 @@ public class MazeGenerator : MonoBehaviour
     void Start()
     {
         int size = 5;
-        MazeNode root = GenTestMaze(size);
-        root.Forward = null;
-        root.Right.Forward = null;
+        MazeNode root = RecursiveMazeGenerator.GenerateMaze(0, size, size);
         SpawnMaze(root, size);
     }
 
