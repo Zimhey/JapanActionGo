@@ -74,10 +74,7 @@ public class MazeGenerator : MonoBehaviour
     public static LinkedList<MazeNode> GetPath(MazeNode start, MazeNode end)
     {
         LinkedList<MazeNode> path = new LinkedList<MazeNode>();
-
-        // TODO use DFS to find the path
-
-        return path;
+        
     }
 
     public static void SetAsExitPath(LinkedList<MazeNode> path)
