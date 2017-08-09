@@ -13,7 +13,17 @@ public class MazeGenerator : MonoBehaviour
     void Start()
     {
         int size = 5;
-        MazeNode root = GenTestMaze(size);
+        MazeNode root;
+        root = GenTestMaze(size);
+        root.Right.Left = null;
+        root.Right = null;
+        root.Forward.Right = null;
+      ///  root.Forward.Forward.Forward.Right.Left = null;
+       // root.Forward.Forward.Forward.Right = null;
+        root = RecursiveMazeGenerator.GenerateMaze(0, size, size);
+
+        Debug.Log("Root.Right = " + root.Right == null);
+
         SpawnMaze(root, size);
 
         surface = GetComponent<NavMeshSurface>();
@@ -154,10 +164,17 @@ public class MazeGenerator : MonoBehaviour
 
     public void SpawnPiece(MazeNode node)
     {
-        Vector3 location = new Vector3(node.Row * 6 + 8, 0, node.Col * 6 + 8);
+        Vector3 location = new Vector3(node.Col * 6 + 8, 0, node.Row * 6 + 8);
 
         GameObject obj = Instantiate(Resources.Load(node.GetPrefabName()), location, node.GetRotation()) as GameObject;
         obj.transform.parent = this.transform;
+
+        GameObject textObj= Instantiate(Resources.Load("Prefabs/CellTextPrefab"), location + new Vector3(0, 1, 0), new Quaternion()) as GameObject;
+        textObj.transform.parent = obj.transform;
+
+        TextMesh t = textObj.GetComponentInChildren<TextMesh>();
+        if(t != null)
+            t.text = "Row: " + node.Row + " Col: " + node.Col;
     }
 
 }
