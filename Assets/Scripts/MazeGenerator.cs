@@ -12,8 +12,8 @@ public class MazeGenerator : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        int size = 5;
-        MazeNode root = GenTestMaze(size);
+        int size = 6;
+        MazeNode root = DFSMazeGenerator.GenerateMaze(0, size, size);
         SpawnMaze(root, size);
 
         surface = GetComponent<NavMeshSurface>();
