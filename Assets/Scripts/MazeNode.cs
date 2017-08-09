@@ -66,6 +66,26 @@ public class MazeNode
         this.Below = n;
     }
 
+    public void DisconnectLeft()
+    {
+        this.Left = null;
+    }
+
+    public void DisconnectRight()
+    {
+        this.Right = null;
+    }
+
+    public void DisconnectForward()
+    {
+        this.Forward = null;
+    }
+
+    public void DisconnectBackward()
+    {
+        this.Backward = null;
+    }
+
     public bool AddEdge(MazeNode other)
     {
         if (Row == other.Row)
@@ -245,4 +265,5 @@ public class MazeNode
     {
         return GetAdjacentNodes().Count == 1;
     }
+
 }
