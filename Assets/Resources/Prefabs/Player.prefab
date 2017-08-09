@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  cam: {fileID: 0}
+  cam: {fileID: 114125519760261186, guid: e2178ec29a4df614abf621323694102d, type: 2}
 --- !u!135 &135279951551980316
 SphereCollider:
   m_ObjectHideFlags: 1
