@@ -2,21 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MazeNode : MonoBehaviour
+public class MazeNode
 {
-
-	// Use this for initialization
-	void Start ()
-    {
-		
-	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-		
-	}
-
     public MazeNode Left;
     public MazeNode Right;
     public MazeNode Forward;
