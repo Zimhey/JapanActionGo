@@ -1,18 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class MazeGenerator : MonoBehaviour
 {
 
     public int Seed;
+    private NavMeshSurface surface;
 
     // Use this for initialization
     void Start()
     {
         int size = 5;
-        MazeNode root = RecursiveMazeGenerator.GenerateMaze(0, size, size);
+        MazeNode root = GenTestMaze(size);
         SpawnMaze(root, size);
+
+        surface = GetComponent<NavMeshSurface>();
+        if (surface != null)
+            surface.BuildNavMesh();
     }
 
     // Update is called once per frame
@@ -122,9 +128,10 @@ public class MazeGenerator : MonoBehaviour
 
     public void SpawnPiece(MazeNode node)
     {
-        Vector3 location = new Vector3(node.Row * 6, 0, node.Col * 6);
+        Vector3 location = new Vector3(node.Row * 6 + 8, 0, node.Col * 6 + 8);
 
-        Instantiate(Resources.Load(node.GetPrefabName()), location, node.GetRotation());
+        GameObject obj = Instantiate(Resources.Load(node.GetPrefabName()), location, node.GetRotation()) as GameObject;
+        obj.transform.parent = this.transform;
     }
 
 }
