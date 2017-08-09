@@ -207,12 +207,12 @@ public class MazeNode
     private Quaternion getDeadEndRot()
     {
         if (Forward != null)
-            return YRotToQuat(0);
-        if (Right != null)
             return YRotToQuat(90);
-        if (Backward != null)
+        if (Right != null)
             return YRotToQuat(180);
-        return YRotToQuat(-90);
+        if (Backward != null)
+            return YRotToQuat(-90);
+        return YRotToQuat(0);
     }
 
     private Quaternion getCornerRot()
@@ -221,29 +221,29 @@ public class MazeNode
             if (Right != null)
                 return YRotToQuat(90);
             else
-                return YRotToQuat(180);
+                return YRotToQuat(0);
         if (Right != null)
-            return YRotToQuat(0);
+            return YRotToQuat(180);
         return YRotToQuat(-90);
     }
 
     private Quaternion getHallwayRot()
     {
         if (Forward != null)
-            return YRotToQuat(0);
-        return YRotToQuat(90);
+            return YRotToQuat(90);
+        return YRotToQuat(0);
     }
 
     private Quaternion getThreewayRot()
     {
         if (Left == null)
-            return YRotToQuat(0);
-        if (Forward == null)
-            return YRotToQuat(-90);
-        if (Right == null)
-            return YRotToQuat(180);
-        else
             return YRotToQuat(90);
+        if (Forward == null)
+            return YRotToQuat(180);
+        if (Right == null)
+            return YRotToQuat(-90);
+        else
+            return YRotToQuat(0);
     }
 
     private bool isCornerPiece()
