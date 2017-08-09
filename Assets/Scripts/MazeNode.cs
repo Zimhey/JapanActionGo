@@ -58,4 +58,24 @@ public class MazeNode : MonoBehaviour
     {
         this.Below = n;
     }
+
+    public void DisconnectLeft()
+    {
+        this.Left = null;
+    }
+
+    public void DisconnectRight()
+    {
+        this.Right = null;
+    }
+
+    public void DisconnectForward()
+    {
+        this.Forward = null;
+    }
+
+    public void DisconnectBackward()
+    {
+        this.Backward = null;
+    }
 }
