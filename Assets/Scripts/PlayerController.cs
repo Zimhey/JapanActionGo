@@ -25,5 +25,19 @@ public class PlayerController : MonoBehaviour
         Vector3 curmovement = Quaternion.Euler(0, cam.rotation, 0) * movement;
 
         rb.AddForce(curmovement * speed);
+
+        if (!Input.GetKey(KeyCode.DownArrow))
+        {
+            if (!Input.GetKey(KeyCode.UpArrow))
+            {
+                if (!Input.GetKey(KeyCode.LeftArrow))
+                {
+                    if (!Input.GetKey(KeyCode.RightArrow))
+                    {
+                        rb.velocity = new Vector3(0,0,0);
+                    }
+                }
+            }
+        }
     }
 }
