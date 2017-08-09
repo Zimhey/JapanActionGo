@@ -14,13 +14,13 @@ public class MazeGenerator : MonoBehaviour
     {
         int size = 6;
         MazeNode root = DFSMazeGenerator.GenerateMaze(0, size, size);
+        /*
         root = GenTestMaze(size);
         root.Right.Left = null;
         root.Right = null;
         root.Forward.Right = null;
-      ///  root.Forward.Forward.Forward.Right.Left = null;
-       // root.Forward.Forward.Forward.Right = null;
         root = RecursiveMazeGenerator.GenerateMaze(0, size, size);
+        */
         SpawnMaze(root, size);
 
         surface = GetComponent<NavMeshSurface>();

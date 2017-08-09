@@ -52,6 +52,8 @@ public class DFSMazeGenerator : MonoBehaviour
                 forwardAvailable = (yCurrent != 0 && !visited.Contains(maze[xCurrent, yCurrent - 1]));
                 backwardAvailable = (yCurrent != columns - 1 && !visited.Contains(maze[xCurrent, yCurrent + 1]));
                 noneAvailable = !leftAvailable && !rightAvailable && !forwardAvailable && !backwardAvailable;
+                if (!noneAvailable)
+                    break;
                 MazeNode n = (MazeNode) visited.Pop();
                 xCurrent = n.Row;
                 yCurrent = n.Col;
@@ -93,6 +95,11 @@ public class DFSMazeGenerator : MonoBehaviour
                     }
             }
             spacesVisited++;
+            if(xNext < 0 || xNext > rows || yNext < 0 || yNext > columns)
+            {
+                print(xNext + " " + yNext);
+                return maze[0, 0];
+            }
             visited.Push(maze[xNext, yNext]);
             maze[xCurrent, yCurrent].AddEdge(maze[xNext, yNext]);
             xCurrent = xNext;
