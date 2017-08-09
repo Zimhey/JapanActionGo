@@ -39,12 +39,12 @@ public class RecursiveMazeGenerator : MonoBehaviour
                 n = maze[rowCounter, columnCounter];
                 if (rowCounter > 0)
                     n.connectLeft(maze[rowCounter - 1, columnCounter]);
-                if (rowCounter < rows)
+                if (rowCounter < rows - 1)
                     n.connectRight(maze[rowCounter + 1, columnCounter]);
                 if (columnCounter > 0)
-                    n.connectBackward(maze[rowCounter, columnCounter + 1]);
-                if (columnCounter < columns)
                     n.connectForward(maze[rowCounter, columnCounter - 1]);
+                if (columnCounter < columns - 1)
+                    n.connectBackward(maze[rowCounter, columnCounter + 1]);
             }
         }
 
@@ -65,7 +65,8 @@ public class RecursiveMazeGenerator : MonoBehaviour
     public static void DivideVertically(int xStart, int xEnd, int yStart, int yEnd, int seed, MazeNode[,] maze)
     {
         System.Random rand = new System.Random();
-        int randLine = rand.Next(xStart, xEnd);
+        int randLine = rand.Next(xStart, xEnd) + 1;
+        print(randLine);
         int randHole = rand.Next(yStart, yEnd);
         int counter;
         for(counter = yStart; counter < yEnd; counter++)
@@ -83,7 +84,8 @@ public class RecursiveMazeGenerator : MonoBehaviour
     public static void DivideHorizontally(int xStart, int xEnd, int yStart, int yEnd, int seed, MazeNode[,] maze)
     {
         System.Random rand = new System.Random();
-        int randLine = rand.Next(yStart, yEnd);
+        int randLine = rand.Next(yStart, yEnd) + 1;
+        print(randLine);
         int randHole = rand.Next(xStart, xEnd);
         int counter;
         for(counter = xStart; counter < xEnd; counter++)
