@@ -12,8 +12,8 @@ public class MazeGenerator : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        int size = 5;
-        MazeNode root;
+        int size = 6;
+        MazeNode root = DFSMazeGenerator.GenerateMaze(0, size, size);
         root = GenTestMaze(size);
         root.Right.Left = null;
         root.Right = null;
@@ -21,9 +21,6 @@ public class MazeGenerator : MonoBehaviour
       ///  root.Forward.Forward.Forward.Right.Left = null;
        // root.Forward.Forward.Forward.Right = null;
         root = RecursiveMazeGenerator.GenerateMaze(0, size, size);
-
-        Debug.Log("Root.Right = " + root.Right == null);
-
         SpawnMaze(root, size);
 
         surface = GetComponent<NavMeshSurface>();
