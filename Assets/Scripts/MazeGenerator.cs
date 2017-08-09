@@ -7,12 +7,14 @@ public class MazeGenerator : MonoBehaviour
 
     public int Seed;
 
-    public GameObject cell;
-
     // Use this for initialization
     void Start()
     {
-        SpawnMaze(GenTestMaze(5), 5);
+        int size = 5;
+        MazeNode root = GenTestMaze(size);
+        root.Forward = null;
+        root.Right.Forward = null;
+        SpawnMaze(root, size);
     }
 
     // Update is called once per frame
@@ -29,31 +31,20 @@ public class MazeGenerator : MonoBehaviour
         {
             for (int j = 0; j < size; j++)
             {
-                maze[i, j] = new MazeNode();
-                maze[i, j].Row = i;
-                maze[i, j].Col = j;
+                maze[i, j] = new MazeNode(i, j);
             }
         }
 
-        for (int i = 0; i < size - 1; i++)
+        for (int i = 0; i < size; i++)
         {
-            for (int j = 0; j < size - 1; j++)
+            for (int j = 0; j < size; j++)
             {
-                maze[i, j].Right = maze[i, j + 1];
-                maze[i, j + 1].Left = maze[i, j];
-                maze[i, j].Forward = maze[i + 1, j];
-                maze[i + 1, j].Backward = maze[i, j];
+                if(j < size - 1)
+                    maze[i, j].AddEdge(maze[i, j + 1]);
+                if(i < size - 1)
+                    maze[i, j].AddEdge(maze[i + 1, j]);
             }
-            maze[size - 1, i].Row = size - 1;
-            maze[size - 1, i].Col = i;
-            maze[i, size - 1].Row = i;
-            maze[i, size - 1].Col = size - 1;
         }
-
-        maze[size - 1, size - 1].Backward = maze[size - 2, size - 1];
-        maze[size - 2, size - 1].Forward = maze[size - 1, size - 1];
-        maze[size - 1, size - 1].Right = maze[size - 1, size - 2];
-        maze[size - 1, size - 2].Left = maze[size - 1, size - 1];
 
         return maze[0, 0];
     }
@@ -111,34 +102,31 @@ public class MazeGenerator : MonoBehaviour
         {
             MazeNode node = stack.Pop();
 
-            if (visited[node.Row, node.Col])
-                continue;
-
             // Spawn
-            Vector3 location = new Vector3(node.Row * 6, 0, node.Col * 6);
-            Instantiate(cell, location, new Quaternion());
+            SpawnPiece(node);
 
             // Set Visited
             visited[node.Row, node.Col] = true;
 
-            // Right
-            if (node.Right != null && !visited[node.Right.Row, node.Right.Col])
-                stack.Push(node.Right);
-
-            // Forward
-            if (node.Forward != null && !visited[node.Forward.Row, node.Forward.Col])
-                stack.Push(node.Forward);
-
-            // Left
-            if (node.Left != null && !visited[node.Left.Row, node.Left.Col])
-                stack.Push(node.Left);
-
-            // Backward
-            if (node.Backward != null && !visited[node.Backward.Row, node.Backward.Col])
-                stack.Push(node.Backward);
+            // visit each adjecent node
+            foreach(MazeNode adjecentNode in node.GetAdjacentNodes())
+            {
+                if(!visited[adjecentNode.Row, adjecentNode.Col])
+                {
+                    stack.Push(adjecentNode);
+                    visited[adjecentNode.Row, adjecentNode.Col] = true;
+                }
+            }
 
         }
 
+    }
+
+    public void SpawnPiece(MazeNode node)
+    {
+        Vector3 location = new Vector3(node.Row * 6, 0, node.Col * 6);
+
+        Instantiate(Resources.Load(node.GetPrefabName()), location, node.GetRotation());
     }
 
 }
