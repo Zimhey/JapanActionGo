@@ -68,11 +68,37 @@ public class MazeGenerator : MonoBehaviour
 
     public static LinkedList<MazeNode> GetPath(MazeNode start, MazeNode end)
     {
-        LinkedList<MazeNode> path = new LinkedList<MazeNode>();
+        Stack visited = new Stack();
+        return GetPathHelper(start, end, visited);
+    }
 
-        // TODO use DFS to find the path
-
-        return path;
+    public static LinkedList<MazeNode> GetPathHelper(MazeNode start, MazeNode end, Stack visited)
+    {
+        List<MazeNode> adjacents = start.GetAdjacentNodes();
+        bool leftAvailable = (start.Left != null && !visited.Contains(start.Left));
+        bool rightAvailable = (start.Right != null && !visited.Contains(start.Right));
+        bool forwardAvailable = (start.Forward != null && !visited.Contains(start.Forward));
+        bool backwardAvailable = (start.Backward != null && !visited.Contains(start.Backward));
+        LinkedList<MazeNode> path;
+        if(start.Equals(end))
+        {
+            path = new LinkedList<MazeNode>();
+            path.AddFirst(start);
+            return path;
+        }
+        if (!leftAvailable && !rightAvailable && !forwardAvailable && !backwardAvailable)
+            return null;
+        foreach(MazeNode node in adjacents)
+        {
+            visited.Push(node);
+            path = GetPathHelper(node, end, visited);
+            if (path != null)
+            {
+                path.AddFirst(start);
+                return path;
+            }
+        }
+        return null;
     }
 
     public static void SetAsExitPath(LinkedList<MazeNode> path)
