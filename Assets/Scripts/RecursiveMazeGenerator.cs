@@ -21,7 +21,7 @@ public class RecursiveMazeGenerator : MonoBehaviour
     public static MazeNode GenerateMaze(int seed, int columns, int rows)
     {
         int rowCounter, columnCounter;
-        MazeNode[,] maze = new MazeNode[column,rows];
+        MazeNode[,] maze = new MazeNode[columns,rows];
         MazeNode n;
 
         for (int i = 0; i < columns; i++)
