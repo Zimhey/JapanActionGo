@@ -18,37 +18,37 @@ public class RecursiveMazeGenerator : MonoBehaviour
 		
 	}
 
-    public static MazeNode GenerateMaze(int seed, int rows, int columns)
+    public static MazeNode GenerateMaze(int seed, int columns, int rows)
     {
         int rowCounter, columnCounter;
-        MazeNode[,] maze = new MazeNode[rows,columns];
+        MazeNode[,] maze = new MazeNode[columns,rows];
         MazeNode n;
 
-        for (int i = 0; i < rows; i++)
+        for (int i = 0; i < columns; i++)
         {
-            for (int j = 0; j < columns; j++)
+            for (int j = 0; j < rows; j++)
             {
                 maze[i, j] = new MazeNode(i, j);
             }
         }
 
-        for (rowCounter = 0; rowCounter < rows; rowCounter++)
+        for (columnCounter = 0; columnCounter < columns; columnCounter++)
         {
-            for(columnCounter = 0; columnCounter < columns; columnCounter++)
+            for(rowCounter = 0; rowCounter < rows; rowCounter++)
             {
-                n = maze[rowCounter, columnCounter];
-                if (rowCounter > 0)
-                    n.connectLeft(maze[rowCounter - 1, columnCounter]);
-                if (rowCounter < rows - 1)
-                    n.connectRight(maze[rowCounter + 1, columnCounter]);
+                n = maze[columnCounter, rowCounter];
                 if (columnCounter > 0)
-                    n.connectForward(maze[rowCounter, columnCounter - 1]);
+                    n.connectLeft(maze[columnCounter - 1, rowCounter]);
                 if (columnCounter < columns - 1)
-                    n.connectBackward(maze[rowCounter, columnCounter + 1]);
+                    n.connectRight(maze[columnCounter + 1, rowCounter]);
+                if (rowCounter > 0)
+                    n.connectForward(maze[columnCounter, rowCounter - 1]);
+                if (rowCounter < rows - 1)
+                    n.connectBackward(maze[columnCounter, rowCounter + 1]);
             }
         }
 
-        Divide(0, rows - 1, 0, columns - 1, seed, maze);
+        Divide(0, columns - 1, 0, rows - 1, seed, maze);
         return maze[0, 0];
     }
 

@@ -17,13 +17,13 @@ public class DFSMazeGenerator : MonoBehaviour
 		
 	}
 
-    public static MazeNode GenerateMaze(int seed, int rows, int columns)
+    public static MazeNode GenerateMaze(int seed, int columns, int rows)
     {
-        MazeNode[,] maze = new MazeNode[rows, columns];
+        MazeNode[,] maze = new MazeNode[columns, rows];
         int i, j;
-        for(i = 0; i < rows; i++)
+        for(i = 0; i < columns; i++)
         {
-            for(j = 0; j < columns; j++)
+            for(j = 0; j < rows; j++)
             {
                 maze[i, j] = new MazeNode(i, j);
             }
@@ -34,27 +34,29 @@ public class DFSMazeGenerator : MonoBehaviour
         int xNext = 0;
         int yNext = 0;
         Stack visited = new Stack();
+        Stack backtracked = new Stack();
         int spacesVisited = 0;
         System.Random rand = new System.Random();
         while(spacesVisited < rows * columns)
         {
             int next;
             bool nextAvailable = false;
-            bool leftAvailable = (xCurrent != 0 && !visited.Contains(maze[xCurrent - 1, yCurrent]));
-            bool rightAvailable = (xCurrent != rows - 1 && !visited.Contains(maze[xCurrent + 1, yCurrent]));
-            bool forwardAvailable = (yCurrent != 0 && !visited.Contains(maze[xCurrent, yCurrent - 1]));
-            bool backwardAvailable = (yCurrent != columns - 1 && !visited.Contains(maze[xCurrent, yCurrent + 1]));
+            bool leftAvailable = (xCurrent != 0 && !visited.Contains(maze[xCurrent - 1, yCurrent]) && !backtracked.Contains(maze[xCurrent - 1, yCurrent]));
+            bool rightAvailable = (xCurrent != columns - 1 && !visited.Contains(maze[xCurrent + 1, yCurrent]) && !backtracked.Contains(maze[xCurrent + 1, yCurrent]));
+            bool forwardAvailable = (yCurrent != 0 && !visited.Contains(maze[xCurrent, yCurrent - 1]) && !backtracked.Contains(maze[xCurrent, yCurrent - 1]));
+            bool backwardAvailable = (yCurrent != rows - 1 && !visited.Contains(maze[xCurrent, yCurrent + 1]) && !backtracked.Contains(maze[xCurrent, yCurrent + 1]));
             bool noneAvailable = !leftAvailable && !rightAvailable && !forwardAvailable && !backwardAvailable;
             while(noneAvailable)
             {
-                leftAvailable = (xCurrent != 0 && !visited.Contains(maze[xCurrent - 1, yCurrent]));
-                rightAvailable = (xCurrent != rows - 1 && !visited.Contains(maze[xCurrent + 1, yCurrent]));
-                forwardAvailable = (yCurrent != 0 && !visited.Contains(maze[xCurrent, yCurrent - 1]));
-                backwardAvailable = (yCurrent != columns - 1 && !visited.Contains(maze[xCurrent, yCurrent + 1]));
+                leftAvailable = (xCurrent != 0 && !visited.Contains(maze[xCurrent - 1, yCurrent]) && !backtracked.Contains(maze[xCurrent - 1, yCurrent]));
+                rightAvailable = (xCurrent != columns - 1 && !visited.Contains(maze[xCurrent + 1, yCurrent]) && !backtracked.Contains(maze[xCurrent + 1, yCurrent]));
+                forwardAvailable = (yCurrent != 0 && !visited.Contains(maze[xCurrent, yCurrent - 1]) && !backtracked.Contains(maze[xCurrent, yCurrent - 1]));
+                backwardAvailable = (yCurrent != rows - 1 && !visited.Contains(maze[xCurrent, yCurrent + 1]) && !backtracked.Contains(maze[xCurrent, yCurrent + 1]));
                 noneAvailable = !leftAvailable && !rightAvailable && !forwardAvailable && !backwardAvailable;
                 if (!noneAvailable)
                     break;
                 MazeNode n = (MazeNode) visited.Pop();
+                backtracked.Push(n);
                 xCurrent = n.Row;
                 yCurrent = n.Col;
             }
@@ -95,11 +97,6 @@ public class DFSMazeGenerator : MonoBehaviour
                     }
             }
             spacesVisited++;
-            if(xNext < 0 || xNext > rows || yNext < 0 || yNext > columns)
-            {
-                print(xNext + " " + yNext);
-                return maze[0, 0];
-            }
             visited.Push(maze[xNext, yNext]);
             maze[xCurrent, yCurrent].AddEdge(maze[xNext, yNext]);
             xCurrent = xNext;

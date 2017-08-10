@@ -110,13 +110,72 @@ public class MazeGenerator : MonoBehaviour
 
     public static void SetAsExitPath(LinkedList<MazeNode> path)
     {
-        // TODO Set the ExitNode flag to true for each MazeNode
+        foreach(MazeNode n in path)
+        {
+            n.ExitNode = true;
+        }
     }
 
     public static List<MazeNode> GenerateSections(MazeNode root, int sections, int rows, int cols)
     {
         List<MazeNode> sectionRoots = new List<MazeNode>();
-        // TODO Generate Sections
+        int sectionSize = rows * cols / sections;
+
+        Queue<MazeNode> border = new Queue<MazeNode>();
+        border.Enqueue(root);
+
+        Stack<MazeNode> visited = new Stack<MazeNode>();
+        visited.Push(root);
+
+        int visitedNumber = 1;
+
+        while(visitedNumber < sectionSize)
+        {
+            foreach(MazeNode n in border.Dequeue().GetAdjacentNodes())
+            {
+                if (!visited.Contains(n))
+                {
+                    visited.Push(n);
+                    border.Enqueue(n);
+                }
+                visitedNumber++;
+            }
+        }
+
+        MazeNode lastVisitedBottleneck = null;
+
+        foreach(MazeNode n in visited)
+        {
+            if (n.ExitNode)
+                lastVisitedBottleneck = n;
+        }
+
+        foreach (MazeNode n in lastVisitedBottleneck.GetAdjacentNodes())
+        {
+            if (n.ExitNode)
+            {
+                if (n.Equals(lastVisitedBottleneck.Left))
+                {
+                    lastVisitedBottleneck.DisconnectLeft();
+                    n.DisconnectRight();
+                }
+                if (n.Equals(lastVisitedBottleneck.Right))
+                {
+                    lastVisitedBottleneck.DisconnectRight();
+                    n.DisconnectLeft();
+                }
+                if (n.Equals(lastVisitedBottleneck.Forward))
+                {
+                    lastVisitedBottleneck.DisconnectForward();
+                    n.DisconnectBackward();
+                }
+                if (n.Equals(lastVisitedBottleneck.Backward))
+                {
+                    lastVisitedBottleneck.DisconnectBackward();
+                    n.DisconnectForward();
+                }
+            }
+        }
 
         return sectionRoots;
     }
