@@ -110,13 +110,18 @@ public class MazeGenerator : MonoBehaviour
 
     public static void SetAsExitPath(LinkedList<MazeNode> path)
     {
-        // TODO Set the ExitNode flag to true for each MazeNode
+        foreach(MazeNode n in path)
+        {
+            n.ExitNode = true;
+        }
     }
 
     public static List<MazeNode> GenerateSections(MazeNode root, int sections, int rows, int cols)
     {
         List<MazeNode> sectionRoots = new List<MazeNode>();
         // TODO Generate Sections
+
+
 
         return sectionRoots;
     }
