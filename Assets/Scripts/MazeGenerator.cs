@@ -63,6 +63,7 @@ public class MazeGenerator : MonoBehaviour
     public static LinkedList<MazeNode> GetPath(MazeNode start, MazeNode end)
     {
         LinkedList<MazeNode> path = new LinkedList<MazeNode>();
+        return path;
         
     }
 
