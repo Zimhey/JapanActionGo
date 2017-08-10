@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     private ArrayList previousLocations = new ArrayList();
 
     //length before a footstep is placed
-    private int enough = 50;
+    //private int enough = 50;
     private int lessenough = 5;
 
     //camera following player, assigned in unity
