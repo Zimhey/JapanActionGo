@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OniController : MonoBehaviour {
+public class OniController : MonoBehaviour
+{
 
     //player game object
     public GameObject playerObject;
@@ -13,13 +14,15 @@ public class OniController : MonoBehaviour {
     //private Rigidbody rb;
 
     private System.Boolean seen = false;
+    private System.Boolean awake = false;
 
     void Start()
     {
         //rb = GetComponent<Rigidbody>();
     }
-    
-    void LateUpdate () {
+
+    void LateUpdate()
+    {
         //if an enemy as further than maxDistance from you, it cannot see you
         int maxDistance = 20;
         int maxDistanceSquared = maxDistance * maxDistance;
@@ -39,13 +42,11 @@ public class OniController : MonoBehaviour {
 
             for (int i = 0; i < hits.Length; i++)
             {
-                if(i == 0)
+                if (i == 0)
                 {
-                    seen = false; 
+                    seen = false;
                 }
                 RaycastHit hit = hits[i];
-                print(hits.Length);
-                print(hit.collider.gameObject.name);
                 if (hit.collider.gameObject == playerObject) //player object here will be your Player GameObject
                 {
                     //enemy sees you - perform some action
@@ -53,6 +54,7 @@ public class OniController : MonoBehaviour {
                     UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
                     agent.destination = goal.position;
                     seen = true;
+                    awake = true;
                 }
                 else if (i == hits.Length - 1 && seen == false)
                 {
@@ -60,6 +62,36 @@ public class OniController : MonoBehaviour {
                     //rb.velocity = new Vector3(0, 0, 0);
                 }
             }
+        }
+        if (awake == true && seen == false)
+        {
+            RaycastHit[] hitsft;
+            hitsft = Physics.RaycastAll(transform.position, rayDirection, 100.0F);
+            for (int i = 0; i < hitsft.Length; i++)
+            {
+                RaycastHit hitft = hitsft[i];
+                if (hitft.collider.gameObject.CompareTag("Footprint"))
+                {
+                    //enemy sees your footprints - perform some action
+                    Transform goal = hitft.collider.gameObject.transform;
+                    UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+                    agent.destination = goal.position;
+                }
+                else if (i == hitsft.Length - 1 && seen == false)
+                {
+                    //enemy doesn't see your footprints
+                    //rb.velocity = new Vector3(0, 0, 0);
+                }
+            }
+        }
+
+    }
+
+    void OnCollisionEnter(Collision col)
+    {
+        if (col.gameObject.CompareTag("Footprint"))
+        {
+            Destroy(col.gameObject);
         }
     }
 }
