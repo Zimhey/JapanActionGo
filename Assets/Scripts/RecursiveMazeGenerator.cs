@@ -67,7 +67,10 @@ public class RecursiveMazeGenerator : MonoBehaviour
     public static void Divide(int xStart, int xEnd, int yStart, int yEnd, int seed, MazeNode[,] maze)
     {
         if (xEnd - xStart < 1 && yEnd - yStart < 1)
+        {
+            print(xStart + " " + xEnd + " " + yStart + " " + yEnd);
             return;
+        }
         else if (xEnd - xStart >= yEnd - yStart)
             DivideVertically(xStart, xEnd, yStart, yEnd, seed, maze);
         else
@@ -89,8 +92,15 @@ public class RecursiveMazeGenerator : MonoBehaviour
                 maze[randLine, counter].DisconnectBackward();
             }
         }
-        Divide(xStart, randLine, yStart, yEnd, seed, maze);
-        Divide(randLine, xEnd, yStart, yEnd, seed, maze);
+        if (xEnd - xStart == 1)
+        {
+            Divide(xStart, xStart, yStart, yEnd, seed, maze);
+        }
+        else
+        {
+            Divide(xStart, randLine, yStart, yEnd, seed, maze);
+            Divide(randLine, xEnd, yStart, yEnd, seed, maze);
+        }
     }
 
     public static void DivideHorizontally(int xStart, int xEnd, int yStart, int yEnd, int seed, MazeNode[,] maze)
@@ -108,7 +118,14 @@ public class RecursiveMazeGenerator : MonoBehaviour
                 maze[counter, randLine].DisconnectLeft();
             }
         }
-        Divide(xStart, xEnd, yStart, randLine, seed, maze);
-        Divide(xStart, xEnd, randLine, yEnd, seed, maze);
+        if (yEnd - yStart == 1)
+        {
+            Divide(xStart, xEnd, yStart, yStart, seed, maze);
+        }
+        else
+        {
+            Divide(xStart, xEnd, yStart, randLine, seed, maze);
+            Divide(xStart, xEnd, randLine, yEnd, seed, maze);
+        }
     }
 }
