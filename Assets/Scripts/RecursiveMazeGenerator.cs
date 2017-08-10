@@ -38,13 +38,25 @@ public class RecursiveMazeGenerator : MonoBehaviour
             {
                 n = maze[columnCounter, rowCounter];
                 if (columnCounter > 0)
-                    n.connectLeft(maze[columnCounter - 1, rowCounter]);
+                {
+                    n.connectBackward(maze[columnCounter - 1, rowCounter]);
+                    maze[columnCounter - 1, rowCounter].connectForward(n);
+                }
                 if (columnCounter < columns - 1)
-                    n.connectRight(maze[columnCounter + 1, rowCounter]);
+                {
+                    n.connectForward(maze[columnCounter + 1, rowCounter]);
+                    maze[columnCounter + 1, rowCounter].connectBackward(n);
+                }
                 if (rowCounter > 0)
-                    n.connectForward(maze[columnCounter, rowCounter - 1]);
+                {
+                    n.connectLeft(maze[columnCounter, rowCounter - 1]);
+                    maze[columnCounter, rowCounter - 1].connectRight(n);
+                }
                 if (rowCounter < rows - 1)
-                    n.connectBackward(maze[columnCounter, rowCounter + 1]);
+                {
+                    n.connectRight(maze[columnCounter, rowCounter + 1]);
+                    maze[columnCounter, rowCounter + 1].connectLeft(n);
+                }
             }
         }
 
@@ -54,7 +66,7 @@ public class RecursiveMazeGenerator : MonoBehaviour
 
     public static void Divide(int xStart, int xEnd, int yStart, int yEnd, int seed, MazeNode[,] maze)
     {
-        if (xEnd - xStart < 2 && yEnd - yStart < 2)
+        if (xEnd - xStart < 1 && yEnd - yStart < 1)
             return;
         else if (xEnd - xStart >= yEnd - yStart)
             DivideVertically(xStart, xEnd, yStart, yEnd, seed, maze);
@@ -73,8 +85,8 @@ public class RecursiveMazeGenerator : MonoBehaviour
         {
             if(counter != randHole)
             {
-                maze[randLine - 1, counter].DisconnectRight();
-                maze[randLine, counter].DisconnectLeft();
+                maze[randLine - 1, counter].DisconnectForward();
+                maze[randLine, counter].DisconnectBackward();
             }
         }
         Divide(xStart, randLine, yStart, yEnd, seed, maze);
@@ -92,8 +104,8 @@ public class RecursiveMazeGenerator : MonoBehaviour
         {
             if(counter != randHole)
             {
-                maze[counter, randLine - 1].DisconnectBackward();
-                maze[counter, randLine].DisconnectForward();
+                maze[counter, randLine - 1].DisconnectRight();
+                maze[counter, randLine].DisconnectLeft();
             }
         }
         Divide(xStart, xEnd, yStart, randLine, seed, maze);

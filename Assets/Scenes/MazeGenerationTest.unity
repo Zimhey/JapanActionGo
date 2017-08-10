@@ -166,7 +166,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 73
+  field of view: 59
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -190,8 +190,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 824107912}
-  m_LocalRotation: {x: 0.23155636, y: -0.6675958, z: 0.23114407, w: 0.6687824}
-  m_LocalPosition: {x: 42.41471, y: 20.443827, z: 11.680138}
+  m_LocalRotation: {x: -0.48452395, y: 0.000008404256, z: -0.0000042095785, w: -0.87477803}
+  m_LocalPosition: {x: 11.712546, y: 41.265434, z: -9.906558}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -206,6 +206,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1277521964}
   - component: {fileID: 1277521963}
+  - component: {fileID: 1277521965}
   m_Layer: 0
   m_Name: MazeGenerator
   m_TagString: Untagged
@@ -225,7 +226,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Seed: 0
-  cell: {fileID: 1868968583592214, guid: 5a7b2d89358dc0e42a971dfad075d763, type: 2}
 --- !u!4 &1277521964
 Transform:
   m_ObjectHideFlags: 0
@@ -239,6 +239,34 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1277521965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1277521962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_BuildHeightMesh: 0
+  m_NavMeshData: {fileID: 0}
 --- !u!1 &1978516059
 GameObject:
   m_ObjectHideFlags: 0

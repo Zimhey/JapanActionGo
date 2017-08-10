@@ -44,14 +44,14 @@ public class DFSMazeGenerator : MonoBehaviour
             bool leftAvailable = (xCurrent != 0 && !visited.Contains(maze[xCurrent - 1, yCurrent]) && !backtracked.Contains(maze[xCurrent - 1, yCurrent]));
             bool rightAvailable = (xCurrent != columns - 1 && !visited.Contains(maze[xCurrent + 1, yCurrent]) && !backtracked.Contains(maze[xCurrent + 1, yCurrent]));
             bool forwardAvailable = (yCurrent != 0 && !visited.Contains(maze[xCurrent, yCurrent - 1]) && !backtracked.Contains(maze[xCurrent, yCurrent - 1]));
-            bool backwardAvailable = (yCurrent != rows - 1 && !visited.Contains(maze[xCurrent, yCurrent + 1]) && !visited.Contains(maze[xCurrent, yCurrent + 1]));
+            bool backwardAvailable = (yCurrent != rows - 1 && !visited.Contains(maze[xCurrent, yCurrent + 1]) && !backtracked.Contains(maze[xCurrent, yCurrent + 1]));
             bool noneAvailable = !leftAvailable && !rightAvailable && !forwardAvailable && !backwardAvailable;
             while(noneAvailable)
             {
-                leftAvailable = (xCurrent != 0 && !visited.Contains(maze[xCurrent - 1, yCurrent]));
-                rightAvailable = (xCurrent != columns - 1 && !visited.Contains(maze[xCurrent + 1, yCurrent]));
-                forwardAvailable = (yCurrent != 0 && !visited.Contains(maze[xCurrent, yCurrent - 1]));
-                backwardAvailable = (yCurrent != rows - 1 && !visited.Contains(maze[xCurrent, yCurrent + 1]));
+                leftAvailable = (xCurrent != 0 && !visited.Contains(maze[xCurrent - 1, yCurrent]) && !backtracked.Contains(maze[xCurrent - 1, yCurrent]));
+                rightAvailable = (xCurrent != columns - 1 && !visited.Contains(maze[xCurrent + 1, yCurrent]) && !backtracked.Contains(maze[xCurrent + 1, yCurrent]));
+                forwardAvailable = (yCurrent != 0 && !visited.Contains(maze[xCurrent, yCurrent - 1]) && !backtracked.Contains(maze[xCurrent, yCurrent - 1]));
+                backwardAvailable = (yCurrent != rows - 1 && !visited.Contains(maze[xCurrent, yCurrent + 1]) && !backtracked.Contains(maze[xCurrent, yCurrent + 1]));
                 noneAvailable = !leftAvailable && !rightAvailable && !forwardAvailable && !backwardAvailable;
                 if (!noneAvailable)
                     break;
