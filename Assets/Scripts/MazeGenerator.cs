@@ -12,8 +12,8 @@ public class MazeGenerator : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        int size = 6;
-        MazeNode root = DFSMazeGenerator.GenerateMaze(0, size, size);
+        int size = 5;
+        MazeNode root = RecursiveMazeGenerator.GenerateMaze(0, size, size);
         /*
         root = GenTestMaze(size);
         root.Right.Left = null;
