@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class OniController : MonoBehaviour
@@ -92,6 +93,11 @@ public class OniController : MonoBehaviour
         if (col.gameObject.CompareTag("Footprint"))
         {
             Destroy(col.gameObject);
+        }
+        if(col.gameObject == playerObject)
+        {
+            string curlevel = SceneManager.GetActiveScene().name;
+            SceneManager.LoadScene(curlevel);
         }
     }
 }
