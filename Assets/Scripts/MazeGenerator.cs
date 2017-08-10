@@ -1,18 +1,31 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class MazeGenerator : MonoBehaviour
 {
 
     public int Seed;
+    private NavMeshSurface surface;
 
     // Use this for initialization
     void Start()
     {
-        int size = 5;
-        MazeNode root = RecursiveMazeGenerator.GenerateMaze(0, size, size);
+        int size = 6;
+        MazeNode root = DFSMazeGenerator.GenerateMaze(0, size, size);
+        /*
+        root = GenTestMaze(size);
+        root.Right.Left = null;
+        root.Right = null;
+        root.Forward.Right = null;
+        root = RecursiveMazeGenerator.GenerateMaze(0, size, size);
+        */
         SpawnMaze(root, size);
+
+        surface = GetComponent<NavMeshSurface>();
+        if (surface != null)
+            surface.BuildNavMesh();
     }
 
     // Update is called once per frame
@@ -62,9 +75,37 @@ public class MazeGenerator : MonoBehaviour
 
     public static LinkedList<MazeNode> GetPath(MazeNode start, MazeNode end)
     {
-        LinkedList<MazeNode> path = new LinkedList<MazeNode>();
-        return path;
-        
+        Stack visited = new Stack();
+        return GetPathHelper(start, end, visited);
+    }
+
+    public static LinkedList<MazeNode> GetPathHelper(MazeNode start, MazeNode end, Stack visited)
+    {
+        List<MazeNode> adjacents = start.GetAdjacentNodes();
+        bool leftAvailable = (start.Left != null && !visited.Contains(start.Left));
+        bool rightAvailable = (start.Right != null && !visited.Contains(start.Right));
+        bool forwardAvailable = (start.Forward != null && !visited.Contains(start.Forward));
+        bool backwardAvailable = (start.Backward != null && !visited.Contains(start.Backward));
+        LinkedList<MazeNode> path;
+        if(start.Equals(end))
+        {
+            path = new LinkedList<MazeNode>();
+            path.AddFirst(start);
+            return path;
+        }
+        if (!leftAvailable && !rightAvailable && !forwardAvailable && !backwardAvailable)
+            return null;
+        foreach(MazeNode node in adjacents)
+        {
+            visited.Push(node);
+            path = GetPathHelper(node, end, visited);
+            if (path != null)
+            {
+                path.AddFirst(start);
+                return path;
+            }
+        }
+        return null;
     }
 
     public static void SetAsExitPath(LinkedList<MazeNode> path)
@@ -118,11 +159,28 @@ public class MazeGenerator : MonoBehaviour
 
     }
 
+    int piecesSpawned;
+
     public void SpawnPiece(MazeNode node)
     {
-        Vector3 location = new Vector3(node.Row * 6, 0, node.Col * 6);
+        Vector3 location = new Vector3(node.Col * 6 + 8, 0, node.Row * 6 + 8);
 
-        Instantiate(Resources.Load(node.GetPrefabName()), location, node.GetRotation());
+        GameObject obj = Instantiate(Resources.Load(node.GetPrefabName()), location, node.GetRotation()) as GameObject;
+        obj.transform.parent = this.transform;
+
+        GameObject textObj= Instantiate(Resources.Load("Prefabs/CellTextPrefab"), location + new Vector3(0, 1, -1), new Quaternion()) as GameObject;
+        textObj.transform.parent = obj.transform;
+
+        TextMesh t = textObj.GetComponentInChildren<TextMesh>();
+        if(t != null)
+            t.text = "R: " + node.Row + " C: " + node.Col;
+
+        textObj = Instantiate(Resources.Load("Prefabs/CellTextPrefab"), location + new Vector3(0, 1, 0), new Quaternion()) as GameObject;
+        textObj.transform.parent = obj.transform;
+
+        t = textObj.GetComponentInChildren<TextMesh>();
+        if (t != null)
+            t.text = "P" + piecesSpawned++;
     }
 
 }

@@ -17,16 +17,15 @@ public class DFSMazeGenerator : MonoBehaviour
 		
 	}
 
-    public static MazeNode GenerateMaze(int rows, int columns, int seed)
+    public static MazeNode GenerateMaze(int seed, int rows, int columns)
     {
         MazeNode[,] maze = new MazeNode[rows, columns];
         int i, j;
         for(i = 0; i < rows; i++)
         {
-            for(j = 0; j < rows; j++)
+            for(j = 0; j < columns; j++)
             {
-                maze[i, j].Row = i;
-                maze[i, j].Col = j;
+                maze[i, j] = new MazeNode(i, j);
             }
         }
 
@@ -42,17 +41,19 @@ public class DFSMazeGenerator : MonoBehaviour
             int next;
             bool nextAvailable = false;
             bool leftAvailable = (xCurrent != 0 && !visited.Contains(maze[xCurrent - 1, yCurrent]));
-            bool rightAvailable = (xCurrent != rows && !visited.Contains(maze[xCurrent + 1, yCurrent]));
+            bool rightAvailable = (xCurrent != rows - 1 && !visited.Contains(maze[xCurrent + 1, yCurrent]));
             bool forwardAvailable = (yCurrent != 0 && !visited.Contains(maze[xCurrent, yCurrent - 1]));
-            bool backwardAvailable = (yCurrent != columns && !visited.Contains(maze[xCurrent, yCurrent + 1]));
+            bool backwardAvailable = (yCurrent != columns - 1 && !visited.Contains(maze[xCurrent, yCurrent + 1]));
             bool noneAvailable = !leftAvailable && !rightAvailable && !forwardAvailable && !backwardAvailable;
             while(noneAvailable)
             {
                 leftAvailable = (xCurrent != 0 && !visited.Contains(maze[xCurrent - 1, yCurrent]));
-                rightAvailable = (xCurrent != rows && !visited.Contains(maze[xCurrent + 1, yCurrent]));
+                rightAvailable = (xCurrent != rows - 1 && !visited.Contains(maze[xCurrent + 1, yCurrent]));
                 forwardAvailable = (yCurrent != 0 && !visited.Contains(maze[xCurrent, yCurrent - 1]));
-                backwardAvailable = (yCurrent != columns && !visited.Contains(maze[xCurrent, yCurrent + 1]));
+                backwardAvailable = (yCurrent != columns - 1 && !visited.Contains(maze[xCurrent, yCurrent + 1]));
                 noneAvailable = !leftAvailable && !rightAvailable && !forwardAvailable && !backwardAvailable;
+                if (!noneAvailable)
+                    break;
                 MazeNode n = (MazeNode) visited.Pop();
                 xCurrent = n.Row;
                 yCurrent = n.Col;
@@ -66,6 +67,7 @@ public class DFSMazeGenerator : MonoBehaviour
                         xNext = xCurrent - 1;
                         yNext = yCurrent;
                         nextAvailable = true;
+                        break;
                     }
                 if (next == 2)
                     if (forwardAvailable)
@@ -73,6 +75,7 @@ public class DFSMazeGenerator : MonoBehaviour
                         xNext = xCurrent;
                         yNext = yCurrent - 1;
                         nextAvailable = true;
+                        break;
                     }
                 if (next == 3)
                     if (rightAvailable)
@@ -80,6 +83,7 @@ public class DFSMazeGenerator : MonoBehaviour
                         xNext = xCurrent + 1;
                         yNext = yCurrent;
                         nextAvailable = true;
+                        break;
                     }
                 if (next == 4)
                     if (backwardAvailable)
@@ -87,10 +91,17 @@ public class DFSMazeGenerator : MonoBehaviour
                         xNext = xCurrent;
                         yNext = yCurrent + 1;
                         nextAvailable = true;
+                        break;
                     }
             }
             spacesVisited++;
+            if(xNext < 0 || xNext > rows || yNext < 0 || yNext > columns)
+            {
+                print(xNext + " " + yNext);
+                return maze[0, 0];
+            }
             visited.Push(maze[xNext, yNext]);
+            maze[xCurrent, yCurrent].AddEdge(maze[xNext, yNext]);
             xCurrent = xNext;
             yCurrent = yNext;
         }
