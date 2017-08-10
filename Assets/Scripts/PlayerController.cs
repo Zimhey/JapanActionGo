@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
 
     //length before a footstep is placed
     private int enough = 50;
-    private int lessenough = 25;
+    private int lessenough = 5;
 
     //camera following player, assigned in unity
     public CameraController cam;
@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-        /*
+        
         //if any locations exist
         if (previousLocations.Count > 0)
         {
@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour
             //get oldest
             Vector3 firstlocation = (Vector3)previousLocations[0];
             //check to see if player has gone far enough for footprints to form
-            if ((lastlocation - firstlocation).magnitude > enough)
+            if ((lastlocation - firstlocation).magnitude > lessenough)
             {
                 //iterate through
                 for (int iter = 0; iter < lastentry; iter++)
@@ -83,7 +83,7 @@ public class PlayerController : MonoBehaviour
                         Vector3 norm = (currentlocation - firstlocation);
                         norm.Normalize();
                         //multiply by desired distance to get desired vector and add to first location
-                        Vector3 dest = firstlocation + norm * (float)lessenough;
+                        Vector3 dest = firstlocation + norm * (float)lessenough - new Vector3(0,0.5F,0);
                         //make rotation
                         Quaternion rot = Quaternion.Euler(0, 0, 0);
                         //add to level
@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour
                         {
                             previousLocations.RemoveAt(0);
                         }
-                        iter = 0;
+                        break;
                     }
                 }
             }
@@ -103,6 +103,6 @@ public class PlayerController : MonoBehaviour
         {
             previousLocations.Add(rb.position);
         }
-        */
+        
     }
 }
