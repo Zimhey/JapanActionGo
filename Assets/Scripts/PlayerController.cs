@@ -33,10 +33,10 @@ public class PlayerController : MonoBehaviour
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
 
         //adjusts for camera direction
-        Vector3 curmovement = Quaternion.Euler(0, cam.rotation, 0) * movement;
+        //Vector3 curmovement = Quaternion.Euler(0, cam.rotation, 0) * movement;
 
         //causes movement in desired direction with set speed
-        rb.AddForce(curmovement * speed);
+        rb.AddForceAtPosition(movement * speed, rb.worldCenterOfMass);
 
         //if no input no movement
         if (!Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.S))
