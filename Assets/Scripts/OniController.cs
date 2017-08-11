@@ -12,14 +12,18 @@ public class OniController : MonoBehaviour
     //oni movement speed, set in unity
     public float speed;
 
-    //private Rigidbody rb;
+    private Rigidbody rb;
 
     private System.Boolean seen = false;
     private System.Boolean awake = false;
+    private System.Boolean returning = false;
+
+    private Transform home;
 
     void Start()
     {
-        //rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
+        home = rb.transform;
     }
 
     void LateUpdate()
@@ -85,6 +89,15 @@ public class OniController : MonoBehaviour
                 }
             }
         }
+        if (returning == true)
+        {
+            UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+            agent.destination = home.position;
+            if(rb.transform == home)
+            {
+                returning = false;
+            }
+        }
 
     }
 
@@ -94,7 +107,12 @@ public class OniController : MonoBehaviour
         {
             Destroy(col.gameObject);
         }
-        if(col.gameObject == playerObject)
+        if (col.gameObject.CompareTag("SafeZone"))
+        {
+            returning = true;
+            awake = false;
+        }
+        if (col.gameObject == playerObject)
         {
             string curlevel = SceneManager.GetActiveScene().name;
             SceneManager.LoadScene(curlevel);
