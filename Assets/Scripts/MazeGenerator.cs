@@ -13,7 +13,9 @@ public class MazeGenerator : MonoBehaviour
     void Start()
     {
         int size = 5;
-        MazeNode root = DFSMazeGenerator.GenerateMaze(0, size, size);
+        int sections = 3;
+        MazeNode root = RecursiveMazeGenerator.GenerateMaze(0, size, size);
+        GenerateSections(root, sections, size, size);
         /*
         root = GenTestMaze(size);
         root.Right.Left = null;
@@ -87,7 +89,7 @@ public class MazeGenerator : MonoBehaviour
         bool forwardAvailable = (start.Forward != null && !visited.Contains(start.Forward));
         bool backwardAvailable = (start.Backward != null && !visited.Contains(start.Backward));
         LinkedList<MazeNode> path;
-        if (start.Equals(end))
+        if (start.Row == end.Row && start.Col == end.Col)
         {
             path = new LinkedList<MazeNode>();
             path.AddFirst(start);
@@ -118,6 +120,8 @@ public class MazeGenerator : MonoBehaviour
 
     public static List<MazeNode> GenerateSections(MazeNode root, int sections, int rows, int cols)
     {
+        MazeNode endNode = new MazeNode(rows, cols);
+        SetAsExitPath(GetPath(root, endNode));
         List<MazeNode> sectionRoots = new List<MazeNode>();
         int searchedAreas = 0;
         int sectionSize = rows * cols / sections;
@@ -157,7 +161,8 @@ public class MazeGenerator : MonoBehaviour
                 if (n.ExitNode)
                     lastVisitedBottleneck = n;
             }
-
+            if (lastVisitedBottleneck == null)
+                break;
             foreach (MazeNode n in lastVisitedBottleneck.GetAdjacentNodes())
             {
                 if (n.ExitNode)
