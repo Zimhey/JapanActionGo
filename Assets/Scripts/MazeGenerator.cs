@@ -12,10 +12,10 @@ public class MazeGenerator : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        int size = 5;
+        int size = 10;
         int sections = 3;
         MazeNode root = RecursiveMazeGenerator.GenerateMaze(0, size, size);
-        GenerateSections(root, sections, size, size);
+        List<MazeNode> sectionroots = GenerateSections(root, sections + 1, size, size);
         /*
         root = GenTestMaze(size);
         root.Right.Left = null;
@@ -23,8 +23,11 @@ public class MazeGenerator : MonoBehaviour
         root.Forward.Right = null;
         root = RecursiveMazeGenerator.GenerateMaze(0, size, size);
         */
-        SpawnMaze(root, size);
-
+        foreach (MazeNode r in sectionroots)
+        {
+          SpawnMaze(r, size);
+        }
+        //SpawnMaze(root, size);
         surface = GetComponent<NavMeshSurface>();
         if (surface != null)
             surface.BuildNavMesh();
@@ -127,12 +130,12 @@ public class MazeGenerator : MonoBehaviour
         MazeNode endNode = new MazeNode(cols - 1, rows - 1);
         SetAsExitPath(GetPath(root, endNode));
         List<MazeNode> sectionRoots = new List<MazeNode>();
+        sectionRoots.Add(root);
         int searchedAreas = 0;
         int sectionSize = rows * cols / sections;
         while (searchedAreas < rows * cols)
         {
             searchedAreas++;
-            sectionRoots.Add(root);
             Queue<MazeNode> border = new Queue<MazeNode>();
             border.Enqueue(root);
 
@@ -149,14 +152,17 @@ public class MazeGenerator : MonoBehaviour
                     {
                         visited.Push(n);
                         border.Enqueue(n);
+                        visitedNumber++;
+                        searchedAreas++;
                     }
-                    visitedNumber++;
-                    searchedAreas++;
                 }
             }
 
             if (searchedAreas == rows * cols)
+            {
+                sectionRoots.Add(root);
                 break;
+            }
 
             MazeNode lastVisitedBottleneck = null;
 
@@ -199,7 +205,7 @@ public class MazeGenerator : MonoBehaviour
                         root = n;
                     }
                 }
-            }
+            } 
             while (border.Count != 0)
             {
                 foreach (MazeNode n in border.Dequeue().GetAdjacentNodes())
@@ -212,6 +218,7 @@ public class MazeGenerator : MonoBehaviour
                     searchedAreas++;
                 }
             }
+            sectionRoots.Add(root);
         }
         return sectionRoots;
     }
