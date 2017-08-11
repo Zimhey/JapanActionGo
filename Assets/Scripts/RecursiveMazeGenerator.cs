@@ -68,7 +68,7 @@ public class RecursiveMazeGenerator : MonoBehaviour
     {
         if (xEnd - xStart < 1 && yEnd - yStart < 1)
         {
-            print(xStart + " " + xEnd + " " + yStart + " " + yEnd);
+            //print(xStart + " " + xEnd + " " + yStart + " " + yEnd);
             return;
         }
         else if (xEnd - xStart >= yEnd - yStart)
