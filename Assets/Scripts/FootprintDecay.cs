@@ -14,7 +14,6 @@ public class FootprintDecay : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
         timer--;
-        print(timer);
 
         if(timer <= 0)
         {

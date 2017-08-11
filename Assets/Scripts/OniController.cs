@@ -18,12 +18,13 @@ public class OniController : MonoBehaviour
     private System.Boolean awake = false;
     private System.Boolean returning = false;
 
-    private Transform home;
+    private Vector3 home;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        home = rb.transform;
+        home = gameObject.transform.position;
+        print("OriHome" + home);
     }
 
     void LateUpdate()
@@ -58,8 +59,11 @@ public class OniController : MonoBehaviour
                     Transform goal = playerObject.transform;
                     UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
                     agent.destination = goal.position;
-                    seen = true;
-                    awake = true;
+                    if (returning == false)
+                    {
+                        seen = true;
+                        awake = true;
+                    }
                 }
                 else if (i == hits.Length - 1 && seen == false)
                 {
@@ -81,6 +85,7 @@ public class OniController : MonoBehaviour
                     Transform goal = hitft.collider.gameObject.transform;
                     UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
                     agent.destination = goal.position;
+                    print("Chase" + agent.pathEndPosition);
                 }
                 else if (i == hitsft.Length - 1 && seen == false)
                 {
@@ -92,10 +97,24 @@ public class OniController : MonoBehaviour
         if (returning == true)
         {
             UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-            agent.destination = home.position;
-            if(rb.transform == home)
+            print("OriDest" + agent.destination);
+            agent.destination = home;
+            print("NewDest" + agent.destination);
+            print(rb.transform.position);
+            if (agent.isStopped == true)
             {
-                returning = false;
+                agent.isStopped = false;
+
+            }
+            if(rb.transform.position.x < home.x + 0.5 && rb.transform.position.x > home.x - 0.5)
+            {
+                if (rb.transform.position.y < home.y + 0.5 && rb.transform.position.y > home.y - 0.5)
+                {
+                    if (rb.transform.position.z < home.z + 0.5 && rb.transform.position.z > home.z - 0.5)
+                    {
+                        returning = false;
+                    }
+                }
             }
         }
 
@@ -107,10 +126,21 @@ public class OniController : MonoBehaviour
         {
             Destroy(col.gameObject);
         }
+        if (col.gameObject.CompareTag("Trap"))
+        {
+            Destroy(gameObject);
+        }
         if (col.gameObject.CompareTag("SafeZone"))
         {
-            returning = true;
-            awake = false;
+            UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+            if (returning == false)
+            {
+                //agent.isStopped = true;
+                agent.ResetPath();
+                returning = true;
+                awake = false;
+                seen = false;
+            }
         }
         if (col.gameObject == playerObject)
         {

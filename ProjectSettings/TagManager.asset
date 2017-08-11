@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Footprint
   - SafeZone
+  - Trap
   layers:
   - Default
   - TransparentFX
