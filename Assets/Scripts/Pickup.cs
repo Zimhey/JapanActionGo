@@ -18,7 +18,7 @@ public class Pickup : MonoBehaviour {
 
     void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject != null && collider.gameObject.tag == "player")
+        if (collider.gameObject != null && collider.gameObject.tag == "Player")
         {
             collider.gameObject.SendMessage("Found", item);
             Destroy(gameObject);
