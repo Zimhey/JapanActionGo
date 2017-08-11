@@ -88,7 +88,6 @@ public class PlayerController : MonoBehaviour
                         Quaternion rot = Quaternion.Euler(0, 0, 0);
                         //add to level
                         Instantiate(Resources.Load("Prefabs/Footprint"), dest, rot);
-                        print("made footstep at" + dest);
                         //remove old steps
                         for(int remove = 0; remove < iter; remove++)
                         {
