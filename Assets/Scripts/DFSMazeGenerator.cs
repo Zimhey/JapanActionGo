@@ -39,19 +39,27 @@ public class DFSMazeGenerator : MonoBehaviour
         System.Random rand = new System.Random();
         while(spacesVisited < rows * columns)
         {
+            while (xCurrent == columns - 1 && yCurrent == rows - 1)
+            {
+                MazeNode n = (MazeNode)visited.Pop();
+                backtracked.Push(n);
+                xCurrent = n.Row;
+                yCurrent = n.Col;
+            }
             int next;
             bool nextAvailable = false;
             bool leftAvailable = (xCurrent != 0 && !visited.Contains(maze[xCurrent - 1, yCurrent]) && !backtracked.Contains(maze[xCurrent - 1, yCurrent]));
             bool rightAvailable = (xCurrent != columns - 1 && !visited.Contains(maze[xCurrent + 1, yCurrent]) && !backtracked.Contains(maze[xCurrent + 1, yCurrent]));
-            bool forwardAvailable = (yCurrent != 0 && !visited.Contains(maze[xCurrent, yCurrent - 1]) && !backtracked.Contains(maze[xCurrent, yCurrent - 1]));
-            bool backwardAvailable = (yCurrent != rows - 1 && !visited.Contains(maze[xCurrent, yCurrent + 1]) && !backtracked.Contains(maze[xCurrent, yCurrent + 1]));
+            bool backwardAvailable = (yCurrent != 0 && !visited.Contains(maze[xCurrent, yCurrent - 1]) && !backtracked.Contains(maze[xCurrent, yCurrent - 1]));
+            bool forwardAvailable = (yCurrent != rows - 1 && !visited.Contains(maze[xCurrent, yCurrent + 1]) && !backtracked.Contains(maze[xCurrent, yCurrent + 1]));
             bool noneAvailable = !leftAvailable && !rightAvailable && !forwardAvailable && !backwardAvailable;
+            
             while(noneAvailable)
             {
                 leftAvailable = (xCurrent != 0 && !visited.Contains(maze[xCurrent - 1, yCurrent]) && !backtracked.Contains(maze[xCurrent - 1, yCurrent]));
                 rightAvailable = (xCurrent != columns - 1 && !visited.Contains(maze[xCurrent + 1, yCurrent]) && !backtracked.Contains(maze[xCurrent + 1, yCurrent]));
-                forwardAvailable = (yCurrent != 0 && !visited.Contains(maze[xCurrent, yCurrent - 1]) && !backtracked.Contains(maze[xCurrent, yCurrent - 1]));
-                backwardAvailable = (yCurrent != rows - 1 && !visited.Contains(maze[xCurrent, yCurrent + 1]) && !backtracked.Contains(maze[xCurrent, yCurrent + 1]));
+                backwardAvailable = (yCurrent != 0 && !visited.Contains(maze[xCurrent, yCurrent - 1]) && !backtracked.Contains(maze[xCurrent, yCurrent - 1]));
+                forwardAvailable = (yCurrent != rows - 1 && !visited.Contains(maze[xCurrent, yCurrent + 1]) && !backtracked.Contains(maze[xCurrent, yCurrent + 1]));
                 noneAvailable = !leftAvailable && !rightAvailable && !forwardAvailable && !backwardAvailable;
                 if (!noneAvailable)
                     break;
@@ -75,7 +83,7 @@ public class DFSMazeGenerator : MonoBehaviour
                     if (forwardAvailable)
                     {
                         xNext = xCurrent;
-                        yNext = yCurrent - 1;
+                        yNext = yCurrent + 1;
                         nextAvailable = true;
                         break;
                     }
@@ -91,7 +99,7 @@ public class DFSMazeGenerator : MonoBehaviour
                     if (backwardAvailable)
                     {
                         xNext = xCurrent;
-                        yNext = yCurrent + 1;
+                        yNext = yCurrent - 1;
                         nextAvailable = true;
                         break;
                     }
