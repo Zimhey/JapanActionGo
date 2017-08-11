@@ -46,7 +46,7 @@ public class PlayerActions : MonoBehaviour {
 
             Vector3 dir = cam.transform.rotation * new Vector3(0, 0, 1);
             
-            Ray ray = new Ray(gameObject.transform.position, dir);
+            Ray ray = new Ray(cam.transform.position, dir);
             RaycastHit rayHit;
 
             if (Physics.Raycast(ray, out rayHit, DrawingDistance))
