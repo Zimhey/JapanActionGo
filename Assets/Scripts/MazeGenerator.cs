@@ -13,7 +13,7 @@ public class MazeGenerator : MonoBehaviour
     void Start()
     {
         int size = 5;
-        MazeNode root = RecursiveMazeGenerator.GenerateMaze(0, size, size);
+        MazeNode root = DFSMazeGenerator.GenerateMaze(0, size, size);
         /*
         root = GenTestMaze(size);
         root.Right.Left = null;
@@ -50,9 +50,9 @@ public class MazeGenerator : MonoBehaviour
         {
             for (int j = 0; j < size; j++)
             {
-                if(j < size - 1)
+                if (j < size - 1)
                     maze[i, j].AddEdge(maze[i, j + 1]);
-                if(i < size - 1)
+                if (i < size - 1)
                     maze[i, j].AddEdge(maze[i + 1, j]);
             }
         }
@@ -87,7 +87,7 @@ public class MazeGenerator : MonoBehaviour
         bool forwardAvailable = (start.Forward != null && !visited.Contains(start.Forward));
         bool backwardAvailable = (start.Backward != null && !visited.Contains(start.Backward));
         LinkedList<MazeNode> path;
-        if(start.Equals(end))
+        if (start.Equals(end))
         {
             path = new LinkedList<MazeNode>();
             path.AddFirst(start);
@@ -95,7 +95,7 @@ public class MazeGenerator : MonoBehaviour
         }
         if (!leftAvailable && !rightAvailable && !forwardAvailable && !backwardAvailable)
             return null;
-        foreach(MazeNode node in adjacents)
+        foreach (MazeNode node in adjacents)
         {
             visited.Push(node);
             path = GetPathHelper(node, end, visited);
@@ -110,7 +110,7 @@ public class MazeGenerator : MonoBehaviour
 
     public static void SetAsExitPath(LinkedList<MazeNode> path)
     {
-        foreach(MazeNode n in path)
+        foreach (MazeNode n in path)
         {
             n.ExitNode = true;
         }
@@ -119,64 +119,88 @@ public class MazeGenerator : MonoBehaviour
     public static List<MazeNode> GenerateSections(MazeNode root, int sections, int rows, int cols)
     {
         List<MazeNode> sectionRoots = new List<MazeNode>();
+        int searchedAreas = 0;
         int sectionSize = rows * cols / sections;
-
-        Queue<MazeNode> border = new Queue<MazeNode>();
-        border.Enqueue(root);
-
-        Stack<MazeNode> visited = new Stack<MazeNode>();
-        visited.Push(root);
-
-        int visitedNumber = 1;
-
-        while(visitedNumber < sectionSize)
+        while (searchedAreas < rows * cols)
         {
-            foreach(MazeNode n in border.Dequeue().GetAdjacentNodes())
+            searchedAreas++;
+            sectionRoots.Add(root);
+            Queue<MazeNode> border = new Queue<MazeNode>();
+            border.Enqueue(root);
+
+            Stack<MazeNode> visited = new Stack<MazeNode>();
+            visited.Push(root);
+
+            int visitedNumber = 1;
+
+            while (visitedNumber < sectionSize)
             {
-                if (!visited.Contains(n))
+                foreach (MazeNode n in border.Dequeue().GetAdjacentNodes())
                 {
-                    visited.Push(n);
-                    border.Enqueue(n);
-                }
-                visitedNumber++;
-            }
-        }
-
-        MazeNode lastVisitedBottleneck = null;
-
-        foreach(MazeNode n in visited)
-        {
-            if (n.ExitNode)
-                lastVisitedBottleneck = n;
-        }
-
-        foreach (MazeNode n in lastVisitedBottleneck.GetAdjacentNodes())
-        {
-            if (n.ExitNode)
-            {
-                if (n.Equals(lastVisitedBottleneck.Left))
-                {
-                    lastVisitedBottleneck.DisconnectLeft();
-                    n.DisconnectRight();
-                }
-                if (n.Equals(lastVisitedBottleneck.Right))
-                {
-                    lastVisitedBottleneck.DisconnectRight();
-                    n.DisconnectLeft();
-                }
-                if (n.Equals(lastVisitedBottleneck.Forward))
-                {
-                    lastVisitedBottleneck.DisconnectForward();
-                    n.DisconnectBackward();
-                }
-                if (n.Equals(lastVisitedBottleneck.Backward))
-                {
-                    lastVisitedBottleneck.DisconnectBackward();
-                    n.DisconnectForward();
+                    if (!visited.Contains(n))
+                    {
+                        visited.Push(n);
+                        border.Enqueue(n);
+                    }
+                    visitedNumber++;
+                    searchedAreas++;
                 }
             }
-        }
 
+            if (searchedAreas == rows * cols)
+                break;
+
+            MazeNode lastVisitedBottleneck = null;
+
+            foreach (MazeNode n in visited)
+            {
+                if (n.ExitNode)
+                    lastVisitedBottleneck = n;
+            }
+
+            foreach (MazeNode n in lastVisitedBottleneck.GetAdjacentNodes())
+            {
+                if (n.ExitNode)
+                {
+                    if (n.Equals(lastVisitedBottleneck.Left))
+                    {
+                        lastVisitedBottleneck.DisconnectLeft();
+                        n.DisconnectRight();
+                        root = n;
+                    }
+                    if (n.Equals(lastVisitedBottleneck.Right))
+                    {
+                        lastVisitedBottleneck.DisconnectRight();
+                        n.DisconnectLeft();
+                        root = n;
+                    }
+                    if (n.Equals(lastVisitedBottleneck.Forward))
+                    {
+                        lastVisitedBottleneck.DisconnectForward();
+                        n.DisconnectBackward();
+                        root = n;
+                    }
+                    if (n.Equals(lastVisitedBottleneck.Backward))
+                    {
+                        lastVisitedBottleneck.DisconnectBackward();
+                        n.DisconnectForward();
+                        root = n;
+                    }
+                }
+            }
+            while (border.Count != 0)
+            {
+                foreach (MazeNode n in border.Dequeue().GetAdjacentNodes())
+                {
+                    if (!visited.Contains(n))
+                    {
+                        visited.Push(n);
+                        border.Enqueue(n);
+                    }
+                    searchedAreas++;
+                }
+            }
+        }
         return sectionRoots;
     }
 
