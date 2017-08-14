@@ -113,6 +113,9 @@ MonoBehaviour:
   playerObject: {fileID: 1171399665033666, guid: 39aa38406407df94497826bb58e15dba,
     type: 2}
   speed: 7.5
+  levelmask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!135 &135621145104123552
 SphereCollider:
   m_ObjectHideFlags: 1

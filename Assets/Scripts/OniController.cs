@@ -147,11 +147,11 @@ public class OniController : MonoBehaviour
         agent.destination = home;
         //print("NewDest" + agent.destination);
         //print("Curpos" + rb.transform.position);
-        if (rb.transform.position.x < home.x + 0.5 && rb.transform.position.x > home.x - 0.5)
+        if (rb.transform.position.x < home.x + 1 && rb.transform.position.x > home.x - 1)
         {
-            if (rb.transform.position.y < home.y + 0.5 && rb.transform.position.y > home.y - 0.5)
+            if (rb.transform.position.y < home.y + 1 && rb.transform.position.y > home.y - 1)
             {
-                if (rb.transform.position.z < home.z + 0.5 && rb.transform.position.z > home.z - 0.5)
+                if (rb.transform.position.z < home.z + 1 && rb.transform.position.z > home.z - 1)
                 {
                     state = onistate.Idle;
                     awake = false;
@@ -199,31 +199,15 @@ public class OniController : MonoBehaviour
 
     bool seePlayer()
     {
-        int maxDistance = 5;
+        int maxDistance = 25;
         int maxDistanceSquared = maxDistance * maxDistance;
         Vector3 rayDirection = playerObject.transform.localPosition - transform.localPosition;
-        rayDirection.Normalize();
         Vector3 enemyDirection = transform.TransformDirection(Vector3.forward);
-        enemyDirection.Normalize();
         float angleDot = Vector3.Dot(rayDirection, enemyDirection);
         System.Boolean playerInFrontOfEnemy = angleDot > 0.0;
         System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < maxDistanceSquared;
 
-        Vector3 dir = gameObject.transform.rotation * new Vector3(0, 0, 1);
-
-        Ray ray = new Ray(gameObject.transform.position, dir);
-        RaycastHit rayHit;
-
-        if (Physics.Raycast(ray, out rayHit, maxDistance))
-        {
-            print(rayHit.GetType());
-            print("ray sent");
-            if (!rayHit.Equals(playerObject))
-            {
-                return false;
-            }
-        }
-
+        System.Boolean foundwall = isWall();
         if (playerInFrontOfEnemy)
         {
             System.Boolean seenPlayer = playerInFrontOfEnemy && playerCloseToEnemy;
@@ -237,6 +221,24 @@ public class OniController : MonoBehaviour
         {
             return false;
         }
+    }
+
+    bool isWall()
+    {
+        print("using wall function");
+        int maxDistance = 25;
+        int maxDistanceSquared = maxDistance * maxDistance;
+        Vector3 rayDirection = playerObject.transform.localPosition - transform.localPosition;
+        rayDirection.Normalize();
+        Ray ray = new Ray(gameObject.transform.position, rayDirection);
+        RaycastHit rayHit;
+
+        if (Physics.Raycast(ray, out rayHit, maxDistance, levelmask))
+        {
+            print("found wall");
+            return false;
+        }
+        return true;
     }
 
     bool seeFootprint()
