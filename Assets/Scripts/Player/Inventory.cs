@@ -15,7 +15,10 @@ public class Inventory : MonoBehaviour {
 	}
 
     public int ChalkCharges;
+    public int ChalkChargesPerPickup;
+    public float DistancePerCharge;
     public int OfudaCharges;
+    public int OfudaChargesPerPickup;
     public bool hasMirror;
     public bool hasCompass;
 
@@ -24,10 +27,10 @@ public class Inventory : MonoBehaviour {
         switch(item)
         {
             case ItemType.Chalk:
-                ChalkCharges++;
+                ChalkCharges += ChalkChargesPerPickup;
                 break;
             case ItemType.Ofuda:
-                OfudaCharges++;
+                OfudaCharges += OfudaChargesPerPickup;
                 break;
             case ItemType.Mirror:
                 hasMirror = true;
