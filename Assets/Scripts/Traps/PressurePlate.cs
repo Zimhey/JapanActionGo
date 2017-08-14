@@ -34,7 +34,7 @@ public class PressurePlate : MonoBehaviour {
             objectsOnTop++;
             AnimatePlate();
             foreach (Trap trap in Traps)
-                trap.SendMessage("TriggerTrap");
+                trap.TriggerTrap();
         }
     }
 
@@ -44,8 +44,9 @@ public class PressurePlate : MonoBehaviour {
         {
             objectsOnTop--;
             AnimatePlate();
-            //foreach (Trap trap in Traps)
-            //    trap.SendMessage("ResetTrap");
+            foreach (Trap trap in Traps)
+                trap.ResetRequested = true;
+            
         }
     }
 }

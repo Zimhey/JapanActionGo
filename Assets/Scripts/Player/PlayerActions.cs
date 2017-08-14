@@ -95,6 +95,10 @@ public class PlayerActions : MonoBehaviour
             drawing = false;
     }
 
+    void Die()
+    {
+        Debug.Log("I've been killed!");
+    }
 
 
 }

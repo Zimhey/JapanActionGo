@@ -227,7 +227,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ChalkCharges: 3
-  OfudaCharges: 3
+  ChalkChargesPerPickup: 3
+  DistancePerCharge: 15
+  OfudaCharges: 1
+  OfudaChargesPerPickup: 1
   hasMirror: 0
   hasCompass: 0
 --- !u!114 &114498427886422192
@@ -349,7 +352,6 @@ MonoBehaviour:
   PlayerInventory: {fileID: 114283534115715642}
   PullLeverRadius: 3
   DrawingDistance: 5
-  DistancePerCharge: 15
   CanDrawAcrossObjects: 0
   DistanceDrawn: 0
   Marks: []
