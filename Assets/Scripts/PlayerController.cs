@@ -17,10 +17,12 @@ public class PlayerController : MonoBehaviour
     public CameraController cam;
 
     private Rigidbody rb;
+    private Quaternion originalRotation;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        originalRotation = transform.localRotation;
     }
 
     void FixedUpdate()
@@ -34,6 +36,8 @@ public class PlayerController : MonoBehaviour
 
         //adjusts for camera direction
         //Vector3 curmovement = Quaternion.Euler(0, cam.rotation, 0) * movement;
+
+        rb.transform.localRotation = originalRotation * cam.rotation;
 
         //causes movement in desired direction with set speed
         rb.AddForceAtPosition(movement * speed, rb.worldCenterOfMass);
