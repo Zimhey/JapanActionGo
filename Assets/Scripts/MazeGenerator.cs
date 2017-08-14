@@ -7,6 +7,7 @@ public class MazeGenerator : MonoBehaviour
 {
 
     public int Seed;
+    public bool DebugLabelsOn;
     private NavMeshSurface surface;
 
     // Use this for initialization
@@ -270,19 +271,23 @@ public class MazeGenerator : MonoBehaviour
         GameObject obj = Instantiate(Resources.Load(node.GetPrefabName()), location, node.GetRotation()) as GameObject;
         obj.transform.parent = this.transform;
 
-        GameObject textObj= Instantiate(Resources.Load("Prefabs/CellTextPrefab"), location + new Vector3(0, 1, -1), new Quaternion()) as GameObject;
-        textObj.transform.parent = obj.transform;
+        if(DebugLabelsOn)
+        {
+            GameObject textObj = Instantiate(Resources.Load("Prefabs/CellTextPrefab"), location + new Vector3(0, 0.5f, -1), new Quaternion()) as GameObject;
+            textObj.transform.parent = obj.transform;
 
-        TextMesh t = textObj.GetComponentInChildren<TextMesh>();
-        if(t != null)
-            t.text = "R: " + node.Row + " C: " + node.Col;
+            TextMesh t = textObj.GetComponentInChildren<TextMesh>();
+            if (t != null)
+                t.text = "R: " + node.Row + " C: " + node.Col;
 
-        textObj = Instantiate(Resources.Load("Prefabs/CellTextPrefab"), location + new Vector3(0, 1, 0), new Quaternion()) as GameObject;
-        textObj.transform.parent = obj.transform;
+            textObj = Instantiate(Resources.Load("Prefabs/CellTextPrefab"), location + new Vector3(0, 0.5f, 0), new Quaternion()) as GameObject;
+            textObj.transform.parent = obj.transform;
 
-        t = textObj.GetComponentInChildren<TextMesh>();
-        if (t != null)
-            t.text = "P" + piecesSpawned++;
+            t = textObj.GetComponentInChildren<TextMesh>();
+            if (t != null)
+                t.text = "P" + piecesSpawned++;
+        }
+
     }
 
 }

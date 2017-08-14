@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerActions : MonoBehaviour {
+public class PlayerActions : MonoBehaviour
+{
 
     public float UseRadius;
     public List<GameObject> Marks;
@@ -11,16 +12,20 @@ public class PlayerActions : MonoBehaviour {
     private GameObject chalkPrefab;
     private LineRenderer recent;
     private Camera cam;
+    private GameObject lastDrawnOn;
+    public LayerMask levelLayer;
+    public bool CanDrawAcrossObjects;
 
-
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         chalkPrefab = Resources.Load("Prefabs/ChalkMark") as GameObject;
         cam = gameObject.GetComponentInChildren<Camera>();
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
 
         // Use Lever
         if (Input.GetButtonDown("Use"))
@@ -45,14 +50,22 @@ public class PlayerActions : MonoBehaviour {
             }
 
             Vector3 dir = cam.transform.rotation * new Vector3(0, 0, 1);
-            
+
             Ray ray = new Ray(cam.transform.position, dir);
             RaycastHit rayHit;
 
-            if (Physics.Raycast(ray, out rayHit, DrawingDistance))
+            if (Physics.Raycast(ray, out rayHit, DrawingDistance, levelLayer))
             {
+                if (!CanDrawAcrossObjects && lastDrawnOn != rayHit.collider.gameObject)
+                {
+                    GameObject chalkMark = Instantiate(chalkPrefab);
+                    Marks.Add(chalkMark);
+                    recent = chalkMark.GetComponentInChildren<LineRenderer>();
+                    lastDrawnOn = rayHit.collider.gameObject;
+                }
                 recent.positionCount++;
                 recent.SetPosition(recent.positionCount - 1, rayHit.point);
+
             }
             else
                 drawing = false;
