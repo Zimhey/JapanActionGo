@@ -14,8 +14,8 @@ public class MazeGenerator : MonoBehaviour
     {
         int size = 10;
         int sections = 3;
-        MazeNode root = RecursiveMazeGenerator.GenerateMaze(0, size, size);
-        List<MazeNode> sectionroots = GenerateSections(root, sections + 1, size, size);
+        MazeNode root = DFSMazeGenerator.GenerateMaze(0, size, size);
+        //List<MazeNode> sectionroots = GenerateSections(root, sections + 1, size, size);
         /*
         root = GenTestMaze(size);
         root.Right.Left = null;
@@ -23,11 +23,11 @@ public class MazeGenerator : MonoBehaviour
         root.Forward.Right = null;
         root = RecursiveMazeGenerator.GenerateMaze(0, size, size);
         */
-        foreach (MazeNode r in sectionroots)
-        {
-          SpawnMaze(r, size);
-        }
-        //SpawnMaze(root, size);
+        //foreach (MazeNode r in sectionroots)
+        //{
+          //SpawnMaze(r, size);
+        //}
+        SpawnMaze(root, size);
         surface = GetComponent<NavMeshSurface>();
         if (surface != null)
             surface.BuildNavMesh();

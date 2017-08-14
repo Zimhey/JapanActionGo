@@ -34,8 +34,9 @@ public class DFSMazeGenerator : MonoBehaviour
         int xNext = 0;
         int yNext = 0;
         Stack visited = new Stack();
+        visited.Push(maze[0, 0]);
         Stack backtracked = new Stack();
-        int spacesVisited = 0;
+        int spacesVisited = 1;
         System.Random rand = new System.Random();
         while(spacesVisited < rows * columns)
         {
