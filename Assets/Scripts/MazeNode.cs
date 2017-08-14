@@ -21,10 +21,14 @@ public class MazeNode
     public MazeNode Above;
     public MazeNode Below;
 
-    public bool ExitNode;
+    public bool OnExitPath;
+    public bool Intersection;
+    public bool OnDeadEndPath;
+    public bool OnLoopPath;
 
     public int Row;
     public int Col;
+
 
     public MazeNode()
     {
@@ -114,6 +118,43 @@ public class MazeNode
             {
                 Backward = other;
                 other.Forward = this;
+            }
+            else
+                return false;
+        }
+        else
+            return false;
+        return true;
+    }
+
+    public bool RemoveEdge(MazeNode other)
+    {
+        if (Row == other.Row)
+        {
+            if (Col + 1 == other.Col)
+            {
+                Right = null;
+                other.Left = null;
+            }
+            else if (Col - 1 == other.Col)
+            {
+                Left = null;
+                other.Right = null;
+            }
+            else
+                return false;
+        }
+        else if (Col == other.Col)
+        {
+            if (Row + 1 == other.Row)
+            {
+                Forward = null;
+                other.Backward = null;
+            }
+            else if (Row - 1 == other.Row)
+            {
+                Backward = null;
+                other.Forward = null;
             }
             else
                 return false;

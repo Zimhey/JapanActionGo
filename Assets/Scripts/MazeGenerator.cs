@@ -122,7 +122,7 @@ public class MazeGenerator : MonoBehaviour
     {
         foreach (MazeNode n in path)
         {
-            n.ExitNode = true;
+            n.OnExitPath = true;
         }
     }
 
@@ -174,7 +174,7 @@ public class MazeGenerator : MonoBehaviour
 
             foreach (MazeNode n in visited)
             {
-                if (n.ExitNode)
+                if (n.OnExitPath)
                 {
                     lastVisitedBottleneck = n;
                     break;
@@ -184,7 +184,7 @@ public class MazeGenerator : MonoBehaviour
                 break;
             foreach (MazeNode n in lastVisitedBottleneck.GetAdjacentNodes())
             {
-                if (n.ExitNode && !visited.Contains(n))
+                if (n.OnExitPath && !visited.Contains(n))
                 {
                     if (n.Equals(lastVisitedBottleneck.Left))
                     {
@@ -212,6 +212,7 @@ public class MazeGenerator : MonoBehaviour
                     }
                 }
             } 
+
             while (border.Count != 0)
             {
                 foreach (MazeNode n in border.Dequeue().GetAdjacentNodes())
