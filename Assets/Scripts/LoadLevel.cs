@@ -12,7 +12,7 @@ public class LoadLevel : MonoBehaviour {
 		
 	}
 
-    void OnCollisionEnter(Collision col)
+    void OnTriggerEnter(Collider col)
     {
         if (col.gameObject == player)
         {
