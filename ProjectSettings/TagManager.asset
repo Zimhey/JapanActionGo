@@ -11,6 +11,8 @@ TagManager:
   - Lever
   - Pressure Plate
   - Ofuda
+  - Oni
+  - Node
   layers:
   - Default
   - TransparentFX

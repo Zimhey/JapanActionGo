@@ -20,6 +20,8 @@ public class OniController : MonoBehaviour
 
     //player game object
     public GameObject playerObject;
+    //starting node for patrol
+    public GameObject startingNode;
     //oni movement speed, set in unity
     public float speed;
     //layermask to raycast against
@@ -40,6 +42,8 @@ public class OniController : MonoBehaviour
     //array of locations the oni has been
     private ArrayList previousLocations = new ArrayList();
     private int lessenough = 5;
+    //current node for patrol
+    private GameObject currentNode;
 
     void Start()
     {
@@ -50,6 +54,7 @@ public class OniController : MonoBehaviour
         //print("OriHome" + home);
         state = onistate.Idle;
         awake = false;
+        currentNode = startingNode;
     }
 
     void LateUpdate()
@@ -62,10 +67,10 @@ public class OniController : MonoBehaviour
                 idle();
                 break;
             case onistate.Patrol:
-                idle();
+                patrol();
                 break;
             case onistate.Search:
-                idle();
+                search();
                 break;
             case onistate.Chase:
                 chase();
@@ -111,7 +116,7 @@ public class OniController : MonoBehaviour
                         Vector3 norm = (currentlocation - firstlocation);
                         norm.Normalize();
                         //multiply by desired distance to get desired vector and add to first location
-                        Vector3 dest = firstlocation + norm * (float)lessenough - new Vector3(0, 1.6F, 0);
+                        Vector3 dest = firstlocation + norm * (float)lessenough - new Vector3(0, 1.5F, 0);
                         //make rotation
                         Quaternion rot = Quaternion.Euler(0, 0, 0);
                         //add to level
@@ -147,11 +152,37 @@ public class OniController : MonoBehaviour
         {
             state = onistate.Follow;
         }
+        else if ( awake == true)
+        {
+            state = onistate.Patrol;
+        }
     }
 
     void patrol()
     {
-
+        seen = false;
+        seen = seePlayer();
+        if (seen)
+        {
+            state = onistate.Chase;
+        }
+        else if (seeFootprint() && awake == true)
+        {
+            state = onistate.Follow;
+        }
+        if (rb.transform.position.x < currentNode.transform.position.x + 1 && rb.transform.position.x > currentNode.transform.position.x - 1)
+        {
+            if (rb.transform.position.z < currentNode.transform.position.z + 1 && rb.transform.position.z > currentNode.transform.position.z - 1)
+            {
+                currentNode = currentNode.GetComponent<NodeScript>().nextNode;
+            }
+        }
+        else // not yet at current node's location
+        {
+            Transform goal = currentNode.transform; // set current node location as desired location
+            UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>(); // get oni's navigation agent
+            agent.destination = goal.position; // set destination to current node's location
+        }
     }
 
     void search()
@@ -259,15 +290,15 @@ public class OniController : MonoBehaviour
         Vector3 rayDirection = playerObject.transform.localPosition - transform.localPosition;
         Vector3 enemyDirection = transform.TransformDirection(Vector3.forward);
         float angleDot = Vector3.Dot(rayDirection, enemyDirection);
-        System.Boolean playerInFrontOfEnemy = angleDot > 0.0;
         System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < maxDistanceSquared;
 
         float crossangle = Vector3.Angle(enemyDirection, rayDirection);
+        System.Boolean playerInFrontOfEnemy = angleDot > 0.0;
 
-        System.Boolean foundwall = isWall();
+        System.Boolean foundwall = noWall();
         if (playerInFrontOfEnemy)
         {
-            System.Boolean seenPlayer = playerInFrontOfEnemy && playerCloseToEnemy;
+            System.Boolean seenPlayer = playerInFrontOfEnemy && playerCloseToEnemy && foundwall;
             if (seenPlayer)
             {
                 awake = true;
@@ -280,11 +311,9 @@ public class OniController : MonoBehaviour
         }
     }
 
-    bool isWall()
+    bool noWall()
     {
-        print("using wall function");
         int maxDistance = 25;
-        int maxDistanceSquared = maxDistance * maxDistance;
         Vector3 rayDirection = playerObject.transform.localPosition - transform.localPosition;
         rayDirection.Normalize();
         Ray ray = new Ray(gameObject.transform.position, rayDirection);
@@ -292,7 +321,6 @@ public class OniController : MonoBehaviour
 
         if (Physics.Raycast(ray, out rayHit, maxDistance, levelmask))
         {
-            print("found wall");
             return false;
         }
         return true;
@@ -316,10 +344,6 @@ public class OniController : MonoBehaviour
 
     void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.CompareTag("Footprint"))
-        {
-            Destroy(col.gameObject);
-        }
         if (col.gameObject.CompareTag("Trap"))
         {
             dead();
