@@ -16,6 +16,7 @@ public class OfudaCounter : MonoBehaviour {
     void Start()
     {
         playerInventory = player.GetComponent<Inventory>();
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Update is called once per frame

@@ -18,7 +18,8 @@ public class ChalkCounter : MonoBehaviour {
     void Start () {
         playerInventory = player.GetComponent<Inventory>();
         playerActions = player.GetComponent<PlayerActions>();
-	}
+        player = GameObject.FindGameObjectWithTag("Player");
+    }
 	
 	// Update is called once per frame
 	void Update () {
