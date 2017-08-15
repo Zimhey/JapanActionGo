@@ -310,6 +310,25 @@ public class MazeGenerator : MonoBehaviour
         return node.leftNodes + node.rightNodes + node.forwardNodes + node.backwardNodes + 1;
     }
 
+    public static MazeNode getNodeOnPath(MazeNode root, int index)
+    {
+        int current = 0;
+        MazeNode node = root;
+        while(current < index)
+        {
+            foreach(MazeNode n in node.GetAdjacentNodes())
+            {
+                if(n.OnExitPath)
+                {
+                    current++;
+                    node = n;
+                    break;
+                }
+            }
+        }
+        return node;
+    }
+
     public static void GenerateLoops(MazeNode root, int loops, int size)
     {
         // TODO Generate Loops
@@ -317,10 +336,12 @@ public class MazeGenerator : MonoBehaviour
         MazeNode previous = null;
         int[,] disconnectingWalls = new int[size, 4];
         int pathNumber = 0;
-        int largestDisconnection = 0;
-        int largestIndexPath;
-        int largetIndexDirection;
         int counter;
+        int counter2;
+
+        for(counter = 0; counter < size; counter++)
+            for(counter2 = 0; counter2 < 4; counter2++)
+                disconnectingWalls[counter, counter2] = 0;
 
         while (!current.Equals(previous))
         {
@@ -335,11 +356,7 @@ public class MazeGenerator : MonoBehaviour
                         disconnected = getConnectedNodes(disconnectedNode);
                         disconnectingWalls[pathNumber, counter] = disconnected;
                     }
-                    else
-                        disconnectingWalls[pathNumber, counter] = 0;
                 }
-                else
-                    disconnectingWalls[pathNumber, counter] = 0;
             }
             foreach (MazeNode n in current.GetAdjacentNodes())
                 if (n.OnExitPath && !n.Equals(previous))
@@ -350,11 +367,33 @@ public class MazeGenerator : MonoBehaviour
             previous = current;
         }
 
-
-
         while (loops > 0)
         {
-            
+            int largestDisconnection = 0;
+            int largestIndexPath = 0;
+            int largetIndexDirection = 0;
+            int i;
+            int j;
+            for(i = 0; i < size; i++)
+            {
+                for(j = 0; j < 4; j++)
+                {
+                    if(disconnectingWalls[i, j] > largestDisconnection)
+                    {
+                        largestDisconnection = disconnectingWalls[i, j];
+                        largestIndexPath = i;
+                        largetIndexDirection = j;
+                    }
+                }
+            }
+
+            MazeNode mn = getNodeOnPath(root, largestIndexPath);
+            mn.AddEdge(findNode(mn, largetIndexDirection));
+            loops--;
+            disconnectingWalls[largestIndexPath, largetIndexDirection] = 0;
+            largetIndexDirection = 0;
+            largestIndexPath = 0;
+            largestDisconnection = 0;
         }
     }
 
