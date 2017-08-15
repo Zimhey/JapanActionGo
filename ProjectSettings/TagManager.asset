@@ -9,6 +9,8 @@ TagManager:
   - Trap
   - OniFootprint
   - Lever
+  - Pressure Plate
+  - Ofuda
   layers:
   - Default
   - TransparentFX
