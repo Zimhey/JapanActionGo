@@ -252,24 +252,109 @@ public class MazeGenerator : MonoBehaviour
         return sectionRoots;
     }
 
-    public static void GenerateLoops(MazeNode root, int loops)
+    public static MazeNode findNode(MazeNode n, int direction)
+    {
+        int deltaX;
+        int deltaY;
+        MazeNode current;
+        Stack<MazeNode> visited = new Stack<MazeNode>();
+        Stack<MazeNode> visited2 = new Stack<MazeNode>();
+        visited.Push(n);
+        visited2.Push(n);
+
+        if (direction == 0)
+        {
+            deltaX = -1;
+            deltaY = 0;
+        }
+        else if (direction == 1)
+        {
+            deltaX = 0;
+            deltaY = 1;
+        }
+        else if (direction == 2)
+        {
+            deltaX = 1;
+            deltaY = 0;
+        }
+        else if (direction == 3)
+        {
+            deltaX = 0;
+            deltaY = -1;
+        }
+        else
+        {
+            return null;
+        }
+
+        while (visited.Count > 0)
+        {
+            current = visited.Pop();
+            foreach (MazeNode node in current.GetAdjacentNodes())
+            {
+                if (!visited2.Contains(node))
+                {
+                    visited.Push(node);
+                    visited2.Push(node);
+                    if (node.Col == n.Col + deltaX && node.Row == n.Row + deltaY)
+                        return node;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public static int getConnectedNodes(MazeNode node)
+    {
+        return node.leftNodes + node.rightNodes + node.forwardNodes + node.backwardNodes + 1;
+    }
+
+    public static void GenerateLoops(MazeNode root, int loops, int size)
     {
         // TODO Generate Loops
         MazeNode current = root;
-        int largestIndex;
-        while (loops > 0)
+        MazeNode previous = null;
+        int[,] disconnectingWalls = new int[size, 4];
+        int pathNumber = 0;
+        int largestDisconnection = 0;
+        int largestIndexPath;
+        int largetIndexDirection;
+        int counter;
+
+        while (!current.Equals(previous))
         {
-            foreach (MazeNode n in current.GetAdjacentNodes())
+            for (counter = 0; counter < 4; counter++)
             {
-                if (n.OnExitPath)
+                int disconnected;
+                if (counter == 0 && current.Left == null || counter == 1 && current.Forward == null || counter == 2 && current.Right == null || counter == 3 && current.Backward == null)
                 {
-                    current = n;
+                    MazeNode disconnectedNode = findNode(current, counter);
+                    if (disconnectedNode != null)
+                    {
+                        disconnected = getConnectedNodes(disconnectedNode);
+                        disconnectingWalls[pathNumber, counter] = disconnected;
+                    }
+                    else
+                        disconnectingWalls[pathNumber, counter] = 0;
                 }
                 else
-                {
-
-                }
+                    disconnectingWalls[pathNumber, counter] = 0;
             }
+            foreach (MazeNode n in current.GetAdjacentNodes())
+                if (n.OnExitPath && !n.Equals(previous))
+                {
+                    pathNumber++;
+                    current = n;
+                }
+            previous = current;
+        }
+
+
+
+        while (loops > 0)
+        {
+            
         }
     }
 
