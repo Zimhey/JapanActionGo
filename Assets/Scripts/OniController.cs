@@ -58,6 +58,7 @@ public class OniController : MonoBehaviour
         state = onistate.Idle;
         awake = false;
         currentNode = startingNode;
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void LateUpdate()

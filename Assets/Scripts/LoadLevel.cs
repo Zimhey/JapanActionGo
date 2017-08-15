@@ -9,8 +9,8 @@ public class LoadLevel : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
-	}
+        player = GameObject.FindGameObjectWithTag("Player");
+    }
 
     void OnTriggerEnter(Collider col)
     {
