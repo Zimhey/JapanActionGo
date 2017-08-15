@@ -2,57 +2,49 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Trap : MonoBehaviour {
+public enum TrapState
+{
+    Armed, // armed and ready to fire
+    Firing, // running the firing animation
+    Unarmed, // waiting to be reset
+    Resetting, // resetting animation
+}
 
+public class Trap : MonoBehaviour
+{
+    public TrapState state;
+    public float FireAnimTime;
+    public float ResetAnimTime;
+    // public float TriggerDelay;
     public bool CanReset;
-    public float ResetTime;
-    public bool Armed;
-    public float TriggerDelay;
-    private bool busy;
+   // public float ResetTime;
+    public bool ResetRequested;
 
+    protected float activationTime;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
 	}
 
-    public IEnumerator TriggerTrap()
+    public void TriggerTrap()
     {
-        if(Armed && !busy)
+        if (state != TrapState.Armed)
+            return;
+        activationTime = Time.time;
+        state = TrapState.Firing;
+    }
+
+    protected void tryReset()
+    {
+        if (CanReset && ResetRequested)
         {
-            busy = true;
-            Armed = false;
-            yield return new WaitForSeconds(TriggerDelay);
-            StartCoroutine(ApplyDamage());
-            yield return PlayAnimation();
-            busy = false;
+            activationTime = Time.time;
+            state = TrapState.Resetting;
         }
     }
-
-    public IEnumerator ResetTrap()
-    {
-        if(CanReset && !busy)
-        {
-            busy = true;
-            yield return new WaitForSeconds(ResetTime);
-            Armed = true;
-            busy = false;
-        }
-    }
-
-    public IEnumerator PlayAnimation() // override in child trap classes
-    {
-        yield return null;
-    }
-
-    public IEnumerator ApplyDamage() // override in child trap classes
-    {
-        yield return null;
-    }
-
 }

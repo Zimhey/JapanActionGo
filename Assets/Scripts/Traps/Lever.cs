@@ -6,6 +6,8 @@ public class Lever : MonoBehaviour {
 
     public Trap[] Traps;
 
+    public bool Pulled;
+
     // Use this for initialization
     void Start () {
 		
@@ -18,8 +20,12 @@ public class Lever : MonoBehaviour {
 
     void Pull()
     {
-
-        foreach (Trap trap in Traps)
-            trap.SendMessage("TriggerTrap");
+        Pulled = !Pulled;
+        if (Pulled)
+            foreach (Trap trap in Traps)
+                trap.TriggerTrap();
+        else
+            foreach (Trap trap in Traps)
+                trap.ResetRequested = true;
     }
 }

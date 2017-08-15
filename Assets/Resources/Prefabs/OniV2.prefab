@@ -27,7 +27,7 @@ GameObject:
   - component: {fileID: 195223611642649228}
   m_Layer: 0
   m_Name: OniV2
-  m_TagString: Untagged
+  m_TagString: Oni
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -113,6 +113,9 @@ MonoBehaviour:
   playerObject: {fileID: 1171399665033666, guid: 39aa38406407df94497826bb58e15dba,
     type: 2}
   speed: 7.5
+  levelmask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!135 &135621145104123552
 SphereCollider:
   m_ObjectHideFlags: 1

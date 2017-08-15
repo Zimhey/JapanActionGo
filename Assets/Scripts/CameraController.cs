@@ -107,6 +107,8 @@ public class CameraController : MonoBehaviour
     public GameObject player;
     //offset to keep camera a set distance from player
     private Vector3 offset;
+    //variable to track how much movement occurs so player movement can be adjusted
+    public Quaternion rotation;
 
     public enum RotationAxes { MouseXAndY = 0, MouseX = 1, MouseY = 2 }
     public RotationAxes axes = RotationAxes.MouseXAndY;
@@ -174,6 +176,7 @@ public class CameraController : MonoBehaviour
 
             //Rotate
             transform.localRotation = originalRotation * xQuaternion * yQuaternion;
+            rotation = originalRotation * yQuaternion;
         }
         else if (axes == RotationAxes.MouseX)
         {
