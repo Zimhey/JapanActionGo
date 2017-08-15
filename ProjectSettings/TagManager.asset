@@ -9,6 +9,9 @@ TagManager:
   - Trap
   - OniFootprint
   - Lever
+  - Pressure Plate
+  - Oni
+  - Node
   layers:
   - Default
   - TransparentFX
