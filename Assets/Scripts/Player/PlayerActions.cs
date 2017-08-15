@@ -17,13 +17,18 @@ public class PlayerActions : MonoBehaviour
     private bool drawing;
     private GameObject chalkPrefab;
     private LineRenderer recent;
-    private Camera cam;
     private GameObject lastDrawnOn;
+
+    private GameObject ofudaPrefab;
+    private bool thrown;
+
+    private Camera cam;
 
     // Use this for initialization
     void Start()
     {
         chalkPrefab = Resources.Load("Prefabs/ChalkMark") as GameObject;
+        ofudaPrefab = Resources.Load("Prefabs/OfudaProjectile") as GameObject;
         cam = gameObject.GetComponentInChildren<Camera>();
     }
 
@@ -38,6 +43,11 @@ public class PlayerActions : MonoBehaviour
             {
                 if (obj.tag == "Lever" && Vector3.Distance(transform.position, obj.transform.position) < PullLeverRadius)
                     obj.SendMessage("Pull");
+                else if(obj.tag == "Ofuda" && Vector3.Distance(transform.position, obj.transform.position) < PullLeverRadius)
+                {
+                    Destroy(obj);
+                    PlayerInventory.Found(ItemType.Ofuda);
+                }
             }
         }
 
@@ -46,6 +56,11 @@ public class PlayerActions : MonoBehaviour
             DrawChalk();
         else
             drawing = false;
+
+        if (Input.GetButton("Fire2") && PlayerInventory.CanUse(ItemType.Ofuda))
+            ThrowOfuda();
+        else
+            thrown = false;
 
     }
 
@@ -94,6 +109,18 @@ public class PlayerActions : MonoBehaviour
         else
             drawing = false;
     }
+
+    void ThrowOfuda()
+    {
+        if(!thrown)
+        {
+            Debug.Log("Throwing Ofuda");
+            Instantiate(ofudaPrefab, cam.transform.position + cam.transform.forward, cam.transform.rotation);
+            PlayerInventory.Used(ItemType.Ofuda);
+            thrown = true;
+        }
+    }
+
 
     void Die()
     {

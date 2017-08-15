@@ -26,6 +26,11 @@ public class MazeNode
     public bool OnDeadEndPath;
     public bool OnLoopPath;
 
+    public int leftNodes = 0;
+    public int rightNodes = 0;
+    public int forwardNodes = 0;
+    public int backwardNodes = 0;
+
     public int Row;
     public int Col;
 
