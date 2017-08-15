@@ -5,33 +5,46 @@ using UnityEngine;
 public class PressurePlate : MonoBehaviour {
 
     public Trap[] Traps;
-    private int objectsOnTop;
     private Vector3 location;
+    private List<GameObject> objectsOnTop;
 
 	// Use this for initialization
 	void Start () {
-        objectsOnTop = 0;
+        objectsOnTop = new List<GameObject>();
         location = gameObject.transform.position;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+
+        for(int i = objectsOnTop.Count - 1; i >= 0; i--)
+            if (objectsOnTop[i] == null)
+                ObjectGone(objectsOnTop[i]);
+    }
+
+    void ObjectGone(GameObject obj)
+    {
+        objectsOnTop.Remove(obj);
+        AnimatePlate();
+    }
 
     void AnimatePlate()
     {
-        if (objectsOnTop > 0)
+        if (objectsOnTop.Count > 0)
             gameObject.transform.position = location - new Vector3(0, 0.1f, 0);
         else
+        {
             gameObject.transform.position = location;
+            foreach (Trap trap in Traps)
+                trap.ResetRequested = true;
+        }
     }
 
     void OnTriggerEnter(Collider collider)
     {
         if (collider.gameObject != null) // might need to test for Player Tag or Oni tag
         {
-            objectsOnTop++;
+            objectsOnTop.Add(collider.gameObject);
             AnimatePlate();
             foreach (Trap trap in Traps)
                 trap.TriggerTrap();
@@ -42,11 +55,7 @@ public class PressurePlate : MonoBehaviour {
     {
         if (collider.gameObject != null) // might need to test for Player Tag or Oni tag
         {
-            objectsOnTop--;
-            AnimatePlate();
-            foreach (Trap trap in Traps)
-                trap.ResetRequested = true;
-            
+            ObjectGone(collider.gameObject);
         }
     }
 }

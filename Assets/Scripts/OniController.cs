@@ -12,7 +12,8 @@ public enum onistate
     Chase, // oni sees player, is moving towards player to attack
     Flee, // oni has encountered safe zone, is returning to home position
     Dead, // oni has encountered trap, no longer active
-    Follow // oni does not see player, oni sees footprints, is moving towards footprints
+    Follow, // oni does not see player, oni sees footprints, is moving towards footprints
+    Stun // oni has been hit by ofuda and is stunned
 }
 
 public class OniController : MonoBehaviour
@@ -44,6 +45,8 @@ public class OniController : MonoBehaviour
     private int lessenough = 5;
     //current node for patrol
     private GameObject currentNode;
+    //countdown until no longer stunned
+    private int stuntimer;
 
     void Start()
     {
@@ -83,6 +86,9 @@ public class OniController : MonoBehaviour
                 break;
             case onistate.Follow:
                 follow();
+                break;
+            case onistate.Stun:
+                stun();
                 break;
         }
 
@@ -152,7 +158,7 @@ public class OniController : MonoBehaviour
         {
             state = onistate.Follow;
         }
-        else if ( awake == true)
+        else if (awake == true && startingNode != null)
         {
             state = onistate.Patrol;
         }
@@ -249,7 +255,7 @@ public class OniController : MonoBehaviour
 
     void dead()
     {
-        Destroy(gameObject);
+        Die();
     }
 
     void follow()
@@ -283,6 +289,39 @@ public class OniController : MonoBehaviour
         }
     }
 
+    void stun()
+    {
+        stuntimer--;
+        if(stuntimer <= 0)
+        {
+            seen = false;
+            seen = seePlayer();
+            if (seen)
+            {
+                state = onistate.Chase;
+            }
+            else if (seeFootprint() && awake == true)
+            {
+                state = onistate.Follow;
+            }
+            else
+            {
+                state = onistate.Idle;
+            }
+        }
+    }
+
+    void Die()
+    {
+        Destroy(gameObject);
+    }
+
+    void Stun()
+    {
+        state = onistate.Stun;
+        stuntimer = 120;
+    }
+
     bool seePlayer()
     {
         int maxDistance = 25;
@@ -298,31 +337,38 @@ public class OniController : MonoBehaviour
         System.Boolean foundwall = noWall();
         if (playerInFrontOfEnemy)
         {
+            print("infront");
             System.Boolean seenPlayer = playerInFrontOfEnemy && playerCloseToEnemy && foundwall;
             if (seenPlayer)
             {
                 awake = true;
+                print("close");
             }
             return seenPlayer;
         }
         else
         {
+            print("not in front");
             return false;
         }
     }
 
     bool noWall()
     {
-        int maxDistance = 25;
-        Vector3 rayDirection = playerObject.transform.localPosition - transform.localPosition;
+        float maxDistance = 25;
+        Vector3 rayDirection = playerObject.transform.position - transform.position;
+        maxDistance = rayDirection.magnitude;
+        //rayDirection = Vector3.MoveTowards
         rayDirection.Normalize();
         Ray ray = new Ray(gameObject.transform.position, rayDirection);
         RaycastHit rayHit;
 
         if (Physics.Raycast(ray, out rayHit, maxDistance, levelmask))
         {
+            print("obscured");
             return false;
         }
+        print("unobscured");
         return true;
     }
 
