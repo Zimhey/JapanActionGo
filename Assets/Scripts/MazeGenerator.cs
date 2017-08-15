@@ -16,7 +16,7 @@ public class MazeGenerator : MonoBehaviour
         int size = 10;
         int sections = 3;
         MazeNode root = DFSMazeGenerator.GenerateMaze(0, size, size);
-        List<MazeNode> sectionroots = GenerateSections3(root, sections, size, size);
+        List<MazeNode> sectionroots = GenerateSections(root, sections, size, size);
         /*
         root = GenTestMaze(size);
         root.Right.Left = null;
@@ -212,237 +212,6 @@ public class MazeGenerator : MonoBehaviour
 
     public static List<MazeNode> GenerateSections(MazeNode root, int sections, int rows, int cols)
     {
-        MazeNode endNode = new MazeNode(cols - 1, rows - 1);
-        SetAsExitPath(GetPath(root, endNode));
-        List<MazeNode> sectionRoots = new List<MazeNode>();
-        sectionRoots.Add(root);
-        int searchedAreas = 0;
-        int sectionSize = rows * cols / sections;
-        while (searchedAreas < rows * cols)
-        {
-            searchedAreas++;
-            if (searchedAreas == rows * cols)
-            {
-                sectionRoots.Add(root);
-                break;
-            }
-            Queue<MazeNode> border = new Queue<MazeNode>();
-            border.Enqueue(root);
-
-            Stack<MazeNode> visited = new Stack<MazeNode>();
-            visited.Push(root);
-
-            int visitedNumber = 1;
-
-            while (visitedNumber < sectionSize)
-            {
-                foreach (MazeNode n in border.Dequeue().GetAdjacentNodes())
-                {
-                    if (!visited.Contains(n))
-                    {
-                        visited.Push(n);
-                        border.Enqueue(n);
-                        visitedNumber++;
-                        searchedAreas++;
-                    }
-                }
-            }
-
-            if (searchedAreas == rows * cols)
-            {
-                sectionRoots.Add(root);
-                break;
-            }
-
-            MazeNode lastVisitedBottleneck = null;
-
-            foreach (MazeNode n in visited)
-            {
-                if (n.OnExitPath)
-                {
-                    lastVisitedBottleneck = n;
-                    break;
-                }
-            }
-            if (lastVisitedBottleneck == null)
-                break;
-
-            MazeNode possibleRoot = new MazeNode();
-
-            foreach (MazeNode n in lastVisitedBottleneck.GetAdjacentNodes())
-            {
-                if (n.OnExitPath && !visited.Contains(n))
-                {
-                    lastVisitedBottleneck.RemoveEdge(n);
-                    root = n;
-                }
-            }
-
-            while (border.Count != 0)
-            {
-                foreach (MazeNode n in border.Dequeue().GetAdjacentNodes())
-                {
-                    if (!visited.Contains(n))
-                    {
-                        visited.Push(n);
-                        border.Enqueue(n);
-                        visitedNumber++;
-                        searchedAreas++;
-                    }
-                }
-            }
-
-            setDirectionValues(root);
-
-            //if (searchedAreas == rows * cols)
-                //break;
-
-            int remove = visitedNumber - sectionSize;
-            MazeNode beingRemoved = lastVisitedBottleneck;
-            int counter = 1;
-            int visitedNumberCopy = visitedNumber;
-            int searchedAreasCopy = searchedAreas;
-
-            while(remove > 0 && counter < 1000)
-            {
-                visitedNumber = visitedNumberCopy;
-                searchedAreas = searchedAreasCopy;
-                remove = visitedNumber - sectionSize;
-                foreach(MazeNode n in beingRemoved.GetAdjacentNodes())
-                {
-                    if(getDirectionalValue(beingRemoved, n) == 0)
-                    {
-                        remove -= getDirectionalValue(n, beingRemoved);
-                        visitedNumber -= getDirectionalValue(n, beingRemoved);
-                        searchedAreas -= getDirectionalValue(n, beingRemoved);
-                        beingRemoved.AddEdge(root);
-                        root = beingRemoved;
-                        beingRemoved = n;
-                        n.RemoveEdge(beingRemoved);
-                        break;
-                    }
-                }
-                counter++;
-            }
-            print(beingRemoved.Col + " " + beingRemoved.Row + " " + root.Col + " " + root.Row);
-            if (counter >= 1000)
-                print("counter timed out");
-
-            /*
-            int minRemoval;
-            int maxRemoval;
-            MazeNode beingRemoved = lastVisitedBottleneck;
-            bool enoughRemoved = false;            
-            
-            if(visitedNumber - sectionSize > sectionSize * .1)
-            {
-                minRemoval = (int)(visitedNumber - sectionSize - sectionSize * .1);
-                maxRemoval = (int)(visitedNumber - sectionSize + sectionSize * .1);
-
-                while (!enoughRemoved)
-                {
-                    List<MazeNode> disconnected = new List<MazeNode>();
-                    int wouldBeRemoved = 0;
-                    foreach (MazeNode n in beingRemoved.GetAdjacentNodes())
-                    {
-                        wouldBeRemoved = getDirectionalValue(beingRemoved, n);
-                        if (wouldBeRemoved < minRemoval && wouldBeRemoved != 0)
-                        {
-                            beingRemoved.RemoveEdge(n);
-                            disconnected.Add(n);
-                            minRemoval -= wouldBeRemoved;
-                            maxRemoval -= wouldBeRemoved;
-                        }
-                        else if (wouldBeRemoved < maxRemoval && wouldBeRemoved != 0)
-                        {
-                            beingRemoved.RemoveEdge(n);
-                            lastVisitedBottleneck.AddEdge(root);
-                            enoughRemoved = true;
-                            //root = n;
-                        }
-                        else if (wouldBeRemoved > maxRemoval && wouldBeRemoved != 0)
-                        {
-                            beingRemoved = n;
-                        }
-                    }
-
-                    if(!(wouldBeRemoved > maxRemoval) && !enoughRemoved)
-                    {
-                        minRemoval = 0;//(int)(visitedNumber - sectionSize - sectionSize * .1);
-                        maxRemoval = (int)(visitedNumber - sectionSize + sectionSize * .1);
-                        foreach (MazeNode n in disconnected)
-                        {
-                            beingRemoved.AddEdge(n);
-                        }
-                        foreach(MazeNode n in beingRemoved.GetAdjacentNodes())
-                        {
-                            if(getDirectionalValue(beingRemoved, n) == 0)
-                            {
-                                beingRemoved = n;
-                                break;
-                            }
-                        }
-                    }
-                }                
-            }
-            */
-            sectionRoots.Add(root);
-        }
-        return sectionRoots;
-    }
-
-    public static List<MazeNode> GenerateSections2(MazeNode root, int sections, int rows, int cols)
-    {
-        int leftover = rows * cols;
-        MazeNode endNode = new MazeNode(cols - 1, rows - 1);
-        LinkedList<MazeNode> path = GetPath(root, endNode);
-        SetAsExitPath(path);
-        List<MazeNode> sectionRoots = new List<MazeNode>();
-        sectionRoots.Add(root);
-        string p = "";
-        MazeNode previous = root;
-
-        int sectionSize = rows * cols / sections;
-        MazeNode cutoff = root;
-        MazeNode next = new MazeNode();
-        setDirectionValues(cutoff);
-        int counter = 0;
-
-        foreach (MazeNode n in path)
-        {
-            p += n.Col + " " + n.Row + " L" + n.leftNodes + " R" + n.rightNodes + " F" + n.forwardNodes + " B" + n.backwardNodes + " Exit Path:" + n.OnExitPath + " ";
-        }
-
-        while (leftover > sectionSize && counter < 1000)
-        {
-            //print(leftover);
-            sectionRoots.Add(cutoff);
-            foreach (MazeNode n in cutoff.GetAdjacentNodes())
-                if (n.OnExitPath)
-                    next = n;
-            while (getDirectionalValue(cutoff, next) > leftover - sectionSize)
-            {
-                //print(leftover - sectionSize);
-                //print(getDirectionalValue(cutoff, next));
-                cutoff = next;
-                foreach (MazeNode n in cutoff.GetAdjacentNodes())
-                    if (n.OnExitPath)
-                        next = n;
-                //print(getDirectionalValue(cutoff, next));
-            }
-            //print(getDirectionalValue(cutoff, next));
-            leftover = getDirectionalValue(cutoff, next);
-            cutoff.RemoveEdge(next);
-            cutoff = next;
-            counter++;
-        }
-
-        print(p);
-        return sectionRoots;
-    }
-
-    public static List<MazeNode> GenerateSections3(MazeNode root, int sections, int rows, int cols)
-    {
         int leftover = rows * cols;
         MazeNode endNode = new MazeNode(cols - 1, rows - 1);
         LinkedList<MazeNode> path = GetPath(root, endNode);
@@ -486,6 +255,22 @@ public class MazeGenerator : MonoBehaviour
     public static void GenerateLoops(MazeNode root, int loops)
     {
         // TODO Generate Loops
+        MazeNode current = root;
+        int largestIndex;
+        while (loops > 0)
+        {
+            foreach (MazeNode n in current.GetAdjacentNodes())
+            {
+                if (n.OnExitPath)
+                {
+                    current = n;
+                }
+                else
+                {
+
+                }
+            }
+        }
     }
 
     public void SpawnMaze(MazeNode root, int size)
