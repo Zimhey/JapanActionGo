@@ -127,11 +127,11 @@ public class InuController : MonoBehaviour
                         Vector3 norm = (currentlocation - firstlocation);
                         norm.Normalize();
                         //multiply by desired distance to get desired vector and add to first location
-                        Vector3 dest = firstlocation + norm * (float)lessenough - new Vector3(0, 0.7F, 0);
+                        Vector3 dest = firstlocation + norm * (float)lessenough - new Vector3(0, 0.8F, 0);
                         //make rotation
                         Quaternion rot = Quaternion.Euler(0, 0, 0);
                         //add to level
-                        Instantiate(Resources.Load("Prefabs/OniFootprint"), dest, rot);
+                        Instantiate(Resources.Load("Prefabs/InuFootprint"), dest, rot);
                         //remove old steps
                         for (int remove = 0; remove < iter; remove++)
                         {
@@ -146,7 +146,14 @@ public class InuController : MonoBehaviour
         {
             previousLocations.Add(rb.position);
         }
-
+        if (awake == true)
+        {
+            float turnspeed = 1.0F;
+            Vector3 targetDir = playerObject.transform.position - transform.position;
+            float step = turnspeed * Time.deltaTime;
+            Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, step, 0.0F);
+            transform.rotation = Quaternion.LookRotation(newDir);
+        }
 
     }
 

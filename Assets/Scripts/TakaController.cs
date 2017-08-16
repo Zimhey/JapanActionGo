@@ -149,7 +149,14 @@ public class TakaController : MonoBehaviour
             previousLocations.Add(rb.position);
         }
 
-
+        if (awake == true)
+        {
+            float turnspeed = 1.0F;
+            Vector3 targetDir = playerObject.transform.position - transform.position;
+            float step = turnspeed * Time.deltaTime;
+            Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, step, 0.0F);
+            transform.rotation = Quaternion.LookRotation(newDir);
+        }
     }
 
     void idle()
