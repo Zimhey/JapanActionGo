@@ -3,50 +3,53 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
-//state machine for oni AI
-public enum onistate
+//state machine for taka AI
+public enum takastate
 {
-    Idle, // oni currently doing nothing
-    Patrol, // oni has not seen player, wandering maze
-    Search, // oni has seen player, cannot see player or footprints, is looking for player in maze
-    Chase, // oni sees player, is moving towards player to attack
-    Flee, // oni has encountered safe zone, is returning to home position
-    Dead, // oni has encountered trap, no longer active
-    Follow, // oni does not see player, oni sees footprints, is moving towards footprints
-    Stun // oni has been hit by ofuda and is stunned
+    Idle, // taka currently doing nothing
+    Patrol, // taka has not seen player, wandering maze
+    Search, // taka has seen player, cannot see player or footprints, is looking for player in maze
+    Chase, // taka sees player, is moving towards player to taunt
+    Taunt, // taka is next to player and taunts so player will look up
+    Flee, // taka has encountered safe zone, is returning to home position
+    Dead, // taka has encountered trap, no longer active
+    Follow, // taka does not see player, taka sees footprints, is moving towards footprints
+    Stun // taka has been hit by ofuda and is stunned
 }
 
-public class OniController : MonoBehaviour
+public class TakaController : MonoBehaviour
 {
 
     //player game object
     public GameObject playerObject;
     //starting node for patrol
     public GameObject startingNode;
-    //oni movement speed, set in unity
+    //taka movement speed, set in unity
     public float speed;
     //layermask to raycast against
     public LayerMask levelmask;
 
-    //oni physics body
+    //taka physics body
     private Rigidbody rb;
-    //oni starting point
+    //taka starting point
     private Vector3 home;
-    //oni starting rotation
+    //taka starting rotation
     private Quaternion startingrotation;
-    //current oni state
-    private onistate state;
+    //current taka state
+    private takastate state;
     //is player seen
     private System.Boolean seen;
     //has player been seen
     private System.Boolean awake;
-    //array of locations the oni has been
+    //array of locations the taka has been
     private ArrayList previousLocations = new ArrayList();
     private int lessenough = 5;
     //current node for patrol
     private GameObject currentNode;
     //countdown until no longer stunned
     private int stuntimer;
+    private Camera cam;
+    private float distanceToFloor = 2.5F;
 
     void Start()
     {
@@ -55,40 +58,44 @@ public class OniController : MonoBehaviour
         home = gameObject.transform.position;
         startingrotation = gameObject.transform.rotation;
         //print("OriHome" + home);
-        state = onistate.Idle;
+        state = takastate.Idle;
         awake = false;
         currentNode = startingNode;
         playerObject = GameObject.FindGameObjectWithTag("Player");
+        cam = playerObject.GetComponentInChildren<Camera>();
     }
 
     void LateUpdate()
     {
         //manage state machine each update, call functions based on state
         print("State" + state);
-        switch(state)
+        switch (state)
         {
-            case onistate.Idle:
+            case takastate.Idle:
                 idle();
                 break;
-            case onistate.Patrol:
+            case takastate.Patrol:
                 patrol();
                 break;
-            case onistate.Search:
+            case takastate.Search:
                 search();
                 break;
-            case onistate.Chase:
+            case takastate.Chase:
                 chase();
                 break;
-            case onistate.Flee:
+            case takastate.Taunt:
+                taunt();
+                break;
+            case takastate.Flee:
                 flee();
                 break;
-            case onistate.Dead:
+            case takastate.Dead:
                 dead();
                 break;
-            case onistate.Follow:
+            case takastate.Follow:
                 follow();
                 break;
-            case onistate.Stun:
+            case takastate.Stun:
                 stun();
                 break;
         }
@@ -108,7 +115,7 @@ public class OniController : MonoBehaviour
 
             //get oldest
             Vector3 firstlocation = (Vector3)previousLocations[0];
-            //check to see if oni has gone far enough for footprints to form
+            //check to see if taka has gone far enough for footprints to form
             if ((lastlocation - firstlocation).magnitude > lessenough)
             {
                 //iterate through
@@ -123,7 +130,7 @@ public class OniController : MonoBehaviour
                         Vector3 norm = (currentlocation - firstlocation);
                         norm.Normalize();
                         //multiply by desired distance to get desired vector and add to first location
-                        Vector3 dest = firstlocation + norm * (float)lessenough - new Vector3(0, 1.5F, 0);
+                        Vector3 dest = firstlocation + norm * (float)lessenough - new Vector3(0, distanceToFloor, 0);
                         //make rotation
                         Quaternion rot = Quaternion.Euler(0, 0, 0);
                         //add to level
@@ -166,11 +173,11 @@ public class OniController : MonoBehaviour
                 float mag = distancetoinu.magnitude;
                 if (mag < 50.0F)
                 {
-                    state = onistate.Flee;
+                    state = takastate.Flee;
                 }
                 Transform goal = playerObject.transform; // set current player location as desired location
                 agent.destination = goal.position; // set destination to player's current location
-                
+
             }
         }
     }
@@ -181,15 +188,15 @@ public class OniController : MonoBehaviour
         seen = seePlayer();
         if (seen)
         {
-            state = onistate.Chase;
+            state = takastate.Chase;
         }
         else if (seeFootprint() && awake == true)
         {
-            state = onistate.Follow;
+            state = takastate.Follow;
         }
-        else if (awake == true && startingNode != null)//awake == true && 
+        else if (awake == true && startingNode != null)
         {
-            state = onistate.Patrol;
+            state = takastate.Patrol;
         }
     }
 
@@ -199,11 +206,11 @@ public class OniController : MonoBehaviour
         seen = seePlayer();
         if (seen)
         {
-            state = onistate.Chase;
+            state = takastate.Chase;
         }
         else if (seeFootprint() && awake == true)
         {
-            state = onistate.Follow;
+            state = takastate.Follow;
         }
         if (rb.transform.position.x < currentNode.transform.position.x + 1 && rb.transform.position.x > currentNode.transform.position.x - 1)
         {
@@ -215,7 +222,7 @@ public class OniController : MonoBehaviour
         else // not yet at current node's location
         {
             Transform goal = currentNode.transform; // set current node location as desired location
-            UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>(); // get oni's navigation agent
+            UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>(); // get taka's navigation agent
             agent.destination = goal.position; // set destination to current node's location
         }
     }
@@ -229,15 +236,16 @@ public class OniController : MonoBehaviour
     {
         seen = false;
         seen = seePlayer();
+        System.Boolean chasing = false;
         if (!seen)
         {
             if (seeFootprint())
             {
-                state = onistate.Follow;
+                state = takastate.Follow;
             }
             else
             {
-                state = onistate.Idle;
+                state = takastate.Idle;
             }
         }
 
@@ -247,6 +255,7 @@ public class OniController : MonoBehaviour
         Vector3 rayDirection = playerObject.transform.localPosition - transform.localPosition;
         RaycastHit[] hits;
         hits = Physics.RaycastAll(transform.position, rayDirection, 100.0F);
+        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
 
         for (int i = 0; i < hits.Length; i++)
         {
@@ -254,8 +263,83 @@ public class OniController : MonoBehaviour
             if (hit.collider.gameObject == playerObject) //player object here will be your Player GameObject
             {
                 Transform goal = playerObject.transform; // set current player location as desired location
-                UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>(); // get oni's navigation agent
                 agent.destination = goal.position; // set destination to player's current location
+                chasing = true;
+            }
+        }
+
+        if (chasing == true)
+        {
+            Vector3 dest = playerObject.transform.position;
+            agent.destination = dest;
+            if (rb.transform.position.x < dest.x + 5 && rb.transform.position.x > dest.x - 5)
+            {
+                if (rb.transform.position.y < dest.y + 5 && rb.transform.position.y > dest.y - 5)
+                {
+                    if (rb.transform.position.z < dest.z + 5 && rb.transform.position.z > dest.z - 5)
+                    {
+                        state = takastate.Taunt;
+                        agent.destination = rb.transform.position;
+                        gameObject.transform.rotation = startingrotation;
+                    }
+                }
+            }
+        }
+    }
+
+    void taunt()
+    {
+        int maxDistance = 7;
+        int maxDistanceSquared = maxDistance * maxDistance;
+        Vector3 rayDirection = playerObject.transform.localPosition - (transform.localPosition - new Vector3(0,distanceToFloor,0));
+        System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < maxDistanceSquared;
+        if (!playerCloseToEnemy)
+        {
+            seen = false;
+            seen = seePlayer();
+            if (seen)
+            {
+                state = takastate.Chase;
+            }
+            else if (seeFootprint())
+            {
+                state = takastate.Follow;
+            }
+            else if(startingNode != null)
+            {
+                state = takastate.Patrol;
+            }
+            else 
+            {
+                state = takastate.Idle;
+            }
+        }
+
+        //play taunt sounds
+        Vector3 enemyDirection = transform.TransformDirection(Vector3.forward);
+        float angleDot = Vector3.Dot(rayDirection, enemyDirection);
+        System.Boolean playerInFrontOfEnemy = angleDot > 0.0;
+        System.Boolean nowallfound = noWall();
+
+        if (gameObject.transform.localScale.y < 10)
+        {
+            gameObject.transform.localScale += new Vector3(0, 0.01F, 0);
+            gameObject.transform.position += new Vector3(0, 0.005F, 0);
+            distanceToFloor += 0.005F;
+        }
+        else if (gameObject.transform.localScale.y >= 10)
+        {
+            state = takastate.Flee;
+        }
+        if (playerInFrontOfEnemy)
+        {
+            if (nowallfound)
+            {
+                if (playerLookingUp())
+                {
+                    string curlevel = SceneManager.GetActiveScene().name;
+                    SceneManager.LoadScene(curlevel);
+                }
             }
         }
     }
@@ -267,13 +351,19 @@ public class OniController : MonoBehaviour
         agent.destination = home;
         //print("NewDest" + agent.destination);
         //print("Curpos" + rb.transform.position);
+        if (gameObject.transform.localScale.y > 5)
+        {
+            gameObject.transform.localScale -= new Vector3(0, 0.01F, 0);
+            gameObject.transform.position -= new Vector3(0, 0.005F, 0);
+            distanceToFloor -= 0.005F;
+        }
         if (rb.transform.position.x < home.x + 1 && rb.transform.position.x > home.x - 1)
         {
             if (rb.transform.position.y < home.y + 1 && rb.transform.position.y > home.y - 1)
             {
                 if (rb.transform.position.z < home.z + 1 && rb.transform.position.z > home.z - 1)
                 {
-                    state = onistate.Idle;
+                    state = takastate.Idle;
                     gameObject.transform.rotation = startingrotation;
                 }
             }
@@ -291,11 +381,11 @@ public class OniController : MonoBehaviour
         seen = seePlayer();
         if (seen)
         {
-            state = onistate.Chase;
+            state = takastate.Chase;
         }
         else if (!seeFootprint())
         {
-            state = onistate.Idle;
+            state = takastate.Idle;
         }
 
         Vector3 rayDirection = playerObject.transform.localPosition - transform.localPosition;
@@ -318,21 +408,21 @@ public class OniController : MonoBehaviour
     void stun()
     {
         stuntimer--;
-        if(stuntimer <= 0)
+        if (stuntimer <= 0)
         {
             seen = false;
             seen = seePlayer();
             if (seen)
             {
-                state = onistate.Chase;
+                state = takastate.Chase;
             }
             else if (seeFootprint() && awake == true)
             {
-                state = onistate.Follow;
+                state = takastate.Follow;
             }
             else
             {
-                state = onistate.Idle;
+                state = takastate.Idle;
             }
         }
     }
@@ -344,7 +434,7 @@ public class OniController : MonoBehaviour
 
     void Stun()
     {
-        state = onistate.Stun;
+        state = takastate.Stun;
         stuntimer = 120;
     }
 
@@ -409,6 +499,22 @@ public class OniController : MonoBehaviour
         return false;
     }
 
+    bool playerLookingUp()
+    {
+        Vector3 dir = cam.transform.rotation * Vector3.up;
+        Vector3 enemyDirection = playerObject.transform.TransformDirection(Vector3.forward);
+        float angleDot = Vector3.Dot(dir, enemyDirection);
+        System.Boolean playerlookup = angleDot < -0.5;
+        if (playerlookup)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.CompareTag("Trap"))
@@ -418,10 +524,10 @@ public class OniController : MonoBehaviour
         if (col.gameObject.CompareTag("SafeZone"))
         {
             UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-            if (state != onistate.Flee)
+            if (state != takastate.Flee)
             {
                 agent.ResetPath();
-                state = onistate.Flee;
+                state = takastate.Flee;
             }
         }
         if (col.gameObject == playerObject)
@@ -431,104 +537,3 @@ public class OniController : MonoBehaviour
         }
     }
 }
-//Physics.Raycast(transform.position, rayDirection, maxDistance)
-/*Vector3 chase = playerObject.transform.position - transform.position;
-                    Transform goal = playerObject.transform.position;
-                    chase.Normalize();
-                    Vector3 onimove = chase * speed;
-                    UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-                    rb.AddForce(onimove);
-                    print(onimove);
-                    seen = true;
-                    
-     //if an enemy as further than maxDistance from you, it cannot see you
-        int maxDistance = 20;
-        int maxDistanceSquared = maxDistance * maxDistance;
-        Vector3 rayDirection = playerObject.transform.localPosition - transform.localPosition;
-        Vector3 enemyDirection = transform.TransformDirection(Vector3.forward);
-        float angleDot = Vector3.Dot(rayDirection, enemyDirection);
-        System.Boolean playerInFrontOfEnemy = angleDot > 0.0;
-        System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < maxDistanceSquared;
-
-        if (playerInFrontOfEnemy && playerCloseToEnemy)
-        {
-            //by using a Raycast you make sure an enemy does not see you
-            //if there is a bulduing separating you from his view, for example
-            //the enemy only sees you if it has you in open view
-            RaycastHit[] hits;
-            hits = Physics.RaycastAll(transform.position, rayDirection, 100.0F);
-
-            for (int i = 0; i < hits.Length; i++)
-            {
-                if (i == 0)
-                {
-                    seen = false;
-                }
-                RaycastHit hit = hits[i];
-                if (hit.collider.gameObject == playerObject) //player object here will be your Player GameObject
-                {
-                    //enemy sees you - perform some action
-                    Transform goal = playerObject.transform;
-                    UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-                    agent.destination = goal.position;
-                    if (returning == false)
-                    {
-                        seen = true;
-                        awake = true;
-                    }
-                }
-                else if (i == hits.Length - 1 && seen == false)
-                {
-                    //enemy doesn't see you
-                    //rb.velocity = new Vector3(0, 0, 0);
-                }
-            }
-        }
-        if (awake == true && seen == false)
-        {
-            RaycastHit[] hitsft;
-            hitsft = Physics.RaycastAll(transform.position, rayDirection, 100.0F);
-            for (int i = 0; i < hitsft.Length; i++)
-            {
-                RaycastHit hitft = hitsft[i];
-                if (hitft.collider.gameObject.CompareTag("Footprint"))
-                {
-                    //enemy sees your footprints - perform some action
-                    Transform goal = hitft.collider.gameObject.transform;
-                    UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-                    agent.destination = goal.position;
-                    print("Chase" + agent.pathEndPosition);
-                }
-                else if (i == hitsft.Length - 1 && seen == false)
-                {
-                    //enemy doesn't see your footprints
-                    //rb.velocity = new Vector3(0, 0, 0);
-                }
-            }
-        }
-        
-        if (returning == true)
-        {
-            UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-            print("OriDest" + agent.destination);
-            agent.destination = home;
-            print("NewDest" + agent.destination);
-            print(rb.transform.position);
-            if (agent.isStopped == true)
-            {
-                agent.isStopped = false;
-
-            }
-            if(rb.transform.position.x < home.x + 0.5 && rb.transform.position.x > home.x - 0.5)
-            {
-                if (rb.transform.position.y < home.y + 0.5 && rb.transform.position.y > home.y - 0.5)
-                {
-                    if (rb.transform.position.z < home.z + 0.5 && rb.transform.position.z > home.z - 0.5)
-                    {
-                        returning = false;
-                    }
-                }
-            }
-        }
-     */
-//agent.isStopped = true;

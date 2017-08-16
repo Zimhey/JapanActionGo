@@ -225,6 +225,7 @@ public class CameraController : MonoBehaviour
             rb.freezeRotation = true;
         }
         originalRotation = transform.localRotation;
+        player = GameObject.FindGameObjectWithTag("Player");
     }
     public static float ClampAngle(float angle, float min, float max)
     {

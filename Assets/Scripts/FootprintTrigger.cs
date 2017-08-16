@@ -19,5 +19,9 @@ public class FootprintTrigger : MonoBehaviour {
         if (other.CompareTag("Oni")){
             Destroy(gameObject);
         }
+        if (other.CompareTag("Inu"))
+        {
+            Destroy(gameObject);
+        }
     }
 }
