@@ -115,7 +115,7 @@ public class TakaController : MonoBehaviour
 
             //get oldest
             Vector3 firstlocation = (Vector3)previousLocations[0];
-            //check to see if player has gone far enough for footprints to form
+            //check to see if taka has gone far enough for footprints to form
             if ((lastlocation - firstlocation).magnitude > lessenough)
             {
                 //iterate through
@@ -157,6 +157,28 @@ public class TakaController : MonoBehaviour
             float step = turnspeed * Time.deltaTime;
             Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, step, 0.0F);
             transform.rotation = Quaternion.LookRotation(newDir);
+        }
+
+        Vector3 rayDirection = playerObject.transform.localPosition - transform.localPosition;
+        RaycastHit[] hits;
+        hits = Physics.RaycastAll(transform.position, rayDirection, 100.0F);
+        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+
+        for (int i = 0; i < hits.Length; i++)
+        {
+            RaycastHit hit = hits[i];
+            if (hit.collider.CompareTag("Inu")) //if inu is seen
+            {
+                Vector3 distancetoinu = hit.collider.transform.position - gameObject.transform.position;
+                float mag = distancetoinu.magnitude;
+                if (mag < 50.0F)
+                {
+                    state = takastate.Flee;
+                }
+                Transform goal = playerObject.transform; // set current player location as desired location
+                agent.destination = goal.position; // set destination to player's current location
+
+            }
         }
     }
 
