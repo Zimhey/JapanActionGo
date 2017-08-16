@@ -23,6 +23,9 @@ public class PlayerActions : MonoBehaviour
     private bool thrown;
 
     private Camera cam;
+    //array of locations the oni has been
+    private ArrayList previousLocations = new ArrayList();
+    private int lessenough = 5;
 
     // Use this for initialization
     void Start()
@@ -61,6 +64,56 @@ public class PlayerActions : MonoBehaviour
             ThrowOfuda();
         else
             thrown = false;
+
+        //if any locations exist
+        if (previousLocations.Count > 0)
+        {
+            //get latest
+            int lastentry = previousLocations.Count - 1;
+            Vector3 lastlocation = (Vector3)previousLocations[lastentry];
+            //make sure it is not current location
+            if (lastlocation != gameObject.transform.position)
+            {
+                //add current location
+                previousLocations.Add(gameObject.transform.position);
+            }
+
+            //get oldest
+            Vector3 firstlocation = (Vector3)previousLocations[0];
+            //check to see if player has gone far enough for footprints to form
+            if ((lastlocation - firstlocation).magnitude > lessenough)
+            {
+                //iterate through
+                for (int iter = 0; iter < lastentry; iter++)
+                {
+                    //check locations along path
+                    Vector3 currentlocation = (Vector3)previousLocations[iter];
+                    //if locations are far enough apart make footprint at a given distance
+                    if ((currentlocation - firstlocation).magnitude > lessenough)
+                    {
+                        //get direction
+                        Vector3 norm = (currentlocation - firstlocation);
+                        norm.Normalize();
+                        //multiply by desired distance to get desired vector and add to first location
+                        Vector3 dest = firstlocation + norm * (float)lessenough - new Vector3(0, 0.95F, 0);
+                        //make rotation
+                        Quaternion rot = Quaternion.Euler(0, 0, 0);
+                        //add to level
+                        Instantiate(Resources.Load("Prefabs/Footprint"), dest, rot);
+                        //remove old steps
+                        for (int remove = 0; remove < iter; remove++)
+                        {
+                            previousLocations.RemoveAt(0);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+        else
+        {
+            previousLocations.Add(gameObject.transform.position);
+        }
 
     }
 
