@@ -943,12 +943,17 @@ Prefab:
       propertyPath: m_RootOrder
       value: 23
       objectReference: {fileID: 0}
+    - target: {fileID: 114071612675544518, guid: 8d8591f969172da46af9e7afba72604e,
+        type: 2}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 469033188}
     - target: {fileID: 114367848774691090, guid: 8d8591f969172da46af9e7afba72604e,
         type: 2}
       propertyPath: player
       value: 
       objectReference: {fileID: 469033188}
-    - target: {fileID: 114071612675544518, guid: 8d8591f969172da46af9e7afba72604e,
+    - target: {fileID: 114596975398807128, guid: 8d8591f969172da46af9e7afba72604e,
         type: 2}
       propertyPath: player
       value: 
