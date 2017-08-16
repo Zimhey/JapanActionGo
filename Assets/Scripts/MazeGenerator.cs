@@ -26,7 +26,8 @@ public class MazeGenerator : MonoBehaviour
         */
         foreach (MazeNode r in sectionroots)
         {
-          SpawnMaze(r, size);
+            GenerateLoops(r, 2, size);
+            SpawnMaze(r, size);
         }
         //SpawnMaze(root, size);
         surface = GetComponent<NavMeshSurface>();
@@ -181,12 +182,12 @@ public class MazeGenerator : MonoBehaviour
         {
             if (node.Row == other.Row + 1)
             {
-                print("Made it backwards!");
+                //print("Made it backwards!");
                 return node.backwardNodes;
             }
             else
             {
-                print("Made it forwards!");
+                //print("Made it forwards!");
                 return node.forwardNodes;
             }
         }
@@ -194,18 +195,18 @@ public class MazeGenerator : MonoBehaviour
         {
             if (node.Col == other.Col + 1)
             {
-                print("Made it left!");
+                //print("Made it left!");
                 return node.leftNodes;
             }
             else
             {
-                print("Made it right!");
+                //print("Made it right!");
                 return node.rightNodes;
             }
         }
         else
         {
-            print("Made it here!");
+            //print("Made it here!");
             return 0;
         }
     }
@@ -230,10 +231,10 @@ public class MazeGenerator : MonoBehaviour
             {
                 //print("here i am");
                 next = n;
-                print(cutoff.Col + " " + cutoff.Row + " ");
-                print(next.Col + " " + next.Row + " ");
+                //print(cutoff.Col + " " + cutoff.Row + " ");
+                //print(next.Col + " " + next.Row + " ");
                 int wouldBeRemoved = getDirectionalValue(cutoff, next);
-                print(wouldBeRemoved);
+                //print(wouldBeRemoved);
                 if (wouldBeRemoved < leftover - sectionSize)
                 {
                     //cutoff.RemoveEdge(next);
@@ -294,10 +295,14 @@ public class MazeGenerator : MonoBehaviour
             {
                 if (!visited2.Contains(node))
                 {
+                    //print("made it here");
                     visited.Push(node);
                     visited2.Push(node);
                     if (node.Col == n.Col + deltaX && node.Row == n.Row + deltaY)
+                    {
+                        //print("made it here");
                         return node;
+                    }
                 }
             }
         }
@@ -307,6 +312,7 @@ public class MazeGenerator : MonoBehaviour
 
     public static int getConnectedNodes(MazeNode node)
     {
+        //print("Column: " + node.Col + " Row: " + node.Row + " Forward " + node.forwardNodes + " Backwards " + node.backwardNodes + " Left " + node.leftNodes + " Right " + node.rightNodes);
         return node.leftNodes + node.rightNodes + node.forwardNodes + node.backwardNodes + 1;
     }
 
@@ -331,10 +337,12 @@ public class MazeGenerator : MonoBehaviour
 
     public static void GenerateLoops(MazeNode root, int loops, int size)
     {
+        print(root.Col + " " + root.Row);
         // TODO Generate Loops
         MazeNode current = root;
+        MazeNode next = root;
         MazeNode previous = null;
-        int[,] disconnectingWalls = new int[size, 4];
+        int[,] disconnectingWalls = new int[size * size, 4];
         int pathNumber = 0;
         int counter;
         int counter2;
@@ -350,21 +358,31 @@ public class MazeGenerator : MonoBehaviour
                 int disconnected;
                 if (counter == 0 && current.Left == null || counter == 1 && current.Forward == null || counter == 2 && current.Right == null || counter == 3 && current.Backward == null)
                 {
+                    //print(current.Col + " " + current.Row + " " + counter);
                     MazeNode disconnectedNode = findNode(current, counter);
                     if (disconnectedNode != null)
                     {
+                        print(current.Col + " " + current.Row + " " + counter);
                         disconnected = getConnectedNodes(disconnectedNode);
+                        if(disconnected != 0)
+                        {
+                            //print(disconnected);
+                        }
                         disconnectingWalls[pathNumber, counter] = disconnected;
                     }
                 }
             }
             foreach (MazeNode n in current.GetAdjacentNodes())
+            {
                 if (n.OnExitPath && !n.Equals(previous))
                 {
                     pathNumber++;
-                    current = n;
+                    next = n;
+                    break;
                 }
+            }
             previous = current;
+            current = next;
         }
 
         while (loops > 0)
@@ -380,6 +398,7 @@ public class MazeGenerator : MonoBehaviour
                 {
                     if(disconnectingWalls[i, j] > largestDisconnection)
                     {
+                        //print("made it here");
                         largestDisconnection = disconnectingWalls[i, j];
                         largestIndexPath = i;
                         largetIndexDirection = j;
@@ -388,7 +407,8 @@ public class MazeGenerator : MonoBehaviour
             }
 
             MazeNode mn = getNodeOnPath(root, largestIndexPath);
-            mn.AddEdge(findNode(mn, largetIndexDirection));
+            //print(largestDisconnection + " " + largestIndexPath + " " + largetIndexDirection + " " + mn.Col + " " + mn.Row);
+            //mn.AddEdge(findNode(mn, largetIndexDirection));
             loops--;
             disconnectingWalls[largestIndexPath, largetIndexDirection] = 0;
             largetIndexDirection = 0;
