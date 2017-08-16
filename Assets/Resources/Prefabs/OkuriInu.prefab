@@ -27,7 +27,7 @@ GameObject:
   - component: {fileID: 114694237428642688}
   m_Layer: 0
   m_Name: OkuriInu
-  m_TagString: Oni
+  m_TagString: Inu
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

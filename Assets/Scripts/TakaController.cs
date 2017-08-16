@@ -49,6 +49,7 @@ public class TakaController : MonoBehaviour
     //countdown until no longer stunned
     private int stuntimer;
     private Camera cam;
+    private float distanceToFloor = 2.5F;
 
     void Start()
     {
@@ -114,7 +115,7 @@ public class TakaController : MonoBehaviour
 
             //get oldest
             Vector3 firstlocation = (Vector3)previousLocations[0];
-            //check to see if player has gone far enough for footprints to form
+            //check to see if taka has gone far enough for footprints to form
             if ((lastlocation - firstlocation).magnitude > lessenough)
             {
                 //iterate through
@@ -129,7 +130,7 @@ public class TakaController : MonoBehaviour
                         Vector3 norm = (currentlocation - firstlocation);
                         norm.Normalize();
                         //multiply by desired distance to get desired vector and add to first location
-                        Vector3 dest = firstlocation + norm * (float)lessenough - new Vector3(0, 2.5F, 0);
+                        Vector3 dest = firstlocation + norm * (float)lessenough - new Vector3(0, distanceToFloor, 0);
                         //make rotation
                         Quaternion rot = Quaternion.Euler(0, 0, 0);
                         //add to level
@@ -156,6 +157,28 @@ public class TakaController : MonoBehaviour
             float step = turnspeed * Time.deltaTime;
             Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, step, 0.0F);
             transform.rotation = Quaternion.LookRotation(newDir);
+        }
+
+        Vector3 rayDirection = playerObject.transform.localPosition - transform.localPosition;
+        RaycastHit[] hits;
+        hits = Physics.RaycastAll(transform.position, rayDirection, 100.0F);
+        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+
+        for (int i = 0; i < hits.Length; i++)
+        {
+            RaycastHit hit = hits[i];
+            if (hit.collider.CompareTag("Inu")) //if inu is seen
+            {
+                Vector3 distancetoinu = hit.collider.transform.position - gameObject.transform.position;
+                float mag = distancetoinu.magnitude;
+                if (mag < 50.0F)
+                {
+                    state = takastate.Flee;
+                }
+                Transform goal = playerObject.transform; // set current player location as desired location
+                agent.destination = goal.position; // set destination to player's current location
+
+            }
         }
     }
 
@@ -266,9 +289,9 @@ public class TakaController : MonoBehaviour
 
     void taunt()
     {
-        int maxDistance = 25;
+        int maxDistance = 7;
         int maxDistanceSquared = maxDistance * maxDistance;
-        Vector3 rayDirection = playerObject.transform.localPosition - transform.localPosition;
+        Vector3 rayDirection = playerObject.transform.localPosition - (transform.localPosition - new Vector3(0,distanceToFloor,0));
         System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < maxDistanceSquared;
         if (!playerCloseToEnemy)
         {
@@ -297,6 +320,17 @@ public class TakaController : MonoBehaviour
         float angleDot = Vector3.Dot(rayDirection, enemyDirection);
         System.Boolean playerInFrontOfEnemy = angleDot > 0.0;
         System.Boolean nowallfound = noWall();
+
+        if (gameObject.transform.localScale.y < 10)
+        {
+            gameObject.transform.localScale += new Vector3(0, 0.01F, 0);
+            gameObject.transform.position += new Vector3(0, 0.005F, 0);
+            distanceToFloor += 0.005F;
+        }
+        else if (gameObject.transform.localScale.y >= 10)
+        {
+            state = takastate.Flee;
+        }
         if (playerInFrontOfEnemy)
         {
             if (nowallfound)
@@ -317,6 +351,12 @@ public class TakaController : MonoBehaviour
         agent.destination = home;
         //print("NewDest" + agent.destination);
         //print("Curpos" + rb.transform.position);
+        if (gameObject.transform.localScale.y > 5)
+        {
+            gameObject.transform.localScale -= new Vector3(0, 0.01F, 0);
+            gameObject.transform.position -= new Vector3(0, 0.005F, 0);
+            distanceToFloor -= 0.005F;
+        }
         if (rb.transform.position.x < home.x + 1 && rb.transform.position.x > home.x - 1)
         {
             if (rb.transform.position.y < home.y + 1 && rb.transform.position.y > home.y - 1)
@@ -464,7 +504,7 @@ public class TakaController : MonoBehaviour
         Vector3 dir = cam.transform.rotation * Vector3.up;
         Vector3 enemyDirection = playerObject.transform.TransformDirection(Vector3.forward);
         float angleDot = Vector3.Dot(dir, enemyDirection);
-        System.Boolean playerlookup = angleDot < 0.0;
+        System.Boolean playerlookup = angleDot < -0.5;
         if (playerlookup)
         {
             return true;

@@ -112,7 +112,7 @@ public class InuController : MonoBehaviour
 
             //get oldest
             Vector3 firstlocation = (Vector3)previousLocations[0];
-            //check to see if player has gone far enough for footprints to form
+            //check to see if inu has gone far enough for footprints to form
             if ((lastlocation - firstlocation).magnitude > lessenough)
             {
                 //iterate through
