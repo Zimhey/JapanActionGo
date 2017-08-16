@@ -13,6 +13,7 @@ TagManager:
   - Ofuda
   - Oni
   - Node
+  - InuFootprint
   layers:
   - Default
   - TransparentFX
