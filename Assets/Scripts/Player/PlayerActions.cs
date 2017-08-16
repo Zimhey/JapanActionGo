@@ -26,6 +26,7 @@ public class PlayerActions : MonoBehaviour
     //array of locations the oni has been
     private ArrayList previousLocations = new ArrayList();
     private int lessenough = 5;
+    private float distanceToFloor = 0.95F;
 
     // Use this for initialization
     void Start()
@@ -95,7 +96,11 @@ public class PlayerActions : MonoBehaviour
                         Vector3 norm = (currentlocation - firstlocation);
                         norm.Normalize();
                         //multiply by desired distance to get desired vector and add to first location
-                        Vector3 dest = firstlocation + norm * (float)lessenough - new Vector3(0, 0.95F, 0);
+                        if(transform.position.y != distanceToFloor)
+                        {
+                            distanceToFloor = transform.position.y - 0.55F;
+                        }
+                        Vector3 dest = firstlocation + norm * (float)lessenough - new Vector3(0, distanceToFloor, 0);
                         //make rotation
                         Quaternion rot = Quaternion.Euler(0, 0, 0);
                         //add to level
