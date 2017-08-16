@@ -320,19 +320,38 @@ public class MazeGenerator : MonoBehaviour
     {
         int current = 0;
         MazeNode node = root;
+        MazeNode prev = root;
         while(current < index)
         {
             foreach(MazeNode n in node.GetAdjacentNodes())
             {
-                if(n.OnExitPath)
+                if(n.OnExitPath && !n.Equals(prev))
                 {
                     current++;
+                    prev = node;
                     node = n;
                     break;
                 }
             }
         }
         return node;
+    }
+    
+    public static int DistanceBetween(MazeNode start, MazeNode finish)
+    {
+        return DistanceBetweenHelper(start, start, finish, 0);
+    }
+
+    public static int DistanceBetweenHelper(MazeNode prev, MazeNode current, MazeNode finish, int distance)
+    {
+        foreach(MazeNode n in current.GetAdjacentNodes())
+        {
+            if (n.Equals(finish))
+                return distance + 1;
+            else if (!n.Equals(prev))
+                return DistanceBetweenHelper(current, n, finish, distance + 1);
+        }
+        return 0;
     }
 
     public static void GenerateLoops(MazeNode root, int loops, int size)
@@ -347,8 +366,8 @@ public class MazeGenerator : MonoBehaviour
         int counter;
         int counter2;
 
-        for(counter = 0; counter < size; counter++)
-            for(counter2 = 0; counter2 < 4; counter2++)
+        for (counter = 0; counter < size; counter++)
+            for (counter2 = 0; counter2 < 4; counter2++)
                 disconnectingWalls[counter, counter2] = 0;
 
         while (!current.Equals(previous))
@@ -362,9 +381,9 @@ public class MazeGenerator : MonoBehaviour
                     MazeNode disconnectedNode = findNode(current, counter);
                     if (disconnectedNode != null)
                     {
-                        print(current.Col + " " + current.Row + " " + counter);
-                        disconnected = getConnectedNodes(disconnectedNode);
-                        if(disconnected != 0)
+                        //print(current.Col + " " + current.Row + " " + counter);
+                        disconnected = DistanceBetween(current, disconnectedNode);
+                        if (disconnected != 0)
                         {
                             //print(disconnected);
                         }
@@ -389,29 +408,31 @@ public class MazeGenerator : MonoBehaviour
         {
             int largestDisconnection = 0;
             int largestIndexPath = 0;
-            int largetIndexDirection = 0;
+            int largestIndexDirection = 0;
             int i;
             int j;
-            for(i = 0; i < size; i++)
+            for (i = 0; i < size; i++)
             {
-                for(j = 0; j < 4; j++)
+                for (j = 0; j < 4; j++)
                 {
-                    if(disconnectingWalls[i, j] > largestDisconnection)
+                    if (disconnectingWalls[i, j] > largestDisconnection)
                     {
                         //print("made it here");
                         largestDisconnection = disconnectingWalls[i, j];
                         largestIndexPath = i;
-                        largetIndexDirection = j;
+                        largestIndexDirection = j;
                     }
                 }
             }
 
             MazeNode mn = getNodeOnPath(root, largestIndexPath);
-            //print(largestDisconnection + " " + largestIndexPath + " " + largetIndexDirection + " " + mn.Col + " " + mn.Row);
-            //mn.AddEdge(findNode(mn, largetIndexDirection));
+            //print("Exit Path Position " + largestIndexPath + " Disconnection: " + largestDisconnection + " Direction: " + largestIndexDirection + " Column: " + mn.Col + " Row: " + mn.Row);
+            MazeNode mazeNode = findNode(mn, largestIndexDirection);
+            if (mazeNode != null)
+                mn.AddEdge(mazeNode);
             loops--;
-            disconnectingWalls[largestIndexPath, largetIndexDirection] = 0;
-            largetIndexDirection = 0;
+            disconnectingWalls[largestIndexPath, largestIndexDirection] = 0;
+            largestIndexDirection = 0;
             largestIndexPath = 0;
             largestDisconnection = 0;
         }
