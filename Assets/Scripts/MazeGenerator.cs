@@ -14,8 +14,8 @@ public class MazeGenerator : MonoBehaviour
     void Start()
     {
         int size = 10;
-        int sections = 3;
-        int loops = 2;
+        int sections = 2;
+        int loops = 3;
         MazeNode root = DFSMazeGenerator.GenerateMaze(0, size, size);
         List<MazeNode> sectionroots = GenerateSections(root, sections, size, size);
         /*
@@ -27,7 +27,8 @@ public class MazeGenerator : MonoBehaviour
         */
         foreach (MazeNode r in sectionroots)
         {
-            GenerateLoops2(r, loops, size);
+            GenerateActors(r, 1, 1, 1);
+            GenerateLoops(r, loops, size);
             SpawnMaze(r, size);
         }
         //SpawnMaze(root, size);
@@ -363,99 +364,65 @@ public class MazeGenerator : MonoBehaviour
         return branchDistance;
     }
 
-    public static void GenerateLoops(MazeNode root, int loops, int size)
+    public static MazeNode FindPathEnd(MazeNode root)
     {
-        //print(root.Col + " " + root.Row);
-        // TODO Generate Loops
-        MazeNode current;
-        Stack<MazeNode> visited = new Stack<MazeNode>();
-        Stack<MazeNode> visited2 = new Stack<MazeNode>();
-        int[,,] disconnectingWalls = new int[size, size, 4];
-        MazeNode[,,] disconnectedNodes = new MazeNode[size, size, 4];
-        int counter;
-        int counter2;
-        int counter3;
+        MazeNode previous = root;
+        MazeNode current = root;
 
-        visited.Push(root);
-        visited2.Push(root);
-
-        for (counter = 0; counter < size; counter++)
-            for (counter2 = 0; counter2 < size; counter2++)
-                for(counter3 = 0; counter3 < 4; counter3++)
-                    disconnectingWalls[counter, counter2, counter3] = 0;
-
-        while (visited.Count > 0)
+        foreach(MazeNode n in current.GetAdjacentNodes())
         {
-            current = visited.Pop();
-
-            for (counter = 0; counter < 4; counter++)
+            if(n.OnExitPath && !n.Equals(previous))
             {
-                int disconnected;
-                if (counter == 0 && current.Left == null || counter == 1 && current.Forward == null || counter == 2 && current.Right == null || counter == 3 && current.Backward == null)
-                {
-                    MazeNode disconnectedNode = findNode(current, counter);
-                    if (disconnectedNode != null)
-                    {
-                        disconnected = DistanceBetween(current, disconnectedNode);
-                        disconnectingWalls[current.Col, current.Row, counter] = disconnected;
-                        disconnectedNodes[current.Col, current.Row, counter] = current;
-                    }
-                }
-            }
-
-            foreach(MazeNode n in current.GetAdjacentNodes())
-            {
-                if(!visited2.Contains(n))
-                {
-                    visited.Push(n);
-                    visited2.Push(n);
-                }
+                previous = current;
+                current = n;
             }
         }
 
-        while (loops > 0)
-        {
-            int largestDisconnection = 0;
-            int largestCol = 0;
-            int largestRow = 0;
-            int largestDir = 0;
-            int i;
-            int j;
-            int k;
-            MazeNode largestDisconnectedNode = root;
-
-            for (i = 0; i < size; i++)
-            {
-                for (j = 0; j < size; j++)
-                {
-                    for (k = 0; k < 4; k++)
-                    {
-                        if (disconnectingWalls[i, j, k] > largestDisconnection)
-                        {
-                            largestDisconnection = disconnectingWalls[i, j, k];
-                            largestDisconnectedNode = disconnectedNodes[i, j, k];
-                            largestCol = i;
-                            largestRow = j;
-                            largestDir = k;
-                        }
-                    }
-                }
-            }
-
-            MazeNode mazeNode = findNode(largestDisconnectedNode, largestDir);
-            if (mazeNode != null)
-                largestDisconnectedNode.AddEdge(mazeNode);
-            loops--;
-            disconnectingWalls[largestCol, largestRow, largestDir] = 0;
-            disconnectingWalls[mazeNode.Col, mazeNode.Row, (largestDir + 2) % 4] = 0;
-            largestDisconnection = 0;
-            largestDir = 0;
-            largestCol = 0;
-            largestRow = 0;
-        }
+        return current;
     }
 
-    public static void GenerateLoops2(MazeNode root, int loops, int size)
+    public static void GenerateActors(MazeNode root, int ofuda, int oni, int chalk)
+    {
+        Queue<MazeNode> visited = new Queue<MazeNode>();
+        visited.Enqueue(root);
+        System.Random rand = new System.Random();
+        int placement;
+        int ch = chalk;
+        int of = ofuda;
+        int on = oni;
+
+        while (ofuda > 0 && oni > 0 && chalk > 0)
+        {
+            MazeNode current = visited.Dequeue();
+            foreach(MazeNode n in current.GetAdjacentNodes())
+                visited.Enqueue(n);
+            if (!current.OnExitPath)
+            {
+                placement = (int)rand.Next(0, 10);
+                if (placement == 7 && ch > 0)
+                {
+                    current.actor = ActorType.Chalk_Pickup;
+                    ch--;
+                }
+                else if (placement == 8 && of > 0)
+                {
+                    current.actor = ActorType.Ofuda_Pickup;
+                    of--;
+                }
+                else if (placement == 9 && on > 0)
+                {
+                    current.actor = ActorType.Oni;
+                    on--;
+                }
+                else { }
+            }
+        }
+
+        MazeNode last = FindPathEnd(root);
+        last.actor = ActorType.Ladder;
+    }
+
+    public static void GenerateLoops(MazeNode root, int loops, int size)
     {
         //print(root.Col + " " + root.Row);
         // TODO Generate Loops

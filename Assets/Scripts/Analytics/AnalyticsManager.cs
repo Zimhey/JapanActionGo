@@ -23,7 +23,8 @@ public enum ActorType
     Mirror_Pickup,
     Compass_Pickup,
     PressurePlate,
-    Lever
+    Lever,
+    Ladder
 }
 
 public class AnalyticsManager : MonoBehaviour
