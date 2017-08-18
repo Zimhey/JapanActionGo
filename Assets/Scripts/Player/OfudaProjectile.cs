@@ -19,7 +19,7 @@ public class OfudaProjectile : MonoBehaviour {
 		
 	}
 
-    void OnTriggerEnter(Collider collider)
+    void OnCollisionEnter(Collision collider)
     {
         if (collider.gameObject != null && collider.gameObject.tag == "Oni")
         {
