@@ -6,6 +6,7 @@ public class CellLog : MonoBehaviour {
 
     public int Row;
     public int Col;
+    public int CellID;
 
 	// Use this for initialization
 	void Start () {
@@ -21,8 +22,7 @@ public class CellLog : MonoBehaviour {
     {
         if (collider.gameObject != null)
         {
-            if (collider.gameObject.tag == "Player")
-                Debug.Log("Player entered Cell R: " + Row + " C: " + Col + " at Time: " + Time.time);
+            Debug.Log(collider.gameObject.tag + " entered Cell R: " + Row + " C: " + Col + " at Time: " + Time.time);
         }
     }
 

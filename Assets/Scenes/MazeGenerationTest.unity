@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37837eb4c16ec0342b99391b07c7acf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Seed: 0
+  Seed: 1
   DebugLabelsOn: 0
 --- !u!4 &1277521964
 Transform:

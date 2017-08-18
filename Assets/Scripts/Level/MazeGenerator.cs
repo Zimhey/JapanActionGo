@@ -20,7 +20,7 @@ public class MazeGenerator : MonoBehaviour
         for (int i = 0; i < floors; i++)
         {
             int section = 1;
-            MazeNode root = DFSMazeGenerator.GenerateMaze(0, size, size, i);
+            MazeNode root = DFSMazeGenerator.GenerateMaze(Seed, size, size, i);
             List<MazeNode> sectionroots;
 
             if (i == 1)
@@ -740,6 +740,12 @@ public class MazeGenerator : MonoBehaviour
 
         GameObject obj = Instantiate(Resources.Load(node.GetPrefabName()), location, node.GetRotation()) as GameObject;
         obj.transform.parent = this.transform;
+
+        obj = Instantiate(Resources.Load("Prefabs/Level/CellLog"), location, node.GetRotation()) as GameObject;
+        obj.transform.parent = this.transform;
+        CellLog cellLog = obj.GetComponent<CellLog>();
+        cellLog.Row = node.Row;
+        cellLog.Col = node.Col;
 
         if(DebugLabelsOn)
         {
