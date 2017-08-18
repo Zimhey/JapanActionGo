@@ -447,9 +447,10 @@ public class MazeGenerator : MonoBehaviour
 
         for (int i = 0; i < actors; i++)
         {
+            counter = 0;
             int temp = 0;
             bool listContains = true;
-            while(listContains)
+            while(listContains && counter < 1000)
             {
                 temp = rand.Next(0, PossiblePlaces);
                 listContains = false;
@@ -458,7 +459,10 @@ public class MazeGenerator : MonoBehaviour
                     if (actorLocations[j] == temp)
                         listContains = true;
                 }
+                counter++;
             }
+            if(counter == 1000)
+                print(counter);
             actorLocations[i] = temp;
         }
 
@@ -479,7 +483,9 @@ public class MazeGenerator : MonoBehaviour
                             if (loc == number)
                             {
                                 bool usedUp = true;
-                                while (usedUp)
+
+                                int counter2 = 0;
+                                while (usedUp && counter2 < 1000)
                                 {
                                     usedUp = false;
                                     int type = rand.Next(0, 4);
@@ -511,7 +517,10 @@ public class MazeGenerator : MonoBehaviour
                                         n.actor = ActorType.Spike_Trap;
                                         tr--;
                                     }
+                                    counter2++;
                                 }
+                                if (counter2 == 1000)
+                                    print(counter);
                             }
                         }
                     }
@@ -521,7 +530,8 @@ public class MazeGenerator : MonoBehaviour
             }
             counter++;
         }
-        print(counter);
+        if(counter == 1000)
+            print(counter);
     }
 
     public static void GenerateLadders(int floor, int section, MazeNode root)
@@ -578,7 +588,9 @@ public class MazeGenerator : MonoBehaviour
                     for (counter3 = 0; counter3 < 4; counter3++)
                         disconnectingWalls[counter, counter2, counter3] = 0;
 
-            while (visited.Count > 0)
+            counter = 0;
+
+            while (visited.Count > 0 && counter < 1000)
             {
                 current = visited.Pop();
 
@@ -606,6 +618,7 @@ public class MazeGenerator : MonoBehaviour
                     }
                 }
             }
+            //print(counter);
 
             for (i = 0; i < size; i++)
             {
