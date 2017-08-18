@@ -16,9 +16,9 @@ public class MazeGenerator : MonoBehaviour
         int size = 10;
         int sections = 2;
         int loops = 3;
-        int floors = 1;
+        int floors = 4;
 
-        for (int i = 1; i <= floors; i++)
+        for (int i = 0; i < floors; i++)
         {
             int section = 1;
             MazeNode root = DFSMazeGenerator.GenerateMaze(0, size, size, i);
@@ -678,7 +678,7 @@ public class MazeGenerator : MonoBehaviour
 
     public void SpawnPiece(MazeNode node)
     {
-        Vector3 location = new Vector3(node.Col * 6 + 8, 0, node.Row * 6 + 8);
+        Vector3 location = new Vector3(node.Col * 6 + 8, node.Floor * 30, node.Row * 6 + 8);
 
         GameObject obj = Instantiate(Resources.Load(node.GetPrefabName()), location, node.GetRotation()) as GameObject;
         obj.transform.parent = this.transform;
