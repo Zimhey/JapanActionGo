@@ -5,7 +5,6 @@ using UnityEngine.AI;
 
 public class MazeGenerator : MonoBehaviour
 {
-
     public int Seed;
     public bool DebugLabelsOn;
     private NavMeshSurface surface;

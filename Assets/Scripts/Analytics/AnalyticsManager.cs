@@ -5,28 +5,7 @@ using Mono.Data;
 using Mono.Data.Sqlite;
 using UnityEngine;
 
-public enum ActorType
-{
-    Player,
-    Oni,
-    Taka_Nyudo,
-    Okuri_Inu,
-    Spike_Trap,
-    Crush_Trap,
-    Pit_Trap,
-    Dart_Trap,
-    Dart_Projectile,
-    Tripwire,
-    Lantern_Trap,
-    Chalk_Pickup,
-    Ofuda_Pickup,
-    Mirror_Pickup,
-    Compass_Pickup,
-    PressurePlate,
-    Lever,
-    Ladder,
-    Null
-}
+
 
 public class AnalyticsManager : MonoBehaviour
 {
