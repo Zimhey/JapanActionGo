@@ -21,7 +21,7 @@ public class MazeGenerator : MonoBehaviour
         for (int i = 1; i <= floors; i++)
         {
             int section = 1;
-            MazeNode root = DFSMazeGenerator.GenerateMaze(0, size, size);
+            MazeNode root = DFSMazeGenerator.GenerateMaze(0, size, size, i);
             List<MazeNode> sectionroots;
 
             if (i == 1)

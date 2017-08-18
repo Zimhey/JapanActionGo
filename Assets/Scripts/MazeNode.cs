@@ -35,6 +35,7 @@ public class MazeNode
 
     public int Row;
     public int Col;
+    public int Floor;
 
 
     public MazeNode()

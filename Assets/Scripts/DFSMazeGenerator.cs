@@ -17,7 +17,7 @@ public class DFSMazeGenerator : MonoBehaviour
 		
 	}
 
-    public static MazeNode GenerateMaze(int seed, int columns, int rows)
+    public static MazeNode GenerateMaze(int seed, int columns, int rows, int floor)
     {
         MazeNode[,] maze = new MazeNode[columns, rows];
         int i, j;
@@ -26,6 +26,7 @@ public class DFSMazeGenerator : MonoBehaviour
             for(j = 0; j < rows; j++)
             {
                 maze[i, j] = new MazeNode(i, j);
+                maze[i, j].Floor = floor;
             }
         }
 
