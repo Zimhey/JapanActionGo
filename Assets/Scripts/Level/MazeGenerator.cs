@@ -15,7 +15,7 @@ public class MazeGenerator : MonoBehaviour
         int size = 10;
         int sections = 2;
         int loops = 3;
-        int floors = 4;
+        int floors = 1;
 
         for (int i = 0; i < floors; i++)
         {
@@ -35,7 +35,8 @@ public class MazeGenerator : MonoBehaviour
 
             foreach (MazeNode r in sectionroots)
             {
-                GenerateActors(r, 1, 1, 1, 1);
+                GenerateActors(r, 5, 5, 5, 5);
+                //AddRandomActors(r);
                 GenerateLadders(i, section, r);
                 GenerateLoops(r, loops, size);
                 SpawnMaze(r, size);
@@ -46,6 +47,50 @@ public class MazeGenerator : MonoBehaviour
             if (surface != null)
                 surface.BuildNavMesh();
         }
+    }
+
+    public void AddRandomActors(MazeNode root)
+    {
+        List<MazeNode> visited = new List<MazeNode>();
+        Stack<MazeNode> nodesToVisit = new Stack<MazeNode>();
+
+        nodesToVisit.Push(root);
+
+        while(nodesToVisit.Count > 0)
+        {
+            MazeNode node = nodesToVisit.Pop();
+            AddRandomActor(node);
+            visited.Add(node);
+            foreach (MazeNode n in node.GetAdjacentNodes())
+                if (!nodesToVisit.Contains(n) && !visited.Contains(n))
+                    nodesToVisit.Push(n);
+        }
+        
+
+    }
+
+    System.Random rand = new System.Random();
+
+    public void AddRandomActor(MazeNode node)
+    {
+        int type = rand.Next() % 7;
+        if (type == 0)
+            node.actor = ActorType.Chalk_Pickup;
+        else if (type == 1)
+            node.actor = ActorType.Ofuda_Pickup;
+        else if (type == 2)
+            node.actor = ActorType.Oni;
+        else if (type == 3)
+            node.actor = ActorType.Okuri_Inu;
+        else if (type == 4)
+            node.actor = ActorType.Taka_Nyudo;
+        else if (type == 5)
+            node.actor = ActorType.Spike_Trap;
+        else if (type == 6)
+            node.actor = ActorType.Crush_Trap;
+        else
+            node.actor = ActorType.Null;
+
     }
 
     // Update is called once per frame
@@ -668,6 +713,7 @@ public class MazeGenerator : MonoBehaviour
 
             // Spawn
             SpawnPiece(node);
+            SpawnActor(node);
 
             // Set Visited
             visited[node.Row, node.Col] = true;
@@ -697,14 +743,14 @@ public class MazeGenerator : MonoBehaviour
 
         if(DebugLabelsOn)
         {
-            GameObject textObj = Instantiate(Resources.Load("Prefabs/CellTextPrefab"), location + new Vector3(0, 0.5f, -1), new Quaternion()) as GameObject;
+            GameObject textObj = Instantiate(Resources.Load("Prefabs/Level/CellTextPrefab"), location + new Vector3(0, 0.5f, -1), new Quaternion()) as GameObject;
             textObj.transform.parent = obj.transform;
 
             TextMesh t = textObj.GetComponentInChildren<TextMesh>();
             if (t != null)
                 t.text = "R: " + node.Row + " C: " + node.Col;
 
-            textObj = Instantiate(Resources.Load("Prefabs/CellTextPrefab"), location + new Vector3(0, 0.5f, 0), new Quaternion()) as GameObject;
+            textObj = Instantiate(Resources.Load("Prefabs/Level/CellTextPrefab"), location + new Vector3(0, 0.5f, 0), new Quaternion()) as GameObject;
             textObj.transform.parent = obj.transform;
 
             t = textObj.GetComponentInChildren<TextMesh>();
@@ -712,6 +758,13 @@ public class MazeGenerator : MonoBehaviour
                 t.text = "P" + piecesSpawned++;
         }
 
+    }
+
+    public void SpawnActor(MazeNode node)
+    {
+        Vector3 location = new Vector3(node.Col * 6 + 8, node.Floor * 30, node.Row * 6 + 8);
+        if(node.actor != ActorType.Null)
+            Instantiate(Actors.Prefabs[node.actor], location, node.GetRotation());
     }
 
 }

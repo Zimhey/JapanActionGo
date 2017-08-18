@@ -3,51 +3,53 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
-//state machine for inu AI
-public enum inustate
+//state machine for taka AI
+public enum takastate
 {
-    Idle, // inu currently doing nothing
-    Patrol, // inu has not seen player, wandering maze
-    Search, // inu has seen player, cannot see player or footprints, is looking for player in maze
-    Chase, // inu sees player, is moving towards player to stalk
-    Stalk, // inu is following player until they trip, then they attack
-    Flee, // inu has encountered safe zone, is returning to home position
-    Dead, // inu has encountered trap, no longer active
-    Follow, // inu does not see player, inu sees footprints, is moving towards footprints
-    Stun // inu has been hit by ofuda and is stunned
+    Idle, // taka currently doing nothing
+    Patrol, // taka has not seen player, wandering maze
+    Search, // taka has seen player, cannot see player or footprints, is looking for player in maze
+    Chase, // taka sees player, is moving towards player to taunt
+    Taunt, // taka is next to player and taunts so player will look up
+    Flee, // taka has encountered safe zone, is returning to home position
+    Dead, // taka has encountered trap, no longer active
+    Follow, // taka does not see player, taka sees footprints, is moving towards footprints
+    Stun // taka has been hit by ofuda and is stunned
 }
 
-public class InuController : MonoBehaviour
+public class TakaController : MonoBehaviour
 {
 
     //player game object
     public GameObject playerObject;
     //starting node for patrol
     public GameObject startingNode;
-    //inu movement speed, set in unity
+    //taka movement speed, set in unity
     public float speed;
     //layermask to raycast against
     public LayerMask levelmask;
 
-    //inu physics body
+    //taka physics body
     private Rigidbody rb;
-    //inu starting point
+    //taka starting point
     private Vector3 home;
-    //inu starting rotation
+    //taka starting rotation
     private Quaternion startingrotation;
-    //current inu state
-    private inustate state;
+    //current taka state
+    private takastate state;
     //is player seen
     private System.Boolean seen;
     //has player been seen
     private System.Boolean awake;
-    //array of locations the inu has been
+    //array of locations the taka has been
     private ArrayList previousLocations = new ArrayList();
     private int lessenough = 5;
     //current node for patrol
     private GameObject currentNode;
     //countdown until no longer stunned
     private int stuntimer;
+    private Camera cam;
+    private float distanceToFloor = 2.5F;
 
     void Start()
     {
@@ -56,43 +58,45 @@ public class InuController : MonoBehaviour
         home = gameObject.transform.position;
         startingrotation = gameObject.transform.rotation;
         //print("OriHome" + home);
-        state = inustate.Idle;
+        state = takastate.Idle;
         awake = false;
         currentNode = startingNode;
         playerObject = GameObject.FindGameObjectWithTag("Player");
+        cam = playerObject.GetComponentInChildren<Camera>();
     }
 
     void LateUpdate()
     {
         //manage state machine each update, call functions based on state
-        print("State" + state);
+        if (state != takastate.Idle)
+            print("State" + state);
         switch (state)
         {
-            case inustate.Idle:
+            case takastate.Idle:
                 idle();
                 break;
-            case inustate.Patrol:
+            case takastate.Patrol:
                 patrol();
                 break;
-            case inustate.Search:
+            case takastate.Search:
                 search();
                 break;
-            case inustate.Chase:
+            case takastate.Chase:
                 chase();
                 break;
-            case inustate.Stalk:
-                stalk();
+            case takastate.Taunt:
+                taunt();
                 break;
-            case inustate.Flee:
+            case takastate.Flee:
                 flee();
                 break;
-            case inustate.Dead:
+            case takastate.Dead:
                 dead();
                 break;
-            case inustate.Follow:
+            case takastate.Follow:
                 follow();
                 break;
-            case inustate.Stun:
+            case takastate.Stun:
                 stun();
                 break;
         }
@@ -112,7 +116,7 @@ public class InuController : MonoBehaviour
 
             //get oldest
             Vector3 firstlocation = (Vector3)previousLocations[0];
-            //check to see if inu has gone far enough for footprints to form
+            //check to see if taka has gone far enough for footprints to form
             if ((lastlocation - firstlocation).magnitude > lessenough)
             {
                 //iterate through
@@ -127,11 +131,11 @@ public class InuController : MonoBehaviour
                         Vector3 norm = (currentlocation - firstlocation);
                         norm.Normalize();
                         //multiply by desired distance to get desired vector and add to first location
-                        Vector3 dest = firstlocation + norm * (float)lessenough - new Vector3(0, 0.8F, 0);
+                        Vector3 dest = firstlocation + norm * (float)lessenough - new Vector3(0, distanceToFloor, 0);
                         //make rotation
                         Quaternion rot = Quaternion.Euler(0, 0, 0);
                         //add to level
-                        Instantiate(Resources.Load("Prefabs/InuFootprint"), dest, rot);
+                        Instantiate(Resources.Load("Prefabs/OniFootprint"), dest, rot);
                         //remove old steps
                         for (int remove = 0; remove < iter; remove++)
                         {
@@ -146,6 +150,7 @@ public class InuController : MonoBehaviour
         {
             previousLocations.Add(rb.position);
         }
+
         if (awake == true)
         {
             float turnspeed = 1.0F;
@@ -155,6 +160,27 @@ public class InuController : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(newDir);
         }
 
+        Vector3 rayDirection = playerObject.transform.localPosition - transform.localPosition;
+        RaycastHit[] hits;
+        hits = Physics.RaycastAll(transform.position, rayDirection, 100.0F);
+        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+
+        for (int i = 0; i < hits.Length; i++)
+        {
+            RaycastHit hit = hits[i];
+            if (hit.collider.CompareTag("Inu")) //if inu is seen
+            {
+                Vector3 distancetoinu = hit.collider.transform.position - gameObject.transform.position;
+                float mag = distancetoinu.magnitude;
+                if (mag < 50.0F)
+                {
+                    state = takastate.Flee;
+                }
+                Transform goal = playerObject.transform; // set current player location as desired location
+                agent.destination = goal.position; // set destination to player's current location
+
+            }
+        }
     }
 
     void idle()
@@ -163,15 +189,15 @@ public class InuController : MonoBehaviour
         seen = seePlayer();
         if (seen)
         {
-            state = inustate.Chase;
+            state = takastate.Chase;
         }
         else if (seeFootprint() && awake == true)
         {
-            state = inustate.Follow;
+            state = takastate.Follow;
         }
-        else if (awake == true && startingNode != null)//awake == true && 
+        else if (awake == true && startingNode != null)
         {
-            state = inustate.Patrol;
+            state = takastate.Patrol;
         }
     }
 
@@ -181,11 +207,11 @@ public class InuController : MonoBehaviour
         seen = seePlayer();
         if (seen)
         {
-            state = inustate.Chase;
+            state = takastate.Chase;
         }
         else if (seeFootprint() && awake == true)
         {
-            state = inustate.Follow;
+            state = takastate.Follow;
         }
         if (rb.transform.position.x < currentNode.transform.position.x + 1 && rb.transform.position.x > currentNode.transform.position.x - 1)
         {
@@ -197,7 +223,7 @@ public class InuController : MonoBehaviour
         else // not yet at current node's location
         {
             Transform goal = currentNode.transform; // set current node location as desired location
-            UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>(); // get inu's navigation agent
+            UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>(); // get taka's navigation agent
             agent.destination = goal.position; // set destination to current node's location
         }
     }
@@ -216,11 +242,11 @@ public class InuController : MonoBehaviour
         {
             if (seeFootprint())
             {
-                state = inustate.Follow;
+                state = takastate.Follow;
             }
             else
             {
-                state = inustate.Idle;
+                state = takastate.Idle;
             }
         }
 
@@ -253,7 +279,7 @@ public class InuController : MonoBehaviour
                 {
                     if (rb.transform.position.z < dest.z + 5 && rb.transform.position.z > dest.z - 5)
                     {
-                        state = inustate.Stalk;
+                        state = takastate.Taunt;
                         agent.destination = rb.transform.position;
                         gameObject.transform.rotation = startingrotation;
                     }
@@ -262,11 +288,11 @@ public class InuController : MonoBehaviour
         }
     }
 
-    void stalk()
+    void taunt()
     {
-        int maxDistance = 5;
+        int maxDistance = 7;
         int maxDistanceSquared = maxDistance * maxDistance;
-        Vector3 rayDirection = playerObject.transform.localPosition - transform.localPosition;
+        Vector3 rayDirection = playerObject.transform.localPosition - (transform.localPosition - new Vector3(0,distanceToFloor,0));
         System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < maxDistanceSquared;
         if (!playerCloseToEnemy)
         {
@@ -274,26 +300,48 @@ public class InuController : MonoBehaviour
             seen = seePlayer();
             if (seen)
             {
-                state = inustate.Chase;
+                state = takastate.Chase;
             }
             else if (seeFootprint())
             {
-                state = inustate.Follow;
+                state = takastate.Follow;
             }
-            else if (startingNode != null)
+            else if(startingNode != null)
             {
-                state = inustate.Patrol;
+                state = takastate.Patrol;
             }
-            else
+            else 
             {
-                state = inustate.Idle;
+                state = takastate.Idle;
             }
         }
 
-        if (hasPlayerTripped())
+        //play taunt sounds
+        Vector3 enemyDirection = transform.TransformDirection(Vector3.forward);
+        float angleDot = Vector3.Dot(rayDirection, enemyDirection);
+        System.Boolean playerInFrontOfEnemy = angleDot > 0.0;
+        System.Boolean nowallfound = noWall();
+
+        if (gameObject.transform.localScale.y < 10)
         {
-            string curlevel = SceneManager.GetActiveScene().name;
-            SceneManager.LoadScene(curlevel);
+            gameObject.transform.localScale += new Vector3(0, 0.01F, 0);
+            gameObject.transform.position += new Vector3(0, 0.005F, 0);
+            distanceToFloor += 0.005F;
+        }
+        else if (gameObject.transform.localScale.y >= 10)
+        {
+            state = takastate.Flee;
+        }
+        if (playerInFrontOfEnemy)
+        {
+            if (nowallfound)
+            {
+                if (playerLookingUp())
+                {
+                    string curlevel = SceneManager.GetActiveScene().name;
+                    SceneManager.LoadScene(curlevel);
+                }
+            }
         }
     }
 
@@ -304,13 +352,19 @@ public class InuController : MonoBehaviour
         agent.destination = home;
         //print("NewDest" + agent.destination);
         //print("Curpos" + rb.transform.position);
+        if (gameObject.transform.localScale.y > 5)
+        {
+            gameObject.transform.localScale -= new Vector3(0, 0.01F, 0);
+            gameObject.transform.position -= new Vector3(0, 0.005F, 0);
+            distanceToFloor -= 0.005F;
+        }
         if (rb.transform.position.x < home.x + 1 && rb.transform.position.x > home.x - 1)
         {
             if (rb.transform.position.y < home.y + 1 && rb.transform.position.y > home.y - 1)
             {
                 if (rb.transform.position.z < home.z + 1 && rb.transform.position.z > home.z - 1)
                 {
-                    state = inustate.Idle;
+                    state = takastate.Idle;
                     gameObject.transform.rotation = startingrotation;
                 }
             }
@@ -328,11 +382,11 @@ public class InuController : MonoBehaviour
         seen = seePlayer();
         if (seen)
         {
-            state = inustate.Chase;
+            state = takastate.Chase;
         }
         else if (!seeFootprint())
         {
-            state = inustate.Idle;
+            state = takastate.Idle;
         }
 
         Vector3 rayDirection = playerObject.transform.localPosition - transform.localPosition;
@@ -361,15 +415,15 @@ public class InuController : MonoBehaviour
             seen = seePlayer();
             if (seen)
             {
-                state = inustate.Chase;
+                state = takastate.Chase;
             }
             else if (seeFootprint() && awake == true)
             {
-                state = inustate.Follow;
+                state = takastate.Follow;
             }
             else
             {
-                state = inustate.Idle;
+                state = takastate.Idle;
             }
         }
     }
@@ -381,7 +435,7 @@ public class InuController : MonoBehaviour
 
     void Stun()
     {
-        state = inustate.Stun;
+        state = takastate.Stun;
         stuntimer = 120;
     }
 
@@ -446,9 +500,20 @@ public class InuController : MonoBehaviour
         return false;
     }
 
-    bool hasPlayerTripped()
+    bool playerLookingUp()
     {
-        return false;
+        Vector3 dir = cam.transform.rotation * Vector3.up;
+        Vector3 enemyDirection = playerObject.transform.TransformDirection(Vector3.forward);
+        float angleDot = Vector3.Dot(dir, enemyDirection);
+        System.Boolean playerlookup = angleDot < -0.5;
+        if (playerlookup)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     void OnCollisionEnter(Collision col)
@@ -460,10 +525,10 @@ public class InuController : MonoBehaviour
         if (col.gameObject.CompareTag("SafeZone"))
         {
             UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-            if (state != inustate.Flee)
+            if (state != takastate.Flee)
             {
                 agent.ResetPath();
-                state = inustate.Flee;
+                state = takastate.Flee;
             }
         }
         if (col.gameObject == playerObject)

@@ -217,17 +217,17 @@ public class MazeNode
         switch (GetCellType())
         {
             case CellType.DeadEnd:
-                return "Prefabs/ThreeWallPrefab";
+                return "Prefabs/Level/ThreeWallPrefab";
             case CellType.Hallway:
-                return "Prefabs/TwoWallPrefab";
+                return "Prefabs/Level/TwoWallPrefab";
             case CellType.Corner:
-                return "Prefabs/CornerWallPrefab";
+                return "Prefabs/Level/CornerWallPrefab";
             case CellType.Threeway:
-                return "Prefabs/OneWallPrefab";
+                return "Prefabs/Level/OneWallPrefab";
             case CellType.Fourway:
-                return "Prefabs/NoWallPrefab";
+                return "Prefabs/Level/NoWallPrefab";
             default:
-                return "Prefabs/OrphanTextPrefab";
+                return "Prefabs/Level/OrphanTextPrefab";
         }
     }
 

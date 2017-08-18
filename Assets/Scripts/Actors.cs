@@ -33,7 +33,16 @@ public enum ActorType
 
 public class Actors : MonoBehaviour {
 
-    public static Dictionary<ActorType, GameObject> Prefabs;
+    public static Dictionary<ActorType, GameObject> prefabs;
+    public static Dictionary<ActorType, GameObject> Prefabs
+    {
+        get
+        {
+            InitPrefabs();
+            return prefabs;
+        }
+    }
+
     private static bool initialized = false;
 
     // get field call init?
@@ -42,29 +51,31 @@ public class Actors : MonoBehaviour {
     {
         if(!initialized)
         {
-            //Prefabs.Add(ActorType.Player, Resources.Load("Prefabs/ChalkMark") as GameObject);
-            //Prefabs.Add(ActorType.Oni, Resources.Load("Prefabs/ChalkMark") as GameObject);
-            //Prefabs.Add(ActorType.Taka_Nyudo, Resources.Load("Prefabs/ChalkMark") as GameObject);
-            //Prefabs.Add(ActorType.Okuri_Inu, Resources.Load("Prefabs/ChalkMark") as GameObject);
-            Prefabs.Add(ActorType.Spike_Trap, Resources.Load("Prefabs/Traps/SpikeTrapPrefab") as GameObject);
-            Prefabs.Add(ActorType.Crush_Trap, Resources.Load("Prefabs/Traps/CrushingTrapPrefab") as GameObject);
-            //Prefabs.Add(ActorType.Pit_Trap, Resources.Load("Prefabs/ChalkMark") as GameObject);
-            //Prefabs.Add(ActorType.Dart_Trap, Resources.Load("Prefabs/ChalkMark") as GameObject);
-           // Prefabs.Add(ActorType.Dart_Projectile, Resources.Load("Prefabs/ChalkMark") as GameObject);
-            //Prefabs.Add(ActorType.Tripwire, Resources.Load("Prefabs/ChalkMark") as GameObject);
-            //Prefabs.Add(ActorType.Lantern_Trap, Resources.Load("Prefabs/ChalkMark") as GameObject);
-            Prefabs.Add(ActorType.Chalk_Pickup, Resources.Load("Prefabs/Pickups/ChalkPickup") as GameObject);
-            Prefabs.Add(ActorType.Ofuda_Pickup, Resources.Load("Prefabs/Pickups/OfudaPickup") as GameObject);
-            Prefabs.Add(ActorType.Mirror_Pickup, Resources.Load("Prefabs/Pickups/MirrorPickup") as GameObject);
-            Prefabs.Add(ActorType.Compass_Pickup, Resources.Load("Prefabs/Pickups/CompassPickup") as GameObject);
-            //Prefabs.Add(ActorType.Pressure_Plate, Resources.Load("Prefabs/ChalkMark") as GameObject);
-            //Prefabs.Add(ActorType.Lever, Resources.Load("Prefabs/ChalkMark") as GameObject);
-            //Prefabs.Add(ActorType.Chalk_Mark, Resources.Load("Prefabs/ChalkMark") as GameObject);
-            //Prefabs.Add(ActorType.Ofuda_Projectile, Resources.Load("Prefabs/ChalkMark") as GameObject);
-            //Prefabs.Add(ActorType.Player_Footprint, Resources.Load("Prefabs/ChalkMark") as GameObject);
-            //Prefabs.Add(ActorType.Oni_Footprint, Resources.Load("Prefabs/ChalkMark") as GameObject);
-            //Prefabs.Add(ActorType.Taka_Nyudo_Footprint, Resources.Load("Prefabs/ChalkMark") as GameObject);
-            //Prefabs.Add(ActorType.Okuri_Inu_Footprint, Resources.Load("Prefabs/ChalkMark") as GameObject);
+            prefabs = new Dictionary<ActorType, GameObject>();
+            initialized = true;
+            prefabs.Add(ActorType.Player, Resources.Load("Prefabs/Player/FPS_Player") as GameObject);
+            prefabs.Add(ActorType.Oni, Resources.Load("Prefabs/Enemy/Oni") as GameObject);
+            prefabs.Add(ActorType.Taka_Nyudo, Resources.Load("Prefabs/Enemy/TakaNyudo") as GameObject);
+            prefabs.Add(ActorType.Okuri_Inu, Resources.Load("Prefabs/Enemy/OkuriInu") as GameObject);
+            prefabs.Add(ActorType.Spike_Trap, Resources.Load("Prefabs/Traps/SpikeTrapPrefab") as GameObject);
+            prefabs.Add(ActorType.Crush_Trap, Resources.Load("Prefabs/Traps/CrushingTrapPrefab") as GameObject);
+            //prefabs.Add(ActorType.Pit_Trap, Resources.Load("Prefabs/ChalkMark") as GameObject);
+            //prefabs.Add(ActorType.Dart_Trap, Resources.Load("Prefabs/ChalkMark") as GameObject);
+            // prefabs.Add(ActorType.Dart_Projectile, Resources.Load("Prefabs/ChalkMark") as GameObject);
+            //prefabs.Add(ActorType.Tripwire, Resources.Load("Prefabs/ChalkMark") as GameObject);
+            //prefabs.Add(ActorType.Lantern_Trap, Resources.Load("Prefabs/ChalkMark") as GameObject);
+            prefabs.Add(ActorType.Chalk_Pickup, Resources.Load("Prefabs/Pickups/ChalkPickup") as GameObject);
+            prefabs.Add(ActorType.Ofuda_Pickup, Resources.Load("Prefabs/Pickups/OfudaPickup") as GameObject);
+            prefabs.Add(ActorType.Mirror_Pickup, Resources.Load("Prefabs/Pickups/MirrorPickup") as GameObject);
+            prefabs.Add(ActorType.Compass_Pickup, Resources.Load("Prefabs/Pickups/CompassPickup") as GameObject);
+            //prefabs.Add(ActorType.Pressure_Plate, Resources.Load("Prefabs/ChalkMark") as GameObject);
+            //prefabs.Add(ActorType.Lever, Resources.Load("Prefabs/ChalkMark") as GameObject);
+            prefabs.Add(ActorType.Chalk_Mark, Resources.Load("Prefabs/Player/ChalkMark") as GameObject);
+            prefabs.Add(ActorType.Ofuda_Projectile, Resources.Load("Prefabs/Player/OfudaProjectile") as GameObject);
+            prefabs.Add(ActorType.Player_Footprint, Resources.Load("Prefabs/Player/Footprint") as GameObject);
+            prefabs.Add(ActorType.Oni_Footprint, Resources.Load("Prefabs/Enemy/OniFootprint") as GameObject);
+            //prefabs.Add(ActorType.Taka_Nyudo_Footprint, Resources.Load("Prefabs/ChalkMark") as GameObject);
+            prefabs.Add(ActorType.Okuri_Inu_Footprint, Resources.Load("Prefabs/Enemy/InuFootprint") as GameObject);
         }
     }
 }

@@ -27,12 +27,14 @@ public class PlayerActions : MonoBehaviour
     private ArrayList previousLocations = new ArrayList();
     private int lessenough = 5;
     private float distanceToFloor = 0.95F;
+    private GameObject footprintPrefab;
 
     // Use this for initialization
     void Start()
     {
-        chalkPrefab = Resources.Load("Prefabs/ChalkMark") as GameObject;
-        ofudaPrefab = Resources.Load("Prefabs/OfudaProjectile") as GameObject;
+        chalkPrefab = Actors.Prefabs[ActorType.Chalk_Mark];
+        ofudaPrefab = Actors.Prefabs[ActorType.Ofuda_Projectile];
+        footprintPrefab = Actors.Prefabs[ActorType.Player_Footprint];
         cam = gameObject.GetComponentInChildren<Camera>();
     }
 
@@ -104,7 +106,7 @@ public class PlayerActions : MonoBehaviour
                         //make rotation
                         Quaternion rot = Quaternion.Euler(0, 0, 0);
                         //add to level
-                        Instantiate(Resources.Load("Prefabs/Footprint"), dest, rot);
+                        Instantiate(footprintPrefab, dest, rot);
                         //remove old steps
                         for (int remove = 0; remove < iter; remove++)
                         {
@@ -172,7 +174,6 @@ public class PlayerActions : MonoBehaviour
     {
         if(!thrown)
         {
-            Debug.Log("Throwing Ofuda");
             Instantiate(ofudaPrefab, cam.transform.position + cam.transform.forward, cam.transform.rotation);
             PlayerInventory.Used(ItemType.Ofuda);
             thrown = true;
@@ -182,7 +183,7 @@ public class PlayerActions : MonoBehaviour
 
     void Die()
     {
-        Debug.Log("I've been killed!");
+        
     }
 
 

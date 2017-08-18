@@ -631,10 +631,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   FireAnimTime: 0.5
-  ResetAnimTime: 5
+  ResetAnimTime: 2.5
   CanReset: 1
   ResetRequested: 0
-  ArmedPosition: {x: 0, y: 15, z: 0}
+  ArmedPosition: {x: 0, y: 4, z: 0}
   UnarmedPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &114787476170444926
 MonoBehaviour:
