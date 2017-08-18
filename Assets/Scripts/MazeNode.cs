@@ -31,6 +31,8 @@ public class MazeNode
     public int forwardNodes = 0;
     public int backwardNodes = 0;
 
+    public ActorType actor = ActorType.Null;
+
     public int Row;
     public int Col;
 

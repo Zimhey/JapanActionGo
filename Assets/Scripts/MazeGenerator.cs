@@ -14,26 +14,39 @@ public class MazeGenerator : MonoBehaviour
     void Start()
     {
         int size = 10;
-        int sections = 3;
-        int loops = 2;
-        MazeNode root = DFSMazeGenerator.GenerateMaze(0, size, size);
-        List<MazeNode> sectionroots = GenerateSections(root, sections, size, size);
-        /*
-        root = GenTestMaze(size);
-        root.Right.Left = null;
-        root.Right = null;
-        root.Forward.Right = null;
-        root = RecursiveMazeGenerator.GenerateMaze(0, size, size);
-        */
-        foreach (MazeNode r in sectionroots)
+        int sections = 2;
+        int loops = 3;
+        int floors = 1;
+
+        for (int i = 1; i <= floors; i++)
         {
-            GenerateLoops2(r, loops, size);
-            SpawnMaze(r, size);
+            int section = 1;
+            MazeNode root = DFSMazeGenerator.GenerateMaze(0, size, size);
+            List<MazeNode> sectionroots;
+
+            if (i == 1)
+            {
+                sectionroots = GenerateSections(root, sections, size, size);
+            }
+
+            else
+            {
+                sectionroots = GenerateSections(root, 1, size, size);
+            }
+
+            foreach (MazeNode r in sectionroots)
+            {
+                GenerateActors(r, 1, 1, 1, 1);
+                GenerateLadders(i, section, r);
+                GenerateLoops(r, loops, size);
+                SpawnMaze(r, size);
+                section++;
+            }
+
+            surface = GetComponent<NavMeshSurface>();
+            if (surface != null)
+                surface.BuildNavMesh();
         }
-        //SpawnMaze(root, size);
-        surface = GetComponent<NavMeshSurface>();
-        if (surface != null)
-            surface.BuildNavMesh();
     }
 
     // Update is called once per frame
@@ -363,99 +376,175 @@ public class MazeGenerator : MonoBehaviour
         return branchDistance;
     }
 
-    public static void GenerateLoops(MazeNode root, int loops, int size)
+    public static int NumberOfDeadEndNodes(MazeNode root)
     {
-        //print(root.Col + " " + root.Row);
-        // TODO Generate Loops
-        MazeNode current;
+        int number = 0;
         Stack<MazeNode> visited = new Stack<MazeNode>();
         Stack<MazeNode> visited2 = new Stack<MazeNode>();
-        int[,,] disconnectingWalls = new int[size, size, 4];
-        MazeNode[,,] disconnectedNodes = new MazeNode[size, size, 4];
-        int counter;
-        int counter2;
-        int counter3;
+        MazeNode current;
 
         visited.Push(root);
         visited2.Push(root);
 
-        for (counter = 0; counter < size; counter++)
-            for (counter2 = 0; counter2 < size; counter2++)
-                for(counter3 = 0; counter3 < 4; counter3++)
-                    disconnectingWalls[counter, counter2, counter3] = 0;
-
         while (visited.Count > 0)
         {
             current = visited.Pop();
-
-            for (counter = 0; counter < 4; counter++)
-            {
-                int disconnected;
-                if (counter == 0 && current.Left == null || counter == 1 && current.Forward == null || counter == 2 && current.Right == null || counter == 3 && current.Backward == null)
+            foreach (MazeNode n in current.GetAdjacentNodes())
+                if (!visited2.Contains(n))
                 {
-                    MazeNode disconnectedNode = findNode(current, counter);
-                    if (disconnectedNode != null)
-                    {
-                        disconnected = DistanceBetween(current, disconnectedNode);
-                        disconnectingWalls[current.Col, current.Row, counter] = disconnected;
-                        disconnectedNodes[current.Col, current.Row, counter] = current;
-                    }
+                    if (!n.OnExitPath)
+                        number++;
+                    visited.Push(n);
+                    visited2.Push(n);
+                }
+        }
+
+        return number;
+    }
+
+    public static MazeNode FindPathEnd(MazeNode root)
+    {
+        MazeNode previous = root;
+        MazeNode current = root;
+
+        foreach(MazeNode n in current.GetAdjacentNodes())
+        {
+            if(n.OnExitPath && !n.Equals(previous))
+            {
+                previous = current;
+                current = n;
+            }
+        }
+
+        return current;
+    }
+
+    public static void GenerateActors(MazeNode root, int ofuda, int oni, int chalk, int trap)
+    {
+        System.Random rand = new System.Random();
+        int PossiblePlaces = NumberOfDeadEndNodes(root);
+        int actors = ofuda + oni + chalk;
+        int[] actorLocations = new int[actors];
+        int of = ofuda;
+        int on = oni;
+        int ch = chalk;
+        int tr = trap;
+
+        int counter = 0;
+
+        int number = 0;
+        Stack<MazeNode> visited = new Stack<MazeNode>();
+        Stack<MazeNode> visited2 = new Stack<MazeNode>();
+        MazeNode current;
+
+        visited.Push(root);
+        visited2.Push(root);
+
+        for (int i = 0; i < actors; i++)
+        {
+            actorLocations[i] = PossiblePlaces;
+        }
+
+        for (int i = 0; i < actors; i++)
+        {
+            int temp = 0;
+            bool listContains = true;
+            while(listContains)
+            {
+                temp = rand.Next(0, PossiblePlaces);
+                listContains = false;
+                for(int j = 0; j < actors; j++)
+                {
+                    if (actorLocations[j] == temp)
+                        listContains = true;
                 }
             }
+            actorLocations[i] = temp;
+        }
 
-            foreach(MazeNode n in current.GetAdjacentNodes())
+        while (visited.Count > 0 && counter < 1000)
+        {
+            current = visited.Pop();
+            foreach (MazeNode n in current.GetAdjacentNodes())
             {
-                if(!visited2.Contains(n))
+                if (!visited2.Contains(n))
                 {
+                    if (!n.OnExitPath)
+                    {
+                        number++;
+                        foreach (int loc in actorLocations)
+                        {
+                            if (of == 0 && on == 0 && ch == 0 && tr == 0)
+                                break;
+                            if (loc == number)
+                            {
+                                bool usedUp = true;
+                                while (usedUp)
+                                {
+                                    usedUp = false;
+                                    int type = rand.Next(0, 4);
+                                    if (type == 0 && of == 0)
+                                        usedUp = true;
+                                    else if (type == 0)
+                                    {
+                                        n.actor = ActorType.Ofuda_Pickup;
+                                        of--;
+                                    }
+                                    else if (type == 1 && on == 0)
+                                        usedUp = true;
+                                    else if (type == 1)
+                                    {
+                                        n.actor = ActorType.Oni;
+                                        on--;
+                                    }
+                                    else if (type == 2 && ch == 0)
+                                        usedUp = true;
+                                    else if (type == 2)
+                                    {
+                                        n.actor = ActorType.Chalk_Pickup;
+                                        ch--;
+                                    }
+                                    else if (type == 3 && tr == 0)
+                                        usedUp = true;
+                                    else if(type == 3)
+                                    {
+                                        n.actor = ActorType.Spike_Trap;
+                                        tr--;
+                                    }
+                                }
+                            }
+                        }
+                    }
                     visited.Push(n);
                     visited2.Push(n);
                 }
             }
+            counter++;
         }
+        print(counter);
+    }
 
-        while (loops > 0)
+    public static void GenerateLadders(int floor, int section, MazeNode root)
+    {
+        if (floor == 1)
         {
-            int largestDisconnection = 0;
-            int largestCol = 0;
-            int largestRow = 0;
-            int largestDir = 0;
-            int i;
-            int j;
-            int k;
-            MazeNode largestDisconnectedNode = root;
-
-            for (i = 0; i < size; i++)
+            if(section == 1)
             {
-                for (j = 0; j < size; j++)
-                {
-                    for (k = 0; k < 4; k++)
-                    {
-                        if (disconnectingWalls[i, j, k] > largestDisconnection)
-                        {
-                            largestDisconnection = disconnectingWalls[i, j, k];
-                            largestDisconnectedNode = disconnectedNodes[i, j, k];
-                            largestCol = i;
-                            largestRow = j;
-                            largestDir = k;
-                        }
-                    }
-                }
+                FindPathEnd(root).actor = ActorType.Ladder;
             }
-
-            MazeNode mazeNode = findNode(largestDisconnectedNode, largestDir);
-            if (mazeNode != null)
-                largestDisconnectedNode.AddEdge(mazeNode);
-            loops--;
-            disconnectingWalls[largestCol, largestRow, largestDir] = 0;
-            disconnectingWalls[mazeNode.Col, mazeNode.Row, (largestDir + 2) % 4] = 0;
-            largestDisconnection = 0;
-            largestDir = 0;
-            largestCol = 0;
-            largestRow = 0;
+            if(section == 2)
+            {
+                root.actor = ActorType.Ladder;
+            }
+        }
+        if(floor == 2)
+        {
+            root.actor = ActorType.Ladder;
+            FindPathEnd(root).actor = ActorType.Ladder;
         }
     }
 
-    public static void GenerateLoops2(MazeNode root, int loops, int size)
+    public static void GenerateLoops(MazeNode root, int loops, int size)
     {
         //print(root.Col + " " + root.Row);
         // TODO Generate Loops
@@ -539,7 +628,7 @@ public class MazeGenerator : MonoBehaviour
             MazeNode mazeNode = findNode(largestDisconnectedNode, largestDir);
             if (mazeNode != null)
             {
-                print("Column: " + largestDisconnectedNode.Col + " Row: " + largestDisconnectedNode.Row + " Disconnection: " + largestDisconnection + " Direction: " + largestDir);
+                //print("Column: " + largestDisconnectedNode.Col + " Row: " + largestDisconnectedNode.Row + " Disconnection: " + largestDisconnection + " Direction: " + largestDir);
                 largestDisconnectedNode.AddEdge(mazeNode);
                 disconnectingWalls[largestCol, largestRow, largestDir] = 0;
                 disconnectingWalls[mazeNode.Col, mazeNode.Row, (largestDir + 2) % 4] = 0;
