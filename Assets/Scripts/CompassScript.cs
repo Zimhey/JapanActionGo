@@ -26,7 +26,6 @@ public class CompassScript : MonoBehaviour
         Quaternion dir = cam.transform.rotation;
         Vector3 curdir = new Vector3(0, dir.y, 0);
         float currentRotation = Vector3.Dot(curdir, new Vector3(0, 1, 0));
-        print(currentRotation * 100);
         if (currentRotation * 100 < 40 && currentRotation * 100 > -40)
         {
             compassLabel.text = string.Format("{0:00}:{1:00}", "Orientation", "N");
