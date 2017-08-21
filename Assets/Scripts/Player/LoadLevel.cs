@@ -28,6 +28,10 @@ public class LoadLevel : MonoBehaviour {
             {
                 SceneManager.LoadScene("Tutorial4");
             }
+            else if (SceneManager.GetActiveScene().name == "Tutorial4")
+            {
+                SceneManager.LoadScene("MazeGenerationTest");
+            }
 
         }
     }
