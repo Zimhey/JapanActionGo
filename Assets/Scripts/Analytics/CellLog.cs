@@ -22,7 +22,7 @@ public class CellLog : MonoBehaviour {
     {
         if (collider.gameObject != null)
         {
-            Debug.Log(collider.gameObject.tag + " entered Cell R: " + Row + " C: " + Col + " at Time: " + Time.time);
+            //Debug.Log(collider.gameObject.tag + " entered Cell R: " + Row + " C: " + Col + " at Time: " + Time.time);
         }
     }
 
