@@ -59,7 +59,7 @@ public class MazeGenerator : MonoBehaviour
 
         nodesToVisit.Push(root);
 
-        while(nodesToVisit.Count > 0)
+        while (nodesToVisit.Count > 0)
         {
             MazeNode node = nodesToVisit.Pop();
             AddRandomActor(node);
@@ -163,14 +163,14 @@ public class MazeGenerator : MonoBehaviour
         if (difficulty == 5)
         {
             size = 30;
-            sections = new int[] { 4, 5, 5, 2 };
+            sections = new int[] { 4, 6, 6, 3 };
             loops = 5;
             floors = 4;
         }
         if (difficulty == 6)
         {
             size = 40;
-            sections = new int[] { 5, 6, 6, 6, 2 };
+            sections = new int[] { 5, 8, 8, 8, 4 };
             loops = 5;
             floors = 5;
         }
@@ -180,6 +180,7 @@ public class MazeGenerator : MonoBehaviour
 
     public void GenerateMazeHelper(int size, int[] sections, int loops, int floors)
     {
+        //MazeNode[,] roots = ;
         for (int i = 0; i < floors; i++)
         {
             int section = 1;
@@ -203,7 +204,101 @@ public class MazeGenerator : MonoBehaviour
         }
     }
 
+    public void connectLadderNodes(int difficulty, MazeNode[,] roots)
+    {
+        if (difficulty == 1 || difficulty == 2)
+        {
+            connectLadders(FindPathEnd(roots[0, 0]), roots[1, 0]);
+            connectLadders(FindPathEnd(roots[1, 0]), roots[2, 0]);
+            connectLadders(FindPathEnd(roots[2, 0]), roots[1, 1]);
+            connectLadders(FindPathEnd(roots[1, 1]), roots[0, 1]);
+        }
+        if(difficulty == 3)
+        {
+            connectLadders(FindPathEnd(roots[0, 0]), roots[1, 0]);
+            connectLadders(FindPathEnd(roots[1, 0]), roots[2, 0]);
+            connectLadders(FindPathEnd(roots[2, 0]), roots[1, 1]);
+            connectLadders(FindPathEnd(roots[1, 1]), roots[2, 1]);
+            connectLadders(FindPathEnd(roots[2, 1]), roots[1, 2]);
+            connectLadders(FindPathEnd(roots[1, 2]), roots[0, 1]);
+        }
+        if(difficulty == 4)
+        {
+            connectLadders(FindPathEnd(roots[0, 0]), roots[1, 0]);
+            connectLadders(FindPathEnd(roots[1, 0]), roots[2, 0]);
+            connectLadders(FindPathEnd(roots[2, 0]), roots[3, 0]);
+            connectLadders(FindPathEnd(roots[3, 0]), roots[2, 1]);
+            connectLadders(FindPathEnd(roots[2, 1]), roots[1, 1]);
+            connectLadders(FindPathEnd(roots[1, 1]), roots[0, 1]);
+            connectLadders(FindPathEnd(roots[0, 1]), roots[1, 2]);
+            connectLadders(FindPathEnd(roots[1, 2]), roots[2, 2]);
+            connectLadders(FindPathEnd(roots[2, 2]), roots[3, 1]);
+            connectLadders(FindPathEnd(roots[3, 1]), roots[2, 3]);
+            connectLadders(FindPathEnd(roots[2, 3]), roots[1, 3]);
+            connectLadders(FindPathEnd(roots[1, 3]), roots[0, 2]);
+        }
+        if (difficulty == 5)
+        {
+            connectLadders(FindPathEnd(roots[0, 0]), roots[1, 0]);
+            connectLadders(FindPathEnd(roots[1, 0]), roots[2, 0]);
+            connectLadders(FindPathEnd(roots[2, 0]), roots[3, 0]);
+            connectLadders(FindPathEnd(roots[3, 0]), roots[2, 1]);
+            connectLadders(FindPathEnd(roots[2, 1]), roots[1, 1]);
+            connectLadders(FindPathEnd(roots[1, 1]), roots[0, 1]);
+            connectLadders(FindPathEnd(roots[0, 1]), roots[1, 2]);
+            connectLadders(FindPathEnd(roots[1, 2]), roots[2, 2]);
+            connectLadders(FindPathEnd(roots[2, 2]), roots[3, 1]);
+            connectLadders(FindPathEnd(roots[3, 1]), roots[2, 3]);
+            connectLadders(FindPathEnd(roots[2, 3]), roots[1, 3]);
+            connectLadders(FindPathEnd(roots[1, 3]), roots[0, 2]);
+            connectLadders(FindPathEnd(roots[0, 2]), roots[1, 4]);
+            connectLadders(FindPathEnd(roots[1, 4]), roots[2, 4]);
+            connectLadders(FindPathEnd(roots[2, 4]), roots[3, 2]);
+            connectLadders(FindPathEnd(roots[3, 2]), roots[2, 5]);
+            connectLadders(FindPathEnd(roots[2, 5]), roots[1, 5]);
+            connectLadders(FindPathEnd(roots[1, 5]), roots[0, 3]);
+        }
+        if (difficulty == 6)
+        {
+            connectLadders(FindPathEnd(roots[0, 0]), roots[1, 0]);
+            connectLadders(FindPathEnd(roots[1, 0]), roots[2, 0]);
+            connectLadders(FindPathEnd(roots[2, 0]), roots[3, 0]);
+            connectLadders(FindPathEnd(roots[2, 0]), roots[4, 0]);
+            connectLadders(FindPathEnd(roots[2, 0]), roots[3, 1]);
+            connectLadders(FindPathEnd(roots[3, 0]), roots[2, 1]);
+            connectLadders(FindPathEnd(roots[2, 1]), roots[1, 1]);
+            connectLadders(FindPathEnd(roots[1, 1]), roots[0, 1]);
+            connectLadders(FindPathEnd(roots[0, 1]), roots[1, 2]);
+            connectLadders(FindPathEnd(roots[1, 2]), roots[2, 2]);
+            connectLadders(FindPathEnd(roots[2, 2]), roots[3, 2]);
+            connectLadders(FindPathEnd(roots[2, 2]), roots[4, 1]);
+            connectLadders(FindPathEnd(roots[2, 2]), roots[3, 3]);
+            connectLadders(FindPathEnd(roots[3, 1]), roots[2, 3]);
+            connectLadders(FindPathEnd(roots[2, 3]), roots[1, 3]);
+            connectLadders(FindPathEnd(roots[1, 3]), roots[0, 2]);
+            connectLadders(FindPathEnd(roots[0, 2]), roots[1, 4]);
+            connectLadders(FindPathEnd(roots[1, 4]), roots[2, 4]);
+            connectLadders(FindPathEnd(roots[2, 4]), roots[3, 4]);
+            connectLadders(FindPathEnd(roots[2, 4]), roots[4, 2]);
+            connectLadders(FindPathEnd(roots[2, 4]), roots[3, 5]);
+            connectLadders(FindPathEnd(roots[3, 2]), roots[2, 5]);
+            connectLadders(FindPathEnd(roots[2, 5]), roots[1, 5]);
+            connectLadders(FindPathEnd(roots[1, 5]), roots[0, 3]);
+            connectLadders(FindPathEnd(roots[2, 4]), roots[1, 6]);
+            connectLadders(FindPathEnd(roots[3, 2]), roots[2, 6]);
+            connectLadders(FindPathEnd(roots[2, 5]), roots[3, 6]);
+            connectLadders(FindPathEnd(roots[2, 4]), roots[4, 3]);
+            connectLadders(FindPathEnd(roots[2, 4]), roots[3, 7]);
+            connectLadders(FindPathEnd(roots[3, 2]), roots[2, 7]);
+            connectLadders(FindPathEnd(roots[2, 5]), roots[1, 7]);
+            connectLadders(FindPathEnd(roots[1, 5]), roots[0, 4]);
+        }
+    }
 
+    public void connectLadders(MazeNode node1, MazeNode node2)
+    {
+
+    }
 
     public static LinkedList<MazeNode> GetPath(MazeNode start, MazeNode end)
     {
