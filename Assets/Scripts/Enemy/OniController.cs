@@ -234,7 +234,10 @@ public class OniController : MonoBehaviour
 
     void search()
     {
-
+        Vector3 newdir = transform.forward * 10;
+        Vector3 goal = transform.position - newdir;
+        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>(); 
+        agent.destination = goal; 
     }
 
     void chase()

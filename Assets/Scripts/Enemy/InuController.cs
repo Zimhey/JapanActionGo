@@ -92,6 +92,9 @@ public class InuController : MonoBehaviour
             case inustate.Stalk:
                 stalk();
                 break;
+            case inustate.Cornered:
+                cornered();
+                break;
             case inustate.Flee:
                 flee();
                 break;
