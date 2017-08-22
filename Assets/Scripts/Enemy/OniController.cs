@@ -49,6 +49,7 @@ public class OniController : MonoBehaviour
     private int stuntimer;
 
     private GameObject footprintPrefab;
+    private Animator anim;
 
     void Start()
     {
@@ -62,12 +63,19 @@ public class OniController : MonoBehaviour
         currentNode = startingNode;
         playerObject = GameObject.FindGameObjectWithTag("Player");
         footprintPrefab = Actors.Prefabs[ActorType.Oni_Footprint];
+        anim = GetComponentInChildren<Animator>();
     }
 
     void LateUpdate()
     {
+        UnityEngine.AI.NavMeshAgent agent0 = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        if (agent0.velocity.magnitude < 0.5)
+            anim.SetInteger("State", 0);
+        else
+            anim.SetInteger("State", 1);   
+
         //manage state machine each update, call functions based on state
-        if(state != onistate.Idle)
+        if (state != onistate.Idle)
             print("State" + state);
         switch(state)
         {
