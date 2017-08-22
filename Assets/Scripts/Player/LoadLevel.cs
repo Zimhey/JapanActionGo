@@ -32,7 +32,10 @@ public class LoadLevel : MonoBehaviour {
             {
                 SceneManager.LoadScene("MazeGenerationTest");
             }
-
+            else if (SceneManager.GetActiveScene().name == "MazeGenerationTest")
+            {
+                //get location, find matching pair member, teleport player to that location
+            }
         }
     }
 }
