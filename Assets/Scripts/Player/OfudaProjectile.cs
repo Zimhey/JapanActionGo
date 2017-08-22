@@ -26,5 +26,10 @@ public class OfudaProjectile : MonoBehaviour {
             collider.gameObject.SendMessage("Stun");
             Destroy(gameObject);
         }
+        if (collider.gameObject != null && collider.gameObject.tag == "Inu")
+        {
+            collider.gameObject.SendMessage("Stun");
+            Destroy(gameObject);
+        }
     }
 }

@@ -185,6 +185,11 @@ public class PlayerActions : MonoBehaviour
     {
         
     }
+    
 
+    void SafeZoneCollision()
+    {
+        
+    }
 
 }

@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4333282446490334}
   - component: {fileID: 108949891779983558}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 33932127492700942}
   - component: {fileID: 136914579886179138}
   - component: {fileID: 23216115297340116}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Lantern (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 33587340955858680}
   - component: {fileID: 65040215390153402}
   - component: {fileID: 23367927746018138}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: 33052073305668016}
   - component: {fileID: 65232740382499276}
   - component: {fileID: 23017375191215112}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Connector (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 33145789538997274}
   - component: {fileID: 65355917798339096}
   - component: {fileID: 23359405986922932}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Wall (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,7 +110,7 @@ GameObject:
   - component: {fileID: 33319043690122524}
   - component: {fileID: 136985007886847638}
   - component: {fileID: 23717247872269518}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Pillar
   m_TagString: SafeZone
   m_Icon: {fileID: 0}
@@ -128,7 +128,7 @@ GameObject:
   - component: {fileID: 33902522118524842}
   - component: {fileID: 65683788918375794}
   - component: {fileID: 23353012818291182}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Connector (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 33863325813869986}
   - component: {fileID: 65145562262661796}
   - component: {fileID: 23172309647727970}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -164,7 +164,7 @@ GameObject:
   - component: {fileID: 33922024884489988}
   - component: {fileID: 136231913501263562}
   - component: {fileID: 23619805432830496}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Lantern (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180,7 +180,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4107888229839376}
   - component: {fileID: 108680440931415832}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -198,7 +198,7 @@ GameObject:
   - component: {fileID: 33495796432847150}
   - component: {fileID: 65912915137475442}
   - component: {fileID: 23918678324372476}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Wall (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -216,7 +216,7 @@ GameObject:
   - component: {fileID: 33448554966715650}
   - component: {fileID: 136576251826585454}
   - component: {fileID: 23067701195079320}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Lantern
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -232,7 +232,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4303840788290186}
   - component: {fileID: 108441808255162622}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -250,7 +250,7 @@ GameObject:
   - component: {fileID: 33794762489410494}
   - component: {fileID: 65878438916494906}
   - component: {fileID: 23449717164816600}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Connector (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -266,7 +266,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4782840663623622}
   - component: {fileID: 108926208361915442}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -281,7 +281,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4287616222433622}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TwoWallPrefab
   m_TagString: SafeZone
   m_Icon: {fileID: 0}
@@ -299,7 +299,7 @@ GameObject:
   - component: {fileID: 33122418656123756}
   - component: {fileID: 65534039819981782}
   - component: {fileID: 23072883221300648}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Connector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -314,7 +314,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4456217157986956}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TwoWallPrefab (1)
   m_TagString: SafeZone
   m_Icon: {fileID: 0}
@@ -332,7 +332,7 @@ GameObject:
   - component: {fileID: 33384955798882070}
   - component: {fileID: 136667906846187106}
   - component: {fileID: 23471643508115098}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Lantern (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -347,7 +347,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4375577014949930}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SafeZone
   m_TagString: SafeZone
   m_Icon: {fileID: 0}
@@ -365,7 +365,7 @@ GameObject:
   - component: {fileID: 33661636138919362}
   - component: {fileID: 65254581825272066}
   - component: {fileID: 23961174419792598}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -383,7 +383,7 @@ GameObject:
   - component: {fileID: 33103363884917594}
   - component: {fileID: 136841045173043908}
   - component: {fileID: 23795046520171720}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Pillar (1)
   m_TagString: SafeZone
   m_Icon: {fileID: 0}
@@ -401,12 +401,29 @@ GameObject:
   - component: {fileID: 33537728771415528}
   - component: {fileID: 65584479959756868}
   - component: {fileID: 23935174902391978}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Connector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 1
   m_StaticEditorFlags: 8
+  m_IsActive: 1
+--- !u!1 &1612829217186746
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4666029087304972}
+  - component: {fileID: 65091041145120438}
+  - component: {fileID: 114417017641426278}
+  m_Layer: 0
+  m_Name: SafeCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1622658209036720
 GameObject:
@@ -419,7 +436,7 @@ GameObject:
   - component: {fileID: 33067763759403766}
   - component: {fileID: 65030073943452788}
   - component: {fileID: 23479812667974856}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Connector (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -437,7 +454,7 @@ GameObject:
   - component: {fileID: 33886315524279676}
   - component: {fileID: 65352936048114984}
   - component: {fileID: 23841188176269528}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Connector (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -455,7 +472,7 @@ GameObject:
   - component: {fileID: 33616370630731882}
   - component: {fileID: 65076650628499810}
   - component: {fileID: 23035451334350978}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Connector (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -473,7 +490,7 @@ GameObject:
   - component: {fileID: 33359779689542996}
   - component: {fileID: 65241508512524746}
   - component: {fileID: 23199457320148884}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -489,7 +506,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4827436753965992}
   - component: {fileID: 108648770971048310}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -507,7 +524,7 @@ GameObject:
   - component: {fileID: 33059682647324662}
   - component: {fileID: 136848166502727688}
   - component: {fileID: 23176500444168460}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Lantern (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -523,7 +540,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4385396459553554}
   - component: {fileID: 108554330752956884}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -541,7 +558,7 @@ GameObject:
   - component: {fileID: 33222619438335962}
   - component: {fileID: 136679624578398072}
   - component: {fileID: 23966679160969418}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Lantern (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -559,7 +576,7 @@ GameObject:
   - component: {fileID: 33417442396742090}
   - component: {fileID: 64837159931559870}
   - component: {fileID: 23578755578403400}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Puzzle
   m_TagString: SafeZone
   m_Icon: {fileID: 0}
@@ -736,8 +753,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1425300750652560}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -30, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 32}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4869109059056746}
@@ -751,6 +768,7 @@ Transform:
   - {fileID: 4897208936119508}
   - {fileID: 4275670914974110}
   - {fileID: 4539918535092552}
+  - {fileID: 4666029087304972}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
@@ -879,6 +897,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4287616222433622}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4666029087304972
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1612829217186746}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3, y: 3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4375577014949930}
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4707188138503790
 Transform:
@@ -1960,6 +1991,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &65091041145120438
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1612829217186746}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 12, y: 6, z: 6}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &65145562262661796
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -2392,6 +2435,17 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &114417017641426278
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1612829217186746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9716d9ddb394b946b15a0ae2bc2603e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &136231913501263562
 CapsuleCollider:
   m_ObjectHideFlags: 1

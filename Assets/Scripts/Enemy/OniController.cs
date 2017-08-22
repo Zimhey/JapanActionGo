@@ -135,7 +135,7 @@ public class OniController : MonoBehaviour
                         Vector3 norm = (currentlocation - firstlocation);
                         norm.Normalize();
                         //multiply by desired distance to get desired vector and add to first location
-                        Vector3 dest = firstlocation + norm * (float)lessenough - new Vector3(0, 1.5F, 0);
+                        Vector3 dest = firstlocation + norm * (float)lessenough; // - new Vector3(0, 1.5F, 0);
                         //make rotation
                         Quaternion rot = Quaternion.Euler(0, 0, 0);
                         //add to level
@@ -234,7 +234,10 @@ public class OniController : MonoBehaviour
 
     void search()
     {
-
+        Vector3 newdir = transform.forward * 10;
+        Vector3 goal = transform.position - newdir;
+        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>(); 
+        agent.destination = goal; 
     }
 
     void chase()
@@ -357,7 +360,16 @@ public class OniController : MonoBehaviour
     void Stun()
     {
         state = onistate.Stun;
-        stuntimer = 120;
+        stuntimer = 300;
+        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        agent.destination = rb.position;
+    }
+
+    void SafeZoneCollision()
+    {
+        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        agent.ResetPath();
+        state = onistate.Flee;
     }
 
     bool seePlayer()

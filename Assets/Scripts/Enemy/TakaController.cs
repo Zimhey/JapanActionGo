@@ -135,7 +135,7 @@ public class TakaController : MonoBehaviour
                         //make rotation
                         Quaternion rot = Quaternion.Euler(0, 0, 0);
                         //add to level
-                        Instantiate(Resources.Load("Prefabs/OniFootprint"), dest, rot);
+                        Instantiate(Resources.Load("Prefabs/Enemy/OniFootprint"), dest, rot);
                         //remove old steps
                         for (int remove = 0; remove < iter; remove++)
                         {
@@ -172,6 +172,18 @@ public class TakaController : MonoBehaviour
             {
                 Vector3 distancetoinu = hit.collider.transform.position - gameObject.transform.position;
                 float mag = distancetoinu.magnitude;
+                if (mag < 50.0F)
+                {
+                    state = takastate.Flee;
+                }
+                Transform goal = playerObject.transform; // set current player location as desired location
+                agent.destination = goal.position; // set destination to player's current location
+
+            }
+            if (hit.collider.CompareTag("SafeZone")) //if safezone is seen
+            {
+                Vector3 distancetozone = hit.collider.transform.position - gameObject.transform.position;
+                float mag = distancetozone.magnitude;
                 if (mag < 50.0F)
                 {
                     state = takastate.Flee;
@@ -437,6 +449,14 @@ public class TakaController : MonoBehaviour
     {
         state = takastate.Stun;
         stuntimer = 120;
+        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        agent.destination = rb.position;
+    }
+    void SafeZoneCollision()
+    {
+        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        agent.ResetPath();
+        state = takastate.Flee;
     }
 
     bool seePlayer()
