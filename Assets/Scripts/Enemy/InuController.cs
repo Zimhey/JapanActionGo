@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using System;
 
 //state machine for inu AI
 public enum inustate
@@ -11,6 +12,7 @@ public enum inustate
     Search, // inu has seen player, cannot see player or footprints, is looking for player in maze
     Chase, // inu sees player, is moving towards player to stalk
     Stalk, // inu is following player until they trip, then they attack
+    Cornered, // inu is backed up against a wall;
     Flee, // inu has encountered safe zone, is returning to home position
     Dead, // inu has encountered trap, no longer active
     Follow, // inu does not see player, inu sees footprints, is moving towards footprints
@@ -48,6 +50,8 @@ public class InuController : MonoBehaviour
     private GameObject currentNode;
     //countdown until no longer stunned
     private int stuntimer;
+    //has player been too close
+    private System.Boolean beenTooClose;
 
     private GameObject footprintPrefab;
 
@@ -63,6 +67,7 @@ public class InuController : MonoBehaviour
         currentNode = startingNode;
         playerObject = GameObject.FindGameObjectWithTag("Player");
         footprintPrefab = Actors.Prefabs[ActorType.Okuri_Inu_Footprint];
+        beenTooClose = false;
     }
 
     void LateUpdate()
@@ -268,12 +273,13 @@ public class InuController : MonoBehaviour
 
     void stalk()
     {
-        int maxDistance = 5;
+        int maxDistance = 10;
         int maxDistanceSquared = maxDistance * maxDistance;
         Vector3 rayDirection = playerObject.transform.localPosition - transform.localPosition;
         System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < maxDistanceSquared;
         if (!playerCloseToEnemy)
         {
+            beenTooClose = false;
             seen = false;
             seen = seePlayer();
             if (seen)
@@ -293,12 +299,50 @@ public class InuController : MonoBehaviour
                 state = inustate.Idle;
             }
         }
+        System.Boolean playerTooCloseToEnemy = rayDirection.sqrMagnitude < maxDistance;
+        if (playerTooCloseToEnemy && beenTooClose == false)
+        {
+            beenTooClose = true;
+            print("too close");
+            Vector3 newdir = playerObject.transform.localPosition - transform.localPosition;
+            newdir.Normalize();
+            float scalar = (float)Math.Sqrt(100 / 3);
+            newdir.Scale(new Vector3(scalar, scalar, scalar));
+            Vector3 goal = playerObject.transform.localPosition - newdir;
+
+            float wallDistance = 25;
+            wallDistance = rayDirection.magnitude;
+            //rayDirection = Vector3.MoveTowards
+            rayDirection.Normalize();
+            Ray ray = new Ray(gameObject.transform.position, rayDirection);
+            RaycastHit rayHit;
+
+            if (Physics.Raycast(ray, out rayHit, maxDistance, levelmask))
+            {
+                state = inustate.Cornered;
+            }
+            else
+            {
+                UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+                agent.ResetPath();
+                agent.destination = goal;
+            }
+        }
+        else if (!playerTooCloseToEnemy)
+        {
+            beenTooClose = false;
+        }
 
         if (hasPlayerTripped())
         {
             string curlevel = SceneManager.GetActiveScene().name;
             SceneManager.LoadScene(curlevel);
         }
+    }
+
+    void cornered()
+    {
+        print("cornered");
     }
 
     void flee()
@@ -386,7 +430,16 @@ public class InuController : MonoBehaviour
     void Stun()
     {
         state = inustate.Stun;
-        stuntimer = 120;
+        stuntimer = 480;
+        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        agent.destination = rb.position;
+    }
+
+    void SafeZoneCollision()
+    {
+        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        agent.ResetPath();
+        state = inustate.Flee;
     }
 
     bool seePlayer()
@@ -472,8 +525,8 @@ public class InuController : MonoBehaviour
         }
         if (col.gameObject == playerObject)
         {
-            string curlevel = SceneManager.GetActiveScene().name;
-            SceneManager.LoadScene(curlevel);
+            //string curlevel = SceneManager.GetActiveScene().name;
+            //SceneManager.LoadScene(curlevel);
         }
     }
 }
