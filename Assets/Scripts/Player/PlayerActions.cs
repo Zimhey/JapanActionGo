@@ -22,6 +22,12 @@ public class PlayerActions : MonoBehaviour
     private GameObject ofudaPrefab;
     private bool thrown;
 
+	public bool UsingVR;
+	public GameObject DrawingHand;
+	private SteamVR_TrackedController drawingController;
+	public GameObject ThrowingHand;
+	private SteamVR_TrackedController throwingController;
+
     private Camera cam;
     //array of locations the oni has been
     private ArrayList previousLocations = new ArrayList();
@@ -36,6 +42,12 @@ public class PlayerActions : MonoBehaviour
         ofudaPrefab = Actors.Prefabs[ActorType.Ofuda_Projectile];
         footprintPrefab = Actors.Prefabs[ActorType.Player_Footprint];
         cam = gameObject.GetComponentInChildren<Camera>();
+
+		if (UsingVR) 
+		{
+			drawingController = DrawingHand.GetComponent<SteamVR_TrackedController>();
+			throwingController = ThrowingHand.GetComponent<SteamVR_TrackedController>();
+		}
     }
 
     // Update is called once per frame
@@ -58,12 +70,12 @@ public class PlayerActions : MonoBehaviour
         }
 
         // Chalk Drawing
-        if (Input.GetButton("Fire1") && PlayerInventory.CanUse(ItemType.Chalk))
+		if ((Input.GetButton("Fire1") || drawingController.triggerPressed) && PlayerInventory.CanUse(ItemType.Chalk))
             DrawChalk();
         else
             drawing = false;
 
-        if (Input.GetButton("Fire2") && PlayerInventory.CanUse(ItemType.Ofuda))
+		if ((Input.GetButton("Fire2") || throwingController.triggerPressed) && PlayerInventory.CanUse(ItemType.Ofuda))
             ThrowOfuda();
         else
             thrown = false;
@@ -134,9 +146,13 @@ public class PlayerActions : MonoBehaviour
             recent = chalkMark.GetComponentInChildren<LineRenderer>();
         }
 
-        Vector3 dir = cam.transform.rotation * Vector3.forward;
-
-        Ray ray = new Ray(cam.transform.position, dir);
+		Transform pointer;
+		if (UsingVR)
+			pointer = DrawingHand.transform;
+		else
+			pointer = cam.transform;
+		Vector3 dir = pointer.transform.rotation * Vector3.forward; 
+		Ray ray = new Ray(pointer.transform.position, dir);	         
         RaycastHit rayHit;
 
         if (Physics.Raycast(ray, out rayHit, DrawingDistance, levelLayer)) // if object to draw on
@@ -174,7 +190,12 @@ public class PlayerActions : MonoBehaviour
     {
         if(!thrown)
         {
-            Instantiate(ofudaPrefab, cam.transform.position + cam.transform.forward, cam.transform.rotation);
+			Transform pointer;
+			if (UsingVR)
+				pointer = ThrowingHand.transform;
+			else
+				pointer = cam.transform;
+			Instantiate(ofudaPrefab, pointer.position + pointer.forward, pointer.rotation);
             PlayerInventory.Used(ItemType.Ofuda);
             thrown = true;
         }
