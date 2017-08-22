@@ -12,6 +12,9 @@ public class MazeGenerator : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        GenerateMaze(1);
+
+        /*
         int size = 10;
         int sections = 2;
         int loops = 3;
@@ -23,7 +26,7 @@ public class MazeGenerator : MonoBehaviour
             MazeNode root = DFSMazeGenerator.GenerateMaze(Seed, size, size, i);
             List<MazeNode> sectionroots;
 
-            if (i == 1)
+            if (i == 0)
             {
                 sectionroots = GenerateSections(root, sections, size, size);
             }
@@ -36,10 +39,9 @@ public class MazeGenerator : MonoBehaviour
             foreach (MazeNode r in sectionroots)
             {
                 GenerateActors(r, 5, 5, 5, 5);
-                //AddRandomActors(r);
-                GenerateLadders(i, section, r);
+                //GenerateLadders(i, section, r, floors, sections);
                 GenerateLoops(r, loops, size);
-                SpawnMaze(r, size);
+                SpawnMaze(r, size); 
                 section++;
             }
 
@@ -47,6 +49,7 @@ public class MazeGenerator : MonoBehaviour
             if (surface != null)
                 surface.BuildNavMesh();
         }
+        */
     }
 
     public void AddRandomActors(MazeNode root)
@@ -65,8 +68,6 @@ public class MazeGenerator : MonoBehaviour
                 if (!nodesToVisit.Contains(n) && !visited.Contains(n))
                     nodesToVisit.Push(n);
         }
-        
-
     }
 
     System.Random rand = new System.Random();
@@ -125,24 +126,89 @@ public class MazeGenerator : MonoBehaviour
         return maze[0, 0];
     }
 
-    public void GenerateMaze(int seed, int size)
+    public void GenerateMaze(int difficulty)
     {
-        // TODO 
-        // Generate a Perfect Maze calling the static functions in other classes
-        // Save root MazeNode
-        // Get path to exit
-        // Set exit path
-        // Generate sections
-        // Generate loops for each section
-        // Spawn each maze piece for each section
+        int size = 0;
+        int[] sections = new int[] { };
+        int loops = 0;
+        int floors = 0;
+        if (difficulty == 1)
+        {
+            size = 10;
+            sections = new int[] { 2, 2, 1 };
+            loops = 3;
+            floors = 3;
+        }
+        if (difficulty == 2)
+        {
+            size = 15;
+            sections = new int[] { 2, 2, 1 };
+            loops = 3;
+            floors = 3;
+        }
+        if (difficulty == 3)
+        {
+            size = 20;
+            sections = new int[] { 2, 3, 2 };
+            loops = 4;
+            floors = 3;
+        }
+        if (difficulty == 4)
+        {
+            size = 25;
+            sections = new int[] { 3, 4, 4, 2 };
+            loops = 4;
+            floors = 4;
+        }
+        if (difficulty == 5)
+        {
+            size = 30;
+            sections = new int[] { 4, 5, 5, 2 };
+            loops = 5;
+            floors = 4;
+        }
+        if (difficulty == 6)
+        {
+            size = 40;
+            sections = new int[] { 5, 6, 6, 6, 2 };
+            loops = 5;
+            floors = 5;
+        }
 
+        GenerateMazeHelper(size, sections, loops, floors);
     }
+
+    public void GenerateMazeHelper(int size, int[] sections, int loops, int floors)
+    {
+        for (int i = 0; i < floors; i++)
+        {
+            int section = 1;
+            MazeNode root = DFSMazeGenerator.GenerateMaze(Seed, size, size, i);
+            List<MazeNode> sectionroots;
+
+            sectionroots = GenerateSections(root, sections[i], size, size);
+
+            foreach (MazeNode r in sectionroots)
+            {
+                GenerateActors(r, 5, 5, 5, 5);
+                //GenerateLadders(i, section, r, floors, sections[i]);
+                GenerateLoops(r, loops, size);
+                SpawnMaze(r, size);
+                section++;
+            }
+
+            surface = GetComponent<NavMeshSurface>();
+            if (surface != null)
+                surface.BuildNavMesh();
+        }
+    }
+
+
 
     public static LinkedList<MazeNode> GetPath(MazeNode start, MazeNode end)
     {
         Stack visited = new Stack();
         LinkedList<MazeNode> path = GetPathHelper(start, end, visited);
-        //print(path.Count);
         return path;
     }
 
@@ -240,12 +306,10 @@ public class MazeGenerator : MonoBehaviour
         {
             if (node.Row == other.Row + 1)
             {
-                //print("Made it backwards!");
                 return node.backwardNodes;
             }
             else
             {
-                //print("Made it forwards!");
                 return node.forwardNodes;
             }
         }
@@ -253,18 +317,16 @@ public class MazeGenerator : MonoBehaviour
         {
             if (node.Col == other.Col + 1)
             {
-                //print("Made it left!");
                 return node.leftNodes;
             }
             else
             {
-                //print("Made it right!");
                 return node.rightNodes;
             }
         }
         else
         {
-            //print("Made it here!");
+            
             return 0;
         }
     }
@@ -287,15 +349,10 @@ public class MazeGenerator : MonoBehaviour
         {
             if (n != root)
             {
-                //print("here i am");
                 next = n;
-                //print(cutoff.Col + " " + cutoff.Row + " ");
-                //print(next.Col + " " + next.Row + " ");
                 int wouldBeRemoved = getDirectionalValue(cutoff, next);
-                //print(wouldBeRemoved);
                 if (wouldBeRemoved < leftover - sectionSize)
                 {
-                    //cutoff.RemoveEdge(next);
                     previous.RemoveEdge(cutoff);
                     sectionRoots.Add(cutoff);
                     cutoff = next;
@@ -353,12 +410,10 @@ public class MazeGenerator : MonoBehaviour
             {
                 if (!visited2.Contains(node))
                 {
-                    //print("made it here");
                     visited.Push(node);
                     visited2.Push(node);
                     if (node.Col == n.Col + deltaX && node.Row == n.Row + deltaY)
                     {
-                        //print("made it here");
                         return node;
                     }
                 }
@@ -370,7 +425,6 @@ public class MazeGenerator : MonoBehaviour
 
     public static int getConnectedNodes(MazeNode node)
     {
-        //print("Column: " + node.Col + " Row: " + node.Row + " Forward " + node.forwardNodes + " Backwards " + node.backwardNodes + " Left " + node.leftNodes + " Right " + node.rightNodes);
         return node.leftNodes + node.rightNodes + node.forwardNodes + node.backwardNodes + 1;
     }
 
@@ -505,8 +559,6 @@ public class MazeGenerator : MonoBehaviour
                 }
                 counter++;
             }
-            if(counter == 1000)
-                print(counter);
             actorLocations[i] = temp;
         }
 
@@ -556,15 +608,13 @@ public class MazeGenerator : MonoBehaviour
                                     }
                                     else if (type == 3 && tr == 0)
                                         usedUp = true;
-                                    else if(type == 3)
+                                    else if(type == 3 && n.GetAdjacentNodes().Count > 1)
                                     {
                                         n.actor = ActorType.Spike_Trap;
                                         tr--;
                                     }
                                     counter2++;
                                 }
-                                if (counter2 == 1000)
-                                    print(counter);
                             }
                         }
                     }
@@ -572,36 +622,30 @@ public class MazeGenerator : MonoBehaviour
                     visited2.Push(n);
                 }
             }
-            counter++;
         }
-        if(counter == 1000)
-            print(counter);
     }
 
-    public static void GenerateLadders(int floor, int section, MazeNode root)
+    public static void GenerateLadders(int floor, int section, MazeNode root, int TotalFloors, int TotalSections)
     {
-        if (floor == 1)
+        if (floor == 0)
         {
-            if(section == 1)
+            if(section < TotalSections)
             {
                 FindPathEnd(root).actor = ActorType.Ladder;
             }
-            if(section == 2)
+            if(section > 1)
             {
                 root.actor = ActorType.Ladder;
             }
         }
-        if(floor == 2)
+        else if(floor == TotalFloors - 1)
         {
             root.actor = ActorType.Ladder;
-            FindPathEnd(root).actor = ActorType.Ladder;
         }
     }
 
     public static void GenerateLoops(MazeNode root, int loops, int size)
     {
-        //print(root.Col + " " + root.Row);
-        // TODO Generate Loops
         MazeNode current;
         Stack<MazeNode> visited = new Stack<MazeNode>();
         Stack<MazeNode> visited2 = new Stack<MazeNode>();
@@ -662,7 +706,6 @@ public class MazeGenerator : MonoBehaviour
                     }
                 }
             }
-            //print(counter);
 
             for (i = 0; i < size; i++)
             {
@@ -685,7 +728,6 @@ public class MazeGenerator : MonoBehaviour
             MazeNode mazeNode = findNode(largestDisconnectedNode, largestDir);
             if (mazeNode != null)
             {
-                //print("Column: " + largestDisconnectedNode.Col + " Row: " + largestDisconnectedNode.Row + " Disconnection: " + largestDisconnection + " Direction: " + largestDir);
                 largestDisconnectedNode.AddEdge(mazeNode);
                 disconnectingWalls[largestCol, largestRow, largestDir] = 0;
                 disconnectingWalls[mazeNode.Col, mazeNode.Row, (largestDir + 2) % 4] = 0;
@@ -769,8 +811,10 @@ public class MazeGenerator : MonoBehaviour
     public void SpawnActor(MazeNode node)
     {
         Vector3 location = new Vector3(node.Col * 6 + 8, node.Floor * 30, node.Row * 6 + 8);
-        if(node.actor != ActorType.Null)
+        if (node.actor != ActorType.Null)
+        {
             Instantiate(Actors.Prefabs[node.actor], location, node.GetRotation());
+        }
     }
 
 }
