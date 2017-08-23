@@ -76,6 +76,7 @@ public class Actors : MonoBehaviour {
             prefabs.Add(ActorType.Oni_Footprint, Resources.Load("Prefabs/Enemy/OniFootprint") as GameObject);
             //prefabs.Add(ActorType.Taka_Nyudo_Footprint, Resources.Load("Prefabs/ChalkMark") as GameObject);
             prefabs.Add(ActorType.Okuri_Inu_Footprint, Resources.Load("Prefabs/Enemy/InuFootprint") as GameObject);
+            prefabs.Add(ActorType.Ladder, Resources.Load("Prefabs/Level/Ladder") as GameObject);
         }
     }
 }

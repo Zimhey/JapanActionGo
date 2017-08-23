@@ -13,11 +13,6 @@ public class OfudaProjectile : MonoBehaviour {
         body.velocity = transform.forward * ProjectileSpeed;
         body.AddForce(transform.forward * ProjectileSpeed, ForceMode.Force);
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
     void OnCollisionEnter(Collision collider)
     {
@@ -27,6 +22,11 @@ public class OfudaProjectile : MonoBehaviour {
             Destroy(gameObject);
         }
         if (collider.gameObject != null && collider.gameObject.tag == "Inu")
+        {
+            collider.gameObject.SendMessage("Stun");
+            Destroy(gameObject);
+        }
+        if (collider.gameObject != null && collider.gameObject.tag == "Taka")
         {
             collider.gameObject.SendMessage("Stun");
             Destroy(gameObject);

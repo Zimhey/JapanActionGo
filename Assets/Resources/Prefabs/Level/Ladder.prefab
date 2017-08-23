@@ -22,8 +22,8 @@ GameObject:
   - component: {fileID: 33573504445296982}
   - component: {fileID: 136107250112990366}
   - component: {fileID: 23376248996859782}
-  - component: {fileID: 114792689063525482}
   - component: {fileID: 54569922820583196}
+  - component: {fileID: 114335131776748046}
   m_Layer: 0
   m_Name: Ladder
   m_TagString: Untagged
@@ -38,7 +38,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1150715619024038}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.579572, y: 1.5, z: 12.132606}
+  m_LocalPosition: {x: 9.243827, y: 1.679, z: 8.603287}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -98,7 +98,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!114 &114792689063525482
+--- !u!114 &114335131776748046
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -106,10 +106,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1150715619024038}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c841cbbbf1a3794a9d17a8b869f62a9, type: 3}
+  m_Script: {fileID: 11500000, guid: fb672f90b22cb0c4eb2cb45befefa819, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  ConnectedLadder: {fileID: 0}
 --- !u!136 &136107250112990366
 CapsuleCollider:
   m_ObjectHideFlags: 1
