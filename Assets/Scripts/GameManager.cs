@@ -61,6 +61,8 @@ public class GameManager : MonoBehaviour {
     // Analytics
 
     private AnalyticsManager analytics;
+    public bool AnalyticsEnabled = false;
+
 
     // Achievements
 
@@ -68,13 +70,13 @@ public class GameManager : MonoBehaviour {
 	// Use this for initialization
 	void Awake ()
     {
-
+        // TODO set Player prefab for player spawning
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-		
+		// TODO catch escape key and call pause game
 	}
 
     public void BeginTutorial()
@@ -140,40 +142,49 @@ public class GameManager : MonoBehaviour {
 
     public void ActorVisitedCell(Actor actor, int cellID)
     {
-        analytics.EnteredCell(actor.ActorID, cellID);
+        if(AnalyticsEnabled)
+            analytics.EnteredCell(actor.ActorID, cellID);
     }
 
     public void ActorKilled(Actor killer, Actor dead)
     {
-        analytics.ActorKilled(killer.ActorID, dead.ActorID);
+        if(AnalyticsEnabled)
+            analytics.ActorKilled(killer.ActorID, dead.ActorID);
     }
 
     public void ActorStateChange(Actor actor, int state)
     {
-        analytics.ActorStateChange(actor.ActorID, state);
+        if(AnalyticsEnabled)
+            analytics.ActorStateChange(actor.ActorID, state);
     }
 
     public int UsedItem(ItemType item)
     {
-        return analytics.UsedItem(SessionID, item);
+        if (AnalyticsEnabled)
+            return analytics.UsedItem(SessionID, item);
+        else
+            return -1;
     }
 
     public void OfudaHit(int eventID, Actor actor)
     {
-        analytics.OfudaHit(eventID, actor.ActorID);
+        if (AnalyticsEnabled)
+            analytics.OfudaHit(eventID, actor.ActorID);
     }
 
     public void MarkDrawn(int eventID, List<LineRenderer> lines)
     {
-        foreach (LineRenderer line in lines)
-        {
-            analytics.ChalkLine(eventID, line);
-        }
+        if (AnalyticsEnabled)
+            foreach (LineRenderer line in lines)
+            {
+                analytics.ChalkLine(eventID, line);
+            }
     }
 
     public void FoundItem(Actor actor)
     {
-        analytics.FoundItem(actor.ActorID);
+        if (AnalyticsEnabled)
+            analytics.FoundItem(actor.ActorID);
     }
 
 
