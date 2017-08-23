@@ -24,5 +24,9 @@ public class SafeZoneCollider : MonoBehaviour {
         {
             collider.gameObject.SendMessage("SafeZoneCollision");
         }
+        if (collider.gameObject != null && collider.gameObject.tag == "Taka")
+        {
+            collider.gameObject.SendMessage("SafeZoneCollision");
+        }
     }
 }

@@ -17,6 +17,7 @@ TagManager:
   - Inu
   - FxTemporaire
   - projectile
+  - Taka
   layers:
   - Default
   - TransparentFX

@@ -23,5 +23,9 @@ public class FootprintTrigger : MonoBehaviour {
         {
             Destroy(gameObject);
         }
+        if (other.CompareTag("Taka"))
+        {
+            Destroy(gameObject);
+        }
     }
 }
