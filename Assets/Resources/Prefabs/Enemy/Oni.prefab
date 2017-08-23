@@ -1573,6 +1573,9 @@ MonoBehaviour:
   levelmask:
     serializedVersion: 2
     m_Bits: 256
+  playermask:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!136 &136358452493297278
 CapsuleCollider:
   m_ObjectHideFlags: 1
