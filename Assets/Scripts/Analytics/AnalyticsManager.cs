@@ -127,17 +127,22 @@ public class AnalyticsManager : MonoBehaviour
         return -1;
     }
 
-    public int AddLevel(int seed, int rows, int columns, int sections, int loops)
+    public int AddLevel(Difficulty difficulty)
     {
-        string insert = "INSERT INTO `Levels` (`Seed`, `MazeRows`, `MazeCols`, `MazeSections`, `MazeLoops`)" +
+        string insert = "";/*"INSERT INTO `Levels` (`Seed`, `MazeRows`, `MazeCols`, `MazeSections`, `MazeLoops`)" +
             " SELECT " + seed + ", " + rows + ", " + columns + ", " + sections + ", " + loops +
             " WHERE NOT EXISTS (SELECT 1 FROM `Levels` WHERE `Seed` = " + seed + " AND `MazeRows` = " +
             rows + " AND `MazeCols` = " + columns + " AND `MazeSections` = " + sections +
-            " AND `MazeLoops` = " + loops + ");";
-        string getID = "SELECT `LevelID` FROM `Levels` WHERE `Seed` = " + seed + " AND `MazeRows` = " +
+            " AND `MazeLoops` = " + loops + ");";*/
+        string getID = "";/*"SELECT `LevelID` FROM `Levels` WHERE `Seed` = " + seed + " AND `MazeRows` = " +
             rows + " AND `MazeCols` = " + columns + " AND `MazeSections` = " + sections +
-            " AND `MazeLoops` = " + loops + ";";
+            " AND `MazeLoops` = " + loops + ";";*/
         return ReturnSecondQueryAsInt(insert, getID);
+    }
+
+    public int AddSection(int levelID)
+    {
+        return ReturnSecondQueryAsInt("", "");
     }
 
     public int AddCell(int levelID, int row, int col)

@@ -8,11 +8,12 @@ public class MazeGenerator : MonoBehaviour
     public int Seed;
     public bool DebugLabelsOn;
     private NavMeshSurface surface;
+    public Difficulty dif = Difficulty.Small;
 
     // Use this for initialization
     void Start()
     {
-        GenerateMaze(1);
+        GenerateMaze(dif);
 
         /*
         int size = 10;
@@ -126,48 +127,48 @@ public class MazeGenerator : MonoBehaviour
         return maze[0, 0];
     }
 
-    public void GenerateMaze(int difficulty)
+    public void GenerateMaze(Difficulty difficulty)
     {
         int size = 0;
         int[] sections = new int[] { };
         int loops = 0;
         int floors = 0;
-        if (difficulty == 1)
+        if (difficulty == Difficulty.Small)
         {
             size = 10;
             sections = new int[] { 2, 2, 1 };
             loops = 3;
             floors = 3;
         }
-        if (difficulty == 2)
+        if (difficulty == Difficulty.Medium)
         {
             size = 15;
             sections = new int[] { 2, 2, 1 };
             loops = 3;
             floors = 3;
         }
-        if (difficulty == 3)
+        if (difficulty == Difficulty.Large)
         {
             size = 20;
             sections = new int[] { 2, 3, 2 };
             loops = 4;
             floors = 3;
         }
-        if (difficulty == 4)
+        if (difficulty == Difficulty.Excessive)
         {
             size = 25;
             sections = new int[] { 3, 4, 4, 2 };
             loops = 4;
             floors = 4;
         }
-        if (difficulty == 5)
+        if (difficulty == Difficulty.AlreadyLost)
         {
             size = 30;
             sections = new int[] { 4, 6, 6, 3 };
             loops = 5;
             floors = 4;
         }
-        if (difficulty == 6)
+        if (difficulty == Difficulty.JustWhy)
         {
             size = 40;
             sections = new int[] { 5, 8, 8, 8, 4 };
@@ -925,4 +926,14 @@ public class MazeGenerator : MonoBehaviour
         }
     }
 
+}
+
+public enum Difficulty
+{
+    Small,
+    Medium,
+    Large,
+    Excessive,
+    AlreadyLost,
+    JustWhy
 }

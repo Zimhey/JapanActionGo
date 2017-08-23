@@ -91,6 +91,9 @@ public class GameManager : MonoBehaviour {
         // Add Level to Analytics
         // Add Sections to Analytics
         // Add Cells to Analytics
+        int lvlID = analytics.AddLevel(Difficulty.Small);
+        int secID = analytics.AddSection(lvlID);
+        int sesID = analytics.AddSession(lvlID);
 
         // Spawn First Section
         // Spawn Player
