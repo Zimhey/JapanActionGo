@@ -341,7 +341,6 @@ public class TakaController : YokaiController
 
     void SafeZoneCollision()
     {
-        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         state = TakaState.Flee;
     }
 

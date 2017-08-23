@@ -112,13 +112,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerObject: {fileID: 0}
   StartingNode: {fileID: 0}
-  Speed: 0
+  Speed: 10
   LevelMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   PlayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
 --- !u!135 &135940104094155432
 SphereCollider:
   m_ObjectHideFlags: 1

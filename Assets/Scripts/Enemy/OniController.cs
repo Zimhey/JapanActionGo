@@ -272,7 +272,6 @@ public class OniController : YokaiController
 
     void SafeZoneCollision()
     {
-        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         state = OniState.Flee;
     }
 

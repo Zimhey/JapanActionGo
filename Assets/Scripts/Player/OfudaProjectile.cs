@@ -13,11 +13,6 @@ public class OfudaProjectile : MonoBehaviour {
         body.velocity = transform.forward * ProjectileSpeed;
         body.AddForce(transform.forward * ProjectileSpeed, ForceMode.Force);
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
     void OnCollisionEnter(Collision collider)
     {
