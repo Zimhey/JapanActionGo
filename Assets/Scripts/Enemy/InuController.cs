@@ -30,6 +30,7 @@ public class InuController : MonoBehaviour
     public float speed;
     //layermask to raycast against
     public LayerMask levelmask;
+    public LayerMask playermask;
 
     //inu physics body
     private Rigidbody rb;
@@ -239,7 +240,7 @@ public class InuController : MonoBehaviour
         //by using a Raycast you make sure an enemy does not see you
         //if there is a building separating you from his view, for example
         //the enemy only sees you if it has you in open view
-        Vector3 rayDirection = playerObject.transform.localPosition - transform.localPosition;
+        /*Vector3 rayDirection = playerObject.transform.localPosition - transform.localPosition;
         RaycastHit[] hits;
         hits = Physics.RaycastAll(transform.position, rayDirection, 100.0F);
         UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
@@ -253,6 +254,22 @@ public class InuController : MonoBehaviour
                 agent.destination = goal.position; // set destination to player's current location
                 chasing = true;
             }
+        }*/
+
+        float maxDistance = 25;
+        Vector3 rayDirection = playerObject.transform.position - transform.position;
+        maxDistance = rayDirection.magnitude;
+        //rayDirection = Vector3.MoveTowards
+        rayDirection.Normalize();
+        Ray ray = new Ray(gameObject.transform.position, rayDirection);
+        RaycastHit rayHit;
+        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>(); // get oni's navigation agent
+
+        if (Physics.Raycast(ray, out rayHit, maxDistance, playermask))
+        {
+            Transform goal = playerObject.transform; // set current player location as desired location
+            agent.destination = goal.position; // set destination to player's current location
+            chasing = true;
         }
 
         if (chasing == true)
@@ -454,7 +471,7 @@ public class InuController : MonoBehaviour
         float angleDot = Vector3.Dot(rayDirection, enemyDirection);
         System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < maxDistanceSquared;
 
-        float crossangle = Vector3.Angle(enemyDirection, rayDirection);
+        //float crossangle = Vector3.Angle(enemyDirection, rayDirection);
         System.Boolean playerInFrontOfEnemy = angleDot > 0.0;
 
         System.Boolean nowallfound = noWall();
