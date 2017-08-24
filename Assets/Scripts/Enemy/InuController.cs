@@ -55,6 +55,18 @@ public class InuController : YokaiController
     private InuState state;
     //current anim state
     private InuAnim animState;
+    private Actor actorID;
+
+    public InuState State
+    {
+        set
+        {
+            state = value;
+
+            actorID = GetComponent<Actor>();
+            ActorStateChange(actorID, (int)state);
+        }
+    }
 
     //is player seen
     private System.Boolean seen;
@@ -156,7 +168,7 @@ public class InuController : YokaiController
                 break;
         }
 
-        PlaceFootprints(previousLocations, lessEnough, footprintPrefab, rb, distanceToFloor);
+        //PlaceFootprints(previousLocations, lessEnough, footprintPrefab, rb, distanceToFloor);
 
         if (awake == true)
         {
@@ -324,6 +336,8 @@ public class InuController : YokaiController
         {
             string curlevel = SceneManager.GetActiveScene().name;
             SceneManager.LoadScene(curlevel);
+            actorID = GetComponent<Actor>();
+            ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
         }
     }
 
@@ -370,8 +384,11 @@ public class InuController : YokaiController
         }
 
         UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        GameObject goal = foundFootprint;
-        agent.destination = goal.transform.position;
+        if (foundFootprint != null)
+        {
+            GameObject goal = foundFootprint;
+            agent.destination = goal.transform.position;
+        }
     }
 
     void stun()

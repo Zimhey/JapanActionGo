@@ -3,217 +3,129 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FootprintPlacer : MonoBehaviour {
-    public void PlaceFootprints(ArrayList previousLocations, int lessEnough, GameObject footprintPrefab, Rigidbody rb, float distanceToFloor)
+
+    //what type of footprint to be placed
+    public GameObject Prefab;
+    //how far apart are the footprints
+    public int PlaceDistance;
+    //layermask to raycast against
+    public LayerMask LevelMask;
+
+    //array of locations the actor has been
+    private ArrayList previousLocations = new ArrayList();
+    //actor rigidbody
+    private Rigidbody rigidBody;
+    private float distToGround;
+    private CharacterController controller;
+
+    private void Start()
     {
-        //if any locations exist
+        rigidBody = gameObject.GetComponent<Rigidbody>();
+        controller = gameObject.GetComponent<CharacterController>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
         if (gameObject.CompareTag("Player"))
         {
-            
-            if (previousLocations.Count > 0)
+            if (controller.isGrounded)
             {
-                //get latest
-                int lastentry = previousLocations.Count - 1;
-                Vector3 lastlocation = (Vector3)previousLocations[lastentry];
-                //make sure it is not current location
-                if (lastlocation != gameObject.transform.position)
-                {
-                    //add current location
-                    previousLocations.Add(gameObject.transform.position);
-                }
-
-                //get oldest
-                Vector3 firstlocation = (Vector3)previousLocations[0];
-                //check to see if player has gone far enough for footprints to form
-                if ((lastlocation - firstlocation).magnitude > lessEnough)
-                {
-                    //iterate through
-                    for (int iter = 0; iter < lastentry; iter++)
-                    {
-                        //check locations along path
-                        Vector3 currentlocation = (Vector3)previousLocations[iter];
-                        //if locations are far enough apart make footprint at a given distance
-                        if ((currentlocation - firstlocation).magnitude > lessEnough)
-                        {
-                            //get direction
-                            Vector3 norm = (currentlocation - firstlocation);
-                            norm.Normalize();
-                            //multiply by desired distance to get desired vector and add to first location
-                            if (transform.position.y != distanceToFloor)
-                            {
-                                distanceToFloor = transform.position.y - 0.55F;
-                            }
-                            Vector3 dest = firstlocation + norm * (float)lessEnough - new Vector3(0, distanceToFloor, 0);
-                            //make rotation
-                            Quaternion rot = Quaternion.Euler(0, 0, 0);
-                            //add to level
-                            Instantiate(footprintPrefab, dest, rot);
-                            //remove old steps
-                            for (int remove = 0; remove < iter; remove++)
-                            {
-                                previousLocations.RemoveAt(0);
-                            }
-                            break;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                previousLocations.Add(rb.position);
+                PlaceFootprints(previousLocations, PlaceDistance, Prefab, rigidBody);
             }
         }
-        else if (gameObject.CompareTag("Oni")) {
-            if (previousLocations.Count > 0)
-            {
-                //get latest
-                int lastentry = previousLocations.Count - 1;
-                Vector3 lastlocation = (Vector3)previousLocations[lastentry];
-                //make sure it is not current location
-                if (lastlocation != rb.position)
-                {
-                    //add current location
-                    previousLocations.Add(rb.position);
-                }
-
-                //get oldest
-                Vector3 firstlocation = (Vector3)previousLocations[0];
-                //check to see if oni has gone far enough for footprints to form
-                if ((lastlocation - firstlocation).magnitude > lessEnough)
-                {
-                    //iterate through
-                    for (int iter = 0; iter < lastentry; iter++)
-                    {
-                        //check locations along path
-                        Vector3 currentlocation = (Vector3)previousLocations[iter];
-                        //if locations are far enough apart make footprint at a given distance
-                        if ((currentlocation - firstlocation).magnitude > lessEnough)
-                        {
-                            //get direction
-                            Vector3 norm = (currentlocation - firstlocation);
-                            norm.Normalize();
-                            //multiply by desired distance to get desired vector and add to first location
-                            Vector3 dest = firstlocation + norm * (float)lessEnough; // - new Vector3(0, 1.5F, 0);
-                                                                                     //make rotation
-                            Quaternion rot = Quaternion.Euler(0, 0, 0);
-                            //add to level
-                            Instantiate(footprintPrefab, dest, rot);
-                            //remove old steps
-                            for (int remove = 0; remove < iter; remove++)
-                            {
-                                previousLocations.RemoveAt(0);
-                            }
-                            break;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                previousLocations.Add(rb.position);
-            }
-        }
-        else if (gameObject.CompareTag("Inu"))
+        else
         {
-            if (previousLocations.Count > 0)
-            {
-                //get latest
-                int lastentry = previousLocations.Count - 1;
-                Vector3 lastlocation = (Vector3)previousLocations[lastentry];
-                //make sure it is not current location
-                if (lastlocation != rb.position)
-                {
-                    //add current location
-                    previousLocations.Add(rb.position);
-                }
-
-                //get oldest
-                Vector3 firstlocation = (Vector3)previousLocations[0];
-                //check to see if oni has gone far enough for footprints to form
-                if ((lastlocation - firstlocation).magnitude > lessEnough)
-                {
-                    //iterate through
-                    for (int iter = 0; iter < lastentry; iter++)
-                    {
-                        //check locations along path
-                        Vector3 currentlocation = (Vector3)previousLocations[iter];
-                        //if locations are far enough apart make footprint at a given distance
-                        if ((currentlocation - firstlocation).magnitude > lessEnough)
-                        {
-                            //get direction
-                            Vector3 norm = (currentlocation - firstlocation);
-                            norm.Normalize();
-                            //multiply by desired distance to get desired vector and add to first location
-                            Vector3 dest = firstlocation + norm * (float)lessEnough - new Vector3(0, distanceToFloor, 0);
-                            //make rotation
-                            Quaternion rot = Quaternion.Euler(0, 0, 0);
-                            //add to level
-                            Instantiate(footprintPrefab, dest, rot);
-                            //remove old steps
-                            for (int remove = 0; remove < iter; remove++)
-                            {
-                                previousLocations.RemoveAt(0);
-                            }
-                            break;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                previousLocations.Add(rb.position);
-            }
+            PlaceFootprints(previousLocations, PlaceDistance, Prefab, rigidBody);
         }
-        else if (gameObject.CompareTag("Taka"))
+    }
+
+    public void PlaceFootprints(ArrayList previousLocations, int enoughDistance, GameObject footprintPrefab, Rigidbody rigidBody)
+    {
+        float distanceToFloor = 0F;
+        if (previousLocations.Count > 0)
         {
-            if (previousLocations.Count > 0)
+            //get latest
+            int lastentry = previousLocations.Count - 1;
+            Vector3 lastlocation = (Vector3)previousLocations[lastentry];
+            //make sure it is not current location
+            if (lastlocation != gameObject.transform.position)
             {
-                //get latest
-                int lastentry = previousLocations.Count - 1;
-                Vector3 lastlocation = (Vector3)previousLocations[lastentry];
-                //make sure it is not current location
-                if (lastlocation != rb.position)
-                {
-                    //add current location
-                    previousLocations.Add(rb.position);
-                }
+                //add current location
+                previousLocations.Add(gameObject.transform.position);
+            }
 
-                //get oldest
-                Vector3 firstlocation = (Vector3)previousLocations[0];
-                //check to see if oni has gone far enough for footprints to form
-                if ((lastlocation - firstlocation).magnitude > lessEnough)
+            //get oldest
+            Vector3 firstlocation = (Vector3)previousLocations[0];
+            //check to see if player has gone far enough for footprints to form
+            if ((lastlocation - firstlocation).magnitude > enoughDistance)
+            {
+                //iterate through
+                for (int iter = 0; iter < lastentry; iter++)
                 {
-                    //iterate through
-                    for (int iter = 0; iter < lastentry; iter++)
+                    //check locations along path
+                    Vector3 currentlocation = (Vector3)previousLocations[iter];
+                    //if locations are far enough apart make footprint at a given distance
+                    if ((currentlocation - firstlocation).magnitude > enoughDistance)
                     {
-                        //check locations along path
-                        Vector3 currentlocation = (Vector3)previousLocations[iter];
-                        //if locations are far enough apart make footprint at a given distance
-                        if ((currentlocation - firstlocation).magnitude > lessEnough)
+                        //get direction
+                        Vector3 norm = (currentlocation - firstlocation);
+                        norm.Normalize();
+                        //multiply by desired distance to get desired vector and add to first location
+                        if (transform.position.y != distanceToFloor)
                         {
-                            //get direction
-                            Vector3 norm = (currentlocation - firstlocation);
-                            norm.Normalize();
-                            //multiply by desired distance to get desired vector and add to first location
-                            Vector3 dest = firstlocation + norm * (float)lessEnough - new Vector3(0, distanceToFloor, 0);
-                            //make rotation
-                            Quaternion rot = Quaternion.Euler(0, 0, 0);
-                            //add to level
-                            Instantiate(footprintPrefab, dest, rot);
-                            //remove old steps
-                            for (int remove = 0; remove < iter; remove++)
+                            float maxDistance = 25;
+                            Vector3 rayDirection = gameObject.transform.TransformDirection(Vector3.down);
+                            maxDistance = rayDirection.magnitude;
+                            //rayDirection = Vector3.MoveTowards
+                            rayDirection.Normalize();
+                            Ray ray = new Ray(gameObject.transform.position, rayDirection);
+                            RaycastHit rayHit;
+
+                            if (Physics.Raycast(ray, out rayHit, maxDistance, LevelMask))
                             {
-                                previousLocations.RemoveAt(0);
+                                Vector3 dist = rayHit.collider.transform.position;
+                                distanceToFloor = dist.y;
                             }
-                            break;
+                            
                         }
+                        Vector3 dest = firstlocation + norm * (float)enoughDistance;
+                        dest.y = distanceToFloor + 0.5f;
+                        //make rotation
+                        Quaternion rot = Quaternion.Euler(0, 0, 0);
+                        //add to level
+                        Instantiate(footprintPrefab, dest, rot);
+                        //remove old steps
+                        for (int remove = 0; remove < iter; remove++)
+                        {
+                            previousLocations.RemoveAt(0);
+                        }
+                        break;
                     }
                 }
             }
-            else
-            {
-                previousLocations.Add(rb.position);
-            }
         }
+        else
+        {
+            previousLocations.Add(rigidBody.position);
+        }
+    }
 
+    public bool IsGrounded()
+    {
+        Vector3 rayDirection = gameObject.transform.TransformDirection(Vector3.down);
+        //rayDirection = Vector3.MoveTowards
+        rayDirection.Normalize();
+        Ray ray = new Ray(gameObject.transform.position, rayDirection);
+        RaycastHit rayHit;
+
+        if (Physics.Raycast(ray, out rayHit, distToGround + 0.5F, LevelMask))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

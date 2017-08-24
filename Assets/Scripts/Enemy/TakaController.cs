@@ -53,6 +53,7 @@ public class TakaController : YokaiController
     private TakaState state;
     //current anim state
     private TakaAnim animState;
+    private Actor actorID;
 
     //is player seen
     private System.Boolean seen;
@@ -68,6 +69,17 @@ public class TakaController : YokaiController
     private Camera cam;
     private float distanceToFloor = 2.5F;
     private GameObject footprintPrefab;
+
+    public TakaState State
+    {
+        set
+        {
+            state = value;
+
+            actorID = GetComponent<Actor>();
+            ActorStateChange(actorID, (int)state);
+        }
+    }
 
     void Start()
     {
@@ -146,7 +158,7 @@ public class TakaController : YokaiController
                 break;
         }
 
-        PlaceFootprints(previousLocations, lessEnough, footprintPrefab, rb, distanceToFloor);
+        //PlaceFootprints(previousLocations, lessEnough, footprintPrefab, rb, distanceToFloor);
 
         if (awake == true)
         {
@@ -356,8 +368,11 @@ public class TakaController : YokaiController
         }
 
         UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        GameObject goal = foundFootprint;
-        agent.destination = goal.transform.position;
+        if (foundFootprint != null)
+        {
+            GameObject goal = foundFootprint;
+            agent.destination = goal.transform.position;
+        }
     }
 
     void stun()
@@ -478,6 +493,8 @@ public class TakaController : YokaiController
         {
             string curlevel = SceneManager.GetActiveScene().name;
             SceneManager.LoadScene(curlevel);
+            actorID = GetComponent<Actor>();
+            ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
         }
     }
 }

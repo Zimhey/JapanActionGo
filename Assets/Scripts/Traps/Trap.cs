@@ -10,7 +10,7 @@ public enum TrapState
     Resetting, // resetting animation
 }
 
-public class Trap : MonoBehaviour
+public class Trap : GameManager
 {
     public TrapState state;
     public float FireAnimTime;
@@ -21,6 +21,19 @@ public class Trap : MonoBehaviour
     public bool ResetRequested;
 
     protected float activationTime;
+
+    private Actor actorID;
+
+    public TrapState State
+    {
+        set
+        {
+            state = value;
+
+            actorID = GetComponent<Actor>();
+            ActorStateChange(actorID, (int)state);
+        }
+    }
 
     // Use this for initialization
     void Start () {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerActions : FootprintPlacer
+public class PlayerActions : MonoBehaviour
 {
     public LayerMask levelLayer;
     public Inventory PlayerInventory;
@@ -73,17 +73,17 @@ public class PlayerActions : FootprintPlacer
         }
 
         // Chalk Drawing
-		if ((Input.GetButton("Fire1") || drawingController.triggerPressed) && PlayerInventory.CanUse(ItemType.Chalk))
+		if ((Input.GetButton("Fire1") /*|| drawingController.triggerPressed*/) && PlayerInventory.CanUse(ItemType.Chalk))
             DrawChalk();
         else
             drawing = false;
 
-		if ((Input.GetButton("Fire2") || throwingController.triggerPressed) && PlayerInventory.CanUse(ItemType.Ofuda))
+		if ((Input.GetButton("Fire2") /*|| throwingController.triggerPressed*/) && PlayerInventory.CanUse(ItemType.Ofuda))
             ThrowOfuda();
         else
             thrown = false;
 
-        PlaceFootprints(previousLocations, lessEnough, footprintPrefab, rb, distanceToFloor);
+        //PlaceFootprints(previousLocations, lessEnough, footprintPrefab, rb, distanceToFloor);
     }
 
     void DrawChalk()
