@@ -47,7 +47,7 @@ public class Actors : MonoBehaviour {
 
     // get field call init?
 
-    public static void InitPrefabs()
+    private static void InitPrefabs()
     {
         if(!initialized)
         {
@@ -61,7 +61,7 @@ public class Actors : MonoBehaviour {
             prefabs.Add(ActorType.Crush_Trap, Resources.Load("Prefabs/Traps/CrushingTrapPrefab") as GameObject);
             //prefabs.Add(ActorType.Pit_Trap, Resources.Load("Prefabs/ChalkMark") as GameObject);
             //prefabs.Add(ActorType.Dart_Trap, Resources.Load("Prefabs/ChalkMark") as GameObject);
-            // prefabs.Add(ActorType.Dart_Projectile, Resources.Load("Prefabs/ChalkMark") as GameObject);
+            //prefabs.Add(ActorType.Dart_Projectile, Resources.Load("Prefabs/ChalkMark") as GameObject);
             //prefabs.Add(ActorType.Tripwire, Resources.Load("Prefabs/ChalkMark") as GameObject);
             //prefabs.Add(ActorType.Lantern_Trap, Resources.Load("Prefabs/ChalkMark") as GameObject);
             prefabs.Add(ActorType.Chalk_Pickup, Resources.Load("Prefabs/Pickups/ChalkPickup") as GameObject);
