@@ -8,7 +8,8 @@ public class MazeGenerator : MonoBehaviour
     public int Seed;
     public bool DebugLabelsOn;
     private NavMeshSurface surface;
-    public Difficulty dif = Difficulty.Small;
+    public static Difficulty dif = Difficulty.Small;
+    public static MazeNode[,] DifferentSections = new MazeNode[5,8];
 
     // Use this for initialization
     void Start()
@@ -179,7 +180,7 @@ public class MazeGenerator : MonoBehaviour
         GenerateMazeHelper(size, sections, loops, floors, difficulty);
     }
 
-    public void GenerateMazeHelper(int size, int[] sections, int loops, int floors, int dif)
+    public void GenerateMazeHelper(int size, int[] sections, int loops, int floors, Difficulty difficulty)
     {
         MazeNode[,] roots = new MazeNode[5, 8];
         for (int i = 0; i < floors; i++)
@@ -204,19 +205,20 @@ public class MazeGenerator : MonoBehaviour
             if (surface != null)
                 surface.BuildNavMesh();
         }
-        connectLadderNodes(dif, roots);
+        DifferentSections = roots;
+        connectLadderNodes(difficulty, roots);
     }
 
-    public void connectLadderNodes(int difficulty, MazeNode[,] roots)
+    public void connectLadderNodes(Difficulty difficulty, MazeNode[,] roots)
     {
-        if (difficulty == 1 || difficulty == 2)
+        if (difficulty == Difficulty.Small || difficulty == Difficulty.Medium)
         {
             connectLadders(FindPathEnd(roots[0, 0]), roots[1, 0]);
             connectLadders(FindPathEnd(roots[1, 0]), roots[2, 0]);
             connectLadders(FindPathEnd(roots[2, 0]), roots[1, 1]);
             connectLadders(FindPathEnd(roots[1, 1]), roots[0, 1]);
         }
-        if(difficulty == 3)
+        if(difficulty == Difficulty.Large)
         {
             connectLadders(FindPathEnd(roots[0, 0]), roots[1, 0]);
             connectLadders(FindPathEnd(roots[1, 0]), roots[2, 0]);
@@ -225,7 +227,7 @@ public class MazeGenerator : MonoBehaviour
             connectLadders(FindPathEnd(roots[2, 1]), roots[1, 2]);
             connectLadders(FindPathEnd(roots[1, 2]), roots[0, 1]);
         }
-        if(difficulty == 4)
+        if(difficulty == Difficulty.Excessive)
         {
             connectLadders(FindPathEnd(roots[0, 0]), roots[1, 0]);
             connectLadders(FindPathEnd(roots[1, 0]), roots[2, 0]);
@@ -240,7 +242,7 @@ public class MazeGenerator : MonoBehaviour
             connectLadders(FindPathEnd(roots[2, 3]), roots[1, 3]);
             connectLadders(FindPathEnd(roots[1, 3]), roots[0, 2]);
         }
-        if (difficulty == 5)
+        if (difficulty == Difficulty.AlreadyLost)
         {
             connectLadders(FindPathEnd(roots[0, 0]), roots[1, 0]);
             connectLadders(FindPathEnd(roots[1, 0]), roots[2, 0]);
@@ -261,7 +263,7 @@ public class MazeGenerator : MonoBehaviour
             connectLadders(FindPathEnd(roots[2, 5]), roots[1, 5]);
             connectLadders(FindPathEnd(roots[1, 5]), roots[0, 3]);
         }
-        if (difficulty == 6)
+        if (difficulty == Difficulty.JustWhy)
         {
             connectLadders(FindPathEnd(roots[0, 0]), roots[1, 0]);
             connectLadders(FindPathEnd(roots[1, 0]), roots[2, 0]);
@@ -464,6 +466,45 @@ public class MazeGenerator : MonoBehaviour
         }
 
         return sectionRoots;
+    }
+
+    public static List<MazeNode> nodesInSection(MazeNode root)
+    {
+        List<MazeNode> nodes = new List<MazeNode>();
+        Stack<MazeNode> visited = new Stack<MazeNode>();
+        visited.Push(root);
+        nodes.Add(root);
+
+        while(visited.Count > 0)
+        {
+            MazeNode current = visited.Pop();
+            foreach(MazeNode n in current.GetAdjacentNodes())
+                if(!nodes.Contains(n))
+                {
+                    visited.Push(n);
+                    nodes.Add(n);
+                }
+        }
+
+        return nodes;
+    }
+
+    public static int GetSize()
+    {
+        if (dif == Difficulty.Small)
+            return 10;
+        if (dif == Difficulty.Medium)
+            return 15;
+        if (dif == Difficulty.Large)
+            return 20;
+        if (dif == Difficulty.Excessive)
+            return 25;
+        if (dif == Difficulty.AlreadyLost)
+            return 30;
+        if (dif == Difficulty.JustWhy)
+            return 40;
+        else
+            return 0;
     }
 
     public static MazeNode findNode(MazeNode n, int direction)
