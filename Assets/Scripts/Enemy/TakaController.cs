@@ -111,7 +111,7 @@ public class TakaController : YokaiController
         }
 
         UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        if (FleeInu(agent, PlayerObject))
+        if (FleeInu(PlayerObject))
         {
             state = TakaState.Flee;
         }
@@ -188,7 +188,8 @@ public class TakaController : YokaiController
         //if there is a building separating you from his view, for example
         //the enemy only sees you if it has you in open view
         UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        ExecuteChase(agent, PlayerObject, PlayerMask);
+        Transform goal = PlayerObject.transform; // set current player location as desired location
+        agent.destination = goal.position; // set destination to player's current location
 
         Vector3 dest = PlayerObject.transform.position;
         agent.destination = dest;

@@ -10,26 +10,7 @@ public class YokaiController : FootprintPlacer {
 
     public bool SeePlayer(GameObject playerObject, LayerMask levelMask)
     {
-        int maxDistance = 25;
-        int maxDistanceSquared = maxDistance * maxDistance;
-        Vector3 rayDirection = playerObject.transform.localPosition - transform.localPosition;
-        Vector3 enemyDirection = transform.TransformDirection(Vector3.forward);
-        float angleDot = Vector3.Dot(rayDirection, enemyDirection);
-        System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < maxDistanceSquared;
-
-        //float crossangle = Vector3.Angle(enemyDirection, rayDirection);
-        System.Boolean playerInFrontOfEnemy = angleDot > 0.0;
-
-        System.Boolean noWallfound = NoWall(playerObject, levelMask);
-        if (playerInFrontOfEnemy)
-        {
-            System.Boolean seenPlayer = playerInFrontOfEnemy && playerCloseToEnemy && noWallfound;
-            return seenPlayer;
-        }
-        else
-        {
-            return false;
-        }
+        return SeeObject(playerObject, levelMask);
     }
 
     public bool NoWall(GameObject playerObject,  LayerMask levelMask)
@@ -63,24 +44,10 @@ public class YokaiController : FootprintPlacer {
             }
         }
         return false;
+        //rather than raycast, given a list of footprints, iterate through once determining close enough and make list of that, then iterate through to see if correct direction
+        //then iterate through if no wall, take first, seek to it
     }
-
-    public void ExecuteChase(UnityEngine.AI.NavMeshAgent agent, GameObject playerObject, LayerMask playerMask)
-    {
-        float maxDistance = 25;
-        Vector3 rayDirection = playerObject.transform.position - transform.position;
-        maxDistance = rayDirection.magnitude;
-        //rayDirection = Vector3.MoveTowards
-        rayDirection.Normalize();
-        Ray ray = new Ray(gameObject.transform.position, rayDirection);
-        RaycastHit rayHit;
-
-        if (Physics.Raycast(ray, out rayHit, maxDistance, playerMask))
-        {
-            Transform goal = playerObject.transform; // set current player location as desired location
-            agent.destination = goal.position; // set destination to player's current location
-        }
-    }
+    
     
     public void ExecuteFollow(UnityEngine.AI.NavMeshAgent agent, GameObject playerObject)
     {
@@ -98,9 +65,10 @@ public class YokaiController : FootprintPlacer {
                 //print("Follow" + agent.pathEndPosition);
             }
         }
+        //when passed a footprint, go to it
     }
 
-    public bool FleeInu(UnityEngine.AI.NavMeshAgent agent, GameObject playerObject)
+    public bool FleeInu(GameObject playerObject)
     {
         Vector3 rayDirection = playerObject.transform.localPosition - transform.localPosition;
         RaycastHit[] hits;
@@ -121,6 +89,7 @@ public class YokaiController : FootprintPlacer {
             }
         }
         return false;
+        //given a list of inu iterate through to check validity
     }
 
     public void TurnTowardsPlayer(GameObject playerObject)
@@ -130,5 +99,29 @@ public class YokaiController : FootprintPlacer {
         float step = turnspeed * Time.deltaTime;
         Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, step, 0.0F);
         transform.rotation = Quaternion.LookRotation(newDir);
+    }
+
+    public bool SeeObject(GameObject gameObject, LayerMask levelMask)
+    {
+        int maxDistance = 25;
+        int maxDistanceSquared = maxDistance * maxDistance;
+        Vector3 rayDirection = gameObject.transform.localPosition - transform.localPosition;
+        Vector3 observerDirection = transform.TransformDirection(Vector3.forward);
+        float angleDot = Vector3.Dot(rayDirection, observerDirection);
+        System.Boolean objectCloseToObserver = rayDirection.sqrMagnitude < maxDistanceSquared;
+
+        //float crossangle = Vector3.Angle(enemyDirection, rayDirection);
+        System.Boolean objectInFrontOfObserver = angleDot > 0.0;
+
+        System.Boolean noWallfound = NoWall(gameObject, levelMask);
+        if (objectInFrontOfObserver)
+        {
+            System.Boolean seenPlayer = objectInFrontOfObserver && objectCloseToObserver && noWallfound;
+            return seenPlayer;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

@@ -114,7 +114,7 @@ public class OniController : YokaiController
         }
 
         UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        if(FleeInu(agent, PlayerObject))
+        if(FleeInu(PlayerObject))
         {
             state = OniState.Flee;
         }
@@ -195,7 +195,8 @@ public class OniController : YokaiController
         //the enemy only sees you if it has you in open view
 
         UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        ExecuteChase(agent, PlayerObject, PlayerMask);
+        Transform goal = PlayerObject.transform; // set current player location as desired location
+        agent.destination = goal.position; // set destination to player's current location
     }
 
     void flee()
