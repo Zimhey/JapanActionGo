@@ -100,7 +100,7 @@ public class GameManager : MonoBehaviour {
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 8; j++)
                 if(roots[i,j] != null)
-                    sectionIDs[i,j] = analytics.AddSection(lvlID);
+                    sectionIDs[i,j] = analytics.AddSection(lvlID, i);
 
         for(int i = 0; i < 5; i++)
             for(int j = 0; j < 5; j++)
@@ -112,6 +112,7 @@ public class GameManager : MonoBehaviour {
                 }
 
         //MazeGenerator.spawnMaze(roots[0, 0]);
+        //MazeGenerator.spawnActor(roots[0,0]);
 
         // Spawn First Section
         // Spawn Player
