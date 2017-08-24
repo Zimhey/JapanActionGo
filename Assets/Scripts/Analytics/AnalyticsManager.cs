@@ -140,7 +140,7 @@ public class AnalyticsManager : MonoBehaviour
         return ReturnSecondQueryAsInt(insert, getID);
     }
 
-    public int AddSection(int levelID)
+    public int AddSection(int levelID, int floor)
     {
         return ReturnSecondQueryAsInt("", "");
     }

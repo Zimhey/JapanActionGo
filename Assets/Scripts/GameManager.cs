@@ -91,9 +91,28 @@ public class GameManager : MonoBehaviour {
         // Add Level to Analytics
         // Add Sections to Analytics
         // Add Cells to Analytics
-        int lvlID = analytics.AddLevel(Difficulty.Small);
-        int secID = analytics.AddSection(lvlID);
+        int lvlID = analytics.AddLevel(MazeGenerator.dif);
         int sesID = analytics.AddSession(lvlID);
+        int[,] sectionIDs = new int[5,8];
+        MazeNode[,] roots = MazeGenerator.DifferentSections;
+        List<MazeNode> nodes;
+
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 8; j++)
+                if(roots[i,j] != null)
+                    sectionIDs[i,j] = analytics.AddSection(lvlID, i);
+
+        for(int i = 0; i < 5; i++)
+            for(int j = 0; j < 5; j++)
+                if (roots[i, j] != null)
+                {
+                    nodes = MazeGenerator.nodesInSection(roots[i, j]);
+                    foreach (MazeNode n in nodes)
+                        analytics.AddCell(sectionIDs[i, j], n.Col, n.Row);
+                }
+
+        //MazeGenerator.spawnMaze(roots[0, 0]);
+        //MazeGenerator.spawnActor(roots[0,0]);
 
         // Spawn First Section
         // Spawn Player
