@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 54316090242173410}
   - component: {fileID: 195293660191163708}
   - component: {fileID: 114178126778793846}
+  - component: {fileID: 114080606360274906}
   m_Layer: 0
   m_Name: TakaNyudo
   m_TagString: Taka
@@ -99,6 +100,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &114080606360274906
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1245111140667440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48b735feee9ce3d4db465df08c7f89d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Prefab: {fileID: 1150202406731512, guid: 84908a3528f904f499fee595f06e5ab2, type: 2}
+  PlaceDistance: 5
+  LevelMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &114178126778793846
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -110,6 +127,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83fcd51dfb43a214f86d7190172109ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DebugLabelsOn: 0
+  SessionID: 0
+  CurrentState: 0
+  PlayersVRType: 0
+  AnalyticsEnabled: 0
   PlayerObject: {fileID: 0}
   StartingNode: {fileID: 0}
   Speed: 10
