@@ -23,10 +23,10 @@ public enum VirtualRealityType
 
 public struct MazeSection
 {
-    int SectionID;
-    MazeNode Root;
-    bool Spawned;
-    List<GameObject> Actors;
+    public int SectionID;
+    public MazeNode Root;
+    public bool Spawned;
+    public List<GameObject> Actors;
 }
 
 public class GameManager : MonoBehaviour {
@@ -45,6 +45,8 @@ public class GameManager : MonoBehaviour {
             return instance;
         }
     }
+
+    public bool DebugLabelsOn;
 
     public int SessionID;
 
@@ -92,7 +94,7 @@ public class GameManager : MonoBehaviour {
         // Add Sections to Analytics
         // Add Cells to Analytics
         int lvlID = analytics.AddLevel(MazeGenerator.dif);
-        int sesID = analytics.AddSession(lvlID);
+        SessionID = analytics.AddSession(lvlID);
         int[,] sectionIDs = new int[5,8];
         MazeNode[,] roots = MazeGenerator.DifferentSections;
         List<MazeNode> nodes;
@@ -108,11 +110,14 @@ public class GameManager : MonoBehaviour {
                 {
                     nodes = MazeGenerator.nodesInSection(roots[i, j]);
                     foreach (MazeNode n in nodes)
+                    {
+
                         analytics.AddCell(sectionIDs[i, j], n.Col, n.Row);
+                    }
                 }
 
-        //MazeGenerator.spawnMaze(roots[0, 0]);
-        //MazeGenerator.spawnActor(roots[0,0]);
+        //MazeGenerator.SpawnMaze(roots[0, 0]);
+        SpawnActor(roots[0, 0]);
 
         // Spawn First Section
         // Spawn Player
@@ -122,13 +127,62 @@ public class GameManager : MonoBehaviour {
     public void SpawnSection(MazeSection section)
     {
         // Spawn Cells
-        // Add C
+        section.Spawned = true;
+        foreach(MazeNode n in MazeGenerator.nodesInSection(section.Root))
+        {
+            SpawnPiece(n);
+            SpawnActor(n);
+        }
         // Spawn Actors
         // Add Actors to Analytics
     }
 
-    // TODO Move Spawn Piece here
-    // TODO Move Spawn Actor Here
+    private static int piecesSpawned;
+
+    public void SpawnPiece(MazeNode node)
+    {
+        Vector3 location = new Vector3(node.Col * 6 + 8, node.Floor * 30, node.Row * 6 + 8);
+
+        GameObject obj = Instantiate(Resources.Load(node.GetPrefabName()), location, node.GetRotation()) as GameObject;
+        obj.transform.parent = this.transform;
+
+        obj = Instantiate(Resources.Load("Prefabs/Level/CellLog"), location, node.GetRotation()) as GameObject;
+        obj.transform.parent = this.transform;
+        CellLog cellLog = obj.GetComponent<CellLog>();
+        cellLog.Row = node.Row;
+        cellLog.Col = node.Col;
+        
+        if (DebugLabelsOn)
+        {
+            GameObject textObj = Instantiate(Resources.Load("Prefabs/Level/CellTextPrefab"), location + new Vector3(0, 0.5f, -1), new Quaternion()) as GameObject;
+            textObj.transform.parent = obj.transform;
+
+            TextMesh t = textObj.GetComponentInChildren<TextMesh>();
+            if (t != null)
+                t.text = "R: " + node.Row + " C: " + node.Col;
+
+            textObj = Instantiate(Resources.Load("Prefabs/Level/CellTextPrefab"), location + new Vector3(0, 0.5f, 0), new Quaternion()) as GameObject;
+            textObj.transform.parent = obj.transform;
+
+            t = textObj.GetComponentInChildren<TextMesh>();
+            if (t != null)
+                t.text = "P" + piecesSpawned++;
+        }
+        
+    }
+
+    public void SpawnActor(MazeNode node)
+    {
+        GameObject actorObject;
+        Vector3 location = new Vector3(node.Col * 6 + 8, node.Floor * 30, node.Row * 6 + 8);
+        if (node.actor != ActorType.Null)
+        {
+            actorObject = Instantiate(Actors.Prefabs[node.actor], location, node.GetRotation());
+            if (node.actor == ActorType.Ladder)
+                node.ladder = actorObject;
+            actorObject.AddComponent<Actor>().ActorID = analytics.AddActor(SessionID, node.actor);
+        }
+    }
     // TODO Add an Actor Component to each actor GameObject
 
     public void EnterSection(GameObject ladder)
@@ -208,7 +262,4 @@ public class GameManager : MonoBehaviour {
         if (AnalyticsEnabled)
             analytics.FoundItem(actor.ActorID);
     }
-
-
-    // 
 }
