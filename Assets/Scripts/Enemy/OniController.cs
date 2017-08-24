@@ -16,6 +16,17 @@ public enum OniState
     Stun // oni has been hit by ofuda and is stunned
 }
 
+//state machine for oni animations
+public enum OniAnim
+{
+    Idle, // oni doing nothing
+    Walk, // oni walking around patrolling
+    Run, // oni chasing player
+    Attack, // oni attacking player
+    Stunned, // oni stunned by player
+    Look // oni looking around itself
+}
+
 public class OniController : YokaiController
 {
     //player game object
@@ -34,8 +45,12 @@ public class OniController : YokaiController
     private Vector3 home;
     //oni starting rotation
     private Quaternion startingRotation;
+
     //current oni state
     private OniState state;
+    //current anim state
+    private OniAnim animState;
+
     //is player seen
     private System.Boolean seen;
     //has player been seen
@@ -60,6 +75,7 @@ public class OniController : YokaiController
         startingRotation = gameObject.transform.rotation;
         //print("OriHome" + home);
         state = OniState.Idle;
+        animState = OniAnim.Idle;
         awake = false;
         currentNode = StartingNode;
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
@@ -69,12 +85,6 @@ public class OniController : YokaiController
 
     void LateUpdate()
     {
-        UnityEngine.AI.NavMeshAgent agent0 = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        if (agent0.velocity.magnitude < 0.5)
-            anim.SetInteger("State", 0);
-        else
-            anim.SetInteger("State", 1);   
-
         //manage state machine each update, call functions based on state
         if (state != OniState.Idle)
             print("State" + state);
@@ -105,7 +115,29 @@ public class OniController : YokaiController
                 stun();
                 break;
         }
-        
+
+        switch (animState)
+        {
+            case OniAnim.Idle:
+                animIdle();
+                break;
+            case OniAnim.Walk:
+                animWalk();
+                break;
+            case OniAnim.Run:
+                animRun();
+                break;
+            case OniAnim.Attack:
+                animAttack();
+                break;
+            case OniAnim.Stunned:
+                animStunned();
+                break;
+            case OniAnim.Look:
+                animLook();
+                break;
+        }
+
         PlaceFootprints(previousLocations, lessEnough, footprintPrefab, rb, distanceToFloor);
 
         if (awake == true)
@@ -114,7 +146,7 @@ public class OniController : YokaiController
         }
 
         UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        if(FleeInu(PlayerObject))
+        if(FleeInu(LevelMask))
         {
             state = OniState.Flee;
         }
@@ -124,12 +156,13 @@ public class OniController : YokaiController
     {
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
+        GameObject foundFootprint = SeeFootprint(LevelMask);
         if (seen)
         {
             awake = true;
             state = OniState.Chase;
         }
-        else if (SeeFootprint(PlayerObject) && awake == true)
+        else if (foundFootprint != null && awake == true)
         {
             state = OniState.Follow;
         }
@@ -143,11 +176,13 @@ public class OniController : YokaiController
     {
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
+        GameObject foundFootprint = SeeFootprint(LevelMask);
         if (seen)
         {
+            awake = true;
             state = OniState.Chase;
         }
-        else if (SeeFootprint(PlayerObject) && awake == true)
+        else if (foundFootprint != null && awake == true)
         {
             state = OniState.Follow;
         }
@@ -178,9 +213,10 @@ public class OniController : YokaiController
     {
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
+        GameObject foundFootprint = SeeFootprint(LevelMask);
         if (!seen)
         {
-            if (SeeFootprint(PlayerObject))
+            if (foundFootprint != null)
             {
                 state = OniState.Follow;
             }
@@ -229,16 +265,18 @@ public class OniController : YokaiController
     {
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
+        GameObject foundFootprint = SeeFootprint(LevelMask);
         if (seen)
         {
             state = OniState.Chase;
         }
-        else if (!SeeFootprint(PlayerObject))
+        else if (foundFootprint == null)
         {
             state = OniState.Idle;
         }
         UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        ExecuteFollow(agent, PlayerObject);
+        GameObject goal = foundFootprint;
+        agent.destination = goal.transform.position;
     }
 
     void stun()
@@ -246,13 +284,15 @@ public class OniController : YokaiController
         stunTimer--;
         if(stunTimer <= 0)
         {
+            animState = OniAnim.Idle;
             seen = false;
             seen = SeePlayer(PlayerObject, LevelMask);
+            GameObject foundFootprint = SeeFootprint(LevelMask);
             if (seen)
             {
                 state = OniState.Chase;
             }
-            else if (SeeFootprint(PlayerObject) && awake == true)
+            else if (foundFootprint != null && awake == true)
             {
                 state = OniState.Follow;
             }
@@ -266,6 +306,7 @@ public class OniController : YokaiController
     void Stun()
     {
         state = OniState.Stun;
+        animState = OniAnim.Stunned;
         stunTimer = 300;
         UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         agent.destination = rb.position;
@@ -274,6 +315,50 @@ public class OniController : YokaiController
     void SafeZoneCollision()
     {
         state = OniState.Flee;
+    }
+
+    void animIdle()
+    {
+        UnityEngine.AI.NavMeshAgent agent0 = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        if (agent0.velocity.magnitude < 0.5)
+            anim.SetInteger("State", 0);
+        else
+            animState = OniAnim.Walk;
+    }
+
+    void animWalk()
+    {
+        UnityEngine.AI.NavMeshAgent agent0 = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        if (agent0.velocity.magnitude > 0.5)
+            anim.SetInteger("State", 1);
+        else
+            animState = OniAnim.Idle;
+    }
+
+    void animRun()
+    {
+        UnityEngine.AI.NavMeshAgent agent0 = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        if (agent0.velocity.magnitude > 5.5)
+            anim.SetInteger("State", 2);
+        else
+            animState = OniAnim.Walk;
+    }
+
+    void animAttack()
+    {
+        // if attacking player
+        anim.SetInteger("State", 3);
+    }
+
+    void animStunned()
+    {
+        anim.SetInteger("State", 4);
+    }
+
+    void animLook()
+    {
+        // if looking around
+        anim.SetInteger("State", 5);
     }
 
     void OnCollisionEnter(Collision col)

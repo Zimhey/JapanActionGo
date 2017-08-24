@@ -19,6 +19,19 @@ public enum InuState
     Stun // inu has been hit by ofuda and is stunned
 }
 
+//state machine for inu animations
+public enum InuAnim
+{
+    Idle, // inu doing nothing
+    Walk, // inu walking around patrolling
+    Run, // inu chasing player
+    Attack, // inu attacking player
+    Stunned, // inu stunned by player
+    Sit, // inu sitting down
+    Stand, // inu standing up
+    Growl // inu growling
+}
+
 public class InuController : YokaiController
 {
     //player game object
@@ -37,8 +50,12 @@ public class InuController : YokaiController
     private Vector3 home;
     //inu starting rotation
     private Quaternion startingRotation;
+
     //current inu state
     private InuState state;
+    //current anim state
+    private InuAnim animState;
+
     //is player seen
     private System.Boolean seen;
     //has player been seen
@@ -64,6 +81,7 @@ public class InuController : YokaiController
         startingRotation = gameObject.transform.rotation;
         //print("OriHome" + home);
         state = InuState.Idle;
+        animState = InuAnim.Idle;
         awake = false;
         currentNode = StartingNode;
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
@@ -110,6 +128,34 @@ public class InuController : YokaiController
                 break;
         }
 
+        switch (animState)
+        {
+            case InuAnim.Idle:
+                animIdle();
+                break;
+            case InuAnim.Walk:
+                animWalk();
+                break;
+            case InuAnim.Run:
+                animRun();
+                break;
+            case InuAnim.Attack:
+                animAttack();
+                break;
+            case InuAnim.Stunned:
+                animStunned();
+                break;
+            case InuAnim.Sit:
+                animSit();
+                break;
+            case InuAnim.Stand:
+                animStand();
+                break;
+            case InuAnim.Growl:
+                animGrowl();
+                break;
+        }
+
         PlaceFootprints(previousLocations, lessEnough, footprintPrefab, rb, distanceToFloor);
 
         if (awake == true)
@@ -123,11 +169,12 @@ public class InuController : YokaiController
     {
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
+        GameObject foundFootprint = SeeFootprint(LevelMask);
         if (seen)
         {
             state = InuState.Chase;
         }
-        else if (SeeFootprint(PlayerObject) && awake == true)
+        else if (foundFootprint != null && awake == true)
         {
             state = InuState.Follow;
         }
@@ -141,11 +188,12 @@ public class InuController : YokaiController
     {
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
+        GameObject foundFootprint = SeeFootprint(LevelMask);
         if (seen)
         {
             state = InuState.Chase;
         }
-        else if (SeeFootprint(PlayerObject) && awake == true)
+        else if (foundFootprint != null && awake == true)
         {
             state = InuState.Follow;
         }
@@ -173,9 +221,10 @@ public class InuController : YokaiController
     {
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
+        GameObject foundFootprint = SeeFootprint(LevelMask);
         if (!seen)
         {
-            if (SeeFootprint(PlayerObject))
+            if (foundFootprint != null)
             {
                 state = InuState.Follow;
             }
@@ -219,11 +268,12 @@ public class InuController : YokaiController
             beenTooClose = false;
             seen = false;
             seen = SeePlayer(PlayerObject, LevelMask);
+            GameObject foundFootprint = SeeFootprint(LevelMask);
             if (seen)
             {
                 state = InuState.Chase;
             }
-            else if (SeeFootprint(PlayerObject))
+            else if (foundFootprint != null)
             {
                 state = InuState.Follow;
             }
@@ -309,17 +359,19 @@ public class InuController : YokaiController
     {
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
+        GameObject foundFootprint = SeeFootprint(LevelMask);
         if (seen)
         {
             state = InuState.Chase;
         }
-        else if (!SeeFootprint(PlayerObject))
+        else if (foundFootprint != null)
         {
             state = InuState.Idle;
         }
 
         UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        ExecuteFollow(agent, PlayerObject);
+        GameObject goal = foundFootprint;
+        agent.destination = goal.transform.position;
     }
 
     void stun()
@@ -329,11 +381,12 @@ public class InuController : YokaiController
         {
             seen = false;
             seen = SeePlayer(PlayerObject, LevelMask);
+            GameObject foundFootprint = SeeFootprint(LevelMask);
             if (seen)
             {
                 state = InuState.Chase;
             }
-            else if (SeeFootprint(PlayerObject) && awake == true)
+            else if (foundFootprint != null && awake == true)
             {
                 state = InuState.Follow;
             }
@@ -360,6 +413,68 @@ public class InuController : YokaiController
     bool hasPlayerTripped()
     {
         return false;
+    }
+
+    void animIdle()
+    {
+        UnityEngine.AI.NavMeshAgent agent0 = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        if (agent0.velocity.magnitude < 0.5)
+        {
+            //anim.SetInteger("State", 0);
+        }
+        else
+            animState = InuAnim.Walk;
+    }
+
+    void animWalk()
+    {
+        UnityEngine.AI.NavMeshAgent agent0 = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        if (agent0.velocity.magnitude > 0.5)
+        {
+            //anim.SetInteger("State", 1);
+        }
+        else
+            animState = InuAnim.Idle;
+    }
+
+    void animRun()
+    {
+        UnityEngine.AI.NavMeshAgent agent0 = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        if (agent0.velocity.magnitude > 5.5)
+        {
+            //anim.SetInteger("State", 2);
+        }
+        else
+            animState = InuAnim.Walk;
+    }
+
+    void animAttack()
+    {
+        // if attacking player
+        //anim.SetInteger("State", 3);
+    }
+
+    void animStunned()
+    {
+        //anim.SetInteger("State", 4);
+    }
+
+    void animSit()
+    {
+        // if looking around
+        //anim.SetInteger("State", 5);
+    }
+
+    void animStand()
+    {
+        // if looking around
+        //anim.SetInteger("State", 6);
+    }
+
+    void animGrowl()
+    {
+        // if looking around
+        //anim.SetInteger("State", 7);
     }
 
     void OnCollisionEnter(Collision col)

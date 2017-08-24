@@ -17,6 +17,19 @@ public enum TakaState
     Stun // taka has been hit by ofuda and is stunned
 }
 
+//state machine for taka animations
+public enum TakaAnim
+{
+    Idle, // taka doing nothing
+    Walk, // taka walking around patrolling
+    Run, // taka chasing player
+    Attack, // taka attacking player
+    Stunned, // taka stunned by player
+    Taunt, // taka taunting player
+    Glare // taka glaring
+}
+
+
 public class TakaController : YokaiController
 {
     //player game object
@@ -35,8 +48,12 @@ public class TakaController : YokaiController
     private Vector3 home;
     //taka starting rotation
     private Quaternion startingRotation;
+
     //current taka state
     private TakaState state;
+    //current anim state
+    private TakaAnim animState;
+
     //is player seen
     private System.Boolean seen;
     //has player been seen
@@ -60,6 +77,7 @@ public class TakaController : YokaiController
         startingRotation = gameObject.transform.rotation;
         //print("OriHome" + home);
         state = TakaState.Idle;
+        animState = TakaAnim.Idle;
         awake = false;
         currentNode = StartingNode;
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
@@ -103,6 +121,31 @@ public class TakaController : YokaiController
                 break;
         }
 
+        switch (animState)
+        {
+            case TakaAnim.Idle:
+                animIdle();
+                break;
+            case TakaAnim.Walk:
+                animWalk();
+                break;
+            case TakaAnim.Run:
+                animRun();
+                break;
+            case TakaAnim.Attack:
+                animAttack();
+                break;
+            case TakaAnim.Stunned:
+                animStunned();
+                break;
+            case TakaAnim.Taunt:
+                animTaunt();
+                break;
+            case TakaAnim.Glare:
+                animGlare();
+                break;
+        }
+
         PlaceFootprints(previousLocations, lessEnough, footprintPrefab, rb, distanceToFloor);
 
         if (awake == true)
@@ -111,7 +154,7 @@ public class TakaController : YokaiController
         }
 
         UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        if (FleeInu(PlayerObject))
+        if (FleeInu(LevelMask))
         {
             state = TakaState.Flee;
         }
@@ -121,12 +164,13 @@ public class TakaController : YokaiController
     {
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
+        GameObject foundFootprint = SeeFootprint(LevelMask);
         if (seen)
         {
             awake = true;
             state = TakaState.Chase;
         }
-        else if (SeeFootprint(PlayerObject) && awake == true)
+        else if (foundFootprint != null && awake == true)
         {
             state = TakaState.Follow;
         }
@@ -140,11 +184,13 @@ public class TakaController : YokaiController
     {
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
+        GameObject foundFootprint = SeeFootprint(LevelMask);
         if (seen)
         {
+            awake = true;
             state = TakaState.Chase;
         }
-        else if (SeeFootprint(PlayerObject) && awake == true)
+        else if (foundFootprint != null && awake == true)
         {
             state = TakaState.Follow;
         }
@@ -172,9 +218,10 @@ public class TakaController : YokaiController
     {
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
+        GameObject foundFootprint = SeeFootprint(LevelMask);
         if (!seen)
         {
-            if (SeeFootprint(PlayerObject))
+            if (foundFootprint != null)
             {
                 state = TakaState.Follow;
             }
@@ -217,11 +264,12 @@ public class TakaController : YokaiController
         {
             seen = false;
             seen = SeePlayer(PlayerObject, LevelMask);
+            GameObject foundFootprint = SeeFootprint(LevelMask);
             if (seen)
             {
                 state = TakaState.Chase;
             }
-            else if (SeeFootprint(PlayerObject))
+            else if (foundFootprint != null)
             {
                 state = TakaState.Follow;
             }
@@ -297,17 +345,19 @@ public class TakaController : YokaiController
     {
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
+        GameObject foundFootprint = SeeFootprint(LevelMask);
         if (seen)
         {
             state = TakaState.Chase;
         }
-        else if (!SeeFootprint(PlayerObject))
+        else if (foundFootprint == null)
         {
             state = TakaState.Idle;
         }
 
         UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        ExecuteFollow(agent, PlayerObject);
+        GameObject goal = foundFootprint;
+        agent.destination = goal.transform.position;
     }
 
     void stun()
@@ -317,11 +367,12 @@ public class TakaController : YokaiController
         {
             seen = false;
             seen = SeePlayer(PlayerObject, LevelMask);
+            GameObject foundFootprint = SeeFootprint(LevelMask);
             if (seen)
             {
                 state = TakaState.Chase;
             }
-            else if (SeeFootprint(PlayerObject) && awake == true)
+            else if (foundFootprint != null && awake == true)
             {
                 state = TakaState.Follow;
             }
@@ -359,6 +410,62 @@ public class TakaController : YokaiController
         {
             return false;
         }
+    }
+
+    void animIdle()
+    {
+        UnityEngine.AI.NavMeshAgent agent0 = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        if (agent0.velocity.magnitude < 0.5)
+        {
+            //anim.SetInteger("State", 0);
+        }
+        else
+            animState = TakaAnim.Walk;
+    }
+
+    void animWalk()
+    {
+        UnityEngine.AI.NavMeshAgent agent0 = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        if (agent0.velocity.magnitude > 0.5)
+        {
+            //anim.SetInteger("State", 1);
+        }
+        else
+            animState = TakaAnim.Idle;
+    }
+
+    void animRun()
+    {
+        UnityEngine.AI.NavMeshAgent agent0 = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        if (agent0.velocity.magnitude > 5.5)
+        {
+            //anim.SetInteger("State", 2);
+        }
+        else
+            animState = TakaAnim.Walk;
+    }
+
+    void animAttack()
+    {
+        // if attacking player
+        //anim.SetInteger("State", 3);
+    }
+
+    void animStunned()
+    {
+        //anim.SetInteger("State", 4);
+    }
+
+    void animTaunt()
+    {
+        // if looking around
+        //anim.SetInteger("State", 5);
+    }
+
+    void animGlare()
+    {
+        // if looking around
+        //anim.SetInteger("State", 6);
     }
 
     void OnCollisionEnter(Collision col)

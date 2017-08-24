@@ -30,66 +30,94 @@ public class YokaiController : FootprintPlacer {
         return true;
     }
 
-    public bool SeeFootprint(GameObject playerObject)
+    public GameObject SeeFootprint(LayerMask levelMask)
     {
-        Vector3 rayDirection = playerObject.transform.localPosition - transform.localPosition;
-        RaycastHit[] hitsft;
-        hitsft = Physics.RaycastAll(transform.position, rayDirection, 100.0F);
-        for (int i = 0; i < hitsft.Length; i++)
+        GameObject[] footprints = new GameObject[100];
+        GameObject[] close = new GameObject[100];
+        GameObject[] valid = new GameObject[100];
+        footprints = GameObject.FindGameObjectsWithTag("Footprint");
+        for(int iter = 0; iter < 100; iter++)
         {
-            RaycastHit hitft = hitsft[i];
-            if (hitft.collider.gameObject.CompareTag("Footprint"))
+            if (footprints[iter] != null)
             {
-                return true;
+                Vector3 distanceToFootprint = footprints[iter].transform.position - transform.position;
+                float mag = distanceToFootprint.magnitude;
+                if (mag < 50)
+                {
+                    close[iter] = footprints[iter];
+                }
             }
         }
-        return false;
-        //rather than raycast, given a list of footprints, iterate through once determining close enough and make list of that, then iterate through to see if correct direction
-        //then iterate through if no wall, take first, seek to it
-    }
-    
-    
-    public void ExecuteFollow(UnityEngine.AI.NavMeshAgent agent, GameObject playerObject)
-    {
-        Vector3 rayDirection = playerObject.transform.localPosition - transform.localPosition;
-        RaycastHit[] hitsft;
-        hitsft = Physics.RaycastAll(transform.position, rayDirection, 100.0F);
-        for (int i = 0; i < hitsft.Length; i++)
+        for (int iter2 = 0; iter2 < 100; iter2++)
         {
-            RaycastHit hitft = hitsft[i];
-            if (hitft.collider.gameObject.CompareTag("Footprint"))
+            if (close[iter2] != null)
             {
-                //enemy sees your footprints - perform some action
-                Transform goal = hitft.collider.gameObject.transform;
-                agent.destination = goal.position;
-                //print("Follow" + agent.pathEndPosition);
+                Vector3 rayDirection = close[iter2].transform.localPosition - transform.localPosition;
+                Vector3 observerDirection = transform.TransformDirection(Vector3.forward);
+                float angleDot = Vector3.Dot(rayDirection, observerDirection);
+                if (angleDot > 0)
+                {
+                    valid[iter2] = close[iter2];
+                }
             }
         }
-        //when passed a footprint, go to it
+        for (int iter3 = 0; iter3 < 100; iter3++)
+        {
+            if (valid[iter3] != null)
+            {
+                System.Boolean noWallfound = NoWall(valid[iter3], levelMask);
+                if (noWallfound)
+                {
+                    return valid[iter3];
+                }
+            }
+        }
+        return null;
     }
 
-    public bool FleeInu(GameObject playerObject)
+    public bool FleeInu(LayerMask levelMask)
     {
-        Vector3 rayDirection = playerObject.transform.localPosition - transform.localPosition;
-        RaycastHit[] hits;
-        hits = Physics.RaycastAll(transform.position, rayDirection, 100.0F);
-
-        for (int i = 0; i < hits.Length; i++)
+        GameObject[] inus = new GameObject[100];
+        GameObject[] close = new GameObject[100];
+        GameObject[] valid = new GameObject[100];
+        inus = GameObject.FindGameObjectsWithTag("Inu");
+        for (int iter = 0; iter < 100; iter++)
         {
-            RaycastHit hit = hits[i];
-            if (hit.collider.CompareTag("Inu")) //if inu is seen
+            if (inus[iter] != null)
             {
-                Vector3 distancetoinu = hit.collider.transform.position - gameObject.transform.position;
-                float mag = distancetoinu.magnitude;
-                if (mag < 50.0F)
+                Vector3 distanceToFootprint = inus[iter].transform.position - transform.position;
+                float mag = distanceToFootprint.magnitude;
+                if (mag < 50)
+                {
+                    close[iter] = inus[iter];
+                }
+            }
+        }
+        for (int iter2 = 0; iter2 < 100; iter2++)
+        {
+            if (close[iter2] != null)
+            {
+                Vector3 rayDirection = close[iter2].transform.localPosition - transform.localPosition;
+                Vector3 observerDirection = transform.TransformDirection(Vector3.forward);
+                float angleDot = Vector3.Dot(rayDirection, observerDirection);
+                if (angleDot > 0)
+                {
+                    valid[iter2] = close[iter2];
+                }
+            }
+        }
+        for (int iter3 = 0; iter3 < 100; iter3++)
+        {
+            if (valid[iter3] != null)
+            {
+                System.Boolean noWallfound = NoWall(valid[iter3], levelMask);
+                if (noWallfound)
                 {
                     return true;
                 }
-
             }
         }
         return false;
-        //given a list of inu iterate through to check validity
     }
 
     public void TurnTowardsPlayer(GameObject playerObject)
@@ -101,11 +129,11 @@ public class YokaiController : FootprintPlacer {
         transform.rotation = Quaternion.LookRotation(newDir);
     }
 
-    public bool SeeObject(GameObject gameObject, LayerMask levelMask)
+    public bool SeeObject(GameObject desiredObject, LayerMask levelMask)
     {
         int maxDistance = 25;
         int maxDistanceSquared = maxDistance * maxDistance;
-        Vector3 rayDirection = gameObject.transform.localPosition - transform.localPosition;
+        Vector3 rayDirection = desiredObject.transform.localPosition - transform.localPosition;
         Vector3 observerDirection = transform.TransformDirection(Vector3.forward);
         float angleDot = Vector3.Dot(rayDirection, observerDirection);
         System.Boolean objectCloseToObserver = rayDirection.sqrMagnitude < maxDistanceSquared;
@@ -113,7 +141,7 @@ public class YokaiController : FootprintPlacer {
         //float crossangle = Vector3.Angle(enemyDirection, rayDirection);
         System.Boolean objectInFrontOfObserver = angleDot > 0.0;
 
-        System.Boolean noWallfound = NoWall(gameObject, levelMask);
+        System.Boolean noWallfound = NoWall(desiredObject, levelMask);
         if (objectInFrontOfObserver)
         {
             System.Boolean seenPlayer = objectInFrontOfObserver && objectCloseToObserver && noWallfound;
