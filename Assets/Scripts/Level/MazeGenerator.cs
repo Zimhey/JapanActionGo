@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class MazeGenerator : MonoBehaviour
 {
-    public int Seed;
+    public static int Seed;
     public bool DebugLabelsOn;
     private NavMeshSurface surface;
     public static Difficulty dif = Difficulty.Small;
@@ -15,43 +15,6 @@ public class MazeGenerator : MonoBehaviour
     void Start()
     {
         GenerateMaze(dif);
-
-        /*
-        int size = 10;
-        int sections = 2;
-        int loops = 3;
-        int floors = 1;
-
-        for (int i = 0; i < floors; i++)
-        {
-            int section = 1;
-            MazeNode root = DFSMazeGenerator.GenerateMaze(Seed, size, size, i);
-            List<MazeNode> sectionroots;
-
-            if (i == 0)
-            {
-                sectionroots = GenerateSections(root, sections, size, size);
-            }
-
-            else
-            {
-                sectionroots = GenerateSections(root, 1, size, size);
-            }
-
-            foreach (MazeNode r in sectionroots)
-            {
-                GenerateActors(r, 5, 5, 5, 5);
-                //GenerateLadders(i, section, r, floors, sections);
-                GenerateLoops(r, loops, size);
-                SpawnMaze(r, size); 
-                section++;
-            }
-
-            surface = GetComponent<NavMeshSurface>();
-            if (surface != null)
-                surface.BuildNavMesh();
-        }
-        */
     }
 
     public void AddRandomActors(MazeNode root)
@@ -130,6 +93,7 @@ public class MazeGenerator : MonoBehaviour
 
     public void GenerateMaze(Difficulty difficulty)
     {
+        print("started generating maze");
         int size = 0;
         int[] sections = new int[] { };
         int loops = 0;
@@ -197,13 +161,9 @@ public class MazeGenerator : MonoBehaviour
                 GenerateLadders(i, section, r, floors, sections[i]);
                 roots[i, section] = r;
                 GenerateLoops(r, loops, size);
-                SpawnMaze(r, size);
+                //SpawnMaze(r, size);
                 section++;
             }
-
-            surface = GetComponent<NavMeshSurface>();
-            if (surface != null)
-                surface.BuildNavMesh();
         }
         DifferentSections = roots;
         connectLadderNodes(difficulty, roots);
@@ -302,8 +262,8 @@ public class MazeGenerator : MonoBehaviour
 
     public void connectLadders(MazeNode node1, MazeNode node2)
     {
-        node1.ladder.GetComponent<Ladder>().ConnectedLadder = node2.ladder;
-        node2.ladder.GetComponent<Ladder>().ConnectedLadder = node1.ladder;
+        node1.ladderMazeNode = node2;
+        node2.ladderMazeNode = node1;
     }
 
     public static LinkedList<MazeNode> GetPath(MazeNode start, MazeNode end)
@@ -779,10 +739,14 @@ public class MazeGenerator : MonoBehaviour
     {
         if (floor == 0)
         {
-            if(section > 0)
+            if (section > 0)
+            {
                 root.actor = ActorType.Ladder;
-            if(section < TotalSections - 1)
-               FindPathEnd(root).actor = ActorType.Ladder;
+            }
+            if (section < TotalSections - 1)
+            {
+                FindPathEnd(root).actor = ActorType.Ladder;
+            }
         }
         else
         {
@@ -886,7 +850,7 @@ public class MazeGenerator : MonoBehaviour
             largestRow = 0;
         }
     }
-
+    
     public void SpawnMaze(MazeNode root, int size)
     {
         // TODO use DFS to search through maze and spawn each piece
@@ -960,21 +924,11 @@ public class MazeGenerator : MonoBehaviour
         Vector3 location = new Vector3(node.Col * 6 + 8, node.Floor * 30, node.Row * 6 + 8);
         if (node.actor != ActorType.Null)
         {
-            if(node.actor == ActorType.Ladder)
-                node.ladder = Instantiate(Actors.Prefabs[node.actor], location, node.GetRotation());
-            else
+            //if (node.actor == ActorType.Ladder)
+                //node.ladder = Instantiate(Actors.Prefabs[node.actor], location, node.GetRotation());
+            //else
                 Instantiate(Actors.Prefabs[node.actor], location, node.GetRotation());
         }
     }
-
-}
-
-public enum Difficulty
-{
-    Small,
-    Medium,
-    Large,
-    Excessive,
-    AlreadyLost,
-    JustWhy
+    
 }

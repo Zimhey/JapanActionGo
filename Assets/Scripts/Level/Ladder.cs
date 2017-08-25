@@ -7,6 +7,7 @@ public class Ladder : MonoBehaviour {
     public GameObject ConnectedLadder;
     public bool teleportable = true;
     MazeNode SectionRoot;
+    public int SectionID;
 
 	// Use this for initialization
 	void Start () {
