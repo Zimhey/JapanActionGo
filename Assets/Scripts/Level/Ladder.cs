@@ -20,6 +20,8 @@ public class Ladder : MonoBehaviour {
 		
 	}
 
+
+
     
     void OnTriggerEnter(Collider collider)
     {
@@ -33,13 +35,15 @@ public class Ladder : MonoBehaviour {
                         GameManager.SpawnSection(sec);
                 }
                 ConnectedLadder = ConnectedLadderNode.ladder;
+                //ConnectedLadderNode.ladder.GetComponent<>
             }
             //Debug.Log(collider.gameObject.tag + " entered Cell R: " + Row + " C: " + Col + " at Time: " + Time.time);
             if (collider.gameObject.tag == "Player")
             {
-                if (teleportable && ConnectedLadder.GetComponent<Ladder>().teleportable)
+                if (teleportable == true && ConnectedLadder.GetComponent<Ladder>().teleportable == true)
                 {
                     teleportable = false;
+                    ConnectedLadder.GetComponent<Ladder>().teleportable = false;
                     collider.gameObject.transform.position = ConnectedLadder.transform.position;
                 }
             }
@@ -50,9 +54,8 @@ public class Ladder : MonoBehaviour {
     {
         if (other.gameObject.tag == "Player")
         {
-            //teleportable = true;
-            ConnectedLadder.GetComponent<Ladder>().teleportable = true;
+            teleportable = true;
+            //ConnectedLadder.GetComponent<Ladder>().teleportable = true;
         }
     }
-    
 }
