@@ -16,13 +16,14 @@ public class CompassScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
-        cam = player.GetComponentInChildren<Camera>();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
+        cam = player.GetComponentInChildren<Camera>();
         Quaternion dir = cam.transform.rotation;
         Vector3 curdir = new Vector3(0, dir.y, 0);
         float currentRotation = Vector3.Dot(curdir, new Vector3(0, 1, 0));

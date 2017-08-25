@@ -263,7 +263,7 @@ public class MazeGenerator : MonoBehaviour
     public void connectLadders(MazeNode node1, MazeNode node2)
     {
         node1.ladderMazeNode = node2;
-        node2.ladderMazeNode = node1;
+        //node2.ladderMazeNode = node1;
     }
 
     public static LinkedList<MazeNode> GetPath(MazeNode start, MazeNode end)

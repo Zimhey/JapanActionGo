@@ -16,13 +16,14 @@ public class ChalkCounter : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        player = GameObject.FindGameObjectWithTag("Player");
-        playerInventory = player.GetComponent<Inventory>();
-        playerActions = player.GetComponent<PlayerActions>();
+
     }
 	
 	// Update is called once per frame
 	void Update () {
+        player = GameObject.FindGameObjectWithTag("Player");
+        playerInventory = player.GetComponent<Inventory>();
+        playerActions = player.GetComponent<PlayerActions>();
 
         //whole charges
         if (playerInventory.ChalkCharges > 0 && playerActions.DistanceDrawn > 0)
