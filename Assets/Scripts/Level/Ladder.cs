@@ -35,7 +35,7 @@ public class Ladder : MonoBehaviour {
                         GameManager.SpawnSection(sec);
                 }
                 ConnectedLadder = ConnectedLadderNode.ladder;
-                //ConnectedLadderNode.ladder.GetComponent<>
+                ConnectedLadder.GetComponent<Ladder>().ConnectedLadder = this.gameObject;
             }
             //Debug.Log(collider.gameObject.tag + " entered Cell R: " + Row + " C: " + Col + " at Time: " + Time.time);
             if (collider.gameObject.tag == "Player")
@@ -55,7 +55,6 @@ public class Ladder : MonoBehaviour {
         if (other.gameObject.tag == "Player")
         {
             teleportable = true;
-            //ConnectedLadder.GetComponent<Ladder>().teleportable = true;
         }
     }
 }

@@ -264,8 +264,6 @@ public class MazeGenerator : MonoBehaviour
     {
         node1.ladderMazeNode = node2;
         node2.ladderMazeNode = node1;
-        print("Node 1: " + node1.Col + " " + node1.Row + " " + node1.Floor + " Node 1 is connected to: " + node2.Col + " " + node2.Row + " " + node2.Floor);
-        print("Node 2: " + node2.Col + " " + node2.Row + " " + node2.Floor + " Node 2 is connected to: " + node1.Col + " " + node1.Row + " " + node1.Floor);
     }
 
     public static LinkedList<MazeNode> GetPath(MazeNode start, MazeNode end)
