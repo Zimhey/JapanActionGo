@@ -25,7 +25,8 @@ GameObject:
   - component: {fileID: 114498427886422192}
   - component: {fileID: 54389670203100684}
   - component: {fileID: 82362258178654672}
-  m_Layer: 0
+  - component: {fileID: 114683835348176892}
+  m_Layer: 9
   m_Name: FPS_Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -43,7 +44,7 @@ GameObject:
   - component: {fileID: 20563247861178950}
   - component: {fileID: 81306931633756240}
   - component: {fileID: 124418648003474446}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FirstPersonCharacter
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -70,7 +71,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1258190664246256}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8, y: 1, z: 8}
+  m_LocalPosition: {x: 15.521072, y: 2.5, z: 14.091437}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4111733994536036}
@@ -355,6 +356,25 @@ MonoBehaviour:
   CanDrawAcrossObjects: 0
   DistanceDrawn: 0
   Marks: []
+  UsingVR: 0
+  DrawingHand: {fileID: 0}
+  ThrowingHand: {fileID: 0}
+--- !u!114 &114683835348176892
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1258190664246256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48b735feee9ce3d4db465df08c7f89d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Prefab: {fileID: 1197280942452824, guid: c92bd99ffe4e2104f88d5d139d2cecba, type: 2}
+  PlaceDistance: 5
+  LevelMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!124 &124418648003474446
 Behaviour:
   m_ObjectHideFlags: 1

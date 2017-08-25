@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class YokaiController : FootprintPlacer {
+public class YokaiController : GameManager {
     public void Die()
     {
         Destroy(gameObject);
@@ -32,23 +32,23 @@ public class YokaiController : FootprintPlacer {
 
     public GameObject SeeFootprint(LayerMask levelMask)
     {
-        GameObject[] footprints = new GameObject[100];
-        GameObject[] close = new GameObject[100];
-        GameObject[] valid = new GameObject[100];
+        GameObject[] footprints;
+        List<GameObject> close = new List<GameObject>();
+        List<GameObject> valid = new List<GameObject>();
         footprints = GameObject.FindGameObjectsWithTag("Footprint");
-        for(int iter = 0; iter < 100; iter++)
+        for(int iter = 0; iter < footprints.Length; iter++)
         {
             if (footprints[iter] != null)
             {
                 Vector3 distanceToFootprint = footprints[iter].transform.position - transform.position;
                 float mag = distanceToFootprint.magnitude;
-                if (mag < 50)
+                if (mag < 25)
                 {
-                    close[iter] = footprints[iter];
+                    close.Add(footprints[iter]);
                 }
             }
         }
-        for (int iter2 = 0; iter2 < 100; iter2++)
+        for (int iter2 = 0; iter2 < close.Count; iter2++)
         {
             if (close[iter2] != null)
             {
@@ -57,11 +57,11 @@ public class YokaiController : FootprintPlacer {
                 float angleDot = Vector3.Dot(rayDirection, observerDirection);
                 if (angleDot > 0)
                 {
-                    valid[iter2] = close[iter2];
+                    valid.Add(close[iter2]);
                 }
             }
         }
-        for (int iter3 = 0; iter3 < 100; iter3++)
+        for (int iter3 = 0; iter3 < valid.Count; iter3++)
         {
             if (valid[iter3] != null)
             {
@@ -77,23 +77,23 @@ public class YokaiController : FootprintPlacer {
 
     public bool FleeInu(LayerMask levelMask)
     {
-        GameObject[] inus = new GameObject[100];
-        GameObject[] close = new GameObject[100];
-        GameObject[] valid = new GameObject[100];
+        GameObject[] inus;
+        List<GameObject> close = new List<GameObject>();
+        List<GameObject> valid = new List<GameObject>();
         inus = GameObject.FindGameObjectsWithTag("Inu");
-        for (int iter = 0; iter < 100; iter++)
+        for (int iter = 0; iter < inus.Length; iter++)
         {
             if (inus[iter] != null)
             {
                 Vector3 distanceToFootprint = inus[iter].transform.position - transform.position;
                 float mag = distanceToFootprint.magnitude;
-                if (mag < 50)
+                if (mag < 15)
                 {
-                    close[iter] = inus[iter];
+                    close.Add(inus[iter]);
                 }
             }
         }
-        for (int iter2 = 0; iter2 < 100; iter2++)
+        for (int iter2 = 0; iter2 < close.Count; iter2++)
         {
             if (close[iter2] != null)
             {
@@ -102,11 +102,11 @@ public class YokaiController : FootprintPlacer {
                 float angleDot = Vector3.Dot(rayDirection, observerDirection);
                 if (angleDot > 0)
                 {
-                    valid[iter2] = close[iter2];
+                    valid.Add(close[iter2]);
                 }
             }
         }
-        for (int iter3 = 0; iter3 < 100; iter3++)
+        for (int iter3 = 0; iter3 < valid.Count; iter3++)
         {
             if (valid[iter3] != null)
             {

@@ -339,6 +339,7 @@ GameObject:
   - component: {fileID: 114733998702376110}
   - component: {fileID: 195182205998125912}
   - component: {fileID: 136358452493297278}
+  - component: {fileID: 114631532898733810}
   m_Layer: 0
   m_Name: Oni
   m_TagString: Oni
@@ -1556,6 +1557,22 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114631532898733810
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1387403371569988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48b735feee9ce3d4db465df08c7f89d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Prefab: {fileID: 1150202406731512, guid: 84908a3528f904f499fee595f06e5ab2, type: 2}
+  PlaceDistance: 5
+  LevelMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &114733998702376110
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1567,6 +1584,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f915de464f90a1849b271c5e0a128a6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DebugLabelsOn: 0
+  SessionID: 0
+  CurrentState: 0
+  PlayersVRType: 0
+  AnalyticsEnabled: 0
   PlayerObject: {fileID: 0}
   StartingNode: {fileID: 0}
   Speed: 7

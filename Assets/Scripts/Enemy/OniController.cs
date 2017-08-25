@@ -45,11 +45,10 @@ public class OniController : YokaiController
     private Vector3 home;
     //oni starting rotation
     private Quaternion startingRotation;
-
-    //current oni state
-    private OniState state;
+    
     //current anim state
     private OniAnim animState;
+    private Actor actorID;
 
     //is player seen
     private System.Boolean seen;
@@ -66,6 +65,19 @@ public class OniController : YokaiController
 
     private GameObject footprintPrefab;
     private Animator anim;
+
+    private OniState state;
+
+    public OniState State
+    {
+        set
+        {
+            state = value;
+
+            actorID = GetComponent<Actor>();
+            ActorStateChange(actorID, (int) state);
+        }
+    }
 
     void Start()
     {
@@ -138,7 +150,7 @@ public class OniController : YokaiController
                 break;
         }
 
-        PlaceFootprints(previousLocations, lessEnough, footprintPrefab, rb, distanceToFloor);
+        //PlaceFootprints(previousLocations, lessEnough, footprintPrefab, rb, distanceToFloor);
 
         if (awake == true)
         {
@@ -275,8 +287,11 @@ public class OniController : YokaiController
             state = OniState.Idle;
         }
         UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        GameObject goal = foundFootprint;
-        agent.destination = goal.transform.position;
+        if (foundFootprint != null)
+        {
+            GameObject goal = foundFootprint;
+            agent.destination = goal.transform.position;
+        }
     }
 
     void stun()
@@ -371,6 +386,8 @@ public class OniController : YokaiController
         {
             string curlevel = SceneManager.GetActiveScene().name;
             SceneManager.LoadScene(curlevel);
+            actorID = GetComponent<Actor>();
+            ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
         }
     }
 }

@@ -9,35 +9,48 @@ using UnityEngine;
 
 public class AnalyticsManager : MonoBehaviour
 {
-    public string DBName = "Analytics/GameAnalytics.sqlite";
-    private string ConnectionStr;
-    private int ses;
+    private static string dbName = "Analytics/GameAnalytics.sqlite";
+    private static string ConnectionStr;
+    private static bool initialized = false;
+
+    public static string DatabaseName
+    {
+        get
+        {
+            return dbName;
+        }
+        set
+        {
+            dbName = value;
+            init();
+        }
+    }
 
     public void Start()
     {
-        ConnectionStr = "Data Source=" + DBName + ";Version=3;";
-        //CreateDatabase();
+        init();
 
-        /* // Tests
+        /*
+         // Tests
         // AddLevel
-        int levelID = AddLevel(2323, 20, 20, 2, 5);
+        int levelID = AddLevel(2323, (int)Difficulty.Small);
         // AddCells
         int numCells = 3;
         int[] cellIDs = new int[numCells];
 
         for(int i = 0; i < numCells; i++)
         {
-            cellIDs[i] = AddCell(levelID, i, i);
+            int x = AddSection(levelID, i, 1);
+            cellIDs[i] = AddCell(x, i, i);
         }
         // AddSession
-        ses = AddSession(levelID);
-
+        ses = AddSession(levelID, 0);
 
         // AddActors
         int a = AddActor(ses, ActorType.Oni);
         int b = AddActor(ses, ActorType.Ofuda_Pickup);
 
-        ActorStateChange(a, (int)onistate.Chase);
+        ActorStateChange(a, (int)OniState.Chase);
 
         ActorKilled(a, b);
 
@@ -45,11 +58,7 @@ public class AnalyticsManager : MonoBehaviour
         FoundItem(b);
         int u = UsedItem(ses, ItemType.Chalk);
         OfudaHit(u, a);
-       GameObject chalkPrefab = Resources.Load("Prefabs/ChalkMark") as GameObject;
-        GameObject chalkMark = Instantiate(chalkPrefab);
-        LineRenderer l = chalkMark.GetComponentInChildren<LineRenderer>();
-        l.positionCount = 15;
-        ChalkLine(u, l);
+     
         */
     }
 
@@ -59,11 +68,19 @@ public class AnalyticsManager : MonoBehaviour
         // Tests UpdateSessionTime(ses);
     }
 
-    private string[] tables =
+    private static void init()
     {
-        "CREATE TABLE `Levels` ( `LevelID` INTEGER, `Seed` INTEGER, `MazeRows` INTEGER, `MazeCols` INTEGER, `MazeSections` INTEGER, `MazeLoops` INTEGER, PRIMARY KEY(`LevelID`));",
-        "CREATE TABLE `Cells` ( `LevelID` INTEGER, `CellID` INTEGER, `CellRow` INTEGER, `CellCol` INTEGER, PRIMARY KEY(`CellID`));",
-        "CREATE TABLE `Sessions` ( `SessionID` INTEGER, `PlayTime` REAL, `LevelID` INTEGER, PRIMARY KEY(`SessionID`));",
+        initialized = true;
+        ConnectionStr = "Data Source=" + dbName + ";Version=3;";
+        CreateDatabase();
+    }
+
+    private static string[] tables =
+    {
+        "CREATE TABLE `Levels` ( `LevelID` INTEGER, `Seed` INTEGER, `Difficulty` INTEGER, PRIMARY KEY(`LevelID`));",
+        "CREATE TABLE `Sections` ( `SectionID` INTEGER, `LevelID` INTEGER, `Index` INTEGER, `Floor` INTEGER, PRIMARY KEY(`SectionID`));",
+        "CREATE TABLE `Cells` ( `SectionID` INTEGER, `CellID` INTEGER, `CellRow` INTEGER, `CellCol` INTEGER, PRIMARY KEY(`CellID`));",
+        "CREATE TABLE `Sessions` ( `SessionID` INTEGER, `PlayTime` REAL, `LevelID` INTEGER, `VRType` INTEGER, PRIMARY KEY(`SessionID`));",
         "CREATE TABLE `Actors` ( `ActorID` INTEGER, `SessionID` INTEGER, `ActorType` INTEGER, PRIMARY KEY(`ActorID`));",
         "CREATE TABLE `Deaths` ( `DeadActorID` INTEGER, `KillerActorID` INTEGER, `TimeDied` REAL, PRIMARY KEY(`DeadActorID`));",
         "CREATE TABLE `VisitedCells` ( `EventID` INTEGER, `ActorID` INTEGER, `CellID` INTEGER, `VisitTime` REAL, PRIMARY KEY(`EventID`));",
@@ -75,19 +92,27 @@ public class AnalyticsManager : MonoBehaviour
         "CREATE TABLE `StateChanges` ( `EventID` INTEGER, `ActorID` INTEGER, `State` INTEGER, `TimeChanged`	REAL, PRIMARY KEY(`EventID`));"
     };
 
-    public void CreateDatabase()
+    private static void CreateDatabase()
     {
-        SqliteConnection.CreateFile(DBName);
-        foreach (string sql in tables)
+        if (!System.IO.File.Exists(dbName))
         {
-            SimpleQuery(sql);
+            SqliteConnection.CreateFile(dbName);
+            //SqliteConnection.ClearAllPools();
+            foreach (string sql in tables)
+            {
+                SimpleQuery(sql);
+            }
         }
     }
 
-    public void SimpleQuery(string query)
+    public static void SimpleQuery(string query)
     {
         SqliteConnection con;
         SqliteCommand cmd;
+
+        if (!initialized)
+            init();
+
         using (con = new SqliteConnection(ConnectionStr))
         {
             con.Open();
@@ -97,11 +122,14 @@ public class AnalyticsManager : MonoBehaviour
         }
     }
 
-    public object ReturnSecondQuery(string query1, string query2)
+    public static object ReturnSecondQuery(string query1, string query2)
     {
         SqliteConnection con;
         SqliteCommand cmd;
         object o = null;
+
+        if (!initialized)
+            init();
 
         using (con = new SqliteConnection(ConnectionStr))
         {
@@ -112,6 +140,7 @@ public class AnalyticsManager : MonoBehaviour
             {
                 SqliteDataReader reader = cmd.ExecuteReader();
                 o = reader.GetValue(0); // This is ugly, why isn't Convert available?
+                reader.Close();
             }
             con.Close();
         }
@@ -119,7 +148,7 @@ public class AnalyticsManager : MonoBehaviour
         return o;
     }
 
-    public int ReturnSecondQueryAsInt(string query1, string query2)
+    public static int ReturnSecondQueryAsInt(string query1, string query2)
     {
         object o = ReturnSecondQuery(query1, query2);
         if (o != null)
@@ -127,87 +156,90 @@ public class AnalyticsManager : MonoBehaviour
         return -1;
     }
 
-    public int AddLevel(Difficulty difficulty)
+    public static int AddLevel(int seed, int difficulty)
     {
-        string insert = "";/*"INSERT INTO `Levels` (`Seed`, `MazeRows`, `MazeCols`, `MazeSections`, `MazeLoops`)" +
-            " SELECT " + seed + ", " + rows + ", " + columns + ", " + sections + ", " + loops +
-            " WHERE NOT EXISTS (SELECT 1 FROM `Levels` WHERE `Seed` = " + seed + " AND `MazeRows` = " +
-            rows + " AND `MazeCols` = " + columns + " AND `MazeSections` = " + sections +
-            " AND `MazeLoops` = " + loops + ");";*/
-        string getID = "";/*"SELECT `LevelID` FROM `Levels` WHERE `Seed` = " + seed + " AND `MazeRows` = " +
-            rows + " AND `MazeCols` = " + columns + " AND `MazeSections` = " + sections +
-            " AND `MazeLoops` = " + loops + ";";*/
+        string insert = "INSERT INTO `Levels` (`Seed`, `Difficulty`)" +
+                        " SELECT " + seed + ", " + difficulty + 
+            " WHERE NOT EXISTS (SELECT 1 FROM `Levels` WHERE `Seed` = " + seed + " AND `Difficulty` = " +
+            difficulty + ");";
+        string getID = "SELECT `LevelID` FROM `Levels` WHERE `Seed` = " + seed + " AND `Difficulty` = " +
+                        difficulty + ";";
         return ReturnSecondQueryAsInt(insert, getID);
     }
 
-    public int AddSection(int levelID, int floor)
+    public static int AddSection(int levelID, int index, int floor)
     {
-        return ReturnSecondQueryAsInt("", "");
+        string insert = "INSERT INTO `Sections` (`LevelID`, `Index`, `Floor`) SELECT " + levelID + ", " +
+            index + ", " + floor + " WHERE NOT EXISTS (SELECT 1 FROM `Sections` WHERE `LevelID` = " +
+            levelID + " AND `Index` = " + index + " AND `Floor` = " + floor + ");";
+        string getID = "SELECT `SectionID` FROM `Sections` WHERE `LevelID` = " + levelID +" AND `Index` = " +
+            index + " AND `Floor` = " + floor + ";";
+        return ReturnSecondQueryAsInt(insert, getID);
     }
 
-    public int AddCell(int levelID, int row, int col)
+    public static int AddCell(int SectionID, int row, int col)
     {
-        string insert = "INSERT INTO `Cells` (`LevelID`, `CellRow`, `CellCol`)" +
-            " SELECT " + levelID + ", " + row + ", " + col +
-            " WHERE NOT EXISTS (SELECT 1 FROM `Cells` WHERE `LevelID` = " + levelID + " AND `CellRow` = " +
+        string insert = "INSERT INTO `Cells` (`SectionID`, `CellRow`, `CellCol`)" +
+            " SELECT " + SectionID + ", " + row + ", " + col +
+            " WHERE NOT EXISTS (SELECT 1 FROM `Cells` WHERE `SectionID` = " + SectionID + " AND `CellRow` = " +
             row + " AND `CellCol` = " + col + ");";
-        string getID = "SELECT `CellID` FROM `Cells` WHERE `LevelID` = " + levelID + " AND `CellRow` = " +
+        string getID = "SELECT `CellID` FROM `Cells` WHERE `SectionID` = " + SectionID + " AND `CellRow` = " +
             row + " AND `CellCol` = " + col + ";";
         return ReturnSecondQueryAsInt(insert, getID);
     }
 
-    public int AddSession(int levelID)
+    public static int AddSession(int levelID, int VRType)
     {
-        string insert = "INSERT INTO `Sessions` (`LevelID`) VALUES (" + levelID + ");";
+        string insert = "INSERT INTO `Sessions` (`LevelID`, `VRType`) VALUES (" + levelID + ", " + VRType + ");";
         string getID = "SELECT last_insert_rowid()";
         return ReturnSecondQueryAsInt(insert, getID);
     }
 
-    public void UpdateSessionTime(int sessionID)
+    public static void UpdateSessionTime(int sessionID)
     {
         string update = "UPDATE `Sessions` SET `PlayTime` = " + Time.time + " WHERE `SessionID` = " + sessionID + ";";
         SimpleQuery(update);
     }
 
-    public int AddActor(int sessionID, ActorType type)
+    public static int AddActor(int sessionID, ActorType type)
     {
         string insert = "INSERT INTO `Actors` (`SessionID`, `ActorType`) VALUES (" + sessionID + ", " + (int)type + ");";
         string getID = "SELECT last_insert_rowid()";
         return ReturnSecondQueryAsInt(insert, getID);
     }
 
-    public void ActorKilled(int deadActorID, int killerID)
+    public static void ActorKilled(int deadActorID, int killerID)
     {
         string insert = "INSERT INTO `Deaths` (`DeadActorID`, `KillerActorID`, `TimeDied`) VALUES (" + deadActorID + ", " + killerID + ", " + Time.time + ");";
         SimpleQuery(insert);
     }
 
-    public void EnteredCell(int actorID, int cellID)
+    public static void EnteredCell(int actorID, int cellID)
     {
         string insert = "INSERT INTO `VisitedCells` (`ActorID`, `CellID`, `VisitTime`) VALUES (" + actorID + ", " + cellID + ", " + Time.time + ");";
         SimpleQuery(insert);
     }
 
-    public void FoundItem(int actorID)
+    public static void FoundItem(int actorID)
     {
         string insert = "INSERT INTO `ItemsFound` (`ActorID`, `TimeFound`) VALUES (" + actorID + ", " + Time.time + ");";
         SimpleQuery(insert);
     }
 
-    public int UsedItem(int sessionID, ItemType item)
+    public static int UsedItem(int sessionID, ItemType item)
     {
         string insert = "INSERT INTO `ItemUses` (`SessionID`, `ItemType`, `TimeUsed`) VALUES (" + sessionID + ", " + (int)item + ", " + Time.time + ");";
         string getID = "SELECT last_insert_rowid()";
         return ReturnSecondQueryAsInt(insert, getID);
     }
 
-    public void OfudaHit(int eventID, int actorID)
+    public static void OfudaHit(int eventID, int actorID)
     {
         string insert = "INSERT INTO `OfudaHits` (`eventID`, `ActorID`, `HitTime`) VALUES (" + eventID + ", " + actorID + ", " + Time.time + ");";
         SimpleQuery(insert);
     }
 
-    public void ChalkLine(int eventID, LineRenderer line)
+    public static void ChalkLine(int eventID, LineRenderer line)
     {
         string insertLine = "INSERT INTO `ChalkLines` (`EventID`) VALUES (" + eventID + ");";
         string getID = "SELECT last_insert_rowid()";
@@ -221,7 +253,7 @@ public class AnalyticsManager : MonoBehaviour
         }
     }
 
-    public void ActorStateChange(int actorID, int state)
+    public static void ActorStateChange(int actorID, int state)
     {
         string insert = "INSERT INTO `StateChanges` (`ActorID`, `State`, `TimeChanged`) VALUES (" + actorID + ", " + state + ", " + Time.time + ");";
         SimpleQuery(insert);
