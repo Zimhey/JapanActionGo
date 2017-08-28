@@ -313,13 +313,18 @@ public class MazeGenerator : MonoBehaviour
         }
     }
 
-    public static void setIntersectionNodes(MazeNode root)
+    public static List<MazeNode> setIntersectionNodes(MazeNode root)
     {
+        List<MazeNode> intersections = new List<MazeNode>();
         foreach(MazeNode n in nodesInSection(root))
         {
             if (n.GetAdjacentNodes().Count > 2)
+            {
                 n.Intersection = true;
+                intersections.Add(n);
+            }
         }
+        return intersections;
     }
 
     public static void setDirectionValues(MazeNode root)
