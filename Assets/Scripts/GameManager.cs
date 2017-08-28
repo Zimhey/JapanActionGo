@@ -111,6 +111,19 @@ public class GameManager : MonoBehaviour {
     public void BeginTutorial()
     {
         // TODO make the tutorial a collection of maze nodes and ladders
+        MazeNode[,,] tutorial = new MazeNode[3, 3, 4];
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++)
+                for (int k = 0; k < 4; k++)
+                {
+                    tutorial[i, j, k].Col = i;
+                    tutorial[i, j, k].Row = j;
+                    tutorial[i, j, k].Floor = k;
+                }
+
+        tutorial[2, 0, 0].AddEdge(tutorial[1, 0, 0]);
+        tutorial[1, 0, 0].AddEdge(tutorial[0, 0, 0]);
+        tutorial[0, 0, 0].AddEdge
     }
 
     public void BeginPlay()

@@ -954,8 +954,8 @@ public class MazeGenerator : MonoBehaviour
         int floor = (int) (location.y / 30);
         int row = (int)((location.z - 8) / 6);
 
-        for (int i = 0; i < 4; i++)
-            for (int j = 0; j < 7; j++)
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 8; j++)
                 foreach (MazeNode n in nodesInSection(DifferentSections[i, j]))
                     if (n.Col == column && n.Row == row && n.Floor == floor)
                         return DifferentSections[i, j];
