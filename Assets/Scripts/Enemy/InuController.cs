@@ -37,7 +37,7 @@ public class InuController : YokaiController
     //player game object
     public GameObject PlayerObject;
     //starting node for patrol
-    public GameObject StartingNode;
+    public MazeNode StartingNode;
     //inu movement speed, set in unity
     public float Speed;
     //layermask to raycast against
@@ -72,16 +72,15 @@ public class InuController : YokaiController
     private System.Boolean seen;
     //has player been seen
     private System.Boolean awake;
-    //array of locations the inu has been
-    private ArrayList previousLocations = new ArrayList();
-    private int lessEnough = 5;
     //current node for patrol
-    private GameObject currentNode;
+    private MazeNode currentNode;
+    private MazeNode root;
+    private MazeNode previous;
     //countdown until no longer stunned
     private int stunTimer;
     //has player been too close
     private System.Boolean beenTooClose;
-    private float distanceToFloor = 0.8F;
+    //private float distanceToFloor = 0.8F;
 
     private GameObject footprintPrefab;
 
@@ -95,6 +94,7 @@ public class InuController : YokaiController
         state = InuState.Idle;
         animState = InuAnim.Idle;
         awake = false;
+        root = MazeGenerator.getSectionBasedOnLocation(home);
         currentNode = StartingNode;
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
         footprintPrefab = Actors.Prefabs[ActorType.Okuri_Inu_Footprint];
@@ -203,24 +203,42 @@ public class InuController : YokaiController
         GameObject foundFootprint = SeeFootprint(LevelMask);
         if (seen)
         {
+            awake = true;
             state = InuState.Chase;
         }
         else if (foundFootprint != null && awake == true)
         {
             state = InuState.Follow;
         }
-        if (rb.transform.position.x < currentNode.transform.position.x + 1 && rb.transform.position.x > currentNode.transform.position.x - 1)
+        List<MazeNode> nodes = MazeGenerator.GetIntersectionNodes(root);
+        Vector3 currentNodePosition = new Vector3(0, 0, 0);
+
+        if (currentNode == null)
         {
-            if (rb.transform.position.z < currentNode.transform.position.z + 1 && rb.transform.position.z > currentNode.transform.position.z - 1)
+            MazeNode closest = null;
+            closest = setClosest(closest, nodes, rb);
+            currentNode = closest;
+        }
+        else
+        {
+            currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
+        }
+
+        if (rb.transform.position.x < currentNodePosition.x + 1 && rb.transform.position.x > currentNodePosition.x - 1)
+        {
+            if (rb.transform.position.z < currentNodePosition.z + 1 && rb.transform.position.z > currentNodePosition.z - 1)
             {
-                currentNode = currentNode.GetComponent<NodeScript>().nextNode;
+                MazeNode closest = null;
+                closest = updateClosest(closest, nodes, currentNode, previous, rb);
+                previous = currentNode;
+                currentNode = closest;
             }
         }
         else // not yet at current node's location
         {
-            Transform goal = currentNode.transform; // set current node location as desired location
-            UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>(); // get inu's navigation agent
-            agent.destination = goal.position; // set destination to current node's location
+            Vector3 goal = currentNodePosition; // set current node location as desired location
+            UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>(); // get oni's navigation agent
+            agent.destination = goal; // set destination to current node's location
         }
     }
 

@@ -123,7 +123,6 @@ public class GameManager : MonoBehaviour {
 
         tutorial[2, 0, 0].AddEdge(tutorial[1, 0, 0]);
         tutorial[1, 0, 0].AddEdge(tutorial[0, 0, 0]);
-        tutorial[0, 0, 0].AddEdge
     }
 
     public void BeginPlay()
