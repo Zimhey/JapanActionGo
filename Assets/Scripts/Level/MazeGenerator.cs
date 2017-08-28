@@ -159,6 +159,7 @@ public class MazeGenerator : MonoBehaviour
             {
                 GenerateActors(r, 1, 1, 1, 1, Seed);
                 GenerateLadders(i, section, r, floors, sections[i]);
+                setIntersectionNodes(r);
                 roots[i, section] = r;
                 GenerateLoops(r, loops, size);
                 //SpawnMaze(r, size);
@@ -309,6 +310,15 @@ public class MazeGenerator : MonoBehaviour
         foreach (MazeNode n in path)
         {
             n.OnExitPath = true;
+        }
+    }
+
+    public static void setIntersectionNodes(MazeNode root)
+    {
+        foreach(MazeNode n in nodesInSection(root))
+        {
+            if (n.GetAdjacentNodes().Count > 2)
+                n.Intersection = true;
         }
     }
 
@@ -629,7 +639,7 @@ public class MazeGenerator : MonoBehaviour
 
     public static void GenerateActors(MazeNode root, int ofuda, int oni, int chalk, int trap, int seed)
     {
-        System.Random rand = new System.Random(seed);
+        System.Random rand = new System.Random();//(seed);
         int PossiblePlaces = NumberOfDeadEndNodes(root);
         int actors = ofuda + oni + chalk;
         int[] actorLocations = new int[actors];
