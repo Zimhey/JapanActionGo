@@ -159,7 +159,7 @@ public class MazeGenerator : MonoBehaviour
             {
                 GenerateActors(r, 1, 1, 1, 1, Seed);
                 GenerateLadders(i, section, r, floors, sections[i]);
-                setIntersectionNodes(r);
+                SetIntersectionNodes(r);
                 roots[i, section] = r;
                 GenerateLoops(r, loops, size);
                 //SpawnMaze(r, size);
@@ -313,17 +313,19 @@ public class MazeGenerator : MonoBehaviour
         }
     }
 
-    public static List<MazeNode> setIntersectionNodes(MazeNode root)
+    public static void SetIntersectionNodes(MazeNode root)
+    {
+        foreach(MazeNode n in nodesInSection(root))
+            if (n.GetAdjacentNodes().Count > 2)
+                n.Intersection = true;
+    }
+
+    public static List<MazeNode> GetIntersectionNodes(MazeNode root)
     {
         List<MazeNode> intersections = new List<MazeNode>();
-        foreach(MazeNode n in nodesInSection(root))
-        {
-            if (n.GetAdjacentNodes().Count > 2)
-            {
-                n.Intersection = true;
+        foreach (MazeNode n in nodesInSection(root))
+            if (n.Intersection)
                 intersections.Add(n);
-            }
-        }
         return intersections;
     }
 
