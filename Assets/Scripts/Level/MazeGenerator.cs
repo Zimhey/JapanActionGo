@@ -948,4 +948,17 @@ public class MazeGenerator : MonoBehaviour
         }
     }
     
+    public static MazeNode getSectionBasedOnLocation(Vector3 location)
+    {
+        int column = (int) ((location.x - 8) / 6);
+        int floor = (int) (location.y / 30);
+        int row = (int)((location.z - 8) / 6);
+
+        for (int i = 0; i < 4; i++)
+            for (int j = 0; j < 7; j++)
+                foreach (MazeNode n in nodesInSection(DifferentSections[i, j]))
+                    if (n.Col == column && n.Row == row && n.Floor == floor)
+                        return DifferentSections[i, j];
+        return null;
+    }
 }
