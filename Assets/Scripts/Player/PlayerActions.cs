@@ -73,6 +73,7 @@ public class PlayerActions : MonoBehaviour
         }
 
         // Chalk Drawing
+
 		if ((Input.GetButton("Fire1") /*|| drawingController.triggerPressed*/) && PlayerInventory.CanUse(ItemType.Chalk))
             DrawChalk();
         else
@@ -82,6 +83,7 @@ public class PlayerActions : MonoBehaviour
             ThrowOfuda();
         else
             thrown = false;
+        
 
         //PlaceFootprints(previousLocations, lessEnough, footprintPrefab, rb, distanceToFloor);
     }

@@ -5,8 +5,10 @@ using UnityEngine;
 public class Ladder : MonoBehaviour {
 
     public GameObject ConnectedLadder;
+    public MazeNode ConnectedLadderNode;
     public bool teleportable = true;
     MazeNode SectionRoot;
+    public int SectionID;
 
 	// Use this for initialization
 	void Start () {
@@ -18,16 +20,32 @@ public class Ladder : MonoBehaviour {
 		
 	}
 
+
+
     
     void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject != null && teleportable && ConnectedLadder.GetComponent<Ladder>().teleportable)
+        if (collider.gameObject != null)
         {
+            if (ConnectedLadder == null && collider.gameObject.tag == "Player")
+            {
+                foreach(MazeSection sec in GameManager.Sections)
+                {
+                    if (sec.SectionID == ConnectedLadderNode.SectionID)
+                        GameManager.SpawnSection(sec);
+                }
+                ConnectedLadder = ConnectedLadderNode.ladder;
+                ConnectedLadder.GetComponent<Ladder>().ConnectedLadder = this.gameObject;
+            }
             //Debug.Log(collider.gameObject.tag + " entered Cell R: " + Row + " C: " + Col + " at Time: " + Time.time);
             if (collider.gameObject.tag == "Player")
             {
-                teleportable = false;
-                collider.gameObject.transform.position = ConnectedLadder.transform.position;
+                if (teleportable == true && ConnectedLadder.GetComponent<Ladder>().teleportable == true)
+                {
+                    teleportable = false;
+                    ConnectedLadder.GetComponent<Ladder>().teleportable = false;
+                    collider.gameObject.transform.position = ConnectedLadder.transform.position;
+                }
             }
         }
     }
@@ -36,9 +54,7 @@ public class Ladder : MonoBehaviour {
     {
         if (other.gameObject.tag == "Player")
         {
-            //teleportable = true;
-            ConnectedLadder.GetComponent<Ladder>().teleportable = true;
+            teleportable = true;
         }
     }
-    
 }
