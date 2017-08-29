@@ -428,7 +428,8 @@ public class GameManager : MonoBehaviour {
 
     public void setSeed(string newSeed)
     {
-        MazeGenerator.Seed = System.Int32.Parse(newSeed);
+        int temp = int.Parse(newSeed);
+        MazeGenerator.Seed = temp;
     }
 
     public static void SpawnSection(MazeSection section)
