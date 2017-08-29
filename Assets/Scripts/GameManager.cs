@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour {
 
     public string PlayerTypeLoc;
 
-    public static bool DebugOn = false;
+    public static bool DebugOn = true;
 
     public static GameObject Maze;
 
