@@ -85,6 +85,19 @@ public class GameManager : MonoBehaviour {
             BeginTutorial();
     }
 
+    public void setDifficulty(int diff)
+    {
+        dif = (Difficulty) diff;
+    }
+
+    public void setTutorial()
+    {
+        if (DebugOn)
+            DebugOn = false;
+        else
+            DebugOn = true;
+    }
+
 
     // Achievements
 
