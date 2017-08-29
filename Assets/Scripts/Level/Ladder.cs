@@ -20,9 +20,6 @@ public class Ladder : MonoBehaviour {
 		
 	}
 
-
-
-    
     void OnTriggerEnter(Collider collider)
     {
         if (collider.gameObject != null)
@@ -31,7 +28,7 @@ public class Ladder : MonoBehaviour {
             {
                 foreach(MazeSection sec in GameManager.Sections)
                 {
-                    if (sec.SectionID == ConnectedLadderNode.SectionID)
+                    if (sec.SectionID == ConnectedLadderNode.SectionID && !sec.Spawned)
                         GameManager.SpawnSection(sec);
                 }
                 ConnectedLadder = ConnectedLadderNode.ladder;
@@ -42,9 +39,12 @@ public class Ladder : MonoBehaviour {
             {
                 if (teleportable == true && ConnectedLadder.GetComponent<Ladder>().teleportable == true)
                 {
-                    teleportable = false;
-                    ConnectedLadder.GetComponent<Ladder>().teleportable = false;
-                    collider.gameObject.transform.position = ConnectedLadder.transform.position;
+                    if (!(ConnectedLadderNode.Floor == -1 && ConnectedLadderNode.Col == 1 && ConnectedLadderNode.Row == 5))
+                    {
+                        teleportable = false;
+                        ConnectedLadder.GetComponent<Ladder>().teleportable = false;
+                        collider.gameObject.transform.position = ConnectedLadder.transform.position;
+                    }
                 }
             }
         }

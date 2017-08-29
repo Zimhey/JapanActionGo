@@ -81,9 +81,10 @@ public class InuController : YokaiController
     //has player been too close
     private System.Boolean beenTooClose;
     //private float distanceToFloor = 0.8F;
-
-    private GameObject footprintPrefab;
-
+    private Vector3 oldPosition;
+    private Vector3 newPosition;
+    private int posTimer;
+    
     void Start()
     {
         //intialize variables
@@ -97,8 +98,9 @@ public class InuController : YokaiController
         root = MazeGenerator.getSectionBasedOnLocation(home);
         currentNode = StartingNode;
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
-        footprintPrefab = Actors.Prefabs[ActorType.Okuri_Inu_Footprint];
         beenTooClose = false;
+        oldPosition = home;
+        posTimer = 60;
     }
 
     void LateUpdate()
@@ -175,6 +177,30 @@ public class InuController : YokaiController
             TurnTowardsPlayer(PlayerObject);
         }
 
+        posTimer--;
+        if (posTimer <= 0)
+        {
+            posTimer = 60;
+            if (newPosition != null)
+            {
+                oldPosition = newPosition;
+                print("oldpos" + oldPosition);
+            }
+            newPosition = rb.transform.position;
+            print("newpos" + newPosition);
+        }
+        if (newPosition != null)
+        {
+            Vector3 difference = newPosition - oldPosition;
+            float difMag = difference.magnitude;
+            if (difMag < .25)
+            {
+                UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+                agent.ResetPath();
+                currentNode = null;
+                print("reseting path");
+            }
+        }
     }
 
     void idle()
