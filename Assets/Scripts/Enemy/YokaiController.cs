@@ -152,4 +152,47 @@ public class YokaiController : GameManager {
             return false;
         }
     }
+
+    public MazeNode setClosest(MazeNode closest, List<MazeNode> nodes, Rigidbody rb)
+    {
+        for (int iter = 0; iter < nodes.Count; iter++)
+        {
+            if (closest == null)
+            {
+                closest = nodes[iter];
+            }
+            Vector3 closestPosition = new Vector3(closest.Col * 6 + 8, closest.Floor * 30, closest.Row * 6 + 8) - rb.transform.position;
+            float closestMag = closestPosition.magnitude;
+            Vector3 iterPosition = new Vector3(nodes[iter].Col * 6 + 8, nodes[iter].Floor * 30, nodes[iter].Row * 6 + 8) - rb.transform.position;
+            float iterMag = iterPosition.magnitude;
+            if (iterMag < closestMag)
+            {
+                closest = nodes[iter];
+            }
+        }
+        return closest;
+    }
+
+    public MazeNode updateClosest(MazeNode closest, List<MazeNode> nodes, MazeNode currentNode, MazeNode previous, Rigidbody rb)
+    {
+        for (int iter = 0; iter < nodes.Count; iter++)
+        {
+            if (nodes[iter] != currentNode && nodes[iter] != previous)
+            {
+                if (closest == null)
+                {
+                    closest = nodes[iter];
+                }
+                Vector3 closestPosition = new Vector3(closest.Col * 6 + 8, closest.Floor * 30, closest.Row * 6 + 8) - rb.transform.position;
+                float closestMag = closestPosition.magnitude;
+                Vector3 iterPosition = new Vector3(nodes[iter].Col * 6 + 8, nodes[iter].Floor * 30, nodes[iter].Row * 6 + 8) - rb.transform.position;
+                float iterMag = iterPosition.magnitude;
+                if (iterMag < closestMag)
+                {
+                    closest = nodes[iter];
+                }
+            }
+        }
+        return closest;
+    }
 }
