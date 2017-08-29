@@ -34,3 +34,4 @@ sysinfo.txt
 *.unitypackage
 Analytics/GameAnalytics.sqlite
 Analytics/GameAnalytics.sqlite
+Analytics/GameAnalytics.sqlite

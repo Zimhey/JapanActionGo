@@ -47,6 +47,8 @@ public class PlayerActions : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+		bool attemptDraw = UsingVR ? drawingController.triggerPressed : Input.GetButton("Fire1");
+		bool attemptThrow = UsingVR ? throwingController.triggerPressed : Input.GetButton("Fire2");
 
         // Use Lever
         if (Input.GetButtonDown("Use"))
@@ -65,12 +67,12 @@ public class PlayerActions : MonoBehaviour
 
         // Chalk Drawing
 
-		if ((Input.GetButton("Fire1") /*|| drawingController.triggerPressed*/) && PlayerInventory.CanUse(ItemType.Chalk))
+		if (attemptDraw && PlayerInventory.CanUse(ItemType.Chalk))
             DrawChalk();
         else
             drawing = false;
 
-		if ((Input.GetButton("Fire2") /*|| throwingController.triggerPressed*/) && PlayerInventory.CanUse(ItemType.Ofuda))
+		if (attemptThrow && PlayerInventory.CanUse(ItemType.Ofuda))
             ThrowOfuda();
         else
             thrown = false;
