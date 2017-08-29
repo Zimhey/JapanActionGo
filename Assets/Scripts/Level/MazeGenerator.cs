@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class MazeGenerator : MonoBehaviour
 {
-    public int Seed;
+    public static int Seed;
     public bool DebugLabelsOn;
     private NavMeshSurface surface;
     public static Difficulty dif = Difficulty.Small;
@@ -141,10 +141,10 @@ public class MazeGenerator : MonoBehaviour
             floors = 5;
         }
 
-        GenerateMazeHelper(size, sections, loops, floors, difficulty);
+        GenerateMazeHelper(size, sections, loops, floors, difficulty, Seed);
     }
 
-    public void GenerateMazeHelper(int size, int[] sections, int loops, int floors, Difficulty difficulty)
+    public void GenerateMazeHelper(int size, int[] sections, int loops, int floors, Difficulty difficulty, int seed)
     {
         MazeNode[,] roots = new MazeNode[5, 8];
         for (int i = 0; i < floors; i++)
