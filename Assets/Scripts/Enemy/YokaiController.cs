@@ -68,8 +68,10 @@ public class YokaiController : GameManager {
                 System.Boolean noWallfound = NoWall(valid[iter3], levelMask);
                 if (noWallfound)
                 {
+                    print("found footprint at" + valid[iter3].transform.position);
                     return valid[iter3];
                 }
+                print("wallfound");
             }
         }
         return null;
@@ -194,5 +196,14 @@ public class YokaiController : GameManager {
             }
         }
         return closest;
+    }
+
+    public bool isStuck(Vector3 oldPosition, Vector3 newPosition)
+    {
+        if (oldPosition == newPosition)
+        {
+            return true;
+        }
+        return false;
     }
 }
