@@ -646,7 +646,7 @@ public class MazeGenerator : MonoBehaviour
 
     public static void GenerateActors(MazeNode root, int ofuda, int oni, int chalk, int trap, int seed)
     {
-        System.Random rand = new System.Random();//(seed);
+        System.Random rand = new System.Random(seed);
         int PossiblePlaces = NumberOfDeadEndNodes(root);
         int actors = ofuda + oni + chalk;
         int[] actorLocations = new int[actors];
