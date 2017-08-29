@@ -1632,10 +1632,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7947247947b335340a77b9e04e5fbfbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ChalkCharges: 3
+  ChalkCharges: 5
   ChalkChargesPerPickup: 3
   DistancePerCharge: 15
-  OfudaCharges: 1
+  OfudaCharges: 5
   OfudaChargesPerPickup: 1
   hasMirror: 1
   hasCompass: 1
