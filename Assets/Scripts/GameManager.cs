@@ -426,6 +426,11 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public void setSeed(int newSeed)
+    {
+        MazeGenerator.Seed = newSeed;
+    }
+
     public static void SpawnSection(MazeSection section)
     {
         NavMeshSurface surface;
