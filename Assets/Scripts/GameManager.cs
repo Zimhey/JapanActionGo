@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour {
 
     public string PlayerTypeLoc;
 
-    public static bool DebugOn = true;
+    public static bool DebugOn = false;
 
     public static GameObject Maze;
 
@@ -74,12 +74,14 @@ public class GameManager : MonoBehaviour {
 
     public int lvlID;
 
+    private MazeNode[,] tutorial4;
+
     // Analytics
     public bool AnalyticsEnabled = false;
 
     private void Start()
     {
-        
+        //start2();
     }
 
     public void start2()
@@ -236,19 +238,19 @@ public class GameManager : MonoBehaviour {
         tutorial3[5, 3].AddEdge(tutorial3[5, 4]);
         tutorial3[5, 4].AddEdge(tutorial3[4, 4]);
 
-        tutorial3[0, 1].actor = ActorType.Oni;
-        tutorial3[5, 0].actor = ActorType.Oni;
-        tutorial3[5, 3].actor = ActorType.Oni;
-        tutorial3[0, 3].actor = ActorType.Oni;
-        tutorial3[1, 1].actor = ActorType.Spike_Trap;
-        tutorial3[2, 0].actor = ActorType.Spike_Trap;
-        tutorial3[1, 3].actor = ActorType.Spike_Trap;
+        //tutorial3[0, 1].actor = ActorType.Oni;
+        //tutorial3[5, 0].actor = ActorType.Oni;
+        //tutorial3[5, 3].actor = ActorType.Oni;
+        //tutorial3[0, 3].actor = ActorType.Oni;
+        //tutorial3[1, 1].actor = ActorType.Spike_Trap;
+        //tutorial3[2, 0].actor = ActorType.Spike_Trap;
+        //tutorial3[1, 3].actor = ActorType.Spike_Trap;
 
         tutorial3[0, 2].actor = ActorType.Ladder;
         tutorial3[4, 4].actor = ActorType.Ladder;
 
         //floor 4
-        MazeNode[,] tutorial4 = new MazeNode[7, 7];
+        tutorial4 = new MazeNode[7, 7];
         for (int i = 0; i < 7; i++)
             for (int j = 0; j < 7; j++)
             {
@@ -306,17 +308,23 @@ public class GameManager : MonoBehaviour {
         tutorial4[0, 6].AddEdge(tutorial4[0, 5]);
         tutorial4[0, 5].AddEdge(tutorial4[1, 5]);
 
-        tutorial4[1, 0].actor = ActorType.Ofuda_Pickup;
-        tutorial4[2, 0].actor = ActorType.Ofuda_Pickup;
-        tutorial4[0, 3].actor = ActorType.Ofuda_Pickup;
-        tutorial4[2, 4].actor = ActorType.Oni;
-        tutorial4[4, 2].actor = ActorType.Oni;
-        tutorial4[6, 6].actor = ActorType.Oni;
-        tutorial4[6, 1].actor = ActorType.Spike_Trap;
-        tutorial4[6, 4].actor = ActorType.Spike_Trap;
+        //tutorial4[1, 0].actor = ActorType.Ofuda_Pickup;
+        //tutorial4[2, 0].actor = ActorType.Ofuda_Pickup;
+        //tutorial4[0, 3].actor = ActorType.Ofuda_Pickup;
+        //tutorial4[2, 4].actor = ActorType.Oni;
+        //tutorial4[4, 2].actor = ActorType.Oni;
+        //tutorial4[6, 6].actor = ActorType.Oni;
+        //tutorial4[6, 1].actor = ActorType.Spike_Trap;
+        //tutorial4[6, 4].actor = ActorType.Spike_Trap;
 
         tutorial4[3, 3].actor = ActorType.Ladder;
         tutorial4[1, 5].actor = ActorType.Ladder;
+
+        MazeGenerator.connectLadders(tutorial1[0, 2], tutorial2[0, 0]);
+        MazeGenerator.connectLadders(tutorial2[5, 2], tutorial3[0, 2]);
+        MazeGenerator.connectLadders(tutorial3[4, 4], tutorial4[3, 3]);
+
+        BeginPlay();
 
         for (int i = 0; i < 4; i++)
         {
@@ -355,14 +363,6 @@ public class GameManager : MonoBehaviour {
             SpawnSection(section);
         }
 
-        MazeGenerator.connectLadders(tutorial1[0, 2], tutorial2[0, 0]);
-        MazeGenerator.connectLadders(tutorial2[5, 2], tutorial3[0, 2]);
-        MazeGenerator.connectLadders(tutorial3[4, 4], tutorial4[3, 3]);
-
-        BeginPlay();
-
-        MazeGenerator.connectLadders(tutorial4[1, 5], MazeGenerator.DifferentSections[0, 0]);
-
         Vector3 location = new Vector3(20, -119, 8);
         PlayerObj = Instantiate(Resources.Load(PlayerTypeLoc), location, tutorial1[0, 0].GetRotation()) as GameObject;
     }
@@ -379,7 +379,9 @@ public class GameManager : MonoBehaviour {
         // Add Cells to Analytics
         MazeGenerator generator = new MazeGenerator();
         generator.GenerateMaze(dif);
-        
+
+        MazeGenerator.connectLadders(tutorial4[1, 5], MazeGenerator.DifferentSections[0, 0]);
+
         lvlID = AnalyticsManager.AddLevel(MazeGenerator.Seed, (int) dif);
         SessionID = AnalyticsManager.AddSession(lvlID, (int) PlayersVRType);
         int[,] sectionIDs = new int[5,8];
