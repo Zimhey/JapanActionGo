@@ -33,3 +33,4 @@ sysinfo.txt
 *.apk
 *.unitypackage
 Analytics/GameAnalytics.sqlite
+Analytics/GameAnalytics.sqlite
