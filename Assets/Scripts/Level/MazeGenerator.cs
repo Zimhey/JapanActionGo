@@ -170,6 +170,11 @@ public class MazeGenerator : MonoBehaviour
         connectLadderNodes(difficulty, roots);
     }
 
+    public void setSeed(int newSeed)
+    {
+        Seed = newSeed;
+    }
+
     public static void connectLadderNodes(Difficulty difficulty, MazeNode[,] roots)
     {
         if (difficulty == Difficulty.Small || difficulty == Difficulty.Medium)
