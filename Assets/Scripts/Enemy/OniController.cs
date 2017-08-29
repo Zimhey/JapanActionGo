@@ -61,6 +61,9 @@ public class OniController : YokaiController
     //countdown until no longer stunned
     private int stunTimer;
     //private float distanceToFloor = 0.0F;
+    private Vector3 oldPosition;
+    private Vector3 newPosition;
+    private int posTimer;
 
     private GameObject footprintPrefab;
     private Animator anim;
@@ -93,12 +96,14 @@ public class OniController : YokaiController
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
         footprintPrefab = Actors.Prefabs[ActorType.Oni_Footprint];
         anim = GetComponentInChildren<Animator>();
+        oldPosition = home;
+        posTimer = 60;
     }
 
     void LateUpdate()
     {
         //manage state machine each update, call functions based on state
-        print(state);
+        //print(state);
         switch (state)
         {
             case OniState.Idle:
@@ -159,6 +164,31 @@ public class OniController : YokaiController
         if(FleeInu(LevelMask))
         {
             state = OniState.Flee;
+        }
+
+        posTimer--;
+        if(posTimer <= 0)
+        {
+            posTimer = 60;
+            if(newPosition != null)
+            {
+                oldPosition = newPosition;
+                print("oldpos" + oldPosition);
+            }
+            newPosition = rb.transform.position;
+            print("newpos" + newPosition);
+        }
+        if(newPosition != null)
+        {
+            Vector3 difference = newPosition - oldPosition;
+            float difMag = difference.magnitude;
+            if (difMag < .25)
+            {
+                UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+                agent.ResetPath();
+                currentNode = null;
+                print("reseting path");
+            }
         }
     }
 

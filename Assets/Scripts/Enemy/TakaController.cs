@@ -67,6 +67,9 @@ public class TakaController : YokaiController
     private int stunTimer;
     private Camera cam;
     private float distanceToFloor = 2.5F;
+    private Vector3 oldPosition;
+    private Vector3 newPosition;
+    private int posTimer;
 
     public TakaState State
     {
@@ -93,6 +96,8 @@ public class TakaController : YokaiController
         currentNode = StartingNode;
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
         cam = PlayerObject.GetComponentInChildren<Camera>();
+        oldPosition = home;
+        posTimer = 60;
     }
 
     void LateUpdate()
@@ -162,11 +167,35 @@ public class TakaController : YokaiController
         {
             TurnTowardsPlayer(PlayerObject);
         }
-
-        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        
         if (FleeInu(LevelMask))
         {
             state = TakaState.Flee;
+        }
+
+        posTimer--;
+        if (posTimer <= 0)
+        {
+            posTimer = 60;
+            if (newPosition != null)
+            {
+                oldPosition = newPosition;
+                print("oldpos" + oldPosition);
+            }
+            newPosition = rb.transform.position;
+            print("newpos" + newPosition);
+        }
+        if (newPosition != null)
+        {
+            Vector3 difference = newPosition - oldPosition;
+            float difMag = difference.magnitude;
+            if (difMag < .25)
+            {
+                UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+                agent.ResetPath();
+                currentNode = null;
+                print("reseting path");
+            }
         }
     }
 
