@@ -38,7 +38,8 @@ public class MazeNode
     public int Floor;
 
     public MazeNode ladderMazeNode;
-    public Ladder ladder;
+    public GameObject ladder;
+    public int SectionID;
 
 
     public MazeNode()

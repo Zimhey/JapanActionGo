@@ -29,22 +29,13 @@ public class PlayerActions : MonoBehaviour
 	private SteamVR_TrackedController throwingController;
 
     private Camera cam;
-    //array of locations the oni has been
-    private ArrayList previousLocations = new ArrayList();
-    private int lessEnough = 5;
-    private float distanceToFloor = 0.95F;
-    private GameObject footprintPrefab;
-    //player physics body
-    private Rigidbody rb;
 
     // Use this for initialization
     void Start()
     {
         chalkPrefab = Actors.Prefabs[ActorType.Chalk_Mark];
         ofudaPrefab = Actors.Prefabs[ActorType.Ofuda_Projectile];
-        footprintPrefab = Actors.Prefabs[ActorType.Player_Footprint];
         cam = gameObject.GetComponentInChildren<Camera>();
-        rb = GetComponent<Rigidbody>();
 
         if (UsingVR) 
 		{
