@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class MazeGenerator : MonoBehaviour
 {
-    public static int Seed;
+    public int Seed;
     public bool DebugLabelsOn;
     private NavMeshSurface surface;
     public static Difficulty dif = Difficulty.Small;

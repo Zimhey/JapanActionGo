@@ -79,6 +79,8 @@ public class GameManager : MonoBehaviour {
     // Analytics
     public bool AnalyticsEnabled = false;
 
+    public MazeGenerator generator;
+
     private void Start()
     {
         //start2();
@@ -377,7 +379,7 @@ public class GameManager : MonoBehaviour {
         // Add Level to Analytics
         // Add Sections to Analytics
         // Add Cells to Analytics
-        MazeGenerator generator = new MazeGenerator();
+        generator = new MazeGenerator();
         generator.GenerateMaze(dif);
 
         MazeGenerator.connectLadders(tutorial4[1, 5], MazeGenerator.DifferentSections[0, 0]);
@@ -429,7 +431,7 @@ public class GameManager : MonoBehaviour {
     public void setSeed(string newSeed)
     {
         int temp = int.Parse(newSeed);
-        MazeGenerator.Seed = temp;
+        generator.Seed = temp;
     }
 
     public static void SpawnSection(MazeSection section)
