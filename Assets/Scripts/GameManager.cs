@@ -77,7 +77,12 @@ public class GameManager : MonoBehaviour {
     // Analytics
     public bool AnalyticsEnabled = false;
 
-    public void Start()
+    private void Start()
+    {
+        
+    }
+
+    public void start2()
     {
         if (DebugOn)
             BeginPlay();
