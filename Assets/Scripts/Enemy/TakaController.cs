@@ -218,9 +218,9 @@ public class TakaController : YokaiController
             currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
         }
 
-        if (rb.transform.position.x < currentNodePosition.x + 1 && rb.transform.position.x > currentNodePosition.x - 1)
+        if (rb.transform.position.x < currentNodePosition.x + 2 && rb.transform.position.x > currentNodePosition.x - 2)
         {
-            if (rb.transform.position.z < currentNodePosition.z + 1 && rb.transform.position.z > currentNodePosition.z - 1)
+            if (rb.transform.position.z < currentNodePosition.z + 2 && rb.transform.position.z > currentNodePosition.z - 2)
             {
                 MazeNode closest = null;
                 closest = updateClosest(closest, nodes, currentNode, previous, rb);
@@ -350,11 +350,11 @@ public class TakaController : YokaiController
             gameObject.transform.position -= new Vector3(0, 0.005F, 0);
             distanceToFloor -= 0.005F;
         }
-        if (rb.transform.position.x < home.x + 1 && rb.transform.position.x > home.x - 1)
+        if (rb.transform.position.x < home.x + 2 && rb.transform.position.x > home.x - 2)
         {
             if (rb.transform.position.y < home.y + 1 && rb.transform.position.y > home.y - 1)
             {
-                if (rb.transform.position.z < home.z + 1 && rb.transform.position.z > home.z - 1)
+                if (rb.transform.position.z < home.z + 2 && rb.transform.position.z > home.z - 2)
                 {
                     state = TakaState.Idle;
                     gameObject.transform.rotation = startingRotation;

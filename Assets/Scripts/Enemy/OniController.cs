@@ -97,9 +97,8 @@ public class OniController : YokaiController
 
     void LateUpdate()
     {
-        print(state);
         //manage state machine each update, call functions based on state
-
+        print(state);
         switch (state)
         {
             case OniState.Idle:
@@ -211,9 +210,9 @@ public class OniController : YokaiController
             currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
         }
 
-        if (rb.transform.position.x < currentNodePosition.x + 1 && rb.transform.position.x > currentNodePosition.x - 1)
+        if (rb.transform.position.x < currentNodePosition.x + 2 && rb.transform.position.x > currentNodePosition.x - 2)
         {
-            if (rb.transform.position.z < currentNodePosition.z + 1 && rb.transform.position.z > currentNodePosition.z - 1)
+            if (rb.transform.position.z < currentNodePosition.z + 2 && rb.transform.position.z > currentNodePosition.z - 2)
             {
                 MazeNode closest = null;
                 closest = updateClosest(closest, nodes, currentNode, previous, rb);
@@ -239,6 +238,8 @@ public class OniController : YokaiController
 
     void chase()
     {
+        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        agent.ResetPath();
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
         GameObject foundFootprint = SeeFootprint(LevelMask);
@@ -246,10 +247,12 @@ public class OniController : YokaiController
         {
             if (foundFootprint != null)
             {
+                print("following");
                 state = OniState.Follow;
             }
             else
             {
+                print("idling");
                 state = OniState.Idle;
             }
         }
@@ -257,8 +260,6 @@ public class OniController : YokaiController
         //by using a Raycast you make sure an enemy does not see you
         //if there is a building separating you from his view, for example
         //the enemy only sees you if it has you in open view
-
-        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         Transform goal = PlayerObject.transform; // set current player location as desired location
         agent.destination = goal.position; // set destination to player's current location
     }
@@ -271,11 +272,11 @@ public class OniController : YokaiController
         agent.destination = home;
         //print("NewDest" + agent.destination);
         //print("Curpos" + rb.transform.position);
-        if (rb.transform.position.x < home.x + 1 && rb.transform.position.x > home.x - 1)
+        if (rb.transform.position.x < home.x + 2 && rb.transform.position.x > home.x - 2)
         {
-            if (rb.transform.position.y < home.y + 1 && rb.transform.position.y > home.y - 1)
+            if (rb.transform.position.y < home.y + 2 && rb.transform.position.y > home.y - 2)
             {
-                if (rb.transform.position.z < home.z + 1 && rb.transform.position.z > home.z - 1)
+                if (rb.transform.position.z < home.z + 2 && rb.transform.position.z > home.z - 2)
                 {
                     state = OniState.Idle;
                     gameObject.transform.rotation = startingRotation;
@@ -291,6 +292,8 @@ public class OniController : YokaiController
 
     void follow()
     {
+        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        agent.ResetPath();
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
         GameObject foundFootprint = SeeFootprint(LevelMask);
@@ -302,7 +305,6 @@ public class OniController : YokaiController
         {
             state = OniState.Idle;
         }
-        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         if (foundFootprint != null)
         {
             GameObject goal = foundFootprint;
