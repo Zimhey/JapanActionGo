@@ -170,7 +170,7 @@ public class MazeGenerator : MonoBehaviour
         connectLadderNodes(difficulty, roots);
     }
 
-    public void connectLadderNodes(Difficulty difficulty, MazeNode[,] roots)
+    public static void connectLadderNodes(Difficulty difficulty, MazeNode[,] roots)
     {
         if (difficulty == Difficulty.Small || difficulty == Difficulty.Medium)
         {
@@ -261,7 +261,7 @@ public class MazeGenerator : MonoBehaviour
         }
     }
 
-    public void connectLadders(MazeNode node1, MazeNode node2)
+    public static void connectLadders(MazeNode node1, MazeNode node2)
     {
         node1.ladderMazeNode = node2;
         node2.ladderMazeNode = node1;
@@ -756,6 +756,9 @@ public class MazeGenerator : MonoBehaviour
     {
         if (floor == 0)
         {
+            if (section == 0)
+                if (!GameManager.DebugOn)
+                    root.actor = ActorType.Ladder;
             if (section > 0)
             {
                 root.actor = ActorType.Ladder;
