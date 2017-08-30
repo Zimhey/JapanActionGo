@@ -13,13 +13,15 @@ public class PlayerActions : MonoBehaviour
     public bool CanDrawAcrossObjects;
     public float DistanceDrawn;
     public List<GameObject> Marks;
+    private GameObject chalkMarksParent;
 
     private bool drawing;
     private GameObject chalkPrefab;
-    private LineRenderer recent;
+    private LineRenderer currentMark;
     private GameObject lastDrawnOn;
 
     private GameObject ofudaPrefab;
+    private GameObject thrownOfudaParent;
     private bool thrown;
 
 	public bool UsingVR;
@@ -36,6 +38,8 @@ public class PlayerActions : MonoBehaviour
         chalkPrefab = Actors.Prefabs[ActorType.Chalk_Mark];
         ofudaPrefab = Actors.Prefabs[ActorType.Ofuda_Projectile];
         cam = gameObject.GetComponentInChildren<Camera>();
+        chalkMarksParent = new GameObject("Chalk Marks");
+        thrownOfudaParent = new GameObject("Thrown Ofuda");
 
         if (UsingVR) 
 		{
@@ -52,18 +56,7 @@ public class PlayerActions : MonoBehaviour
 
         // Use Lever
         if (Input.GetButtonDown("Use"))
-        {
-            foreach (GameObject obj in GameObject.FindObjectsOfType<GameObject>())
-            {
-                if (obj.tag == "Lever" && Vector3.Distance(transform.position, obj.transform.position) < PullLeverRadius)
-                    obj.SendMessage("Pull");
-                else if(obj.tag == "Ofuda" && Vector3.Distance(transform.position, obj.transform.position) < PullLeverRadius)
-                {
-                    Destroy(obj);
-                    PlayerInventory.Found(ItemType.Ofuda);
-                }
-            }
-        }
+            Use();
 
         // Chalk Drawing
 
@@ -76,9 +69,29 @@ public class PlayerActions : MonoBehaviour
             ThrowOfuda();
         else
             thrown = false;
-        
+    }
 
-        //PlaceFootprints(previousLocations, lessEnough, footprintPrefab, rb, distanceToFloor);
+    public void Use()
+    {
+        foreach (GameObject obj in GameObject.FindObjectsOfType<GameObject>())
+        {
+            if (obj.tag == "Lever" && Vector3.Distance(transform.position, obj.transform.position) < PullLeverRadius)
+                obj.SendMessage("Pull");
+            else if (obj.tag == "Ofuda" && Vector3.Distance(transform.position, obj.transform.position) < PullLeverRadius)
+            {
+                Destroy(obj);
+                PlayerInventory.Found(ItemType.Ofuda);
+            }
+        }
+    }
+
+    public GameObject StartNewMark()
+    {
+        GameObject chalkMark = Instantiate(chalkPrefab);
+        chalkMark.transform.parent = chalkMarksParent.transform;
+        Marks.Add(chalkMark);
+        currentMark = chalkMark.GetComponentInChildren<LineRenderer>();
+        return chalkMark;
     }
 
     void DrawChalk()
@@ -86,9 +99,7 @@ public class PlayerActions : MonoBehaviour
         if (!drawing) // just started drawing
         {
             drawing = true;
-            GameObject chalkMark = Instantiate(chalkPrefab);
-            Marks.Add(chalkMark);
-            recent = chalkMark.GetComponentInChildren<LineRenderer>();
+            StartNewMark();
         }
 
 		Transform pointer;
@@ -105,19 +116,17 @@ public class PlayerActions : MonoBehaviour
             // If can't draw across objects, start a new line when objects change
             if (!CanDrawAcrossObjects && lastDrawnOn != rayHit.collider.gameObject)
             {
-                GameObject chalkMark = Instantiate(chalkPrefab);
-                Marks.Add(chalkMark);
-                recent = chalkMark.GetComponentInChildren<LineRenderer>();
+                StartNewMark();
                 lastDrawnOn = rayHit.collider.gameObject;
             }
 
             // Add point to the line render
-            recent.positionCount++;
-            recent.SetPosition(recent.positionCount - 1, rayHit.point);
+            currentMark.positionCount++;
+            currentMark.SetPosition(currentMark.positionCount - 1, rayHit.point);
 
             // Track distance drawn
-            if (recent.positionCount > 1)
-                DistanceDrawn += Vector3.Distance(recent.GetPosition(recent.positionCount - 2), rayHit.point);
+            if (currentMark.positionCount > 1)
+                DistanceDrawn += Vector3.Distance(currentMark.GetPosition(currentMark.positionCount - 2), rayHit.point);
 
             // Update Inventory
             if (DistanceDrawn > PlayerInventory.DistancePerCharge)
@@ -140,7 +149,8 @@ public class PlayerActions : MonoBehaviour
 				pointer = ThrowingHand.transform;
 			else
 				pointer = cam.transform;
-			Instantiate(ofudaPrefab, pointer.position + pointer.forward, pointer.rotation);
+			GameObject ofuda = Instantiate(ofudaPrefab, pointer.position + pointer.forward, pointer.rotation);
+            ofuda.transform.parent = thrownOfudaParent.transform;
             PlayerInventory.Used(ItemType.Ofuda);
             thrown = true;
         }
