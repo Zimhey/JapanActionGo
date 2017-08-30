@@ -34,6 +34,8 @@ public struct MazeSection
 public class GameManager : MonoBehaviour {
     public GameObject pauseMenu;
     public GameObject gameOverMenu;
+    private GameObject menuCamera;
+    private GameObject UIPrefab;
 
     private static GameManager instance = null;
 
@@ -88,6 +90,9 @@ public class GameManager : MonoBehaviour {
     private void Start()
     {
         //start2();
+        menuCamera = GameObject.FindGameObjectWithTag("MainCamera");
+        gameOverMenu = GameObject.FindGameObjectWithTag("GameOverMenu");
+        gameOverMenu.SetActive(false);
     }
 
     public void start2()
@@ -566,7 +571,15 @@ public class GameManager : MonoBehaviour {
 
     public void GameOver()
     {
-        gameOverMenu.SetActive(true);
+        if (gameOverMenu != null)
+        {
+            gameOverMenu.SetActive(true);
+            menuCamera.SetActive(true);
+            menuCamera.transform.position = menuCamera.transform.position + new Vector3(0, 1000, 0);
+            UIPrefab = GameObject.FindGameObjectWithTag("UIPrefab");
+            UIPrefab.SetActive(false);
+        }
+        print("GameOverState");
     }
 
     public void OnApplicationPause(bool pause)

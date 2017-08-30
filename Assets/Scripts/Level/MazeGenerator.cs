@@ -157,7 +157,7 @@ public class MazeGenerator : MonoBehaviour
 
             foreach (MazeNode r in sectionroots)
             {
-                GenerateActors(r, 0, 0, 0, 0, Seed);
+                GenerateActors(r, 0, 1, 0, 0, Seed);
                 GenerateLadders(i, section, r, floors, sections[i]);
                 SetIntersectionNodes(r);
                 roots[i, section] = r;

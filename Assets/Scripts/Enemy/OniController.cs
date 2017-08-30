@@ -13,7 +13,8 @@ public enum OniState
     Flee, // oni has encountered safe zone, is returning to home position
     Dead, // oni has encountered trap, no longer active
     Follow, // oni does not see player, oni sees footprints, is moving towards footprints
-    Stun // oni has been hit by ofuda and is stunned
+    Stun, // oni has been hit by ofuda and is stunned
+    GameOver // game has ended
 }
 
 //state machine for oni animations
@@ -130,6 +131,9 @@ public class OniController : YokaiController
             case OniState.Stun:
                 stun();
                 break;
+            case OniState.GameOver:
+                gameOver();
+                break;
         }
 
         switch (animState)
@@ -173,10 +177,10 @@ public class OniController : YokaiController
             if(newPosition != null)
             {
                 oldPosition = newPosition;
-                print("oldpos" + oldPosition);
+                //print("oldpos" + oldPosition);
             }
             newPosition = rb.transform.position;
-            print("newpos" + newPosition);
+            //print("newpos" + newPosition);
         }
         if(newPosition != null)
         {
@@ -187,7 +191,7 @@ public class OniController : YokaiController
                 UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
                 agent.ResetPath();
                 currentNode = null;
-                print("reseting path");
+                //print("reseting path");
             }
         }
     }
@@ -375,6 +379,11 @@ public class OniController : YokaiController
         agent.destination = rb.position;
     }
 
+    void gameOver()
+    {
+
+    }
+
     void SafeZoneCollision()
     {
         state = OniState.Flee;
@@ -434,7 +443,12 @@ public class OniController : YokaiController
         {
             actorID = GetComponent<Actor>();
             ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
-            GameOver();
+            state = OniState.GameOver;
+            GameObject eventSystem = GameObject.FindGameObjectWithTag("EventSystem");
+            GameManager gm = eventSystem.GetComponent<GameManager>();
+            gm.GameOver();
+            PlayerObject.SetActive(false);
+            print("GameOver");
         }
     }
 }

@@ -18,6 +18,9 @@ TagManager:
   - FxTemporaire
   - projectile
   - Taka
+  - GameOverMenu
+  - UIPrefab
+  - EventSystem
   layers:
   - Default
   - TransparentFX

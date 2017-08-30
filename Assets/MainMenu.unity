@@ -157,6 +157,112 @@ Prefab:
       propertyPath: m_Text
       value: Return to main menu
       objectReference: {fileID: 0}
+    - target: {fileID: 224298889987675812, guid: 69713585a12ae4b46afb8ce4b80e9c27,
+        type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224298889987675812, guid: 69713585a12ae4b46afb8ce4b80e9c27,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224298889987675812, guid: 69713585a12ae4b46afb8ce4b80e9c27,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 480
+      objectReference: {fileID: 0}
+    - target: {fileID: 224298889987675812, guid: 69713585a12ae4b46afb8ce4b80e9c27,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224066431340773006, guid: 69713585a12ae4b46afb8ce4b80e9c27,
+        type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224066431340773006, guid: 69713585a12ae4b46afb8ce4b80e9c27,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224066431340773006, guid: 69713585a12ae4b46afb8ce4b80e9c27,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 480
+      objectReference: {fileID: 0}
+    - target: {fileID: 224066431340773006, guid: 69713585a12ae4b46afb8ce4b80e9c27,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224034359407156826, guid: 69713585a12ae4b46afb8ce4b80e9c27,
+        type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224034359407156826, guid: 69713585a12ae4b46afb8ce4b80e9c27,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224034359407156826, guid: 69713585a12ae4b46afb8ce4b80e9c27,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 480
+      objectReference: {fileID: 0}
+    - target: {fileID: 224034359407156826, guid: 69713585a12ae4b46afb8ce4b80e9c27,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224798800807838222, guid: 69713585a12ae4b46afb8ce4b80e9c27,
+        type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224798800807838222, guid: 69713585a12ae4b46afb8ce4b80e9c27,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224798800807838222, guid: 69713585a12ae4b46afb8ce4b80e9c27,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 480
+      objectReference: {fileID: 0}
+    - target: {fileID: 224798800807838222, guid: 69713585a12ae4b46afb8ce4b80e9c27,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1284259907718120, guid: 69713585a12ae4b46afb8ce4b80e9c27, type: 2}
+      propertyPath: m_TagString
+      value: GameOverMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 1991118354539286, guid: 69713585a12ae4b46afb8ce4b80e9c27, type: 2}
+      propertyPath: m_TagString
+      value: UIPrefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 1284259907718120, guid: 69713585a12ae4b46afb8ce4b80e9c27, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224016042737620792, guid: 69713585a12ae4b46afb8ce4b80e9c27,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224243961928082082, guid: 69713585a12ae4b46afb8ce4b80e9c27,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1337949087454122, guid: 69713585a12ae4b46afb8ce4b80e9c27, type: 2}
+      propertyPath: m_TagString
+      value: EventSystem
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 69713585a12ae4b46afb8ce4b80e9c27, type: 2}
   m_IsPrefabParent: 0

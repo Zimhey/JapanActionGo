@@ -68,10 +68,10 @@ public class YokaiController : GameManager {
                 System.Boolean noWallfound = NoWall(valid[iter3], levelMask);
                 if (noWallfound)
                 {
-                    print("found footprint at" + valid[iter3].transform.position);
+                    //print("found footprint at" + valid[iter3].transform.position);
                     return valid[iter3];
                 }
-                print("wallfound");
+                //print("wallfound");
             }
         }
         return null;
