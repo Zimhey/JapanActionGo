@@ -81,6 +81,8 @@ public class GameManager : MonoBehaviour {
 
     public MazeGenerator generator;
 
+    public Canvas menuCanvas;
+
     private void Start()
     {
         //start2();
@@ -131,7 +133,9 @@ public class GameManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-		// TODO catch escape key and call pause game
+        // TODO catch escape key and call pause game
+        if (Input.GetKeyDown("escape"))
+            PauseGame();
 	}
 
     public void BeginTutorial()
@@ -540,11 +544,15 @@ public class GameManager : MonoBehaviour {
     public void PauseGame()
     {
         PlayersCurrentSection.section.SetActive(false);
+        prevState = CurrentState;
+        CurrentState = GameState.Pause;
     }
 
     public void UnPause()
     {
         PlayersCurrentSection.section.SetActive(true);
+        prevState = CurrentState;
+        CurrentState = GameState.Play;
     }
 
     public void GameOver()
