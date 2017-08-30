@@ -432,10 +432,9 @@ public class OniController : YokaiController
         }
         if (col.gameObject == PlayerObject)
         {
-            string curlevel = SceneManager.GetActiveScene().name;
-            SceneManager.LoadScene(curlevel);
             actorID = GetComponent<Actor>();
             ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
+            GameOver();
         }
     }
 }

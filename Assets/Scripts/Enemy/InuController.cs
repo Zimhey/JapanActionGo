@@ -378,10 +378,9 @@ public class InuController : YokaiController
 
         if (hasPlayerTripped())
         {
-            string curlevel = SceneManager.GetActiveScene().name;
-            SceneManager.LoadScene(curlevel);
             actorID = GetComponent<Actor>();
             ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
+            GameOver();
         }
     }
 
