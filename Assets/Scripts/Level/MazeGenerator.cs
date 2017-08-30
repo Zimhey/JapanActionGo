@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class MazeGenerator : MonoBehaviour
 {
     public static int Seed; // TODO FIX THESE STATE VARS
-    public static Difficulty dif = Difficulty.Small;
+    //public static Difficulty dif = Difficulty.Small;
     public static MazeNode[,] DifferentSections = new MazeNode[5,8];
 
     // Use this for initialization
@@ -261,12 +261,6 @@ public class MazeGenerator : MonoBehaviour
         }
     }
 
-  //  public static void connectLadders(MazeNode node1, MazeNode node2)
-  //  {
-  //      node1.ladderMazeNode = node2;
-//node2.ladderMazeNode = node1;
-  //  }
-
     public static LinkedList<MazeNode> GetPath(MazeNode start, MazeNode end)
     {
         Stack visited = new Stack();
@@ -466,7 +460,7 @@ public class MazeGenerator : MonoBehaviour
         return nodes;
     }
 
-    public static int GetSize()
+    public static int GetSize(Difficulty dif)
     {
         if (dif == Difficulty.Small)
             return 10;
@@ -870,90 +864,6 @@ public class MazeGenerator : MonoBehaviour
             largestRow = 0;
         }
     }
-    /* TODO DELETE ME
-    public void SpawnMaze(MazeNode root, int size)
-    {
-        // TODO use DFS to search through maze and spawn each piece
-        bool[,] visited = new bool[size, size];
-
-        Stack<MazeNode> stack = new Stack<MazeNode>();
-
-        stack.Push(root);
-
-        while(stack.Count != 0)
-        {
-            MazeNode node = stack.Pop();
-
-            // Spawn
-            SpawnPiece(node);
-            SpawnActor(node);
-
-            // Set Visited
-            visited[node.Row, node.Col] = true;
-
-            // visit each adjecent node
-            foreach(MazeNode adjecentNode in node.GetAdjacentNodes())
-            {
-                if(!visited[adjecentNode.Row, adjecentNode.Col])
-                {
-                    stack.Push(adjecentNode);
-                    visited[adjecentNode.Row, adjecentNode.Col] = true;
-                }
-            }
-
-        }
-
-    }
-
-    
-
-    int piecesSpawned;
-
-    public void SpawnPiece(MazeNode node)
-    {
-        Vector3 location = new Vector3(node.Col * 6 + 8, node.Floor * 30, node.Row * 6 + 8);
-
-        GameObject obj = Instantiate(Resources.Load(node.GetPrefabName()), location, node.GetRotation()) as GameObject;
-        obj.transform.parent = this.transform;
-
-        obj = Instantiate(Resources.Load("Prefabs/Level/CellLog"), location, node.GetRotation()) as GameObject;
-        obj.transform.parent = this.transform;
-        CellLog cellLog = obj.GetComponent<CellLog>();
-        cellLog.Row = node.Row;
-        cellLog.Col = node.Col;
-
-        if(DebugLabelsOn)
-        {
-            GameObject textObj = Instantiate(Resources.Load("Prefabs/Level/CellTextPrefab"), location + new Vector3(0, 0.5f, -1), new Quaternion()) as GameObject;
-            textObj.transform.parent = obj.transform;
-
-            TextMesh t = textObj.GetComponentInChildren<TextMesh>();
-            if (t != null)
-                t.text = "R: " + node.Row + " C: " + node.Col;
-
-            textObj = Instantiate(Resources.Load("Prefabs/Level/CellTextPrefab"), location + new Vector3(0, 0.5f, 0), new Quaternion()) as GameObject;
-            textObj.transform.parent = obj.transform;
-
-            t = textObj.GetComponentInChildren<TextMesh>();
-            if (t != null)
-                t.text = "P" + piecesSpawned++;
-        }
-
-    }
-
-    public void SpawnActor(MazeNode node)
-    {
-        Vector3 location = new Vector3(node.Col * 6 + 8, node.Floor * 30, node.Row * 6 + 8);
-        if (node.actor != ActorType.Null)
-        {
-            //if (node.actor == ActorType.Ladder)
-                //node.ladder = Instantiate(Actors.Prefabs[node.actor], location, node.GetRotation());
-            //else
-                Instantiate(Actors.Prefabs[node.actor], location, node.GetRotation());
-        }
-    }
-
-    */
     
     public static MazeNode getSectionBasedOnLocation(Vector3 location)
     {

@@ -41,10 +41,6 @@ public struct MazeSection
 }
 
 public class GameManager : MonoBehaviour {
-   /* public GameObject pauseMenu;
-    public GameObject gameOverMenu;
-    private GameObject menuCamera;
-    private GameObject UIPrefab; */
 
     private static GameManager instance = null;
 
@@ -79,6 +75,7 @@ public class GameManager : MonoBehaviour {
             return parent;
         }
     }
+
     public GameObject Maze;
 
     public Difficulty difficulty;
@@ -156,6 +153,7 @@ public class GameManager : MonoBehaviour {
             Debug.Log("Attempted to spawn a second GameManager, DON'T DO THIS, THIS IS BAD, IT IS A SINGLETON");
             Debug.Log("GameManager killing itself");
             Destroy(gameObject);
+            return;
         }
 
         switch (PlayersVRType) {
