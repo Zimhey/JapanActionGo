@@ -384,7 +384,7 @@ public class GameManager : MonoBehaviour {
 
         MazeGenerator.connectLadders(tutorial4[1, 5], MazeGenerator.DifferentSections[0, 0]);
 
-        lvlID = AnalyticsManager.AddLevel(generator.Seed, (int) dif);
+        lvlID = AnalyticsManager.AddLevel(MazeGenerator.Seed, (int) dif);
         SessionID = AnalyticsManager.AddSession(lvlID, (int) PlayersVRType);
         int[,] sectionIDs = new int[5,8];
         MazeNode[,] roots = MazeGenerator.DifferentSections;
