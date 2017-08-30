@@ -147,6 +147,16 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114876257824981660, guid: 69713585a12ae4b46afb8ce4b80e9c27,
+        type: 2}
+      propertyPath: m_Text
+      value: Resume
+      objectReference: {fileID: 0}
+    - target: {fileID: 114240870142317372, guid: 69713585a12ae4b46afb8ce4b80e9c27,
+        type: 2}
+      propertyPath: m_Text
+      value: Return to main menu
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 69713585a12ae4b46afb8ce4b80e9c27, type: 2}
   m_IsPrefabParent: 0
