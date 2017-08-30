@@ -447,7 +447,6 @@ public class OniController : YokaiController
             GameObject eventSystem = GameObject.FindGameObjectWithTag("EventSystem");
             GameManager gm = eventSystem.GetComponent<GameManager>();
             gm.GameOver();
-            PlayerObject.SetActive(false);
             print("GameOver");
         }
     }
