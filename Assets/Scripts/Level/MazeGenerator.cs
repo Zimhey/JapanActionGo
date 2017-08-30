@@ -5,9 +5,7 @@ using UnityEngine.AI;
 
 public class MazeGenerator : MonoBehaviour
 {
-    public static int Seed;
-    public bool DebugLabelsOn;
-    private NavMeshSurface surface;
+    public static int Seed; // TODO FIX THESE STATE VARS
     public static Difficulty dif = Difficulty.Small;
     public static MazeNode[,] DifferentSections = new MazeNode[5,8];
 
@@ -176,98 +174,98 @@ public class MazeGenerator : MonoBehaviour
     {
         if (difficulty == Difficulty.Small || difficulty == Difficulty.Medium)
         {
-            connectLadders(FindPathEnd(roots[0, 0]), roots[1, 0]);
-            connectLadders(FindPathEnd(roots[1, 0]), roots[2, 0]);
-            connectLadders(FindPathEnd(roots[2, 0]), roots[1, 1]);
-            connectLadders(FindPathEnd(roots[1, 1]), roots[0, 1]);
+            FindPathEnd(roots[0, 0]).AddLadderTo(roots[1, 0]);
+            FindPathEnd(roots[1, 0]).AddLadderTo(roots[2, 0]);
+            FindPathEnd(roots[2, 0]).AddLadderTo(roots[1, 1]);
+            FindPathEnd(roots[1, 1]).AddLadderTo(roots[0, 1]);
         }
         if(difficulty == Difficulty.Large)
         {
-            connectLadders(FindPathEnd(roots[0, 0]), roots[1, 0]);
-            connectLadders(FindPathEnd(roots[1, 0]), roots[2, 0]);
-            connectLadders(FindPathEnd(roots[2, 0]), roots[1, 1]);
-            connectLadders(FindPathEnd(roots[1, 1]), roots[2, 1]);
-            connectLadders(FindPathEnd(roots[2, 1]), roots[1, 2]);
-            connectLadders(FindPathEnd(roots[1, 2]), roots[0, 1]);
+            FindPathEnd(roots[0, 0]).AddLadderTo(roots[1, 0]);
+            FindPathEnd(roots[1, 0]).AddLadderTo(roots[2, 0]);
+            FindPathEnd(roots[2, 0]).AddLadderTo(roots[1, 1]);
+            FindPathEnd(roots[1, 1]).AddLadderTo(roots[2, 1]);
+            FindPathEnd(roots[2, 1]).AddLadderTo(roots[1, 2]);
+            FindPathEnd(roots[1, 2]).AddLadderTo(roots[0, 1]);
         }
         if(difficulty == Difficulty.Excessive)
         {
-            connectLadders(FindPathEnd(roots[0, 0]), roots[1, 0]);
-            connectLadders(FindPathEnd(roots[1, 0]), roots[2, 0]);
-            connectLadders(FindPathEnd(roots[2, 0]), roots[3, 0]);
-            connectLadders(FindPathEnd(roots[3, 0]), roots[2, 1]);
-            connectLadders(FindPathEnd(roots[2, 1]), roots[1, 1]);
-            connectLadders(FindPathEnd(roots[1, 1]), roots[0, 1]);
-            connectLadders(FindPathEnd(roots[0, 1]), roots[1, 2]);
-            connectLadders(FindPathEnd(roots[1, 2]), roots[2, 2]);
-            connectLadders(FindPathEnd(roots[2, 2]), roots[3, 1]);
-            connectLadders(FindPathEnd(roots[3, 1]), roots[2, 3]);
-            connectLadders(FindPathEnd(roots[2, 3]), roots[1, 3]);
-            connectLadders(FindPathEnd(roots[1, 3]), roots[0, 2]);
+            FindPathEnd(roots[0, 0]).AddLadderTo(roots[1, 0]);
+            FindPathEnd(roots[1, 0]).AddLadderTo(roots[2, 0]);
+            FindPathEnd(roots[2, 0]).AddLadderTo(roots[3, 0]);
+            FindPathEnd(roots[3, 0]).AddLadderTo(roots[2, 1]);
+            FindPathEnd(roots[2, 1]).AddLadderTo(roots[1, 1]);
+            FindPathEnd(roots[1, 1]).AddLadderTo(roots[0, 1]);
+            FindPathEnd(roots[0, 1]).AddLadderTo(roots[1, 2]);
+            FindPathEnd(roots[1, 2]).AddLadderTo(roots[2, 2]);
+            FindPathEnd(roots[2, 2]).AddLadderTo(roots[3, 1]);
+            FindPathEnd(roots[3, 1]).AddLadderTo(roots[2, 3]);
+            FindPathEnd(roots[2, 3]).AddLadderTo(roots[1, 3]);
+            FindPathEnd(roots[1, 3]).AddLadderTo(roots[0, 2]);
         }
         if (difficulty == Difficulty.AlreadyLost)
         {
-            connectLadders(FindPathEnd(roots[0, 0]), roots[1, 0]);
-            connectLadders(FindPathEnd(roots[1, 0]), roots[2, 0]);
-            connectLadders(FindPathEnd(roots[2, 0]), roots[3, 0]);
-            connectLadders(FindPathEnd(roots[3, 0]), roots[2, 1]);
-            connectLadders(FindPathEnd(roots[2, 1]), roots[1, 1]);
-            connectLadders(FindPathEnd(roots[1, 1]), roots[0, 1]);
-            connectLadders(FindPathEnd(roots[0, 1]), roots[1, 2]);
-            connectLadders(FindPathEnd(roots[1, 2]), roots[2, 2]);
-            connectLadders(FindPathEnd(roots[2, 2]), roots[3, 1]);
-            connectLadders(FindPathEnd(roots[3, 1]), roots[2, 3]);
-            connectLadders(FindPathEnd(roots[2, 3]), roots[1, 3]);
-            connectLadders(FindPathEnd(roots[1, 3]), roots[0, 2]);
-            connectLadders(FindPathEnd(roots[0, 2]), roots[1, 4]);
-            connectLadders(FindPathEnd(roots[1, 4]), roots[2, 4]);
-            connectLadders(FindPathEnd(roots[2, 4]), roots[3, 2]);
-            connectLadders(FindPathEnd(roots[3, 2]), roots[2, 5]);
-            connectLadders(FindPathEnd(roots[2, 5]), roots[1, 5]);
-            connectLadders(FindPathEnd(roots[1, 5]), roots[0, 3]);
+            FindPathEnd(roots[0, 0]).AddLadderTo(roots[1, 0]);
+            FindPathEnd(roots[1, 0]).AddLadderTo(roots[2, 0]);
+            FindPathEnd(roots[2, 0]).AddLadderTo(roots[3, 0]);
+            FindPathEnd(roots[3, 0]).AddLadderTo(roots[2, 1]);
+            FindPathEnd(roots[2, 1]).AddLadderTo(roots[1, 1]);
+            FindPathEnd(roots[1, 1]).AddLadderTo(roots[0, 1]);
+            FindPathEnd(roots[0, 1]).AddLadderTo(roots[1, 2]);
+            FindPathEnd(roots[1, 2]).AddLadderTo(roots[2, 2]);
+            FindPathEnd(roots[2, 2]).AddLadderTo(roots[3, 1]);
+            FindPathEnd(roots[3, 1]).AddLadderTo(roots[2, 3]);
+            FindPathEnd(roots[2, 3]).AddLadderTo(roots[1, 3]);
+            FindPathEnd(roots[1, 3]).AddLadderTo(roots[0, 2]);
+            FindPathEnd(roots[0, 2]).AddLadderTo(roots[1, 4]);
+            FindPathEnd(roots[1, 4]).AddLadderTo(roots[2, 4]);
+            FindPathEnd(roots[2, 4]).AddLadderTo(roots[3, 2]);
+            FindPathEnd(roots[3, 2]).AddLadderTo(roots[2, 5]);
+            FindPathEnd(roots[2, 5]).AddLadderTo(roots[1, 5]);
+            FindPathEnd(roots[1, 5]).AddLadderTo(roots[0, 3]);
         }
         if (difficulty == Difficulty.JustWhy)
         {
-            connectLadders(FindPathEnd(roots[0, 0]), roots[1, 0]);
-            connectLadders(FindPathEnd(roots[1, 0]), roots[2, 0]);
-            connectLadders(FindPathEnd(roots[2, 0]), roots[3, 0]);
-            connectLadders(FindPathEnd(roots[2, 0]), roots[4, 0]);
-            connectLadders(FindPathEnd(roots[2, 0]), roots[3, 1]);
-            connectLadders(FindPathEnd(roots[3, 0]), roots[2, 1]);
-            connectLadders(FindPathEnd(roots[2, 1]), roots[1, 1]);
-            connectLadders(FindPathEnd(roots[1, 1]), roots[0, 1]);
-            connectLadders(FindPathEnd(roots[0, 1]), roots[1, 2]);
-            connectLadders(FindPathEnd(roots[1, 2]), roots[2, 2]);
-            connectLadders(FindPathEnd(roots[2, 2]), roots[3, 2]);
-            connectLadders(FindPathEnd(roots[2, 2]), roots[4, 1]);
-            connectLadders(FindPathEnd(roots[2, 2]), roots[3, 3]);
-            connectLadders(FindPathEnd(roots[3, 1]), roots[2, 3]);
-            connectLadders(FindPathEnd(roots[2, 3]), roots[1, 3]);
-            connectLadders(FindPathEnd(roots[1, 3]), roots[0, 2]);
-            connectLadders(FindPathEnd(roots[0, 2]), roots[1, 4]);
-            connectLadders(FindPathEnd(roots[1, 4]), roots[2, 4]);
-            connectLadders(FindPathEnd(roots[2, 4]), roots[3, 4]);
-            connectLadders(FindPathEnd(roots[2, 4]), roots[4, 2]);
-            connectLadders(FindPathEnd(roots[2, 4]), roots[3, 5]);
-            connectLadders(FindPathEnd(roots[3, 2]), roots[2, 5]);
-            connectLadders(FindPathEnd(roots[2, 5]), roots[1, 5]);
-            connectLadders(FindPathEnd(roots[1, 5]), roots[0, 3]);
-            connectLadders(FindPathEnd(roots[2, 4]), roots[1, 6]);
-            connectLadders(FindPathEnd(roots[3, 2]), roots[2, 6]);
-            connectLadders(FindPathEnd(roots[2, 5]), roots[3, 6]);
-            connectLadders(FindPathEnd(roots[2, 4]), roots[4, 3]);
-            connectLadders(FindPathEnd(roots[2, 4]), roots[3, 7]);
-            connectLadders(FindPathEnd(roots[3, 2]), roots[2, 7]);
-            connectLadders(FindPathEnd(roots[2, 5]), roots[1, 7]);
-            connectLadders(FindPathEnd(roots[1, 5]), roots[0, 4]);
+            FindPathEnd(roots[0, 0]).AddLadderTo(roots[1, 0]);
+            FindPathEnd(roots[1, 0]).AddLadderTo(roots[2, 0]);
+            FindPathEnd(roots[2, 0]).AddLadderTo(roots[3, 0]);
+            FindPathEnd(roots[2, 0]).AddLadderTo(roots[4, 0]);
+            FindPathEnd(roots[2, 0]).AddLadderTo(roots[3, 1]);
+            FindPathEnd(roots[3, 0]).AddLadderTo(roots[2, 1]);
+            FindPathEnd(roots[2, 1]).AddLadderTo(roots[1, 1]);
+            FindPathEnd(roots[1, 1]).AddLadderTo(roots[0, 1]);
+            FindPathEnd(roots[0, 1]).AddLadderTo(roots[1, 2]);
+            FindPathEnd(roots[1, 2]).AddLadderTo(roots[2, 2]);
+            FindPathEnd(roots[2, 2]).AddLadderTo(roots[3, 2]);
+            FindPathEnd(roots[2, 2]).AddLadderTo(roots[4, 1]);
+            FindPathEnd(roots[2, 2]).AddLadderTo(roots[3, 3]);
+            FindPathEnd(roots[3, 1]).AddLadderTo(roots[2, 3]);
+            FindPathEnd(roots[2, 3]).AddLadderTo(roots[1, 3]);
+            FindPathEnd(roots[1, 3]).AddLadderTo(roots[0, 2]);
+            FindPathEnd(roots[0, 2]).AddLadderTo(roots[1, 4]);
+            FindPathEnd(roots[1, 4]).AddLadderTo(roots[2, 4]);
+            FindPathEnd(roots[2, 4]).AddLadderTo(roots[3, 4]);
+            FindPathEnd(roots[2, 4]).AddLadderTo(roots[4, 2]);
+            FindPathEnd(roots[2, 4]).AddLadderTo(roots[3, 5]);
+            FindPathEnd(roots[3, 2]).AddLadderTo(roots[2, 5]);
+            FindPathEnd(roots[2, 5]).AddLadderTo(roots[1, 5]);
+            FindPathEnd(roots[1, 5]).AddLadderTo(roots[0, 3]);
+            FindPathEnd(roots[2, 4]).AddLadderTo(roots[1, 6]);
+            FindPathEnd(roots[3, 2]).AddLadderTo(roots[2, 6]);
+            FindPathEnd(roots[2, 5]).AddLadderTo(roots[3, 6]);
+            FindPathEnd(roots[2, 4]).AddLadderTo(roots[4, 3]);
+            FindPathEnd(roots[2, 4]).AddLadderTo(roots[3, 7]);
+            FindPathEnd(roots[3, 2]).AddLadderTo(roots[2, 7]);
+            FindPathEnd(roots[2, 5]).AddLadderTo(roots[1, 7]);
+            FindPathEnd(roots[1, 5]).AddLadderTo(roots[0, 4]);
         }
     }
 
-    public static void connectLadders(MazeNode node1, MazeNode node2)
-    {
-        node1.ladderMazeNode = node2;
-        node2.ladderMazeNode = node1;
-    }
+  //  public static void connectLadders(MazeNode node1, MazeNode node2)
+  //  {
+  //      node1.ladderMazeNode = node2;
+//node2.ladderMazeNode = node1;
+  //  }
 
     public static LinkedList<MazeNode> GetPath(MazeNode start, MazeNode end)
     {
@@ -759,7 +757,7 @@ public class MazeGenerator : MonoBehaviour
         if (floor == 0)
         {
             if (section == 0)
-                if (!GameManager.DebugOn)
+                if (!GameManager.Instance.TutorialOn)
                     root.actor = ActorType.Ladder;
             if (section > 0)
             {
@@ -872,7 +870,7 @@ public class MazeGenerator : MonoBehaviour
             largestRow = 0;
         }
     }
-    
+    /* TODO DELETE ME
     public void SpawnMaze(MazeNode root, int size)
     {
         // TODO use DFS to search through maze and spawn each piece
@@ -906,6 +904,8 @@ public class MazeGenerator : MonoBehaviour
         }
 
     }
+
+    
 
     int piecesSpawned;
 
@@ -952,6 +952,8 @@ public class MazeGenerator : MonoBehaviour
                 Instantiate(Actors.Prefabs[node.actor], location, node.GetRotation());
         }
     }
+
+    */
     
     public static MazeNode getSectionBasedOnLocation(Vector3 location)
     {

@@ -7,7 +7,6 @@ public enum GameState
 {
     Intro,
     Main,
-    Tutorial,
     Play,
     Pause,
     GameOver
@@ -22,6 +21,16 @@ public enum VirtualRealityType
     Cardboard // lol maybe
 }
 
+public enum Difficulty
+{
+    Small,
+    Medium,
+    Large,
+    Excessive,
+    AlreadyLost,
+    JustWhy
+}
+
 public struct MazeSection
 {
     public int SectionID;
@@ -32,10 +41,10 @@ public struct MazeSection
 }
 
 public class GameManager : MonoBehaviour {
-    public GameObject pauseMenu;
+   /* public GameObject pauseMenu;
     public GameObject gameOverMenu;
     private GameObject menuCamera;
-    private GameObject UIPrefab;
+    private GameObject UIPrefab; */
 
     private static GameManager instance = null;
 
@@ -56,18 +65,56 @@ public class GameManager : MonoBehaviour {
 
     public string PlayerTypeLoc;
 
-    public static bool DebugOn = true;
+    public bool TutorialOn;
+    public bool DebugLabelsOn;
+    public bool CanPause;
 
-    public static GameObject Maze;
+    private GameObject parent;
+    public GameObject GameParent
+    {
+        get
+        {
+            if (parent == null)
+                parent = new GameObject("Game Objects");
+            return parent;
+        }
+    }
+    public GameObject Maze;
 
-    public static bool DebugLabelsOn;
+    public Difficulty difficulty;
 
-    public Difficulty dif = Difficulty.Small;
+    public int SessionID;
 
-    public static int SessionID;
+    private float sessionTime;
+    public float SessionTime
+    {
+        get
+        {
+            return sessionTime;
+        }
+        set
+        {
+            sessionTime = value;
+            if (AnalyticsEnabled)
+                AnalyticsManager.UpdateSessionTime(SessionID, sessionTime);
+        }
+    }
 
-    public GameState CurrentState;
     private GameState prevState;
+    private GameState currState;
+    public GameState CurrentState
+    {
+        get
+        {
+            return currState;
+        }
+        set
+        {
+            prevState = currState;
+            currState = value;
+        }
+    }
+
 
     public VirtualRealityType PlayersVRType;
 
@@ -81,49 +128,36 @@ public class GameManager : MonoBehaviour {
     private MazeNode[,] tutorial4;
 
     // Analytics
-    public bool AnalyticsEnabled = false;
+    public bool AnalyticsEnabled;
 
-    public MazeGenerator generator;
+    private UIGameManagerInterface ui;
 
-    public Canvas menuCanvas;
-
-    private void Start()
+    public UIGameManagerInterface UserInterface
     {
-        //start2();
-        menuCamera = GameObject.FindGameObjectWithTag("MainCamera");
-        gameOverMenu = GameObject.FindGameObjectWithTag("GameOverMenu");
-        gameOverMenu.SetActive(false);
+        get
+        {
+            if(ui == null)
+                ui = GameObject.FindGameObjectWithTag("UserInterface").GetComponentInChildren<UIGameManagerInterface>();
+            return ui;
+        }
     }
-
-    public void start2()
-    {
-        if (DebugOn)
-            BeginPlay();
-        else
-            BeginTutorial();
-    }
-
-    public void setDifficulty(int diff)
-    {
-        dif = (Difficulty)diff;
-    }
-
-    public void setTutorial()
-    {
-        if (DebugOn)
-            DebugOn = false;
-        else
-            DebugOn = true;
-    }
-
 
     // Achievements
-
 
     // Use this for initialization
     void Awake()
     {
-        // TODO set Player prefab for player spawning
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Debug.Log("Attempted to spawn a second GameManager, DON'T DO THIS, THIS IS BAD, IT IS A SINGLETON");
+            Debug.Log("GameManager killing itself");
+            Destroy(gameObject);
+        }
+
         switch (PlayersVRType) {
             case VirtualRealityType.None:
                 PlayerTypeLoc = "Prefabs/Player/FPS_Player";
@@ -137,210 +171,77 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    void Start()
+    {
+
+    }
+
     // Update is called once per frame
     void Update()
     {
         // TODO catch escape key and call pause game
-        if (Input.GetKeyDown("escape"))
+        if (Input.GetKeyDown("escape") && CanPause)
         {
             if (CurrentState == GameState.Pause)
                 UnPause();
             else
                 PauseGame();
         }
+
+        // update session time during play
+        if(CurrentState == GameState.Play)
+        {
+            SessionTime += Time.deltaTime;
+        }
+    }
+
+    public void SetDifficulty(Difficulty diff)
+    {
+        difficulty = diff;
+    }
+
+    public void EnableTutorial(bool tutorialEnabled)
+    {
+        TutorialOn = tutorialEnabled;
+    }
+
+    // TODO why is state being stored in MazeGenerator
+    public void SetSeed(int newSeed)
+    {
+        MazeGenerator.Seed = newSeed;
+    }
+
+    public void StartGame()
+    {
+        if (TutorialOn)
+            BeginTutorial();
+        else
+            BeginPlay();
+
+        CurrentState = GameState.Play;
+        SessionTime = 0;
     }
 
     public void BeginTutorial()
     {
-        Maze = new GameObject();
-        // TODO make the tutorial a collection of maze nodes and ladders
+        Maze = new GameObject("Maze");
+        Maze.transform.parent = GameParent.transform;
+
         //floor 1
-        MazeNode[,] tutorial1 = new MazeNode[3, 3];
-        for (int i = 0; i < 3; i++)
-            for (int j = 0; j < 3; j++)
-            {
-                tutorial1[i, j] = new MazeNode(j, i);
-                tutorial1[i, j].Floor = -4;
-            }
-
-        tutorial1[2, 0].AddEdge(tutorial1[1, 0]);
-        tutorial1[1, 0].AddEdge(tutorial1[0, 0]);
-        tutorial1[0, 0].AddEdge(tutorial1[0, 1]);
-        tutorial1[0, 1].AddEdge(tutorial1[1, 1]);
-        tutorial1[1, 1].AddEdge(tutorial1[2, 1]);
-        tutorial1[2, 1].AddEdge(tutorial1[2, 2]);
-        tutorial1[2, 2].AddEdge(tutorial1[1, 2]);
-        tutorial1[1, 2].AddEdge(tutorial1[0, 2]);
-
-        tutorial1[0, 2].actor = ActorType.Ladder;
+        MazeNode[,] tutorial1 = TutorialGenerator.GenerateFloor1();
 
         //floor 2
-        MazeNode[,] tutorial2 = new MazeNode[6, 5];
-        for (int i = 0; i < 6; i++)
-            for (int j = 0; j < 5; j++)
-            {
-                tutorial2[i, j] = new MazeNode(j, i);
-                tutorial2[i, j].Floor = -3;
-            }
-
-        tutorial2[0, 0].AddEdge(tutorial2[1, 0]);
-        tutorial2[1, 0].AddEdge(tutorial2[2, 0]);
-        tutorial2[2, 0].AddEdge(tutorial2[2, 1]);
-        tutorial2[2, 1].AddEdge(tutorial2[1, 1]);
-        tutorial2[2, 1].AddEdge(tutorial2[1, 1]);
-        tutorial2[1, 1].AddEdge(tutorial2[0, 1]);
-        tutorial2[0, 1].AddEdge(tutorial2[0, 2]);
-        tutorial2[0, 2].AddEdge(tutorial2[1, 2]);
-        tutorial2[1, 2].AddEdge(tutorial2[1, 3]);
-        tutorial2[1, 3].AddEdge(tutorial2[0, 3]);
-        tutorial2[0, 3].AddEdge(tutorial2[0, 4]);
-        tutorial2[1, 3].AddEdge(tutorial2[1, 4]);
-        tutorial2[1, 4].AddEdge(tutorial2[2, 4]);
-        tutorial2[1, 3].AddEdge(tutorial2[2, 3]);
-        tutorial2[2, 3].AddEdge(tutorial2[3, 3]);
-        tutorial2[2, 1].AddEdge(tutorial2[2, 2]);
-        tutorial2[2, 2].AddEdge(tutorial2[3, 2]);
-        tutorial2[3, 2].AddEdge(tutorial2[3, 1]);
-        tutorial2[3, 1].AddEdge(tutorial2[3, 0]);
-        tutorial2[3, 0].AddEdge(tutorial2[4, 0]);
-        tutorial2[4, 0].AddEdge(tutorial2[5, 0]);
-        tutorial2[5, 0].AddEdge(tutorial2[5, 1]);
-        tutorial2[5, 1].AddEdge(tutorial2[4, 1]);
-        tutorial2[4, 1].AddEdge(tutorial2[4, 2]);
-        tutorial2[4, 2].AddEdge(tutorial2[4, 3]);
-        tutorial2[4, 3].AddEdge(tutorial2[4, 4]);
-        tutorial2[4, 4].AddEdge(tutorial2[3, 4]);
-        tutorial2[4, 3].AddEdge(tutorial2[5, 3]);
-        tutorial2[5, 3].AddEdge(tutorial2[5, 4]);
-        tutorial2[5, 3].AddEdge(tutorial2[5, 2]);
-
-        tutorial2[0, 0].actor = ActorType.Ladder;
-        tutorial2[5, 2].actor = ActorType.Ladder;
+        MazeNode[,] tutorial2 = TutorialGenerator.GenerateFloor2();
 
         //floor 3
-        MazeNode[,] tutorial3 = new MazeNode[6, 5];
-        for (int i = 0; i < 6; i++)
-            for (int j = 0; j < 5; j++)
-            {
-                tutorial3[i, j] = new MazeNode(j, i);
-                tutorial3[i, j].Floor = -2;
-            }
-
-        tutorial3[0, 0].AddEdge(tutorial3[0, 1]);
-        tutorial3[0, 1].AddEdge(tutorial3[1, 1]);
-        tutorial3[1, 1].AddEdge(tutorial3[2, 1]);
-        tutorial3[2, 1].AddEdge(tutorial3[3, 1]);
-        tutorial3[3, 1].AddEdge(tutorial3[3, 2]);
-        tutorial3[3, 2].AddEdge(tutorial3[3, 3]);
-        tutorial3[3, 3].AddEdge(tutorial3[3, 4]);
-        tutorial3[3, 4].AddEdge(tutorial3[2, 4]);
-        tutorial3[2, 4].AddEdge(tutorial3[1, 4]);
-        tutorial3[1, 4].AddEdge(tutorial3[0, 4]);
-        tutorial3[0, 4].AddEdge(tutorial3[0, 3]);
-        tutorial3[0, 3].AddEdge(tutorial3[1, 3]);
-        tutorial3[1, 3].AddEdge(tutorial3[2, 3]);
-        tutorial3[2, 3].AddEdge(tutorial3[2, 2]);
-        tutorial3[2, 2].AddEdge(tutorial3[1, 2]);
-        tutorial3[1, 2].AddEdge(tutorial3[0, 2]);
-        tutorial3[2, 1].AddEdge(tutorial3[2, 0]);
-        tutorial3[2, 0].AddEdge(tutorial3[1, 0]);
-        tutorial3[2, 0].AddEdge(tutorial3[3, 0]);
-        tutorial3[3, 0].AddEdge(tutorial3[4, 0]);
-        tutorial3[4, 0].AddEdge(tutorial3[4, 1]);
-        tutorial3[4, 1].AddEdge(tutorial3[4, 2]);
-        tutorial3[4, 2].AddEdge(tutorial3[4, 3]);
-        tutorial3[4, 1].AddEdge(tutorial3[5, 1]);
-        tutorial3[5, 1].AddEdge(tutorial3[5, 0]);
-        tutorial3[5, 1].AddEdge(tutorial3[5, 2]);
-        tutorial3[5, 2].AddEdge(tutorial3[5, 3]);
-        tutorial3[5, 3].AddEdge(tutorial3[5, 4]);
-        tutorial3[5, 4].AddEdge(tutorial3[4, 4]);
-
-        //tutorial3[0, 1].actor = ActorType.Oni;
-        //tutorial3[5, 0].actor = ActorType.Oni;
-        //tutorial3[5, 3].actor = ActorType.Oni;
-        //tutorial3[0, 3].actor = ActorType.Oni;
-        //tutorial3[1, 1].actor = ActorType.Spike_Trap;
-        //tutorial3[2, 0].actor = ActorType.Spike_Trap;
-        //tutorial3[1, 3].actor = ActorType.Spike_Trap;
-
-        tutorial3[0, 2].actor = ActorType.Ladder;
-        tutorial3[4, 4].actor = ActorType.Ladder;
+        MazeNode[,] tutorial3 = TutorialGenerator.GenerateFloor3();
 
         //floor 4
-        tutorial4 = new MazeNode[7, 7];
-        for (int i = 0; i < 7; i++)
-            for (int j = 0; j < 7; j++)
-            {
-                tutorial4[i, j] = new MazeNode(j, i);
-                tutorial4[i, j].Floor = -1;
-            }
+        tutorial4 = TutorialGenerator.GenerateFloor4();
 
-        tutorial4[3, 3].AddEdge(tutorial4[3, 2]);
-        tutorial4[3, 2].AddEdge(tutorial4[3, 1]);
-        tutorial4[3, 1].AddEdge(tutorial4[2, 1]);
-        tutorial4[2, 1].AddEdge(tutorial4[1, 1]);
-        tutorial4[1, 1].AddEdge(tutorial4[0, 1]);
-        tutorial4[0, 1].AddEdge(tutorial4[0, 0]);
-        tutorial4[0, 0].AddEdge(tutorial4[1, 0]);
-        tutorial4[3, 3].AddEdge(tutorial4[3, 4]);
-        tutorial4[3, 4].AddEdge(tutorial4[3, 5]);
-        tutorial4[3, 5].AddEdge(tutorial4[2, 5]);
-        tutorial4[3, 3].AddEdge(tutorial4[2, 3]);
-        tutorial4[2, 3].AddEdge(tutorial4[1, 3]);
-        tutorial4[1, 3].AddEdge(tutorial4[0, 3]);
-        tutorial4[0, 3].AddEdge(tutorial4[0, 2]);
-        tutorial4[0, 2].AddEdge(tutorial4[1, 2]);
-        tutorial4[1, 2].AddEdge(tutorial4[2, 2]);
-        tutorial4[0, 3].AddEdge(tutorial4[0, 4]);
-        tutorial4[0, 4].AddEdge(tutorial4[1, 4]);
-        tutorial4[1, 4].AddEdge(tutorial4[2, 4]);
-        tutorial4[3, 3].AddEdge(tutorial4[4, 3]);
-        tutorial4[4, 3].AddEdge(tutorial4[5, 3]);
-        tutorial4[5, 3].AddEdge(tutorial4[6, 3]);
-        tutorial4[6, 3].AddEdge(tutorial4[6, 4]);
-        tutorial4[6, 4].AddEdge(tutorial4[6, 5]);
-        tutorial4[6, 3].AddEdge(tutorial4[6, 2]);
-        tutorial4[6, 2].AddEdge(tutorial4[6, 1]);
-        tutorial4[5, 3].AddEdge(tutorial4[5, 2]);
-        tutorial4[5, 2].AddEdge(tutorial4[5, 1]);
-        tutorial4[5, 1].AddEdge(tutorial4[5, 0]);
-        tutorial4[5, 0].AddEdge(tutorial4[6, 0]);
-        tutorial4[6, 2].AddEdge(tutorial4[6, 1]);
-        tutorial4[5, 0].AddEdge(tutorial4[4, 0]);
-        tutorial4[4, 0].AddEdge(tutorial4[4, 1]);
-        tutorial4[4, 1].AddEdge(tutorial4[4, 2]);
-        tutorial4[4, 0].AddEdge(tutorial4[3, 0]);
-        tutorial4[3, 0].AddEdge(tutorial4[2, 0]);
-        tutorial4[5, 3].AddEdge(tutorial4[5, 4]);
-        tutorial4[5, 4].AddEdge(tutorial4[5, 5]);
-        tutorial4[5, 4].AddEdge(tutorial4[4, 4]);
-        tutorial4[4, 4].AddEdge(tutorial4[4, 5]);
-        tutorial4[4, 5].AddEdge(tutorial4[4, 6]);
-        tutorial4[4, 6].AddEdge(tutorial4[5, 6]);
-        tutorial4[5, 6].AddEdge(tutorial4[6, 6]);
-        tutorial4[4, 6].AddEdge(tutorial4[3, 6]);
-        tutorial4[3, 6].AddEdge(tutorial4[2, 6]);
-        tutorial4[2, 6].AddEdge(tutorial4[1, 6]);
-        tutorial4[1, 6].AddEdge(tutorial4[0, 6]);
-        tutorial4[0, 6].AddEdge(tutorial4[0, 5]);
-        tutorial4[0, 5].AddEdge(tutorial4[1, 5]);
-
-        //tutorial4[1, 0].actor = ActorType.Ofuda_Pickup;
-        //tutorial4[2, 0].actor = ActorType.Ofuda_Pickup;
-        //tutorial4[0, 3].actor = ActorType.Ofuda_Pickup;
-        //tutorial4[2, 4].actor = ActorType.Oni;
-        //tutorial4[4, 2].actor = ActorType.Oni;
-        //tutorial4[6, 6].actor = ActorType.Oni;
-        //tutorial4[6, 1].actor = ActorType.Spike_Trap;
-        //tutorial4[6, 4].actor = ActorType.Spike_Trap;
-
-        tutorial4[3, 3].actor = ActorType.Ladder;
-        tutorial4[1, 5].actor = ActorType.Ladder;
-
-        MazeGenerator.connectLadders(tutorial1[0, 2], tutorial2[0, 0]);
-        MazeGenerator.connectLadders(tutorial2[5, 2], tutorial3[0, 2]);
-        MazeGenerator.connectLadders(tutorial3[4, 4], tutorial4[3, 3]);
+        tutorial1[0, 2].AddLadderTo(tutorial2[0, 0]);
+        tutorial2[5, 2].AddLadderTo(tutorial3[0, 2]);
+        tutorial3[4, 4].AddLadderTo(tutorial4[3, 3]);
 
         BeginPlay();
 
@@ -349,7 +250,7 @@ public class GameManager : MonoBehaviour {
             MazeNode[,] TutorialFloor = new MazeNode[7, 7];
             List<MazeNode> nodes;
             MazeSection section = new MazeSection();
-            int[] sectionIDs = new int[4];
+            //int[] sectionIDs = new int[4];
             switch (i)
             {
                 case 0:
@@ -367,7 +268,7 @@ public class GameManager : MonoBehaviour {
             }
 
             section.Root = TutorialFloor[0, 0];
-            int sectionID = AnalyticsManager.AddSection(lvlID, 0, i);
+            int sectionID = AnalyticsManager.AddSection(lvlID, 0, -4 + i);
             section.SectionID = sectionID;
             section.Spawned = false;
             foreach (MazeNode n in MazeGenerator.nodesInSection(section.Root))
@@ -381,30 +282,33 @@ public class GameManager : MonoBehaviour {
             SpawnSection(section);
         }
 
-
-
         Vector3 location = new Vector3(20, -119, 8);
         PlayerObj = Instantiate(Resources.Load(PlayerTypeLoc), location, tutorial1[0, 0].GetRotation()) as GameObject;
+        PlayerObj.transform.parent = GameParent.transform;
     }
 
     public void BeginPlay()
     {
-        if (DebugOn)
-            Maze = new GameObject();
+        if (!TutorialOn)
+        {
+            Maze = new GameObject("Maze");
+            Maze.transform.parent = GameParent.transform;
+        }
+
         Sections = new List<MazeSection>();
         // Start new Session in Analytics
         // Generate Level
         // Add Level to Analytics
         // Add Sections to Analytics
         // Add Cells to Analytics
-        MazeGenerator.GenerateMaze(dif);
+        MazeGenerator.GenerateMaze(difficulty);
 
-        if (!DebugOn)
+        if (TutorialOn)
         {
-            MazeGenerator.connectLadders(tutorial4[1, 5], MazeGenerator.DifferentSections[0, 0]);
+            tutorial4[1, 5].AddLadderTo(MazeGenerator.DifferentSections[0, 0]);
         }
 
-        lvlID = AnalyticsManager.AddLevel(MazeGenerator.Seed, (int)dif);
+        lvlID = AnalyticsManager.AddLevel(MazeGenerator.Seed, (int)difficulty);
         SessionID = AnalyticsManager.AddSession(lvlID, (int)PlayersVRType);
         int[,] sectionIDs = new int[5, 8];
         MazeNode[,] roots = MazeGenerator.DifferentSections;
@@ -444,28 +348,23 @@ public class GameManager : MonoBehaviour {
 
         // Spawn Player
 
-        if (DebugOn)
+        if (!TutorialOn)
         {
             Vector3 location = new Vector3(8, 1, 8);
             PlayerObj = Instantiate(Resources.Load(PlayerTypeLoc), location, roots[0, 0].GetRotation()) as GameObject;
+            PlayerObj.transform.parent = GameParent.transform;
         }
     }
 
-    public void setSeed(string newSeed)
-    {
-        int temp = int.Parse(newSeed);
-        MazeGenerator.Seed = temp;
-    }
-
-    public static void SpawnSection(MazeSection msection)
+    public void SpawnSection(MazeSection msection)
     {
         NavMeshSurface surface;
-        GameObject SectionObject = new GameObject();
+        GameObject SectionObject = new GameObject("Section " + msection.SectionID);
         SectionObject.transform.parent = Maze.transform;
         // Spawn Cells
         msection.Spawned = true;
         msection.section = SectionObject;
-        if (DebugOn || msection.Root.Floor > 0 || msection.Root.Floor == -4)
+        if (!TutorialOn || msection.Root.Floor > 0 || msection.Root.Floor == -4)
         {
             PlayersCurrentSection = msection;
         }
@@ -485,7 +384,7 @@ public class GameManager : MonoBehaviour {
 
     private static int piecesSpawned;
 
-    public static void SpawnPiece(MazeNode node, GameObject section)
+    public void SpawnPiece(MazeNode node, GameObject section)
     {
         Vector3 location = new Vector3(node.Col * 6 + 8, node.Floor * 30, node.Row * 6 + 8);
 
@@ -517,7 +416,7 @@ public class GameManager : MonoBehaviour {
         
     }
 
-    public static void SpawnActor(MazeNode node, GameObject section)
+    public void SpawnActor(MazeNode node, GameObject section)
     {
         GameObject actorObject;
         Vector3 location = new Vector3(node.Col * 6 + 8, node.Floor * 30, node.Row * 6 + 8);
@@ -536,7 +435,7 @@ public class GameManager : MonoBehaviour {
     }
     // TODO Add an Actor Component to each actor GameObject
 
-    public static void EnterSection(GameObject ladder, GameObject player)
+    public void EnterSection(GameObject ladder, GameObject player)
     {
 
         if (ladder.GetComponent<Ladder>().ConnectedLadder == null)
@@ -545,7 +444,7 @@ public class GameManager : MonoBehaviour {
             {
                 if (sec.SectionID == ladder.GetComponent<Ladder>().ConnectedLadderNode.SectionID && !sec.Spawned)
                 {
-                    GameManager.SpawnSection(sec);
+                    SpawnSection(sec);
                 }
             }
             ladder.GetComponent<Ladder>().ConnectedLadder = ladder.GetComponent<Ladder>().ConnectedLadderNode.ladder;
@@ -573,36 +472,42 @@ public class GameManager : MonoBehaviour {
     {
         PlayersCurrentSection.section.SetActive(false);
         PlayerObj.SetActive(false);
-        prevState = CurrentState;
         CurrentState = GameState.Pause;
-        pauseMenu.SetActive(true);
+        if (UserInterface != null)
+            UserInterface.ShowPauseMenu();
+        else
+            Debug.Log("UI is null");
+        Cursor.visible = true;
     }
 
     public void UnPause()
     {
         PlayersCurrentSection.section.SetActive(true);
         PlayerObj.SetActive(true);
-        prevState = CurrentState;
         CurrentState = GameState.Play;
-        pauseMenu.SetActive(false);
+        if (UserInterface != null)
+            UserInterface.ShowHUD();
+        else
+            Debug.Log("UI is null");
+        Cursor.visible = false;
     }
 
     public void GameOver()
     {
-        if (gameOverMenu != null)
-        {
-            PlayersCurrentSection.section.SetActive(false);
-            prevState = CurrentState;
-            CurrentState = GameState.GameOver;
-            gameOverMenu.SetActive(true);
-            menuCamera.SetActive(true);
-            menuCamera.transform.position = menuCamera.transform.position + new Vector3(0, 1000, 0);
-            PlayerObj = GameObject.FindGameObjectWithTag("Player");
-            PlayerObj.SetActive(false);
-            UIPrefab = GameObject.FindGameObjectWithTag("UIPrefab");
-            UIPrefab.SetActive(false);
-        }
-        print("GameOverState");
+        PlayersCurrentSection.section.SetActive(false);
+        PlayerObj.SetActive(false);
+        CurrentState = GameState.GameOver;
+        if (UserInterface != null)
+            UserInterface.ShowGameOverMenu();
+        else
+            Debug.Log("UI is null");
+        Cursor.visible = true;
+    }
+
+    public void MainMenu()
+    {
+        CurrentState = GameState.Main;
+        Destroy(GameParent);
     }
 
     public void OnApplicationPause(bool pause)
@@ -657,14 +562,4 @@ public class GameManager : MonoBehaviour {
         if (AnalyticsEnabled)
             AnalyticsManager.FoundItem(actor.ActorID);
     }
-}
-
-public enum Difficulty
-{
-    Small,
-    Medium,
-    Large,
-    Excessive,
-    AlreadyLost,
-    JustWhy
 }

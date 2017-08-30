@@ -39,7 +39,9 @@ public class PlayerActions : MonoBehaviour
         ofudaPrefab = Actors.Prefabs[ActorType.Ofuda_Projectile];
         cam = gameObject.GetComponentInChildren<Camera>();
         chalkMarksParent = new GameObject("Chalk Marks");
+        chalkMarksParent.transform.parent = GameManager.Instance.GameParent.transform;
         thrownOfudaParent = new GameObject("Thrown Ofuda");
+        thrownOfudaParent.transform.parent = GameManager.Instance.GameParent.transform;
 
         if (UsingVR) 
 		{

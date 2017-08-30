@@ -230,7 +230,7 @@ MonoBehaviour:
   ChalkCharges: 3
   ChalkChargesPerPickup: 3
   DistancePerCharge: 15
-  OfudaCharges: 1
+  OfudaCharges: 5
   OfudaChargesPerPickup: 1
   hasMirror: 0
   hasCompass: 0
