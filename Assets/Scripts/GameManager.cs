@@ -597,6 +597,8 @@ public class GameManager : MonoBehaviour {
             gameOverMenu.SetActive(true);
             menuCamera.SetActive(true);
             menuCamera.transform.position = menuCamera.transform.position + new Vector3(0, 1000, 0);
+            PlayerObj = GameObject.FindGameObjectWithTag("Player");
+            PlayerObj.SetActive(false);
             UIPrefab = GameObject.FindGameObjectWithTag("UIPrefab");
             UIPrefab.SetActive(false);
         }
