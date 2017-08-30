@@ -161,8 +161,8 @@ public class MazeGenerator : MonoBehaviour
                 SetIntersectionNodes(r);
                 roots[i, section] = r;
                 GenerateLoops(r, loops, size);
-                //SpawnMaze(r, size);
                 section++;
+                seed++;
             }
         }
         DifferentSections = roots;
