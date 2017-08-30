@@ -93,7 +93,6 @@ public class MazeGenerator : MonoBehaviour
 
     public void GenerateMaze(Difficulty difficulty)
     {
-        print("started generating maze");
         int size = 0;
         int[] sections = new int[] { };
         int loops = 0;
