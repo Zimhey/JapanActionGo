@@ -17,6 +17,7 @@ public class MazeGenerator : MonoBehaviour
         //GenerateMaze(dif);
     }
 
+    /*
     public void AddRandomActors(MazeNode root)
     {
         List<MazeNode> visited = new List<MazeNode>();
@@ -35,6 +36,7 @@ public class MazeGenerator : MonoBehaviour
         }
     }
 
+    
     System.Random rand = new System.Random();
 
     public void AddRandomActor(MazeNode node)
@@ -58,6 +60,7 @@ public class MazeGenerator : MonoBehaviour
             node.actor = ActorType.Null;
 
     }
+    */
 
     // Update is called once per frame
     void Update()
@@ -91,7 +94,7 @@ public class MazeGenerator : MonoBehaviour
         return maze[0, 0];
     }
 
-    public void GenerateMaze(Difficulty difficulty)
+    public static void GenerateMaze(Difficulty difficulty)
     {
         int size = 0;
         int[] sections = new int[] { };
@@ -143,7 +146,7 @@ public class MazeGenerator : MonoBehaviour
         GenerateMazeHelper(size, sections, loops, floors, difficulty, Seed);
     }
 
-    public void GenerateMazeHelper(int size, int[] sections, int loops, int floors, Difficulty difficulty, int seed)
+    public static void GenerateMazeHelper(int size, int[] sections, int loops, int floors, Difficulty difficulty, int seed)
     {
         MazeNode[,] roots = new MazeNode[5, 8];
         for (int i = 0; i < floors; i++)
@@ -156,7 +159,7 @@ public class MazeGenerator : MonoBehaviour
 
             foreach (MazeNode r in sectionroots)
             {
-                GenerateActors(r, 0, 1, 0, 0, Seed);
+                GenerateActors(r, 0, 0, 0, 0, Seed);
                 GenerateLadders(i, section, r, floors, sections[i]);
                 SetIntersectionNodes(r);
                 roots[i, section] = r;

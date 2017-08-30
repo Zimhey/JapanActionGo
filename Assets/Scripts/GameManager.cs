@@ -397,8 +397,7 @@ public class GameManager : MonoBehaviour {
         // Add Level to Analytics
         // Add Sections to Analytics
         // Add Cells to Analytics
-        generator = new MazeGenerator();
-        generator.GenerateMaze(dif);
+        MazeGenerator.GenerateMaze(dif);
 
         if (!DebugOn)
         {
@@ -554,6 +553,7 @@ public class GameManager : MonoBehaviour {
         }
 
         //Debug.Log(collider.gameObject.tag + " entered Cell R: " + Row + " C: " + Col + " at Time: " + Time.time);
+        ladder.GetComponent<Ladder>().ConnectedLadder.transform.parent.gameObject.SetActive(true);
 
         if (ladder.GetComponent<Ladder>().teleportable == true && ladder.GetComponent<Ladder>().ConnectedLadder.GetComponent<Ladder>().teleportable == true)
         {
@@ -561,7 +561,7 @@ public class GameManager : MonoBehaviour {
             {
                 ladder.GetComponent<Ladder>().teleportable = false;
                 ladder.GetComponent<Ladder>().ConnectedLadder.GetComponent<Ladder>().teleportable = false;
-                ladder.GetComponent<Ladder>().ConnectedLadder.transform.parent.gameObject.SetActive(true);
+                //ladder.GetComponent<Ladder>().ConnectedLadder.transform.parent.gameObject.SetActive(true);
                 ladder.transform.parent.gameObject.SetActive(false);
                 player.transform.position = ladder.GetComponent<Ladder>().ConnectedLadder.transform.position;
             }
@@ -572,6 +572,7 @@ public class GameManager : MonoBehaviour {
     public void PauseGame()
     {
         PlayersCurrentSection.section.SetActive(false);
+        PlayerObj.SetActive(false);
         prevState = CurrentState;
         CurrentState = GameState.Pause;
         pauseMenu.SetActive(true);
@@ -580,6 +581,7 @@ public class GameManager : MonoBehaviour {
     public void UnPause()
     {
         PlayersCurrentSection.section.SetActive(true);
+        PlayerObj.SetActive(true);
         prevState = CurrentState;
         CurrentState = GameState.Play;
         pauseMenu.SetActive(false);
