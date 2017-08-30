@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour {
 
     public string PlayerTypeLoc;
 
-    public static bool DebugOn = false;
+    public static bool DebugOn = true;
 
     public static GameObject Maze;
 
@@ -382,7 +382,10 @@ public class GameManager : MonoBehaviour {
         generator = new MazeGenerator();
         generator.GenerateMaze(dif);
 
-        MazeGenerator.connectLadders(tutorial4[1, 5], MazeGenerator.DifferentSections[0, 0]);
+        if (!DebugOn)
+        {
+            MazeGenerator.connectLadders(tutorial4[1, 5], MazeGenerator.DifferentSections[0, 0]);
+        }
 
         lvlID = AnalyticsManager.AddLevel(MazeGenerator.Seed, (int) dif);
         SessionID = AnalyticsManager.AddSession(lvlID, (int) PlayersVRType);
