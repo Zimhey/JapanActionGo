@@ -32,6 +32,8 @@ public struct MazeSection
 }
 
 public class GameManager : MonoBehaviour {
+    public GameObject pauseMenu;
+    public GameObject gameOverMenu;
 
     private static GameManager instance = null;
 
@@ -540,6 +542,7 @@ public class GameManager : MonoBehaviour {
     public void PauseGame()
     {
         PlayersCurrentSection.section.SetActive(false);
+        pauseMenu.SetActive(true);
     }
 
     public void UnPause()
@@ -549,7 +552,7 @@ public class GameManager : MonoBehaviour {
 
     public void GameOver()
     {
-
+        gameOverMenu.SetActive(true);
     }
 
     public void OnApplicationPause(bool pause)
