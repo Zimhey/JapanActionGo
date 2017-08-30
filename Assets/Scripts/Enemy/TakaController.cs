@@ -361,8 +361,9 @@ public class TakaController : YokaiController
             {
                 if (playerLookingUp())
                 {
-                    string curlevel = SceneManager.GetActiveScene().name;
-                    SceneManager.LoadScene(curlevel);
+                    actorID = GetComponent<Actor>();
+                    ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
+                    GameOver();
                 }
             }
         }
@@ -535,10 +536,9 @@ public class TakaController : YokaiController
         }
         if (col.gameObject == PlayerObject)
         {
-            string curlevel = SceneManager.GetActiveScene().name;
-            SceneManager.LoadScene(curlevel);
             actorID = GetComponent<Actor>();
             ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
+            GameOver();
         }
     }
 }
