@@ -32,6 +32,8 @@ public struct MazeSection
 }
 
 public class GameManager : MonoBehaviour {
+    public GameObject pauseMenu;
+    public GameObject gameOverMenu;
 
     private static GameManager instance = null;
 
@@ -135,7 +137,12 @@ public class GameManager : MonoBehaviour {
     {
         // TODO catch escape key and call pause game
         if (Input.GetKeyDown("escape"))
-            PauseGame();
+        {
+            if (CurrentState == GameState.Pause)
+                UnPause();
+            else
+                PauseGame();
+        }
 	}
 
     public void BeginTutorial()
@@ -546,6 +553,7 @@ public class GameManager : MonoBehaviour {
         PlayersCurrentSection.section.SetActive(false);
         prevState = CurrentState;
         CurrentState = GameState.Pause;
+        pauseMenu.SetActive(true);
     }
 
     public void UnPause()
@@ -553,11 +561,12 @@ public class GameManager : MonoBehaviour {
         PlayersCurrentSection.section.SetActive(true);
         prevState = CurrentState;
         CurrentState = GameState.Play;
+        pauseMenu.SetActive(false);
     }
 
     public void GameOver()
     {
-
+        gameOverMenu.SetActive(true);
     }
 
     public void OnApplicationPause(bool pause)
