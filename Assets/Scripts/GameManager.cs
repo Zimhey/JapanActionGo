@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour {
     {
         get
         {
-            if(instance == null)
+            if (instance == null)
             {
                 instance = new GameManager();
                 DontDestroyOnLoad(instance);
@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour {
 
     public void setDifficulty(int diff)
     {
-        dif = (Difficulty) diff;
+        dif = (Difficulty)diff;
     }
 
     public void setTutorial()
@@ -121,7 +121,7 @@ public class GameManager : MonoBehaviour {
 
 
     // Use this for initialization
-    void Awake ()
+    void Awake()
     {
         // TODO set Player prefab for player spawning
         switch (PlayersVRType) {
@@ -135,10 +135,10 @@ public class GameManager : MonoBehaviour {
                 PlayerTypeLoc = "Prefabs/Player/Steam_VR_Player";
                 break;
         }
-	}
-	
-	// Update is called once per frame
-	void Update ()
+    }
+
+    // Update is called once per frame
+    void Update()
     {
         // TODO catch escape key and call pause game
         if (Input.GetKeyDown("escape"))
@@ -148,7 +148,7 @@ public class GameManager : MonoBehaviour {
             else
                 PauseGame();
         }
-	}
+    }
 
     public void BeginTutorial()
     {
@@ -381,13 +381,15 @@ public class GameManager : MonoBehaviour {
             SpawnSection(section);
         }
 
+
+
         Vector3 location = new Vector3(20, -119, 8);
         PlayerObj = Instantiate(Resources.Load(PlayerTypeLoc), location, tutorial1[0, 0].GetRotation()) as GameObject;
     }
 
     public void BeginPlay()
     {
-        if(DebugOn)
+        if (DebugOn)
             Maze = new GameObject();
         Sections = new List<MazeSection>();
         // Start new Session in Analytics
@@ -403,16 +405,16 @@ public class GameManager : MonoBehaviour {
             MazeGenerator.connectLadders(tutorial4[1, 5], MazeGenerator.DifferentSections[0, 0]);
         }
 
-        lvlID = AnalyticsManager.AddLevel(MazeGenerator.Seed, (int) dif);
-        SessionID = AnalyticsManager.AddSession(lvlID, (int) PlayersVRType);
-        int[,] sectionIDs = new int[5,8];
+        lvlID = AnalyticsManager.AddLevel(MazeGenerator.Seed, (int)dif);
+        SessionID = AnalyticsManager.AddSession(lvlID, (int)PlayersVRType);
+        int[,] sectionIDs = new int[5, 8];
         MazeNode[,] roots = MazeGenerator.DifferentSections;
         List<MazeNode> nodes;
 
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 8; j++)
                 if (roots[i, j] != null)
-                { 
+                {
                     MazeSection section = new MazeSection();
                     section.Root = roots[i, j];
                     sectionIDs[i, j] = AnalyticsManager.AddSection(lvlID, i, j);
@@ -423,8 +425,8 @@ public class GameManager : MonoBehaviour {
                     Sections.Add(section);
                 }
 
-        for(int i = 0; i < 5; i++)
-            for(int j = 0; j < 5; j++)
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 5; j++)
                 if (roots[i, j] != null)
                 {
                     nodes = MazeGenerator.nodesInSection(roots[i, j]);
@@ -435,9 +437,12 @@ public class GameManager : MonoBehaviour {
                 }
 
         // Spawn first section
-        foreach(MazeSection s in Sections)
-            if(s.Root.Col == 0 && s.Root.Row == 0 && s.Root.Floor == 0)
+        foreach (MazeSection s in Sections)
+            if (s.Root.Col == 0 && s.Root.Row == 0 && s.Root.Floor == 0)
+            {
                 SpawnSection(s);
+            }
+
         // Spawn Player
 
         if (DebugOn)
@@ -453,22 +458,26 @@ public class GameManager : MonoBehaviour {
         MazeGenerator.Seed = temp;
     }
 
-    public static void SpawnSection(MazeSection section)
+    public static void SpawnSection(MazeSection msection)
     {
         NavMeshSurface surface;
-        PlayersCurrentSection = section;
         GameObject SectionObject = new GameObject();
         SectionObject.transform.parent = Maze.transform;
         // Spawn Cells
-        section.Spawned = true;
-        section.section = SectionObject;
-        foreach(MazeNode n in MazeGenerator.nodesInSection(section.Root))
+        msection.Spawned = true;
+        msection.section = SectionObject;
+        if (DebugOn || msection.Root.Floor > 0 || msection.Root.Floor == -4)
+        {
+            PlayersCurrentSection = msection;
+        }
+        
+        foreach(MazeNode n in MazeGenerator.nodesInSection(msection.Root))
         {
             SpawnPiece(n, SectionObject);
             SpawnActor(n, SectionObject);
         }
 
-        surface = section.section.AddComponent<NavMeshSurface>();
+        surface = msection.section.AddComponent<NavMeshSurface>();
         if (surface != null)
             surface.BuildNavMesh();
         // Spawn Actors
@@ -528,27 +537,34 @@ public class GameManager : MonoBehaviour {
     }
     // TODO Add an Actor Component to each actor GameObject
 
-    public void EnterSection(GameObject ladder)
+    public static void EnterSection(GameObject ladder, GameObject player)
     {
-        // disable current section
-        ladder.transform.parent.gameObject.SetActive(false);
-        // check if next section is spawned
-        // spawn section
-        MazeSection sec = new MazeSection();
-        int sID = ladder.GetComponent<Ladder>().ConnectedLadder.GetComponent<Ladder>().SectionID;
-        foreach(MazeSection s in Sections)
-            if (s.SectionID == sID)
-                sec = s;
-        if (sec.Spawned == false)
+
+        if (ladder.GetComponent<Ladder>().ConnectedLadder == null)
         {
-            SpawnSection(sec);
+            foreach (MazeSection sec in GameManager.Sections)
+            {
+                if (sec.SectionID == ladder.GetComponent<Ladder>().ConnectedLadderNode.SectionID && !sec.Spawned)
+                {
+                    GameManager.SpawnSection(sec);
+                }
+            }
+            ladder.GetComponent<Ladder>().ConnectedLadder = ladder.GetComponent<Ladder>().ConnectedLadderNode.ladder;
+            ladder.GetComponent<Ladder>().ConnectedLadder.GetComponent<Ladder>().ConnectedLadder = ladder;
         }
-        // else
-            // enable section
-        else
+
+        //Debug.Log(collider.gameObject.tag + " entered Cell R: " + Row + " C: " + Col + " at Time: " + Time.time);
+
+        if (ladder.GetComponent<Ladder>().teleportable == true && ladder.GetComponent<Ladder>().ConnectedLadder.GetComponent<Ladder>().teleportable == true)
         {
-            ladder.GetComponent<Ladder>().ConnectedLadder.transform.parent.gameObject.SetActive(true);
-            PlayersCurrentSection = sec;
+            if (!(ladder.GetComponent<Ladder>().ConnectedLadderNode.Floor == -1 && ladder.GetComponent<Ladder>().ConnectedLadderNode.Col == 1 && ladder.GetComponent<Ladder>().ConnectedLadderNode.Row == 5))
+            {
+                ladder.GetComponent<Ladder>().teleportable = false;
+                ladder.GetComponent<Ladder>().ConnectedLadder.GetComponent<Ladder>().teleportable = false;
+                ladder.GetComponent<Ladder>().ConnectedLadder.transform.parent.gameObject.SetActive(true);
+                ladder.transform.parent.gameObject.SetActive(false);
+                player.transform.position = ladder.GetComponent<Ladder>().ConnectedLadder.transform.position;
+            }
         }
         // TODO change Ladder code to call this and add player movement to here
     }
@@ -573,6 +589,9 @@ public class GameManager : MonoBehaviour {
     {
         if (gameOverMenu != null)
         {
+            PlayersCurrentSection.section.SetActive(false);
+            prevState = CurrentState;
+            CurrentState = GameState.GameOver;
             gameOverMenu.SetActive(true);
             menuCamera.SetActive(true);
             menuCamera.transform.position = menuCamera.transform.position + new Vector3(0, 1000, 0);

@@ -14,7 +14,7 @@ public class MazeGenerator : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        GenerateMaze(dif);
+        //GenerateMaze(dif);
     }
 
     public void AddRandomActors(MazeNode root)
@@ -93,7 +93,6 @@ public class MazeGenerator : MonoBehaviour
 
     public void GenerateMaze(Difficulty difficulty)
     {
-        print("started generating maze");
         int size = 0;
         int[] sections = new int[] { };
         int loops = 0;
@@ -162,8 +161,8 @@ public class MazeGenerator : MonoBehaviour
                 SetIntersectionNodes(r);
                 roots[i, section] = r;
                 GenerateLoops(r, loops, size);
-                //SpawnMaze(r, size);
                 section++;
+                seed++;
             }
         }
         DifferentSections = roots;
