@@ -363,7 +363,11 @@ public class TakaController : YokaiController
                 {
                     actorID = GetComponent<Actor>();
                     ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
-                    GameOver();
+                    GameObject eventSystem = GameObject.FindGameObjectWithTag("EventSystem");
+                    GameManager gm = eventSystem.GetComponent<GameManager>();
+                    gm.GameOver();
+                    PlayerObject.SetActive(false);
+                    print("GameOver");
                 }
             }
         }
@@ -538,7 +542,11 @@ public class TakaController : YokaiController
         {
             actorID = GetComponent<Actor>();
             ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
-            GameOver();
+            GameObject eventSystem = GameObject.FindGameObjectWithTag("EventSystem");
+            GameManager gm = eventSystem.GetComponent<GameManager>();
+            gm.GameOver();
+            PlayerObject.SetActive(false);
+            print("GameOver");
         }
     }
 }
