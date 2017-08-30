@@ -14,7 +14,7 @@ public class MazeGenerator : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        GenerateMaze(dif);
+        //GenerateMaze(dif);
     }
 
     public void AddRandomActors(MazeNode root)

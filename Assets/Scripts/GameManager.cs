@@ -589,6 +589,9 @@ public class GameManager : MonoBehaviour {
     {
         if (gameOverMenu != null)
         {
+            PlayersCurrentSection.section.SetActive(false);
+            prevState = CurrentState;
+            CurrentState = GameState.GameOver;
             gameOverMenu.SetActive(true);
             menuCamera.SetActive(true);
             menuCamera.transform.position = menuCamera.transform.position + new Vector3(0, 1000, 0);
