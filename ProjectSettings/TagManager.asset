@@ -21,6 +21,7 @@ TagManager:
   - GameOverMenu
   - UIPrefab
   - EventSystem
+  - UserInterface
   layers:
   - Default
   - TransparentFX

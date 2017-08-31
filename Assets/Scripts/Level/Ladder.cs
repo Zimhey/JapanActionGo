@@ -24,7 +24,7 @@ public class Ladder : MonoBehaviour {
     {
         if (collider.gameObject.tag == "Player")
         {
-            GameManager.EnterSection(this.gameObject, collider.gameObject);
+            GameManager.Instance.EnterSection(this.gameObject, collider.gameObject);
         }
     }
 

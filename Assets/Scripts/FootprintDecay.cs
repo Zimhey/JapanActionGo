@@ -18,7 +18,6 @@ public class FootprintDecay : MonoBehaviour {
         if(timer <= 0)
         {
             Destroy(gameObject);
-            print("Destroy");
         }
 	}
 }

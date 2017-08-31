@@ -18,10 +18,14 @@ public class FootprintPlacer : MonoBehaviour {
     private float distToGround;
     private CharacterController controller;
 
+    private GameObject footPrintParent;
+
     private void Start()
     {
         rigidBody = gameObject.GetComponent<Rigidbody>();
         controller = gameObject.GetComponent<CharacterController>();
+        footPrintParent = new GameObject(gameObject.tag + " Footprints");
+        footPrintParent.transform.parent = GameManager.Instance.GameParent.transform;
     }
 
     // Update is called once per frame
@@ -94,7 +98,7 @@ public class FootprintPlacer : MonoBehaviour {
                         //make rotation
                         Quaternion rot = Quaternion.Euler(0, 0, 0);
                         //add to level
-                        Instantiate(footprintPrefab, dest, rot);
+                        Instantiate(footprintPrefab, dest, rot).transform.parent = footPrintParent.transform;
                         //remove old steps
                         for (int remove = 0; remove < iter; remove++)
                         {

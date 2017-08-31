@@ -52,56 +52,6 @@ public class MazeNode
         Col = col;
     }
 
-    public void connectLeft(MazeNode n)
-    {
-        this.Left = n;
-    }
-
-    public void connectRight(MazeNode n)
-    {
-        this.Right = n;
-    }
-
-    public void connectForward(MazeNode n)
-    {
-        this.Forward = n;
-    }
-
-    public void connectBackward(MazeNode n)
-    {
-        this.Backward = n;
-    }
-
-    public void connectAbove(MazeNode n)
-    {
-        this.Above = n;
-    }
-
-    public void connectBelow(MazeNode n)
-    {
-        this.Below = n;
-    }
-
-    public void DisconnectLeft()
-    {
-        this.Left = null;
-    }
-
-    public void DisconnectRight()
-    {
-        this.Right = null;
-    }
-
-    public void DisconnectForward()
-    {
-        this.Forward = null;
-    }
-
-    public void DisconnectBackward()
-    {
-        this.Backward = null;
-    }
-
     public bool AddEdge(MazeNode other)
     {
         if (Row == other.Row)
@@ -194,6 +144,12 @@ public class MazeNode
             nodes.Add(Below);
 
         return nodes;
+    }
+
+    public void AddLadderTo(MazeNode other)
+    {
+        ladderMazeNode = other;
+        other.ladderMazeNode = this;
     }
 
     public CellType GetCellType()
