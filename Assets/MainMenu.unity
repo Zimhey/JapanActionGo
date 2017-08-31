@@ -147,19 +147,9 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114032536168248524, guid: e6851efdabfcd48408ed7d24aacbba4c,
-        type: 2}
-      propertyPath: WinPanel
-      value: 
-      objectReference: {fileID: 56455069}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e6851efdabfcd48408ed7d24aacbba4c, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &56455069 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1232727053014378, guid: e6851efdabfcd48408ed7d24aacbba4c,
-    type: 2}
-  m_PrefabInternal: {fileID: 45588772}
 --- !u!1 &601769527
 GameObject:
   m_ObjectHideFlags: 0

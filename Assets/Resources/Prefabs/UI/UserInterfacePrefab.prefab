@@ -1983,6 +1983,7 @@ MonoBehaviour:
   GameOverPanel: {fileID: 1204515889724696}
   FirstPersonHUDPanel: {fileID: 1269708670973056}
   VirtualRealityHUDPanel: {fileID: 0}
+  WinPanel: {fileID: 1232727053014378}
   StartScreen: 0
 --- !u!114 &114037402774915822
 MonoBehaviour:
