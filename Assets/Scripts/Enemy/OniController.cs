@@ -104,7 +104,7 @@ public class OniController : YokaiController
     void LateUpdate()
     {
         //manage state machine each update, call functions based on state
-        //print(state);
+        print(state);
         switch (state)
         {
             case OniState.Idle:

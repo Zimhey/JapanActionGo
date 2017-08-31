@@ -10,7 +10,7 @@ public enum TrapState
     Resetting, // resetting animation
 }
 
-public class Trap : GameManager
+public class Trap : MonoBehaviour
 {
     public TrapState state;
     public float FireAnimTime;
@@ -31,7 +31,7 @@ public class Trap : GameManager
             state = value;
 
             actorID = GetComponent<Actor>();
-            ActorStateChange(actorID, (int)state);
+            GameManager.Instance.ActorStateChange(actorID, (int)state);
         }
     }
 

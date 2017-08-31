@@ -17,6 +17,9 @@ public class FootprintPlacer : MonoBehaviour {
     private Rigidbody rigidBody;
     private float distToGround;
     private CharacterController controller;
+    private GameObject previousFootprint;
+    private GameObject currentFootprint;
+    private GameObject nextFootprint;
 
     private GameObject footPrintParent;
 
