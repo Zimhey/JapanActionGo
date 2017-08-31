@@ -281,6 +281,7 @@ public class GameManager : MonoBehaviour {
 
         Vector3 location = new Vector3(20, -119, 8);
         PlayerObj = Instantiate(Resources.Load(PlayerTypeLoc), location, tutorial1[0, 0].GetRotation()) as GameObject;
+        PlayerObj.AddComponent<Actor>().ActorID = AnalyticsManager.AddActor(SessionID, ActorType.Player);
         PlayerObj.transform.parent = GameParent.transform;
     }
 
@@ -349,6 +350,7 @@ public class GameManager : MonoBehaviour {
         {
             Vector3 location = new Vector3(8, 1, 8);
             PlayerObj = Instantiate(Resources.Load(PlayerTypeLoc), location, roots[0, 0].GetRotation()) as GameObject;
+            PlayerObj.AddComponent<Actor>().ActorID = AnalyticsManager.AddActor(SessionID, ActorType.Player);
             PlayerObj.transform.parent = GameParent.transform;
         }
     }
@@ -445,6 +447,8 @@ public class GameManager : MonoBehaviour {
             }
 
             ladder.GetComponent<Ladder>().ConnectedLadder = ladder.GetComponent<Ladder>().ConnectedLadderNode.ladder;
+            //print(ladder.GetComponent<Ladder>().ConnectedLadderNode.Col + " " + ladder.GetComponent<Ladder>().ConnectedLadderNode.Row + " " +ladder.GetComponent<Ladder>().ConnectedLadderNode.Floor);
+            print(ladder.GetComponent<Ladder>().ConnectedLadder);
             ladder.GetComponent<Ladder>().ConnectedLadder.GetComponent<Ladder>().ConnectedLadder = ladder;
         }
 
@@ -452,15 +456,12 @@ public class GameManager : MonoBehaviour {
         //ladder.GetComponent<Ladder>().ConnectedLadder.transform.parent.gameObject.SetActive(true);
 
         ladder.GetComponent<Ladder>().ConnectedLadder.transform.parent.gameObject.SetActive(true);
-        print(ladder.GetComponent<Ladder>().teleportable + " " + ladder.GetComponent<Ladder>().ConnectedLadder.GetComponent<Ladder>().teleportable);
         ladder.GetComponent<Ladder>().ConnectedLadder.GetComponent<Ladder>().teleportable = true;
 
         if (ladder.GetComponent<Ladder>().teleportable == true && ladder.GetComponent<Ladder>().ConnectedLadder.GetComponent<Ladder>().teleportable == true)
         {
-            print("here");
             if (!(ladder.GetComponent<Ladder>().ConnectedLadderNode.Floor == -1 && ladder.GetComponent<Ladder>().ConnectedLadderNode.Col == 1 && ladder.GetComponent<Ladder>().ConnectedLadderNode.Row == 5))
             {
-                print(ladder.GetComponent<Ladder>().ConnectedLadder.transform.parent.gameObject.activeSelf);
                 ladder.GetComponent<Ladder>().teleportable = false;
                 ladder.GetComponent<Ladder>().ConnectedLadder.GetComponent<Ladder>().teleportable = false;
                 player.transform.position = ladder.GetComponent<Ladder>().ConnectedLadder.transform.position;
