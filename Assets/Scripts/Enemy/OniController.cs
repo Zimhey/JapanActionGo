@@ -78,7 +78,7 @@ public class OniController : YokaiController
             state = value;
 
             actorID = GetComponent<Actor>();
-            ActorStateChange(actorID, (int) state);
+            GameManager.Instance.ActorStateChange(actorID, (int) state);
         }
     }
 
@@ -92,13 +92,13 @@ public class OniController : YokaiController
         state = OniState.Patrol;
         animState = OniAnim.Idle;
         awake = false;
-        root = MazeGenerator.getSectionBasedOnLocation(home);
-        currentNode = StartingNode;
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
         footprintPrefab = Actors.Prefabs[ActorType.Oni_Footprint];
         anim = GetComponentInChildren<Animator>();
         oldPosition = home;
         posTimer = 60;
+        root = MazeGenerator.getSectionBasedOnLocation(home);
+        currentNode = StartingNode;
     }
 
     void LateUpdate()
@@ -442,11 +442,9 @@ public class OniController : YokaiController
         if (col.gameObject == PlayerObject)
         {
             actorID = GetComponent<Actor>();
-            ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
+            GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
             state = OniState.GameOver;
-            GameObject eventSystem = GameObject.FindGameObjectWithTag("EventSystem");
-            GameManager gm = eventSystem.GetComponent<GameManager>();
-            gm.GameOver();
+            GameManager.Instance.GameOver();
             print("GameOver");
         }
     }

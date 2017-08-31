@@ -78,7 +78,7 @@ public class TakaController : YokaiController
             state = value;
 
             actorID = GetComponent<Actor>();
-            ActorStateChange(actorID, (int)state);
+            GameManager.Instance.ActorStateChange(actorID, (int)state);
         }
     }
 
@@ -92,12 +92,12 @@ public class TakaController : YokaiController
         state = TakaState.Idle;
         animState = TakaAnim.Idle;
         awake = false;
-        root = MazeGenerator.getSectionBasedOnLocation(home);
-        currentNode = StartingNode;
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
         cam = PlayerObject.GetComponentInChildren<Camera>();
         oldPosition = home;
         posTimer = 60;
+        root = MazeGenerator.getSectionBasedOnLocation(home);
+        currentNode = StartingNode;
     }
 
     void LateUpdate()
@@ -362,10 +362,8 @@ public class TakaController : YokaiController
                 if (playerLookingUp())
                 {
                     actorID = GetComponent<Actor>();
-                    ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
-                    GameObject eventSystem = GameObject.FindGameObjectWithTag("EventSystem");
-                    GameManager gm = eventSystem.GetComponent<GameManager>();
-                    gm.GameOver();
+                    GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
+                    GameManager.Instance.GameOver();
                     PlayerObject.SetActive(false);
                     print("GameOver");
                 }
@@ -541,10 +539,8 @@ public class TakaController : YokaiController
         if (col.gameObject == PlayerObject)
         {
             actorID = GetComponent<Actor>();
-            ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
-            GameObject eventSystem = GameObject.FindGameObjectWithTag("EventSystem");
-            GameManager gm = eventSystem.GetComponent<GameManager>();
-            gm.GameOver();
+            GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
+            GameManager.Instance.GameOver();
             PlayerObject.SetActive(false);
             print("GameOver");
         }
