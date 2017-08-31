@@ -123,6 +123,17 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Debug.Log("Attempted Spawning Second GameManager THIS SHOULD NOT HAPPEN, IF YOU SEE THIS SOMETHING IS WRONG.... WILLLLL!!!!!");
+            Destroy(gameObject);
+        }
+            
+
         // TODO set Player prefab for player spawning
         switch (PlayersVRType) {
             case VirtualRealityType.None:
@@ -141,6 +152,7 @@ public class GameManager : MonoBehaviour {
     void Update()
     {
         // TODO catch escape key and call pause game
+        
         if (Input.GetKeyDown("escape"))
         {
             if (CurrentState == GameState.Pause)
@@ -148,11 +160,12 @@ public class GameManager : MonoBehaviour {
             else
                 PauseGame();
         }
+        
     }
 
     public void BeginTutorial()
     {
-        Maze = new GameObject();
+        Maze = new GameObject("Maze");
         // TODO make the tutorial a collection of maze nodes and ladders
         //floor 1
         MazeNode[,] tutorial1 = new MazeNode[3, 3];
@@ -390,7 +403,7 @@ public class GameManager : MonoBehaviour {
     public void BeginPlay()
     {
         if (DebugOn)
-            Maze = new GameObject();
+            Maze = new GameObject("Maze");
         Sections = new List<MazeSection>();
         // Start new Session in Analytics
         // Generate Level
@@ -460,9 +473,8 @@ public class GameManager : MonoBehaviour {
     public static void SpawnSection(MazeSection msection)
     {
         NavMeshSurface surface;
-        GameObject SectionObject = new GameObject();
+        GameObject SectionObject = new GameObject("Section " + msection.SectionID);
         SectionObject.transform.parent = Maze.transform;
-        // Spawn Cells
         msection.Spawned = true;
         msection.section = SectionObject;
         if (DebugOn || msection.Root.Floor > 0 || msection.Root.Floor == -4)
@@ -538,34 +550,51 @@ public class GameManager : MonoBehaviour {
 
     public static void EnterSection(GameObject ladder, GameObject player)
     {
-
         if (ladder.GetComponent<Ladder>().ConnectedLadder == null)
         {
             foreach (MazeSection sec in GameManager.Sections)
             {
-                if (sec.SectionID == ladder.GetComponent<Ladder>().ConnectedLadderNode.SectionID && !sec.Spawned)
+                if (sec.SectionID == ladder.GetComponent<Ladder>().ConnectedLadderNode.SectionID)
                 {
-                    GameManager.SpawnSection(sec);
+                    if (!sec.Spawned)
+                        GameManager.SpawnSection(sec);
                 }
             }
+
             ladder.GetComponent<Ladder>().ConnectedLadder = ladder.GetComponent<Ladder>().ConnectedLadderNode.ladder;
             ladder.GetComponent<Ladder>().ConnectedLadder.GetComponent<Ladder>().ConnectedLadder = ladder;
         }
 
         //Debug.Log(collider.gameObject.tag + " entered Cell R: " + Row + " C: " + Col + " at Time: " + Time.time);
+        //ladder.GetComponent<Ladder>().ConnectedLadder.transform.parent.gameObject.SetActive(true);
+
         ladder.GetComponent<Ladder>().ConnectedLadder.transform.parent.gameObject.SetActive(true);
+        print(ladder.GetComponent<Ladder>().teleportable + " " + ladder.GetComponent<Ladder>().ConnectedLadder.GetComponent<Ladder>().teleportable);
+        ladder.GetComponent<Ladder>().ConnectedLadder.GetComponent<Ladder>().teleportable = true;
 
         if (ladder.GetComponent<Ladder>().teleportable == true && ladder.GetComponent<Ladder>().ConnectedLadder.GetComponent<Ladder>().teleportable == true)
         {
+            print("here");
             if (!(ladder.GetComponent<Ladder>().ConnectedLadderNode.Floor == -1 && ladder.GetComponent<Ladder>().ConnectedLadderNode.Col == 1 && ladder.GetComponent<Ladder>().ConnectedLadderNode.Row == 5))
             {
+                print(ladder.GetComponent<Ladder>().ConnectedLadder.transform.parent.gameObject.activeSelf);
                 ladder.GetComponent<Ladder>().teleportable = false;
                 ladder.GetComponent<Ladder>().ConnectedLadder.GetComponent<Ladder>().teleportable = false;
-                //ladder.GetComponent<Ladder>().ConnectedLadder.transform.parent.gameObject.SetActive(true);
-                ladder.transform.parent.gameObject.SetActive(false);
                 player.transform.position = ladder.GetComponent<Ladder>().ConnectedLadder.transform.position;
+                ladder.transform.parent.gameObject.SetActive(false);
+                foreach (MazeSection sec in GameManager.Sections)
+                {
+                    if (sec.SectionID == ladder.GetComponent<Ladder>().ConnectedLadderNode.SectionID)
+                    {
+                        PlayersCurrentSection = sec;
+                    }
+                }
+                PlayersCurrentSection.section = ladder.GetComponent<Ladder>().ConnectedLadder.transform.parent.gameObject;
             }
         }
+
+        else
+            ladder.GetComponent<Ladder>().ConnectedLadder.transform.parent.gameObject.SetActive(false);
         // TODO change Ladder code to call this and add player movement to here
     }
 
@@ -576,10 +605,18 @@ public class GameManager : MonoBehaviour {
         prevState = CurrentState;
         CurrentState = GameState.Pause;
         pauseMenu.SetActive(true);
+
+        menuCamera.SetActive(true);
+        menuCamera.transform.position = menuCamera.transform.position + new Vector3(0, 1000, 0);
+        if(UIPrefab == null)
+            UIPrefab = GameObject.FindGameObjectWithTag("UIPrefab");
+        UIPrefab.SetActive(false);
     }
 
     public void UnPause()
     {
+        UIPrefab.SetActive(true);
+        menuCamera.SetActive(false);
         PlayersCurrentSection.section.SetActive(true);
         PlayerObj.SetActive(true);
         prevState = CurrentState;
