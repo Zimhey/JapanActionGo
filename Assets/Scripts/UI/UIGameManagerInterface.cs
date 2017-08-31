@@ -13,7 +13,8 @@ public enum GameUIScreens
     PausePanel,
     GameOverPanel,
     FirstPersonHUDPanel,
-    VirtualRealityHUDPanel
+    VirtualRealityHUDPanel,
+    WinPanel
 }
 
 public class UIGameManagerInterface : MonoBehaviour {
@@ -28,6 +29,7 @@ public class UIGameManagerInterface : MonoBehaviour {
     public GameObject GameOverPanel;
     public GameObject FirstPersonHUDPanel;
     public GameObject VirtualRealityHUDPanel;
+    public GameObject WinPanel;
 
     public GameUIScreens StartScreen;
 
@@ -96,6 +98,9 @@ public class UIGameManagerInterface : MonoBehaviour {
                 break;
             case GameUIScreens.VirtualRealityHUDPanel:
                 ShowVirtualRealityHUD();
+                break;
+            case GameUIScreens.WinPanel:
+                ShowWinMenu();
                 break;
         }
     }
@@ -212,6 +217,12 @@ public class UIGameManagerInterface : MonoBehaviour {
     {
         GameManager.Instance.MainMenu();
         ShowMainMenu();
+    }
+
+    public void ShowWinMenu()
+    {
+        camera.SetActive(true);
+        CurrentPanel = WinPanel;
     }
 
 }
