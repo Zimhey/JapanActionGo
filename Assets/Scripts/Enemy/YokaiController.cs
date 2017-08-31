@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class YokaiController : GameManager {
+public class YokaiController : MonoBehaviour {
     public void Die()
     {
         Destroy(gameObject);
