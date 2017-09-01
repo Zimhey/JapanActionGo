@@ -89,7 +89,7 @@ public class OniController : YokaiController
         home = gameObject.transform.position;
         startingRotation = gameObject.transform.rotation;
         //print("OriHome" + home);
-        state = OniState.Patrol;
+        state = OniState.Idle;
         animState = OniAnim.Idle;
         awake = false;
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
@@ -241,35 +241,40 @@ public class OniController : YokaiController
             state = OniState.Follow;
             return;
         }
-        List<MazeNode> nodes = MazeGenerator.GetIntersectionNodes(root);
-        Vector3 currentNodePosition = new Vector3(0,0,0);
+        if (root != null)
+        {
+            List<MazeNode> nodes = MazeGenerator.GetIntersectionNodes(root);
 
-        if(currentNode == null)
-        {
-            MazeNode closest = null;
-            closest = setClosest(closest, nodes, rb);
-            currentNode = closest;
-        }
-        else
-        {
-            currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
-        }
+            Vector3 currentNodePosition = new Vector3(0, 0, 0);
 
-        if (rb.transform.position.x < currentNodePosition.x + 2 && rb.transform.position.x > currentNodePosition.x - 2)
-        {
-            if (rb.transform.position.z < currentNodePosition.z + 2 && rb.transform.position.z > currentNodePosition.z - 2)
+            if (currentNode == null)
             {
                 MazeNode closest = null;
-                closest = updateClosest(closest, nodes, currentNode, previous, rb);
-                previous = currentNode;
+                closest = setClosest(closest, nodes, rb);
                 currentNode = closest;
             }
-        }
-        else // not yet at current node's location
-        {
-            Vector3 goal = currentNodePosition; // set current node location as desired location
-            UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>(); // get oni's navigation agent
-            agent.destination = goal; // set destination to current node's location
+            else
+            {
+                currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
+            }
+
+            if (rb.transform.position.x < currentNodePosition.x + 2 && rb.transform.position.x > currentNodePosition.x - 2)
+            {
+                if (rb.transform.position.z < currentNodePosition.z + 2 && rb.transform.position.z > currentNodePosition.z - 2)
+                {
+                    MazeNode closest = null;
+                    closest = updateClosest(closest, nodes, currentNode, previous, rb);
+                    previous = currentNode;
+                    currentNode = closest;
+                }
+            }
+
+            else // not yet at current node's location
+            {
+                Vector3 goal = currentNodePosition; // set current node location as desired location
+                UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>(); // get oni's navigation agent
+                agent.destination = goal; // set destination to current node's location
+            }
         }
     }
 
