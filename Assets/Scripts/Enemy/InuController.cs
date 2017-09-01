@@ -84,6 +84,7 @@ public class InuController : YokaiController
     private Vector3 oldPosition;
     private Vector3 newPosition;
     private int posTimer;
+    private GameObject nextFootprint;
     
     void Start()
     {
@@ -184,10 +185,8 @@ public class InuController : YokaiController
             if (newPosition != null)
             {
                 oldPosition = newPosition;
-                print("oldpos" + oldPosition);
             }
             newPosition = rb.transform.position;
-            print("newpos" + newPosition);
         }
         if (newPosition != null)
         {
@@ -198,7 +197,6 @@ public class InuController : YokaiController
                 UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
                 agent.ResetPath();
                 currentNode = null;
-                print("reseting path");
             }
         }
     }
@@ -207,16 +205,18 @@ public class InuController : YokaiController
     {
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
-        GameObject foundFootprint = SeeFootprint(LevelMask);
         if (seen)
         {
+            awake = true;
             state = InuState.Chase;
+            return;
         }
-        else if (foundFootprint != null && awake == true)
+        GameObject foundFootprint = SeeFootprint(LevelMask);
+        if (foundFootprint != null)
         {
             state = InuState.Follow;
         }
-        else if (awake == true && StartingNode != null)//awake == true && 
+        else if (root != null)//awake == true && 
         {
             state = InuState.Patrol;
         }
@@ -226,45 +226,50 @@ public class InuController : YokaiController
     {
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
-        GameObject foundFootprint = SeeFootprint(LevelMask);
         if (seen)
         {
             awake = true;
             state = InuState.Chase;
+            return;
         }
-        else if (foundFootprint != null && awake == true)
+        GameObject foundFootprint = SeeFootprint(LevelMask);
+        if (foundFootprint != null)
         {
             state = InuState.Follow;
+            return;
         }
-        List<MazeNode> nodes = MazeGenerator.GetIntersectionNodes(root);
-        Vector3 currentNodePosition = new Vector3(0, 0, 0);
+        if (root != null)
+        {
+            List<MazeNode> nodes = MazeGenerator.GetIntersectionNodes(root);
+            Vector3 currentNodePosition = new Vector3(0, 0, 0);
 
-        if (currentNode == null)
-        {
-            MazeNode closest = null;
-            closest = setClosest(closest, nodes, rb);
-            currentNode = closest;
-        }
-        else
-        {
-            currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
-        }
-
-        if (rb.transform.position.x < currentNodePosition.x + 2 && rb.transform.position.x > currentNodePosition.x - 2)
-        {
-            if (rb.transform.position.z < currentNodePosition.z + 2 && rb.transform.position.z > currentNodePosition.z - 2)
+            if (currentNode == null)
             {
                 MazeNode closest = null;
-                closest = updateClosest(closest, nodes, currentNode, previous, rb);
-                previous = currentNode;
+                closest = setClosest(closest, nodes, rb);
                 currentNode = closest;
             }
-        }
-        else // not yet at current node's location
-        {
-            Vector3 goal = currentNodePosition; // set current node location as desired location
-            UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>(); // get oni's navigation agent
-            agent.destination = goal; // set destination to current node's location
+            else
+            {
+                currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
+            }
+
+            if (rb.transform.position.x < currentNodePosition.x + 2 && rb.transform.position.x > currentNodePosition.x - 2)
+            {
+                if (rb.transform.position.z < currentNodePosition.z + 2 && rb.transform.position.z > currentNodePosition.z - 2)
+                {
+                    MazeNode closest = null;
+                    closest = updateClosest(closest, nodes, currentNode, previous, rb);
+                    previous = currentNode;
+                    currentNode = closest;
+                }
+            }
+            else // not yet at current node's location
+            {
+                Vector3 goal = currentNodePosition; // set current node location as desired location
+                UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>(); // get oni's navigation agent
+                agent.destination = goal; // set destination to current node's location
+            }
         }
     }
 
@@ -275,11 +280,13 @@ public class InuController : YokaiController
 
     void chase()
     {
+        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        agent.ResetPath();
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
-        GameObject foundFootprint = SeeFootprint(LevelMask);
         if (!seen)
         {
+            GameObject foundFootprint = SeeFootprint(LevelMask);
             if (foundFootprint != null)
             {
                 state = InuState.Follow;
@@ -293,7 +300,6 @@ public class InuController : YokaiController
         //by using a Raycast you make sure an enemy does not see you
         //if there is a building separating you from his view, for example
         //the enemy only sees you if it has you in open view
-        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         Transform goal = PlayerObject.transform; // set current player location as desired location
         agent.destination = goal.position; // set destination to player's current location
 
@@ -324,22 +330,26 @@ public class InuController : YokaiController
             beenTooClose = false;
             seen = false;
             seen = SeePlayer(PlayerObject, LevelMask);
-            GameObject foundFootprint = SeeFootprint(LevelMask);
             if (seen)
             {
                 state = InuState.Chase;
+                return;
             }
-            else if (foundFootprint != null)
+            GameObject foundFootprint = SeeFootprint(LevelMask);
+            if (foundFootprint != null)
             {
                 state = InuState.Follow;
+                return;
             }
             else if (StartingNode != null)
             {
                 state = InuState.Patrol;
+                return;
             }
             else
             {
                 state = InuState.Idle;
+                return;
             }
         }
         System.Boolean playerTooCloseToEnemy = rayDirection.sqrMagnitude < maxDistance;
@@ -416,22 +426,41 @@ public class InuController : YokaiController
 
     void follow()
     {
+        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        agent.ResetPath();
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
-        GameObject foundFootprint = SeeFootprint(LevelMask);
         if (seen)
         {
             state = InuState.Chase;
+            nextFootprint = null;
+            return;
         }
-        else if (foundFootprint != null)
+        if (nextFootprint == null)
         {
-            state = InuState.Idle;
+            GameObject foundFootprint = SeeFootprint(LevelMask);
+            if (foundFootprint == null)
+            {
+                state = InuState.Idle;
+            }
+            if (foundFootprint != null)
+            {
+                nextFootprint = foundFootprint;
+                GameObject goal = foundFootprint;
+                agent.destination = goal.transform.position;
+            }
         }
+        else
+        {
+            if (rb.transform.position.x < nextFootprint.transform.position.x + 1 && rb.transform.position.x > nextFootprint.transform.position.x - 1)
+            {
+                if (rb.transform.position.z < nextFootprint.transform.position.z + 1 && rb.transform.position.z > nextFootprint.transform.position.z - 1)
+                {
+                    nextFootprint = nextFootprint.GetComponent<FootprintList>().getNext();
+                }
+            }
 
-        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        if (foundFootprint != null)
-        {
-            GameObject goal = foundFootprint;
+            GameObject goal = nextFootprint;
             agent.destination = goal.transform.position;
         }
     }

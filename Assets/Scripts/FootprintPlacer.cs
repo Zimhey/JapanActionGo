@@ -19,7 +19,6 @@ public class FootprintPlacer : MonoBehaviour {
     private CharacterController controller;
     private GameObject previousFootprint;
     private GameObject currentFootprint;
-    private GameObject nextFootprint;
 
     private GameObject footPrintParent;
 
@@ -29,6 +28,7 @@ public class FootprintPlacer : MonoBehaviour {
         controller = gameObject.GetComponent<CharacterController>();
         footPrintParent = new GameObject(gameObject.tag + " Footprints");
         footPrintParent.transform.parent = GameManager.Instance.GameParent.transform;
+        currentFootprint = null;
     }
 
     // Update is called once per frame
@@ -101,7 +101,18 @@ public class FootprintPlacer : MonoBehaviour {
                         //make rotation
                         Quaternion rot = Quaternion.Euler(0, 0, 0);
                         //add to level
-                        Instantiate(footprintPrefab, dest, rot).transform.parent = footPrintParent.transform;
+                        if(currentFootprint != null)
+                        {
+                            previousFootprint = currentFootprint;
+                        }
+                        currentFootprint = Instantiate(footprintPrefab, dest, rot);
+                        currentFootprint.transform.parent = footPrintParent.transform;
+                        currentFootprint.GetComponent<FootprintList>().setPrevious(previousFootprint);
+                        if (previousFootprint != null)
+                        {
+                            previousFootprint.GetComponent<FootprintList>().setNext(currentFootprint);
+                        }
+
                         //remove old steps
                         for (int remove = 0; remove < iter; remove++)
                         {
