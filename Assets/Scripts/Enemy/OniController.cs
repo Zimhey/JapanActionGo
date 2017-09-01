@@ -65,8 +65,8 @@ public class OniController : YokaiController
     private Vector3 oldPosition;
     private Vector3 newPosition;
     private int posTimer;
+    private GameObject nextFootprint;
 
-    private GameObject footprintPrefab;
     private Animator anim;
 
     private OniState state;
@@ -93,7 +93,6 @@ public class OniController : YokaiController
         animState = OniAnim.Idle;
         awake = false;
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
-        footprintPrefab = Actors.Prefabs[ActorType.Oni_Footprint];
         anim = GetComponentInChildren<Animator>();
         oldPosition = home;
         posTimer = 60;
@@ -104,7 +103,12 @@ public class OniController : YokaiController
     void LateUpdate()
     {
         //manage state machine each update, call functions based on state
-        print(state);
+        //print(state);
+        if (nextFootprint != null)
+        {
+            print(nextFootprint.transform.position);
+        }
+
         switch (state)
         {
             case OniState.Idle:
@@ -173,7 +177,7 @@ public class OniController : YokaiController
         posTimer--;
         if(posTimer <= 0)
         {
-            posTimer = 60;
+            posTimer = 90;
             if(newPosition != null)
             {
                 oldPosition = newPosition;
@@ -191,6 +195,10 @@ public class OniController : YokaiController
                 UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
                 agent.ResetPath();
                 currentNode = null;
+                if (state != OniState.Idle)
+                {
+                    state = OniState.Idle;
+                }
                 //print("reseting path");
             }
         }
@@ -200,17 +208,18 @@ public class OniController : YokaiController
     {
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
-        GameObject foundFootprint = SeeFootprint(LevelMask);
         if (seen)
         {
             awake = true;
             state = OniState.Chase;
+            return;
         }
-        else if (foundFootprint != null && awake == true)
+        GameObject foundFootprint = SeeFootprint(LevelMask);
+        if (foundFootprint != null)
         {
             state = OniState.Follow;
         }
-        else if (awake == true && root != null)//awake == true && 
+        else if (root != null)//awake == true && 
         {
             state = OniState.Patrol;
         }
@@ -220,15 +229,17 @@ public class OniController : YokaiController
     {
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
-        GameObject foundFootprint = SeeFootprint(LevelMask);
         if (seen)
         {
             awake = true;
             state = OniState.Chase;
+            return;
         }
-        else if (foundFootprint != null && awake == true)
+        GameObject foundFootprint = SeeFootprint(LevelMask);
+        if (foundFootprint != null)
         {
             state = OniState.Follow;
+            return;
         }
         List<MazeNode> nodes = MazeGenerator.GetIntersectionNodes(root);
         Vector3 currentNodePosition = new Vector3(0,0,0);
@@ -276,9 +287,9 @@ public class OniController : YokaiController
         agent.ResetPath();
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
-        GameObject foundFootprint = SeeFootprint(LevelMask);
         if (!seen)
         {
+            GameObject foundFootprint = SeeFootprint(LevelMask);
             if (foundFootprint != null)
             {
                 print("following");
@@ -330,18 +341,37 @@ public class OniController : YokaiController
         agent.ResetPath();
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
-        GameObject foundFootprint = SeeFootprint(LevelMask);
         if (seen)
         {
             state = OniState.Chase;
+            nextFootprint = null;
+            return;
         }
-        else if (foundFootprint == null)
+        if (nextFootprint == null)
         {
-            state = OniState.Idle;
+            GameObject foundFootprint = SeeFootprint(LevelMask);
+            if (foundFootprint == null)
+            {
+                state = OniState.Idle;
+            }
+            if (foundFootprint != null)
+            {
+                nextFootprint = foundFootprint;
+                GameObject goal = foundFootprint;
+                agent.destination = goal.transform.position;
+            }
         }
-        if (foundFootprint != null)
+        else
         {
-            GameObject goal = foundFootprint;
+            if (rb.transform.position.x < nextFootprint.transform.position.x + 2 && rb.transform.position.x > nextFootprint.transform.position.x - 2)
+            {
+                if (rb.transform.position.z < nextFootprint.transform.position.z + 2 && rb.transform.position.z > nextFootprint.transform.position.z - 2)
+                {
+                    nextFootprint = nextFootprint.GetComponent<FootprintList>().getNext();
+                }
+            }
+
+            GameObject goal = nextFootprint;
             agent.destination = goal.transform.position;
         }
     }

@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 135234690674927576}
   - component: {fileID: 23813571401271690}
   - component: {fileID: 114908948615704062}
+  - component: {fileID: 114420293279361316}
   m_Layer: 0
   m_Name: InuFootprint
   m_TagString: InuFootprint
@@ -82,6 +83,19 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1885683017670046}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &114420293279361316
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1885683017670046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3408404633d9a0949a63c28787fa0053, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PreviousFootprint: {fileID: 0}
+  NextFootprint: {fileID: 0}
 --- !u!114 &114908948615704062
 MonoBehaviour:
   m_ObjectHideFlags: 1
