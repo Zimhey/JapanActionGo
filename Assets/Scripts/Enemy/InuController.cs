@@ -442,6 +442,7 @@ public class InuController : YokaiController
             }
             if (foundFootprint != null)
             {
+                nextFootprint = foundFootprint;
                 GameObject goal = foundFootprint;
                 agent.destination = goal.transform.position;
             }
