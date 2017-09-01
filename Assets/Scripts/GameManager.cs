@@ -366,11 +366,16 @@ public class GameManager : MonoBehaviour {
         {
             PlayersCurrentSection = msection;
         }
-        
-        foreach(MazeNode n in MazeGenerator.nodesInSection(msection.Root))
+
+        GameObject cells = new GameObject("Cells");
+        cells.transform.parent = SectionObject.transform;
+        GameObject actors = new GameObject("Actors");
+        actors.transform.parent = SectionObject.transform;
+
+        foreach (MazeNode n in MazeGenerator.nodesInSection(msection.Root))
         {
-            SpawnPiece(n, SectionObject);
-            SpawnActor(n, SectionObject);
+            SpawnPiece(n, cells);
+            SpawnActor(n, actors);
         }
 
         surface = msection.section.AddComponent<NavMeshSurface>();
@@ -382,15 +387,15 @@ public class GameManager : MonoBehaviour {
 
     private static int piecesSpawned;
 
-    public void SpawnPiece(MazeNode node, GameObject section)
+    public void SpawnPiece(MazeNode node, GameObject cells)
     {
         Vector3 location = new Vector3(node.Col * 6 + 8, node.Floor * 30, node.Row * 6 + 8);
 
         GameObject obj = Instantiate(Resources.Load(node.GetPrefabName()), location, node.GetRotation()) as GameObject;
-        obj.transform.parent = section.transform;
+        obj.transform.parent = cells.transform;
 
         obj = Instantiate(Resources.Load("Prefabs/Level/CellLog"), location, node.GetRotation()) as GameObject;
-        obj.transform.parent = section.transform;
+        obj.transform.parent = cells.transform;
         CellLog cellLog = obj.GetComponent<CellLog>();
         cellLog.Row = node.Row;
         cellLog.Col = node.Col;
@@ -414,14 +419,14 @@ public class GameManager : MonoBehaviour {
         
     }
 
-    public void SpawnActor(MazeNode node, GameObject section)
+    public void SpawnActor(MazeNode node, GameObject actors)
     {
         GameObject actorObject;
         Vector3 location = new Vector3(node.Col * 6 + 8, node.Floor * 30, node.Row * 6 + 8);
         if (node.actor != ActorType.Null)
         {
             actorObject = Instantiate(Actors.Prefabs[node.actor], location, node.GetRotation());
-            actorObject.transform.parent = section.transform;
+            actorObject.transform.parent = actors.transform;
             if (node.actor == ActorType.Ladder)
             {
                 node.ladder = actorObject;
@@ -447,15 +452,13 @@ public class GameManager : MonoBehaviour {
             }
 
             ladder.GetComponent<Ladder>().ConnectedLadder = ladder.GetComponent<Ladder>().ConnectedLadderNode.ladder;
-            //print(ladder.GetComponent<Ladder>().ConnectedLadderNode.Col + " " + ladder.GetComponent<Ladder>().ConnectedLadderNode.Row + " " +ladder.GetComponent<Ladder>().ConnectedLadderNode.Floor);
-            print(ladder.GetComponent<Ladder>().ConnectedLadder);
             ladder.GetComponent<Ladder>().ConnectedLadder.GetComponent<Ladder>().ConnectedLadder = ladder;
         }
 
         //Debug.Log(collider.gameObject.tag + " entered Cell R: " + Row + " C: " + Col + " at Time: " + Time.time);
         //ladder.GetComponent<Ladder>().ConnectedLadder.transform.parent.gameObject.SetActive(true);
 
-        ladder.GetComponent<Ladder>().ConnectedLadder.transform.parent.gameObject.SetActive(true);
+        ladder.GetComponent<Ladder>().ConnectedLadder.transform.parent.gameObject.transform.parent.gameObject.SetActive(true);
         ladder.GetComponent<Ladder>().ConnectedLadder.GetComponent<Ladder>().teleportable = true;
 
         if (ladder.GetComponent<Ladder>().teleportable == true && ladder.GetComponent<Ladder>().ConnectedLadder.GetComponent<Ladder>().teleportable == true)
@@ -465,7 +468,7 @@ public class GameManager : MonoBehaviour {
                 ladder.GetComponent<Ladder>().teleportable = false;
                 ladder.GetComponent<Ladder>().ConnectedLadder.GetComponent<Ladder>().teleportable = false;
                 player.transform.position = ladder.GetComponent<Ladder>().ConnectedLadder.transform.position;
-                ladder.transform.parent.gameObject.SetActive(false);
+                ladder.transform.parent.gameObject.transform.parent.gameObject.SetActive(false);
                 foreach (MazeSection sec in GameManager.Sections)
                 {
                     if (sec.SectionID == ladder.GetComponent<Ladder>().ConnectedLadderNode.SectionID)
@@ -473,12 +476,12 @@ public class GameManager : MonoBehaviour {
                         PlayersCurrentSection = sec;
                     }
                 }
-                PlayersCurrentSection.section = ladder.GetComponent<Ladder>().ConnectedLadder.transform.parent.gameObject;
+                PlayersCurrentSection.section = ladder.GetComponent<Ladder>().ConnectedLadder.transform.parent.gameObject.transform.parent.gameObject;
             }
         }
 
         else
-            ladder.GetComponent<Ladder>().ConnectedLadder.transform.parent.gameObject.SetActive(false);
+            ladder.GetComponent<Ladder>().ConnectedLadder.transform.parent.gameObject.transform.parent.gameObject.SetActive(false);
         // TODO change Ladder code to call this and add player movement to here
     }
 
