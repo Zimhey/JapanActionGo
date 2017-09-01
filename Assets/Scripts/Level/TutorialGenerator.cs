@@ -24,6 +24,7 @@ public static class TutorialGenerator {
         tutorial1[1, 2].AddEdge(tutorial1[0, 2]);
 
         tutorial1[0, 2].actor = ActorType.Ladder;
+        MazeGenerator.tutorialSections[0] = tutorial1[2, 0];
 
         return tutorial1;
     }
@@ -71,6 +72,7 @@ public static class TutorialGenerator {
 
         tutorial2[0, 0].actor = ActorType.Ladder;
         tutorial2[5, 2].actor = ActorType.Ladder;
+        MazeGenerator.tutorialSections[1] = tutorial2[0, 0];
 
         return tutorial2;
     }
@@ -115,16 +117,17 @@ public static class TutorialGenerator {
         tutorial3[5, 3].AddEdge(tutorial3[5, 4]);
         tutorial3[5, 4].AddEdge(tutorial3[4, 4]);
 
-        //tutorial3[0, 1].actor = ActorType.Oni;
-        //tutorial3[5, 0].actor = ActorType.Oni;
-        //tutorial3[5, 3].actor = ActorType.Oni;
-        //tutorial3[0, 3].actor = ActorType.Oni;
-        //tutorial3[1, 1].actor = ActorType.Spike_Trap;
-        //tutorial3[2, 0].actor = ActorType.Spike_Trap;
-        //tutorial3[1, 3].actor = ActorType.Spike_Trap;
+        tutorial3[0, 1].actor = ActorType.Oni;
+        tutorial3[5, 0].actor = ActorType.Oni;
+        tutorial3[5, 3].actor = ActorType.Oni;
+        tutorial3[0, 3].actor = ActorType.Oni;
+        tutorial3[1, 1].actor = ActorType.Spike_Trap;
+        tutorial3[2, 0].actor = ActorType.Spike_Trap;
+        tutorial3[1, 3].actor = ActorType.Spike_Trap;
 
         tutorial3[0, 2].actor = ActorType.Ladder;
         tutorial3[4, 4].actor = ActorType.Ladder;
+        MazeGenerator.tutorialSections[2] = tutorial3[0, 2];
 
         return tutorial3;
     }
@@ -189,17 +192,18 @@ public static class TutorialGenerator {
         tutorial4[0, 6].AddEdge(tutorial4[0, 5]);
         tutorial4[0, 5].AddEdge(tutorial4[1, 5]);
 
-        tutorial4[1, 0].actor = ActorType.Ofuda_Pickup;
-        tutorial4[2, 0].actor = ActorType.Ofuda_Pickup;
-        tutorial4[0, 3].actor = ActorType.Ofuda_Pickup;
-        tutorial4[2, 4].actor = ActorType.Oni;
-        tutorial4[4, 2].actor = ActorType.Oni;
-        tutorial4[6, 6].actor = ActorType.Oni;
-        tutorial4[6, 1].actor = ActorType.Spike_Trap;
-        tutorial4[6, 4].actor = ActorType.Spike_Trap;
+        //tutorial4[1, 0].actor = ActorType.Ofuda_Pickup;
+        //tutorial4[2, 0].actor = ActorType.Ofuda_Pickup;
+        //tutorial4[0, 3].actor = ActorType.Ofuda_Pickup;
+        //tutorial4[2, 4].actor = ActorType.Oni;
+        //tutorial4[4, 2].actor = ActorType.Oni;
+        //tutorial4[6, 6].actor = ActorType.Oni;
+        //tutorial4[6, 1].actor = ActorType.Spike_Trap;
+        //tutorial4[6, 4].actor = ActorType.Spike_Trap;
 
         tutorial4[3, 3].actor = ActorType.Ladder;
         tutorial4[1, 5].actor = ActorType.Ladder;
+        MazeGenerator.tutorialSections[3] = tutorial4[3, 3];
 
         return tutorial4;
     }

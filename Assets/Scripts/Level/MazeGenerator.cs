@@ -8,6 +8,7 @@ public class MazeGenerator : MonoBehaviour
     public static int Seed; // TODO FIX THESE STATE VARS
     //public static Difficulty dif = Difficulty.Small;
     public static MazeNode[,] DifferentSections = new MazeNode[5,8];
+    public static MazeNode[] tutorialSections = new MazeNode[4];
     public static MazeNode endNode;
 
     // Use this for initialization
@@ -158,7 +159,7 @@ public class MazeGenerator : MonoBehaviour
 
             foreach (MazeNode r in sectionroots)
             {
-                GenerateActors(r, 0, 0, 0, 0, seed);
+                GenerateActors(r, 0, 1, 0, 0, seed);
                 GenerateLadders(i, section, r, floors, sections[i]);
                 SetIntersectionNodes(r);
                 roots[i, section] = r;
@@ -875,6 +876,15 @@ public class MazeGenerator : MonoBehaviour
         int column = (int) ((location.x - 8) / 6);
         int floor = (int) (location.y / 30);
         int row = (int)((location.z - 8) / 6);
+
+        if (floor == -4)
+            return tutorialSections[0];
+        else if (floor == -3)
+            return tutorialSections[1];
+        else if (floor == -2)
+            return tutorialSections[2];
+        else if (floor == -1)
+            return tutorialSections[3];
 
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 8; j++)
