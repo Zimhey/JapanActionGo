@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 23454484522464462}
   - component: {fileID: 114194128379284114}
   - component: {fileID: 114108909767784318}
+  - component: {fileID: 114788359223302384}
   m_Layer: 0
   m_Name: Footprint
   m_TagString: Footprint
@@ -105,6 +106,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35d071ceb0b934a4787e3cd421b1f863, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114788359223302384
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1197280942452824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3408404633d9a0949a63c28787fa0053, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PreviousFootprint: {fileID: 0}
+  NextFootprint: {fileID: 0}
 --- !u!135 &135949295520768808
 SphereCollider:
   m_ObjectHideFlags: 1
