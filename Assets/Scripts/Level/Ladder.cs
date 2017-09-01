@@ -7,7 +7,7 @@ public class Ladder : MonoBehaviour {
     public GameObject ConnectedLadder;
     public MazeNode ConnectedLadderNode;
     public bool teleportable = true;
-    MazeNode SectionRoot;
+    public MazeNode location;
     public int SectionID;
 
 	// Use this for initialization
@@ -24,7 +24,10 @@ public class Ladder : MonoBehaviour {
     {
         if (collider.gameObject.tag == "Player")
         {
-            GameManager.Instance.EnterSection(this.gameObject, collider.gameObject);
+            if (location.Col == MazeGenerator.GetSize(GameManager.difficulty) - 1 && location.Col == MazeGenerator.GetSize(GameManager.difficulty) - 1 && location.Floor == 0)
+                GameManager.Win();
+            else
+                GameManager.Instance.EnterSection(this.gameObject, collider.gameObject);
         }
     }
 

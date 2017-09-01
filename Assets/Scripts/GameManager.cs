@@ -9,7 +9,8 @@ public enum GameState
     Main,
     Play,
     Pause,
-    GameOver
+    GameOver,
+    Win
 }
 
 public enum VirtualRealityType
@@ -57,7 +58,7 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public GameObject PlayerObj;
+    public static GameObject PlayerObj;
 
     public string PlayerTypeLoc;
 
@@ -78,7 +79,7 @@ public class GameManager : MonoBehaviour {
 
     public GameObject Maze;
 
-    public Difficulty difficulty;
+    public static Difficulty difficulty;
 
     public int SessionID;
 
@@ -97,9 +98,9 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    private GameState prevState;
-    private GameState currState;
-    public GameState CurrentState
+    private static GameState prevState;
+    private static GameState currState;
+    public static GameState CurrentState
     {
         get
         {
@@ -127,9 +128,9 @@ public class GameManager : MonoBehaviour {
     // Analytics
     public bool AnalyticsEnabled;
 
-    private UIGameManagerInterface ui;
+    private static UIGameManagerInterface ui;
 
-    public UIGameManagerInterface UserInterface
+    public static UIGameManagerInterface UserInterface
     {
         get
         {
@@ -432,6 +433,7 @@ public class GameManager : MonoBehaviour {
                 node.ladder = actorObject;
                 node.ladder.GetComponent<Ladder>().SectionID = node.SectionID;
                 node.ladder.GetComponent<Ladder>().ConnectedLadderNode = node.ladderMazeNode;
+                node.ladder.GetComponent<Ladder>().location = node;
             }
             actorObject.AddComponent<Actor>().ActorID = AnalyticsManager.AddActor(SessionID, node.actor);
         }
@@ -516,6 +518,18 @@ public class GameManager : MonoBehaviour {
         CurrentState = GameState.GameOver;
         if (UserInterface != null)
             UserInterface.ShowGameOverMenu();
+        else
+            Debug.Log("UI is null");
+        Cursor.visible = true;
+    }
+
+    public static void Win()
+    {
+        PlayersCurrentSection.section.SetActive(false);
+        PlayerObj.SetActive(false);
+        CurrentState = GameState.Win;
+        if (UserInterface != null)
+            UserInterface.ShowWinMenu();
         else
             Debug.Log("UI is null");
         Cursor.visible = true;

@@ -8,6 +8,7 @@ public class MazeGenerator : MonoBehaviour
     public static int Seed; // TODO FIX THESE STATE VARS
     //public static Difficulty dif = Difficulty.Small;
     public static MazeNode[,] DifferentSections = new MazeNode[5,8];
+    public static MazeNode endNode;
 
     // Use this for initialization
     void Start()
@@ -150,14 +151,14 @@ public class MazeGenerator : MonoBehaviour
         for (int i = 0; i < floors; i++)
         {
             int section = 0;
-            MazeNode root = DFSMazeGenerator.GenerateMaze(Seed, size, size, i);
+            MazeNode root = DFSMazeGenerator.GenerateMaze(seed, size, size, i);
             List<MazeNode> sectionroots;
 
             sectionroots = GenerateSections(root, sections[i], size, size);
 
             foreach (MazeNode r in sectionroots)
             {
-                GenerateActors(r, 1, 2, 1, 1, Seed);
+                GenerateActors(r, 0, 0, 0, 0, seed);
                 GenerateLadders(i, section, r, floors, sections[i]);
                 SetIntersectionNodes(r);
                 roots[i, section] = r;
@@ -758,6 +759,10 @@ public class MazeGenerator : MonoBehaviour
                 root.actor = ActorType.Ladder;
             }
             if (section < TotalSections - 1)
+            {
+                FindPathEnd(root).actor = ActorType.Ladder;
+            }
+            if(section == TotalSections - 1)
             {
                 FindPathEnd(root).actor = ActorType.Ladder;
             }
