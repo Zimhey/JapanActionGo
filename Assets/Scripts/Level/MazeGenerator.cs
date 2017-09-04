@@ -640,7 +640,7 @@ public class MazeGenerator : MonoBehaviour
         return current;
     }
 
-    public static void GenerateActors(MazeNode root, int ofuda, int oni, int chalk, int trap, int seed)
+    public static void GenerateActors(MazeNode root, int ofuda, int oni, int chalk, int trap, int nyudo, int inu, int seed)
     {
         System.Random rand = new System.Random(seed);
         int PossiblePlaces = NumberOfDeadEndNodes(root);
@@ -650,6 +650,8 @@ public class MazeGenerator : MonoBehaviour
         int on = oni;
         int ch = chalk;
         int tr = trap;
+        int ny = nyudo;
+        int ok = inu;
 
         int counter = 0;
 
@@ -707,7 +709,7 @@ public class MazeGenerator : MonoBehaviour
                                 while (usedUp && counter2 < 1000)
                                 {
                                     usedUp = false;
-                                    int type = rand.Next(0, 4);
+                                    int type = rand.Next(0, 6);
                                     if (type == 0 && of == 0)
                                         usedUp = true;
                                     else if (type == 0)
@@ -734,6 +736,20 @@ public class MazeGenerator : MonoBehaviour
                                     else if(type == 3 && n.GetAdjacentNodes().Count > 1)
                                     {
                                         n.actor = ActorType.Spike_Trap;
+                                        tr--;
+                                    }
+                                    else if (type == 4 && tr == 0)
+                                        usedUp = true;
+                                    else if (type == 4)
+                                    {
+                                        n.actor = ActorType.Taka_Nyudo;
+                                        tr--;
+                                    }
+                                    else if (type == 5 && tr == 0)
+                                        usedUp = true;
+                                    else if (type == 5)
+                                    {
+                                        n.actor = ActorType.Okuri_Inu;
                                         tr--;
                                     }
                                     counter2++;

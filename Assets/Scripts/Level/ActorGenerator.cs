@@ -76,7 +76,7 @@ public class ActorGenerator : MonoBehaviour {
                 break;
         }
 
-        MazeGenerator.GenerateActors(root, Ofuda, Oni, Chalk, SpikeTrap, seed);
+        MazeGenerator.GenerateActors(root, Ofuda, Oni, Chalk, SpikeTrap, Nyudo, Inu, seed);
     }
 
 	// Update is called once per frame
