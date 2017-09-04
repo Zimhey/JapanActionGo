@@ -20,12 +20,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4826612126787132}
   - component: {fileID: 33120419961947006}
-  - component: {fileID: 135940104094155432}
   - component: {fileID: 23178637004328802}
   - component: {fileID: 54316090242173410}
   - component: {fileID: 195293660191163708}
   - component: {fileID: 114178126778793846}
   - component: {fileID: 114080606360274906}
+  - component: {fileID: 136783935934451764}
   m_Layer: 0
   m_Name: TakaNyudo
   m_TagString: Taka
@@ -40,7 +40,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1245111140667440}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 23.638983, y: -14.782599, z: 47.193375}
+  m_LocalPosition: {x: 91.90018, y: 46.945164, z: 46.210426}
   m_LocalScale: {x: 1, y: 5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -135,8 +135,8 @@ MonoBehaviour:
   PlayerMask:
     serializedVersion: 2
     m_Bits: 512
---- !u!135 &135940104094155432
-SphereCollider:
+--- !u!136 &136783935934451764
+CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -144,8 +144,9 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
   m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!195 &195293660191163708
 NavMeshAgent:
@@ -165,6 +166,6 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1
-  m_BaseOffset: 1
+  m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
