@@ -197,13 +197,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33e0f3f38583afc478ce191c3d51fe1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerObj: {fileID: 0}
   PlayerTypeLoc: 
   TutorialOn: 0
   DebugLabelsOn: 0
   CanPause: 0
   Maze: {fileID: 0}
-  difficulty: 0
   SessionID: 0
   PlayersVRType: 0
   lvlID: 0
