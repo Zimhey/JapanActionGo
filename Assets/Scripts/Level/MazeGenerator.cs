@@ -159,7 +159,7 @@ public class MazeGenerator : MonoBehaviour
 
             foreach (MazeNode r in sectionroots)
             {
-                GenerateActors(r, 0, 1, 0, 0, seed);
+                ActorGenerator.GenerateActorsHelper(difficulty, r, seed);
                 GenerateLadders(i, section, r, floors, sections[i]);
                 SetIntersectionNodes(r);
                 roots[i, section] = r;
