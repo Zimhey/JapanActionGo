@@ -643,11 +643,6 @@ public class MazeGenerator : MonoBehaviour
         }
 
         counter = 0;
-        if (root.Floor == 0)
-        {
-            //print(chalk);
-            //print(ofuda);
-        }
 
         while (visited.Count > 0)
         {
@@ -665,21 +660,18 @@ public class MazeGenerator : MonoBehaviour
                                 break;
                             if (loc == number)
                             {
-                                if(root.Floor == 0 && root.Col == 0 && root.Row == 0) print(number + " the number was a location");
                                 bool usedUp = true;
                                 int counter2 = 0;
                                 while (usedUp)
                                 {
                                     usedUp = false;
                                     int type = rand.Next(0, 6);
-                                    if (root.Floor == 0 && root.Col == 0 && root.Row == 0) print(type);
                                     if (type == 0 && of == 0)
                                         usedUp = true;
                                     else if (type == 0)
                                     {
                                         n.actor = ActorType.Ofuda_Pickup;
                                         of--;
-                                        //if (n.Floor == 0) print(of);
                                     }
                                     else if (type == 1 && on == 0)
                                         usedUp = true;
@@ -694,7 +686,6 @@ public class MazeGenerator : MonoBehaviour
                                     {
                                         n.actor = ActorType.Chalk_Pickup;
                                         ch--;
-                                        //if (n.Floor == 0) print(ch);
                                     }
                                     else if (type == 3 && tr == 0 || type == 3 && n.GetAdjacentNodes().Count == 1)
                                         usedUp = true;
@@ -727,9 +718,6 @@ public class MazeGenerator : MonoBehaviour
                 }
             }
         }
-
-        //if (root.Floor == 0)
-            //print(of + " " + on + " " + ch + " " + tr + " " + ok + " " + ny);
     }
     
     public static void GenerateLadders(int floor, int section, MazeNode root, int TotalFloors, int TotalSections)

@@ -374,14 +374,14 @@ public class GameManager : MonoBehaviour {
         actors.transform.parent = SectionObject.transform;
 
         foreach (MazeNode n in MazeGenerator.nodesInSection(msection.Root))
-        {
             SpawnPiece(n, cells);
-            SpawnActor(n, actors);
-        }
 
         surface = msection.section.AddComponent<NavMeshSurface>();
         if (surface != null)
             surface.BuildNavMesh();
+
+        foreach (MazeNode n in MazeGenerator.nodesInSection(msection.Root))
+            SpawnActor(n, actors);
         // Spawn Actors
         // Add Actors to Analytics
     }
