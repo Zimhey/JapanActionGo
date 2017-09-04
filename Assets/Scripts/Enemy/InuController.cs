@@ -101,7 +101,6 @@ public class InuController : YokaiController
         oldPosition = home;
         posTimer = 60;
         root = MazeGenerator.getSectionBasedOnLocation(home);
-        print(root);
         currentNode = StartingNode;
     }
 
@@ -410,6 +409,7 @@ public class InuController : YokaiController
                 UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
                 agent.ResetPath();
                 agent.destination = goal;
+                print(goal);
             }
         }
         else if (!playerTooCloseToEnemy)

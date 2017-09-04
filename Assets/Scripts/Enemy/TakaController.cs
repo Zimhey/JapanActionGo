@@ -284,7 +284,7 @@ public class TakaController : YokaiController
 
             Vector3 goal = currentNodePosition; // set current node location as desired location
             agent.destination = goal; // set destination to current node's location
-            print(goal);
+            //print(goal);
         }
     }
 
@@ -320,7 +320,7 @@ public class TakaController : YokaiController
 
         Vector3 dest = PlayerObject.transform.position;
         agent.destination = dest;
-        print(dest);
+        //print(dest);
 
         if (rb.transform.position.x < dest.x + 5 && rb.transform.position.x > dest.x - 5)
         {
