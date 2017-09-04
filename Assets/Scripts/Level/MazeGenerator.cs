@@ -17,51 +17,6 @@ public class MazeGenerator : MonoBehaviour
         //GenerateMaze(dif);
     }
 
-    /*
-    public void AddRandomActors(MazeNode root)
-    {
-        List<MazeNode> visited = new List<MazeNode>();
-        Stack<MazeNode> nodesToVisit = new Stack<MazeNode>();
-
-        nodesToVisit.Push(root);
-
-        while (nodesToVisit.Count > 0)
-        {
-            MazeNode node = nodesToVisit.Pop();
-            AddRandomActor(node);
-            visited.Add(node);
-            foreach (MazeNode n in node.GetAdjacentNodes())
-                if (!nodesToVisit.Contains(n) && !visited.Contains(n))
-                    nodesToVisit.Push(n);
-        }
-    }
-
-    
-    System.Random rand = new System.Random();
-
-    public void AddRandomActor(MazeNode node)
-    {
-        int type = rand.Next() % 7;
-        if (type == 0)
-            node.actor = ActorType.Chalk_Pickup;
-        else if (type == 1)
-            node.actor = ActorType.Ofuda_Pickup;
-        else if (type == 2)
-            node.actor = ActorType.Oni;
-        else if (type == 3)
-            node.actor = ActorType.Okuri_Inu;
-        else if (type == 4)
-            node.actor = ActorType.Taka_Nyudo;
-        else if (type == 5)
-            node.actor = ActorType.Spike_Trap;
-        else if (type == 6)
-            node.actor = ActorType.Crush_Trap;
-        else
-            node.actor = ActorType.Null;
-
-    }
-    */
-
     // Update is called once per frame
     void Update()
     {
