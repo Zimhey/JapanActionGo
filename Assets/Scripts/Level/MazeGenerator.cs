@@ -644,7 +644,7 @@ public class MazeGenerator : MonoBehaviour
     {
         System.Random rand = new System.Random(seed);
         int PossiblePlaces = NumberOfDeadEndNodes(root);
-        int actors = ofuda + oni + chalk + trap;
+        int actors = ofuda + oni + chalk + trap + nyudo + inu;
         int[] actorLocations = new int[actors];
         int of = ofuda;
         int on = oni;
@@ -687,7 +687,14 @@ public class MazeGenerator : MonoBehaviour
             actorLocations[i] = temp;
         }
 
-        while (visited.Count > 0 && counter < 1000)
+        counter = 0;
+        if (root.Floor == 0)
+        {
+            //print(chalk);
+            //print(ofuda);
+        }
+
+        while (visited.Count > 0)
         {
             current = visited.Pop();
             foreach (MazeNode n in current.GetAdjacentNodes())
@@ -699,23 +706,25 @@ public class MazeGenerator : MonoBehaviour
                         number++;
                         foreach (int loc in actorLocations)
                         {
-                            if (of == 0 && on == 0 && ch == 0 && tr == 0)
+                            if (of == 0 && on == 0 && ch == 0 && tr == 0 && ok == 0 && ny == 0)
                                 break;
                             if (loc == number)
                             {
+                                if(root.Floor == 0 && root.Col == 0 && root.Row == 0) print(number + " the number was a location");
                                 bool usedUp = true;
-
                                 int counter2 = 0;
-                                while (usedUp && counter2 < 1000)
+                                while (usedUp)
                                 {
                                     usedUp = false;
                                     int type = rand.Next(0, 6);
+                                    if (root.Floor == 0 && root.Col == 0 && root.Row == 0) print(type);
                                     if (type == 0 && of == 0)
                                         usedUp = true;
                                     else if (type == 0)
                                     {
                                         n.actor = ActorType.Ofuda_Pickup;
                                         of--;
+                                        //if (n.Floor == 0) print(of);
                                     }
                                     else if (type == 1 && on == 0)
                                         usedUp = true;
@@ -730,27 +739,28 @@ public class MazeGenerator : MonoBehaviour
                                     {
                                         n.actor = ActorType.Chalk_Pickup;
                                         ch--;
+                                        //if (n.Floor == 0) print(ch);
                                     }
-                                    else if (type == 3 && tr == 0)
+                                    else if (type == 3 && tr == 0 || type == 3 && n.GetAdjacentNodes().Count == 1)
                                         usedUp = true;
                                     else if(type == 3 && n.GetAdjacentNodes().Count > 1)
                                     {
                                         n.actor = ActorType.Spike_Trap;
                                         tr--;
                                     }
-                                    else if (type == 4 && tr == 0)
+                                    else if (type == 4 && ny == 0)
                                         usedUp = true;
                                     else if (type == 4)
                                     {
                                         n.actor = ActorType.Taka_Nyudo;
-                                        tr--;
+                                        ny--;
                                     }
-                                    else if (type == 5 && tr == 0)
+                                    else if (type == 5 && ok == 0)
                                         usedUp = true;
                                     else if (type == 5)
                                     {
                                         n.actor = ActorType.Okuri_Inu;
-                                        tr--;
+                                        ok--;
                                     }
                                     counter2++;
                                 }
@@ -762,6 +772,9 @@ public class MazeGenerator : MonoBehaviour
                 }
             }
         }
+
+        //if (root.Floor == 0)
+            //print(of + " " + on + " " + ch + " " + tr + " " + ok + " " + ny);
     }
     
     public static void GenerateLadders(int floor, int section, MazeNode root, int TotalFloors, int TotalSections)
