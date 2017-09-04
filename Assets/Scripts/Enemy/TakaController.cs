@@ -105,7 +105,9 @@ public class TakaController : YokaiController
     {
         //manage state machine each update, call functions based on state
         if (state != TakaState.Idle)
-            print("State" + state);
+        {
+            //print("State" + state);
+        }
         switch (state)
         {
             case TakaState.Idle:
@@ -184,6 +186,7 @@ public class TakaController : YokaiController
             }
             newPosition = rb.transform.position;
         }
+
         if (newPosition != null)
         {
             Vector3 difference = newPosition - oldPosition;
@@ -222,18 +225,22 @@ public class TakaController : YokaiController
     {
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
+
         if (seen)
         {
             awake = true;
             state = TakaState.Chase;
             return;
         }
+
         GameObject foundFootprint = SeeFootprint(LevelMask);
+
         if (foundFootprint != null)
         {
             state = TakaState.Follow;
             return;
         }
+
         if (root != null)
         {
             List<MazeNode> nodes = MazeGenerator.GetIntersectionNodes(root);
@@ -260,12 +267,24 @@ public class TakaController : YokaiController
                     currentNode = closest;
                 }
             }
-            else // not yet at current node's location
+
+            UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>(); // get oni's navigation agent
+
+            if (rb.transform.position.x < agent.destination.x + 2 && rb.transform.position.x > agent.destination.x - 2)
             {
-                Vector3 goal = currentNodePosition; // set current node location as desired location
-                UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>(); // get oni's navigation agent
-                agent.destination = goal; // set destination to current node's location
+                if (rb.transform.position.z < agent.destination.z + 2 && rb.transform.position.z > agent.destination.z - 2)
+                {
+                    MazeNode closest = null;
+                    closest = updateClosest(closest, nodes, currentNode, previous, rb);
+                    previous = currentNode;
+                    currentNode = closest;
+                    agent.ResetPath();
+                }
             }
+
+            Vector3 goal = currentNodePosition; // set current node location as desired location
+            agent.destination = goal; // set destination to current node's location
+            print(goal);
         }
     }
 
@@ -301,6 +320,8 @@ public class TakaController : YokaiController
 
         Vector3 dest = PlayerObject.transform.position;
         agent.destination = dest;
+        print(dest);
+
         if (rb.transform.position.x < dest.x + 5 && rb.transform.position.x > dest.x - 5)
         {
             if (rb.transform.position.y < dest.y + 5 && rb.transform.position.y > dest.y - 5)

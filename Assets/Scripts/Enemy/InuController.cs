@@ -101,14 +101,23 @@ public class InuController : YokaiController
         oldPosition = home;
         posTimer = 60;
         root = MazeGenerator.getSectionBasedOnLocation(home);
+        print(root);
         currentNode = StartingNode;
     }
 
     void LateUpdate()
     {
+        if (PlayerObject != null)
+        {
+            PlayerObject = GameObject.FindGameObjectWithTag("Player");
+        }
+
         //manage state machine each update, call functions based on state
         if (state != InuState.Idle)
-            print("State" + state);
+        {
+            //print("State" + state);
+        }
+
         switch (state)
         {
             case InuState.Idle:
@@ -203,22 +212,25 @@ public class InuController : YokaiController
 
     void idle()
     {
-        seen = false;
-        seen = SeePlayer(PlayerObject, LevelMask);
-        if (seen)
+        if (PlayerObject != null)
         {
-            awake = true;
-            state = InuState.Chase;
-            return;
-        }
-        GameObject foundFootprint = SeeFootprint(LevelMask);
-        if (foundFootprint != null)
-        {
-            state = InuState.Follow;
-        }
-        else if (root != null)//awake == true && 
-        {
-            state = InuState.Patrol;
+            seen = false;
+            seen = SeePlayer(PlayerObject, LevelMask);
+            if (seen)
+            {
+                awake = true;
+                state = InuState.Chase;
+                return;
+            }
+            GameObject foundFootprint = SeeFootprint(LevelMask);
+            if (foundFootprint != null)
+            {
+                state = InuState.Follow;
+            }
+            else if (root != null)//awake == true && 
+            {
+                state = InuState.Patrol;
+            }
         }
     }
 
@@ -248,28 +260,47 @@ public class InuController : YokaiController
                 MazeNode closest = null;
                 closest = setClosest(closest, nodes, rb);
                 currentNode = closest;
+                //print("found");
             }
-            else
+            else if(currentNode != null)
             {
                 currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
+                //print("closest" + currentNodePosition);
             }
 
-            if (rb.transform.position.x < currentNodePosition.x + 2 && rb.transform.position.x > currentNodePosition.x - 2)
+            if (currentNode != null)
             {
-                if (rb.transform.position.z < currentNodePosition.z + 2 && rb.transform.position.z > currentNodePosition.z - 2)
+                if (rb.transform.position.x < currentNodePosition.x + 2 && rb.transform.position.x > currentNodePosition.x - 2)
+                {
+                    if (rb.transform.position.z < currentNodePosition.z + 2 && rb.transform.position.z > currentNodePosition.z - 2)
+                    {
+                        MazeNode closest = null;
+                        closest = updateClosest(closest, nodes, currentNode, previous, rb);
+                        previous = currentNode;
+                        currentNode = closest;
+                        return;
+                    }
+                }
+            }
+
+            UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>(); // get oni's navigation agent
+
+            if (rb.transform.position.x < agent.destination.x + 2 && rb.transform.position.x > agent.destination.x - 2)
+            {
+                if (rb.transform.position.z < agent.destination.z + 2 && rb.transform.position.z > agent.destination.z - 2)
                 {
                     MazeNode closest = null;
                     closest = updateClosest(closest, nodes, currentNode, previous, rb);
                     previous = currentNode;
                     currentNode = closest;
+                    agent.ResetPath();
+                    //print("ressetting");
                 }
             }
-            else // not yet at current node's location
-            {
-                Vector3 goal = currentNodePosition; // set current node location as desired location
-                UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>(); // get oni's navigation agent
-                agent.destination = goal; // set destination to current node's location
-            }
+
+            Vector3 goal = currentNodePosition; // set current node location as desired location
+            agent.destination = goal; // set destination to current node's location
+            //print("goal" + goal);
         }
     }
 
@@ -398,7 +429,49 @@ public class InuController : YokaiController
 
     void cornered()
     {
-        print("cornered");
+        int maxDistance = 5;
+        int maxDistanceSquared = maxDistance * maxDistance;
+        Vector3 rayDirection = PlayerObject.transform.localPosition - transform.localPosition;
+        System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < maxDistanceSquared;
+
+        if (!playerCloseToEnemy)
+        {
+            beenTooClose = false;
+            seen = false;
+            seen = SeePlayer(PlayerObject, LevelMask);
+            if (seen)
+            {
+                state = InuState.Chase;
+                return;
+            }
+            GameObject foundFootprint = SeeFootprint(LevelMask);
+            if (foundFootprint != null)
+            {
+                state = InuState.Follow;
+                return;
+            }
+            else if (StartingNode != null)
+            {
+                state = InuState.Patrol;
+                return;
+            }
+            else
+            {
+                state = InuState.Idle;
+                return;
+            }
+        }
+
+        //play growl
+
+        System.Boolean playerTooCloseToEnemy = rayDirection.sqrMagnitude < maxDistance;
+        if (playerTooCloseToEnemy && beenTooClose == false)
+        {
+            Vector3 goal = PlayerObject.transform.position;
+            UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+            agent.ResetPath();
+            agent.destination = goal;
+        }
     }
 
     void flee()
@@ -576,8 +649,11 @@ public class InuController : YokaiController
         }
         if (col.gameObject == PlayerObject)
         {
-            //string curlevel = SceneManager.GetActiveScene().name;
-            //SceneManager.LoadScene(curlevel);
+            actorID = GetComponent<Actor>();
+            GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
+            GameManager.Instance.GameOver();
+            PlayerObject.SetActive(false);
+            print("GameOver");
         }
     }
 }
