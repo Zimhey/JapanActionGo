@@ -1039,14 +1039,14 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1576271185473192}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 9.617886, y: 1.27, z: 7.937876}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4698704491498778}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4647715500624240
 Transform:
   m_ObjectHideFlags: 1
@@ -1097,7 +1097,7 @@ Transform:
   m_GameObject: {fileID: 1267779500505264}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4892831705293602}
   - {fileID: 4232144834145500}
@@ -1772,6 +1772,7 @@ MonoBehaviour:
   UsingVR: 1
   DrawingHand: {fileID: 1093244328349606}
   ThrowingHand: {fileID: 1838980969459422}
+  Compass: {fileID: 0}
 --- !u!114 &114963322935462840
 MonoBehaviour:
   m_ObjectHideFlags: 1
