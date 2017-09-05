@@ -94,6 +94,13 @@ public class AnalyticsManager : MonoBehaviour
 
     private static void CreateDatabase()
     {
+        string directoryPath = System.IO.Path.GetDirectoryName(dbName);
+
+        if (!System.IO.Directory.Exists(directoryPath))
+        {
+            System.IO.Directory.CreateDirectory(directoryPath);
+        }
+
         if (!System.IO.File.Exists(dbName))
         {
             SqliteConnection.CreateFile(dbName);
