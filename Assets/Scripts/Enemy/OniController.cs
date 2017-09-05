@@ -243,6 +243,7 @@ public class OniController : YokaiController
         }
         if (root != null)
         {
+            //print("patrolling");
             List<MazeNode> nodes = MazeGenerator.GetIntersectionNodes(root);
 
             Vector3 currentNodePosition = new Vector3(0, 0, 0);
@@ -256,6 +257,7 @@ public class OniController : YokaiController
             else
             {
                 currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
+                //print("closest" + currentNodePosition);
             }
 
             if (rb.transform.position.x < currentNodePosition.x + 2 && rb.transform.position.x > currentNodePosition.x - 2)
@@ -266,15 +268,27 @@ public class OniController : YokaiController
                     closest = updateClosest(closest, nodes, currentNode, previous, rb);
                     previous = currentNode;
                     currentNode = closest;
+                    return;
                 }
             }
 
-            else // not yet at current node's location
+            UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>(); // get oni's navigation agent
+
+            if (rb.transform.position.x < agent.destination.x + 2 && rb.transform.position.x > agent.destination.x - 2)
             {
-                Vector3 goal = currentNodePosition; // set current node location as desired location
-                UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>(); // get oni's navigation agent
-                agent.destination = goal; // set destination to current node's location
+                if (rb.transform.position.z < agent.destination.z + 2 && rb.transform.position.z > agent.destination.z - 2)
+                {
+                    MazeNode closest = null;
+                    closest = updateClosest(closest, nodes, currentNode, previous, rb);
+                    previous = currentNode;
+                    currentNode = closest;
+                    agent.ResetPath();
+                }
             }
+
+            Vector3 goal = currentNodePosition; // set current node location as desired location
+            agent.destination = goal; // set destination to current node's location
+            //print("goal" + goal);
         }
     }
 
