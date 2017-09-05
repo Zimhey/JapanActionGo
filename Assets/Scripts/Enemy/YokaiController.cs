@@ -5,6 +5,7 @@ using UnityEngine;
 public class YokaiController : MonoBehaviour {
     public void Die()
     {
+        print(gameObject);
         Destroy(gameObject);
     }
 

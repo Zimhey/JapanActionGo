@@ -334,6 +334,27 @@ public class TakaController : YokaiController
                 }
             }
         }
+
+        Vector3 enemyDirection = transform.TransformDirection(Vector3.forward);
+        Vector3 rayDirection = PlayerObject.transform.localPosition - (transform.localPosition - new Vector3(0, distanceToFloor, 0));
+        float angleDot = Vector3.Dot(rayDirection, enemyDirection);
+        System.Boolean playerInFrontOfEnemy = angleDot > 0.0;
+        System.Boolean noWallfound = NoWall(PlayerObject, LevelMask);
+
+        if (playerInFrontOfEnemy)
+        {
+            if (noWallfound)
+            {
+                if (playerLookingUp())
+                {
+                    actorID = GetComponent<Actor>();
+                    GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
+                    GameManager.Instance.GameOver();
+                    PlayerObject.SetActive(false);
+                    print("GameOver");
+                }
+            }
+        }
     }
 
     void taunt()
@@ -377,9 +398,9 @@ public class TakaController : YokaiController
 
         if (gameObject.transform.localScale.y < 10)
         {
-            gameObject.transform.localScale += new Vector3(0, 0.01F, 0);
-            gameObject.transform.position += new Vector3(0, 0.005F, 0);
-            distanceToFloor += 0.005F;
+            gameObject.transform.localScale += new Vector3(0, 0.02F, 0);
+            gameObject.transform.position += new Vector3(0, 0.01F, 0);
+            distanceToFloor += 0.01F;
         }
         else if (gameObject.transform.localScale.y >= 10)
         {

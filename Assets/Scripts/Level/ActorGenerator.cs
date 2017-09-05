@@ -23,34 +23,34 @@ public class ActorGenerator : MonoBehaviour {
         switch((int) difficulty)
         {
             case 0:
-                Oni = 1;
+                Oni = 3;
                 Ofuda = 3;
                 Chalk = 3;
                 SpikeTrap = 1;
                 Inu = 1;
                 PitTrap = 1;
                 FallingTrap = 1;
-                Nyudo = 1;
+                Nyudo = 2;
                 break;
             case 1:
-                Oni = 1;
+                Oni = 3;
                 Ofuda = 3;
                 Chalk = 3;
                 SpikeTrap = 1;
                 Inu = 1;
                 PitTrap = 1;
                 FallingTrap = 1;
-                Nyudo = 1;
+                Nyudo = 2;
                 break;
             case 2:
-                Oni = 1;
+                Oni = 9;
                 Ofuda = 3;
                 Chalk = 3;
                 SpikeTrap = 1;
-                Inu = 1;
+                Inu = 4;
                 PitTrap = 1;
                 FallingTrap = 1;
-                Nyudo = 1;
+                Nyudo = 7;
                 break;
             case 3:
                 Oni = 1;
