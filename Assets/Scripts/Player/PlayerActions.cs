@@ -10,7 +10,6 @@ public class PlayerActions : MonoBehaviour
     public float PullLeverRadius;
     
     public float DrawingDistance;
-    public bool CanDrawAcrossObjects;
     public float DistanceDrawn;
     public List<GameObject> Marks;
     private GameObject chalkMarksParent;
@@ -18,7 +17,7 @@ public class PlayerActions : MonoBehaviour
     private bool drawing;
     private GameObject chalkPrefab;
     private LineRenderer currentMark;
-    private GameObject lastDrawnOn;
+    private Vector3 chalkFaceNormal;
 
     private GameObject ofudaPrefab;
     private GameObject thrownOfudaParent;
@@ -29,6 +28,8 @@ public class PlayerActions : MonoBehaviour
 	private SteamVR_TrackedController drawingController;
 	public GameObject ThrowingHand;
 	private SteamVR_TrackedController throwingController;
+
+    public GameObject Compass;
 
     private Camera cam;
 
@@ -43,6 +44,9 @@ public class PlayerActions : MonoBehaviour
         thrownOfudaParent = new GameObject("Thrown Ofuda");
         thrownOfudaParent.transform.parent = GameManager.Instance.GameParent.transform;
 
+        if(Compass != null)
+            Compass.SetActive(false);
+
         if (UsingVR) 
 		{
 			drawingController = DrawingHand.GetComponent<SteamVR_TrackedController>();
@@ -53,11 +57,11 @@ public class PlayerActions : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		bool attemptDraw = UsingVR ? drawingController.triggerPressed : Input.GetButton("Fire1");
-		bool attemptThrow = UsingVR ? throwingController.triggerPressed : Input.GetButton("Fire2");
+		bool attemptDraw = UsingVR ? drawingController.triggerPressed : Input.GetButton("Draw") | Input.GetAxis("Draw") != 0;
+        bool attemptThrow = UsingVR ? throwingController.triggerPressed : Input.GetButton("Throw") | Input.GetAxis("Throw") != 0;
 
         // Use Lever
-        if (Input.GetButtonDown("Use"))
+        if (Input.GetButtonDown("Grab_Items"))
             Use();
 
         // Chalk Drawing
@@ -71,6 +75,11 @@ public class PlayerActions : MonoBehaviour
             ThrowOfuda();
         else
             thrown = false;
+
+        if (Input.GetButtonDown("Use_Compass") && Compass != null)
+            Compass.SetActive(true);
+        if (Input.GetButtonUp("Use_Compass") && Compass != null)
+            Compass.SetActive(false);
     }
 
     public void Use()
@@ -98,6 +107,7 @@ public class PlayerActions : MonoBehaviour
 
     void DrawChalk()
     {
+        
         if (!drawing) // just started drawing
         {
             drawing = true;
@@ -116,15 +126,18 @@ public class PlayerActions : MonoBehaviour
         if (Physics.Raycast(ray, out rayHit, DrawingDistance, levelLayer)) // if object to draw on
         {
             // If can't draw across objects, start a new line when objects change
-            if (!CanDrawAcrossObjects && lastDrawnOn != rayHit.collider.gameObject)
+            if (rayHit.normal != chalkFaceNormal)
             {
                 StartNewMark();
-                lastDrawnOn = rayHit.collider.gameObject;
+                chalkFaceNormal = rayHit.normal;
             }
+
+            currentMark.transform.rotation = Quaternion.LookRotation(-rayHit.normal);
+            Vector3 offset = rayHit.normal * 0.001f;
 
             // Add point to the line render
             currentMark.positionCount++;
-            currentMark.SetPosition(currentMark.positionCount - 1, rayHit.point);
+            currentMark.SetPosition(currentMark.positionCount - 1, rayHit.point + offset);
 
             // Track distance drawn
             if (currentMark.positionCount > 1)
