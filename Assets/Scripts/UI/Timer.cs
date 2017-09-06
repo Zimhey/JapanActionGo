@@ -11,7 +11,7 @@ public class Timer : MonoBehaviour {
 
     void Update()
     {
-        time += Time.deltaTime;
+        time = GameManager.Instance.SessionTime;
 
         var minutes = time / 60; //Divide the guiTime by sixty to get the minutes.
         var seconds = time % 60;//Use the euclidean division for the seconds.

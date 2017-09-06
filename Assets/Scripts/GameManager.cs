@@ -84,6 +84,7 @@ public class GameManager : MonoBehaviour {
     public int SessionID;
 
     private float sessionTime;
+    private float lastUpdateTime;
     public float SessionTime
     {
         get
@@ -93,8 +94,14 @@ public class GameManager : MonoBehaviour {
         set
         {
             sessionTime = value;
-            if (AnalyticsEnabled)
+            if (sessionTime < 1)
+                lastUpdateTime = sessionTime;
+
+            if (AnalyticsEnabled && sessionTime > lastUpdateTime + 1000) // only update once a second
+            {
+                lastUpdateTime = sessionTime;
                 AnalyticsManager.UpdateSessionTime(SessionID, sessionTime);
+            }
         }
     }
 
@@ -182,7 +189,7 @@ public class GameManager : MonoBehaviour {
         {
             if (CurrentState == GameState.Pause)
                 UnPause();
-            else
+            else if(CurrentState == GameState.Play)
                 PauseGame();
         }
 
@@ -500,6 +507,7 @@ public class GameManager : MonoBehaviour {
             UserInterface.ShowPauseMenu();
         else
             Debug.Log("UI is null");
+        Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
 
@@ -512,6 +520,7 @@ public class GameManager : MonoBehaviour {
             UserInterface.ShowHUD();
         else
             Debug.Log("UI is null");
+        Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
     }
 
@@ -524,6 +533,7 @@ public class GameManager : MonoBehaviour {
             UserInterface.ShowGameOverMenu();
         else
             Debug.Log("UI is null");
+        Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
 
@@ -536,6 +546,7 @@ public class GameManager : MonoBehaviour {
             UserInterface.ShowWinMenu();
         else
             Debug.Log("UI is null");
+        Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
 
