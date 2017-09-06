@@ -707,18 +707,20 @@ public class MazeGenerator : MonoBehaviour
         return current;
     }
 
-    public static void GenerateActors(MazeNode root, int ofuda, int oni, int chalk, int trap, int nyudo, int inu, int seed)
+    public static void GenerateActors(MazeNode root, int ofuda, int oni, int chalk, int spike, int nyudo, int inu, int crush, int pit, int seed)
     {
         System.Random rand = new System.Random(seed);
         int PossiblePlaces = NumberOfDeadEndNodes(root);
-        int actors = ofuda + oni + chalk + trap + nyudo + inu;
+        int actors = ofuda + oni + chalk + spike + nyudo + inu + crush + pit;
         int[] actorLocations = new int[actors];
         int of = ofuda;
         int on = oni;
         int ch = chalk;
-        int tr = trap;
+        int sp = spike;
         int ny = nyudo;
         int ok = inu;
+        int cr = crush;
+        int pi = pit;
 
         int counter = 0;
 
@@ -763,12 +765,12 @@ public class MazeGenerator : MonoBehaviour
             {
                 if (!visited2.Contains(n))
                 {
-                    if (!n.OnExitPath)
+                    if (!n.OnExitPath)//&& DistanceBetween3(root, n) > 3)
                     {
                         number++;
                         foreach (int loc in actorLocations)
                         {
-                            if (of == 0 && on == 0 && ch == 0 && tr == 0 && ok == 0 && ny == 0)
+                            if (of == 0 && on == 0 && ch == 0 && sp == 0 && ok == 0 && ny == 0 && cr == 0 && pi == 0)
                                 break;
                             if (loc == number)
                             {
@@ -777,7 +779,7 @@ public class MazeGenerator : MonoBehaviour
                                 while (usedUp)
                                 {
                                     usedUp = false;
-                                    int type = rand.Next(0, 6);
+                                    int type = rand.Next(0, 8);
                                     if (type == 0 && of == 0)
                                         usedUp = true;
                                     else if (type == 0)
@@ -799,12 +801,12 @@ public class MazeGenerator : MonoBehaviour
                                         n.actor = ActorType.Chalk_Pickup;
                                         ch--;
                                     }
-                                    else if (type == 3 && tr == 0 || type == 3 && n.GetAdjacentNodes().Count == 1)
+                                    else if (type == 3 && sp == 0 || type == 3 && n.GetAdjacentNodes().Count == 1)
                                         usedUp = true;
-                                    else if(type == 3 && n.GetAdjacentNodes().Count > 1)
+                                    else if (type == 3 && n.GetAdjacentNodes().Count > 1)
                                     {
                                         n.actor = ActorType.Spike_Trap;
-                                        tr--;
+                                        sp--;
                                     }
                                     else if (type == 4 && ny == 0)
                                         usedUp = true;
@@ -819,6 +821,20 @@ public class MazeGenerator : MonoBehaviour
                                     {
                                         n.actor = ActorType.Okuri_Inu;
                                         ok--;
+                                    }
+                                    else if (type == 6 && cr == 0)
+                                        usedUp = true;
+                                    else if (type == 6)
+                                    {
+                                        n.actor = ActorType.Crush_Trap;
+                                        cr--;
+                                    }
+                                    else if (type == 7 && pi == 0 || type == 3 && n.GetAdjacentNodes().Count == 1)
+                                        usedUp = true;
+                                    else if(type == 7 && n.GetAdjacentNodes().Count > 1)
+                                    {
+                                        n.actor = ActorType.Pit_Trap;
+                                        pi--;
                                     }
                                     counter2++;
                                 }

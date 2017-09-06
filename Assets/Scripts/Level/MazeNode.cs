@@ -39,6 +39,7 @@ public class MazeNode
 
     public MazeNode ladderMazeNode;
     public GameObject ladder;
+    public GameObject floorPrefab;
     public int SectionID;
 
 
