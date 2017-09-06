@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 33970753268889160}
   - component: {fileID: 65967668937834374}
   - component: {fileID: 23150107353843524}
-  - component: {fileID: 114214717418270678}
+  - component: {fileID: 114161098322174740}
   m_Layer: 10
   m_Name: MovingFloorL
   m_TagString: Untagged
@@ -138,7 +138,7 @@ GameObject:
   - component: {fileID: 33014043118227430}
   - component: {fileID: 65500122543281420}
   - component: {fileID: 23022790282763138}
-  - component: {fileID: 114210847898227188}
+  - component: {fileID: 114552892995736260}
   m_Layer: 10
   m_Name: MovingFloorR
   m_TagString: Untagged
@@ -366,7 +366,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4373405782332646}
   - component: {fileID: 65858744073569098}
-  - component: {fileID: 114906027048854872}
+  - component: {fileID: 114185591119697284}
   m_Layer: 0
   m_Name: Spikes
   m_TagString: Untagged
@@ -753,7 +753,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1282173632614408}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 20, y: 0, z: 14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4533176598761696}
@@ -2053,27 +2053,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Traps:
-  - {fileID: 114210847898227188}
-  - {fileID: 114214717418270678}
---- !u!114 &114210847898227188
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1351992118490098}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c602f9bac787a754ba4a3b1c33681602, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  state: 0
-  FireAnimTime: 0.3
-  ResetAnimTime: 3
-  CanReset: 1
-  ResetRequested: 0
-  ArmedPosition: {x: 1, y: 0, z: 0}
-  UnarmedPosition: {x: 2.9, y: 0, z: 0}
---- !u!114 &114214717418270678
+  - {fileID: 114552892995736260}
+  - {fileID: 114161098322174740}
+--- !u!114 &114161098322174740
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -2081,16 +2063,61 @@ MonoBehaviour:
   m_GameObject: {fileID: 1168949472696908}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c602f9bac787a754ba4a3b1c33681602, type: 3}
+  m_Script: {fileID: 11500000, guid: a7efb87e405353347aaefdaf1bde92fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
   FireAnimTime: 0.3
-  ResetAnimTime: 3
+  HoldAnimTime: 1
+  ResetAnimTime: 1
   CanReset: 1
   ResetRequested: 0
   ArmedPosition: {x: -1, y: 0, z: 0}
+  ArmedRotation: {x: 0, y: 0, z: 0}
   UnarmedPosition: {x: -2.9, y: 0, z: 0}
+  UnarmedRotation: {x: 0, y: 0, z: 0}
+--- !u!114 &114185591119697284
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1670578723710526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7efb87e405353347aaefdaf1bde92fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  FireAnimTime: 0
+  HoldAnimTime: 0
+  ResetAnimTime: 0
+  CanReset: 0
+  ResetRequested: 0
+  ArmedPosition: {x: 0, y: 0, z: 0}
+  ArmedRotation: {x: 0, y: 0, z: 0}
+  UnarmedPosition: {x: 0, y: 0, z: 0}
+  UnarmedRotation: {x: 0, y: 0, z: 0}
+--- !u!114 &114552892995736260
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1351992118490098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7efb87e405353347aaefdaf1bde92fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  FireAnimTime: 0.3
+  HoldAnimTime: 1
+  ResetAnimTime: 1
+  CanReset: 1
+  ResetRequested: 0
+  ArmedPosition: {x: 1, y: 0, z: 0}
+  ArmedRotation: {x: 0, y: 0, z: 0}
+  UnarmedPosition: {x: 2.9, y: 0, z: 0}
+  UnarmedRotation: {x: 0, y: 0, z: 0}
 --- !u!114 &114659184261120348
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2103,8 +2130,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Traps:
-  - {fileID: 114210847898227188}
-  - {fileID: 114214717418270678}
+  - {fileID: 114552892995736260}
+  - {fileID: 114161098322174740}
 --- !u!114 &114766014291913980
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2117,8 +2144,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Traps:
-  - {fileID: 114210847898227188}
-  - {fileID: 114214717418270678}
+  - {fileID: 114552892995736260}
+  - {fileID: 114161098322174740}
 --- !u!114 &114831164389279150
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2131,23 +2158,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Traps:
-  - {fileID: 114210847898227188}
-  - {fileID: 114214717418270678}
---- !u!114 &114906027048854872
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1670578723710526}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c602f9bac787a754ba4a3b1c33681602, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  state: 0
-  FireAnimTime: 0
-  ResetAnimTime: 0
-  CanReset: 0
-  ResetRequested: 0
-  ArmedPosition: {x: 0, y: 0, z: 0}
-  UnarmedPosition: {x: 0, y: 0, z: 0}
+  - {fileID: 114552892995736260}
+  - {fileID: 114161098322174740}

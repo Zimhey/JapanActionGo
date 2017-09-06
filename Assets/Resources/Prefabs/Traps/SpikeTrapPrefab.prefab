@@ -235,7 +235,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4385980498786714}
   - component: {fileID: 65128368076716678}
-  - component: {fileID: 114993485728621148}
+  - component: {fileID: 114946143774543184}
   m_Layer: 0
   m_Name: Spikes
   m_TagString: Untagged
@@ -309,7 +309,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1469468210264814}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 14, y: 0, z: 8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4385980498786714}
@@ -784,7 +784,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Traps:
-  - {fileID: 114993485728621148}
+  - {fileID: 114946143774543184}
 --- !u!114 &114176988456468408
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -797,7 +797,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Traps:
-  - {fileID: 114993485728621148}
+  - {fileID: 114946143774543184}
 --- !u!114 &114422051236527006
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -810,7 +810,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Traps:
-  - {fileID: 114993485728621148}
+  - {fileID: 114946143774543184}
 --- !u!114 &114500708313611570
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -823,8 +823,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Traps:
-  - {fileID: 114993485728621148}
---- !u!114 &114993485728621148
+  - {fileID: 114946143774543184}
+--- !u!114 &114946143774543184
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -832,13 +832,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1982866006884134}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c602f9bac787a754ba4a3b1c33681602, type: 3}
+  m_Script: {fileID: 11500000, guid: a7efb87e405353347aaefdaf1bde92fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
   FireAnimTime: 0.5
+  HoldAnimTime: 0
   ResetAnimTime: 2
   CanReset: 1
   ResetRequested: 0
   ArmedPosition: {x: 0, y: -3.4, z: 0}
+  ArmedRotation: {x: 0, y: 0, z: 0}
   UnarmedPosition: {x: 0, y: 0, z: 0}
+  UnarmedRotation: {x: 0, y: 0, z: 0}

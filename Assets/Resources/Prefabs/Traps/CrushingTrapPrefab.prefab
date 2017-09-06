@@ -237,7 +237,7 @@ GameObject:
   - component: {fileID: 33463781879208050}
   - component: {fileID: 136473519591036784}
   - component: {fileID: 23903676442397142}
-  - component: {fileID: 114561545769431998}
+  - component: {fileID: 114204512777411274}
   m_Layer: 0
   m_Name: Mesh
   m_TagString: Untagged
@@ -295,7 +295,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1348422488810868}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 26, y: 0, z: 20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4064217441942500}
@@ -772,7 +772,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Traps:
-  - {fileID: 114561545769431998}
+  - {fileID: 114204512777411274}
 --- !u!114 &114152842846048470
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -785,8 +785,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Traps:
-  - {fileID: 114561545769431998}
---- !u!114 &114561545769431998
+  - {fileID: 114204512777411274}
+--- !u!114 &114204512777411274
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -794,16 +794,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1845211134626030}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c602f9bac787a754ba4a3b1c33681602, type: 3}
+  m_Script: {fileID: 11500000, guid: a7efb87e405353347aaefdaf1bde92fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
   FireAnimTime: 0.5
+  HoldAnimTime: 0
   ResetAnimTime: 2.5
   CanReset: 1
   ResetRequested: 0
   ArmedPosition: {x: 0, y: 4, z: 0}
+  ArmedRotation: {x: 0, y: 0, z: 0}
   UnarmedPosition: {x: 0, y: 0, z: 0}
+  UnarmedRotation: {x: 0, y: 0, z: 0}
 --- !u!114 &114787476170444926
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -816,7 +819,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Traps:
-  - {fileID: 114561545769431998}
+  - {fileID: 114204512777411274}
 --- !u!114 &114796200709687722
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -829,7 +832,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Traps:
-  - {fileID: 114561545769431998}
+  - {fileID: 114204512777411274}
 --- !u!136 &136473519591036784
 CapsuleCollider:
   m_ObjectHideFlags: 1
