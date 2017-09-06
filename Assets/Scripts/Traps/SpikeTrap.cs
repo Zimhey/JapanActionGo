@@ -63,7 +63,8 @@ public class SpikeTrap : Trap {
         if (collider.gameObject != null)
         {
             Debug.Log(gameObject.name + " Kill " + collider.gameObject.name);
-            GameManager.Instance.ActorKilled(GetComponent<Actor>(), collider.gameObject.GetComponent<Actor>());
+            GameManager.Instance.ActorKilled(collider.gameObject.GetComponent<Actor>(), GetComponentInParent<Actor>());
+            print("killing" + collider.gameObject);
             collider.gameObject.SendMessage("Die");
         }
     }
