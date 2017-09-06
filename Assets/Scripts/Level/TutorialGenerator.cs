@@ -192,14 +192,14 @@ public static class TutorialGenerator {
         tutorial4[0, 6].AddEdge(tutorial4[0, 5]);
         tutorial4[0, 5].AddEdge(tutorial4[1, 5]);
 
-        //tutorial4[1, 0].actor = ActorType.Ofuda_Pickup;
-        //tutorial4[2, 0].actor = ActorType.Ofuda_Pickup;
-        //tutorial4[0, 3].actor = ActorType.Ofuda_Pickup;
-        //tutorial4[2, 4].actor = ActorType.Oni;
-        //tutorial4[4, 2].actor = ActorType.Oni;
-        //tutorial4[6, 6].actor = ActorType.Oni;
-        //tutorial4[6, 1].actor = ActorType.Spike_Trap;
-        //tutorial4[6, 4].actor = ActorType.Spike_Trap;
+        tutorial4[1, 0].actor = ActorType.Ofuda_Pickup;
+        tutorial4[2, 0].actor = ActorType.Ofuda_Pickup;
+        tutorial4[0, 3].actor = ActorType.Ofuda_Pickup;
+        tutorial4[2, 4].actor = ActorType.Oni;
+        tutorial4[4, 2].actor = ActorType.Oni;
+        tutorial4[6, 6].actor = ActorType.Oni;
+        tutorial4[6, 1].actor = ActorType.Spike_Trap;
+        tutorial4[6, 4].actor = ActorType.Spike_Trap;
 
         tutorial4[3, 3].actor = ActorType.Ladder;
         tutorial4[1, 5].actor = ActorType.Ladder;

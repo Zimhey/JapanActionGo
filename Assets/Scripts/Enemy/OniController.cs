@@ -352,6 +352,7 @@ public class OniController : YokaiController
     void dead()
     {
         Die();
+        print("oni has died");
     }
 
     void follow()

@@ -394,7 +394,7 @@ public class GameManager : MonoBehaviour {
 
         GameObject obj = Instantiate(Resources.Load(node.GetPrefabName()), location, node.GetRotation()) as GameObject;
         obj.transform.parent = cells.transform;
-
+        node.floorPrefab = obj.transform.GetChild(0).gameObject;
         obj = Instantiate(Resources.Load("Prefabs/Level/CellLog"), location, node.GetRotation()) as GameObject;
         obj.transform.parent = cells.transform;
         CellLog cellLog = obj.GetComponent<CellLog>();
@@ -417,7 +417,6 @@ public class GameManager : MonoBehaviour {
             if (t != null)
                 t.text = "P" + piecesSpawned++;
         }
-        
     }
 
     public void SpawnActor(MazeNode node, GameObject actors)
@@ -426,6 +425,10 @@ public class GameManager : MonoBehaviour {
         Vector3 location = new Vector3(node.Col * 6 + 8, node.Floor * 30, node.Row * 6 + 8);
         if (node.actor != ActorType.Null)
         {
+            if (node.actor == ActorType.Pit_Trap)
+            {
+                node.floorPrefab.SetActive(false);
+            }
             actorObject = Instantiate(Actors.Prefabs[node.actor], location, node.GetRotation());
             actorObject.transform.parent = actors.transform;
             if (node.actor == ActorType.Ladder)
@@ -436,6 +439,7 @@ public class GameManager : MonoBehaviour {
                 node.ladder.GetComponent<Ladder>().location = node;
             }
             actorObject.AddComponent<Actor>().ActorID = AnalyticsManager.AddActor(SessionID, node.actor);
+            actorObject.GetComponent<Actor>().type = node.actor;
         }
     }
     // TODO Add an Actor Component to each actor GameObject

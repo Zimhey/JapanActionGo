@@ -114,11 +114,11 @@ public class MazeGenerator : MonoBehaviour
 
             foreach (MazeNode r in sectionroots)
             {
-                ActorGenerator.GenerateActorsHelper(difficulty, r, seed);
-                SetIntersectionNodes(r);
                 roots[i, section] = r;
                 GenerateLoops(r, loops, size);
                 GenerateLadders(i, section, r, floors, sections[i]);
+                ActorGenerator.GenerateActorsHelper(difficulty, r, seed);
+                SetIntersectionNodes(r);
                 section++;
                 seed++;
             }
@@ -252,6 +252,45 @@ public class MazeGenerator : MonoBehaviour
                     return path;
                 }
             }
+        }
+        return null;
+    }
+
+    public static LinkedList<MazeNode> GetPath2(MazeNode start, MazeNode finish)
+    {
+        Queue<MazeNode> next = new Queue<MazeNode>();
+        Queue<MazeNode> prev = new Queue<MazeNode>();
+        Queue<LinkedList<MazeNode>> visited = new Queue<LinkedList<MazeNode>>();
+        LinkedList<MazeNode> initial = new LinkedList<MazeNode>();
+
+        initial.AddFirst(start);
+        next.Enqueue(start);
+        prev.Enqueue(start);
+        visited.Enqueue(initial);
+
+        int count = 0;
+
+        while (next.Count > 0)
+        {
+            MazeNode current = next.Dequeue();
+            MazeNode previous = prev.Dequeue();
+            LinkedList<MazeNode> vis = visited.Dequeue();
+            if (current.Col == finish.Col && current.Row == finish.Row && current.Floor == finish.Floor)
+                return vis;
+            foreach (MazeNode n in current.GetAdjacentNodes())
+            {
+                LinkedList<MazeNode> visited2 = new LinkedList<MazeNode>();
+                foreach (MazeNode node in vis)
+                    visited2.AddLast(node);
+                if (!vis.Contains(n))
+                {
+                    visited2.AddLast(n);
+                    next.Enqueue(n);
+                    prev.Enqueue(current);
+                    visited.Enqueue(visited2);
+                }
+            }
+            count++;
         }
         return null;
     }
@@ -396,6 +435,16 @@ public class MazeGenerator : MonoBehaviour
         return sectionRoots;
     }
 
+    public static void resetPath(MazeNode root, MazeNode end)
+    {
+        foreach(MazeNode n in nodesInSection(root))
+        {
+            n.OnExitPath = false;
+        }
+
+        SetAsExitPath(GetPath2(root, end));
+    }
+
     public static List<MazeNode> nodesInSection(MazeNode root)
     {
         List<MazeNode> nodes = new List<MazeNode>();
@@ -406,8 +455,6 @@ public class MazeGenerator : MonoBehaviour
         while(visited.Count > 0)
         {
             MazeNode current = visited.Pop();
-            if (current == null)
-                print("null");
             foreach(MazeNode n in current.GetAdjacentNodes())
                 if(!nodes.Contains(n))
                 {
@@ -424,8 +471,8 @@ public class MazeGenerator : MonoBehaviour
         int maxDistance = 0;
         MazeNode farthestDeadEnd = new MazeNode();
         foreach(MazeNode n in nodesInSection(node))
-        {
-            int currentDistance = DistanceBetween2(node, n);
+        { 
+            int currentDistance = DistanceBetween3(node, n);
             if (currentDistance > maxDistance && n.GetAdjacentNodes().Count == 1)
             {
                 maxDistance = currentDistance;
@@ -564,35 +611,46 @@ public class MazeGenerator : MonoBehaviour
     {
         Queue<MazeNode> next = new Queue<MazeNode>();
         Queue<MazeNode> prev = new Queue<MazeNode>();
+        Queue<Stack<MazeNode>> visited = new Queue<Stack<MazeNode>>();
         Queue<int> distances = new Queue<int>();
+        Stack<MazeNode> initial = new Stack<MazeNode>();
 
+        initial.Push(start);
         next.Enqueue(start);
         distances.Enqueue(0);
         prev.Enqueue(start);
+        visited.Enqueue(initial);
 
         int count = 0;
 
-        while(next.Count > 0 && count < 100000)
+        while(next.Count > 0)
         {
             MazeNode current = next.Dequeue();
             MazeNode previous = prev.Dequeue();
+            Stack<MazeNode> vis = visited.Dequeue();
             int distance = distances.Dequeue();
             if (current.Col == finish.Col && current.Row == finish.Row && current.Floor == finish.Floor)
                 return distance;
             foreach(MazeNode n in current.GetAdjacentNodes())
             {
-                if (!n.Equals(previous))
+                Stack<MazeNode> visited2 = vis;
+                if (!vis.Contains(n))
                 {
+                    visited2.Push(n);
                     next.Enqueue(n);
                     distances.Enqueue(distance + 1);
                     prev.Enqueue(current);
+                    visited.Enqueue(visited2);
                 }
             }
             count++;
         }
-        if (count == 10000)
-            print("100000 " + finish.Col + " " + finish.Row + " " + finish.Floor);
         return 0;
+    }
+
+    public static int DistanceBetween3(MazeNode start, MazeNode finish)
+    {
+        return GetPath2(start, finish).Count;
     }
 
     public static int NumberOfDeadEndNodes(MazeNode root)
@@ -649,18 +707,21 @@ public class MazeGenerator : MonoBehaviour
         return current;
     }
 
-    public static void GenerateActors(MazeNode root, int ofuda, int oni, int chalk, int trap, int nyudo, int inu, int seed)
+    public static void GenerateActors(MazeNode root, int ofuda, int oni, int chalk, int spike, int nyudo, int inu, int crush, int pit, int seed)
     {
         System.Random rand = new System.Random(seed);
         int PossiblePlaces = NumberOfDeadEndNodes(root);
-        int actors = ofuda + oni + chalk + trap + nyudo + inu;
+        int actors = ofuda + oni + chalk + spike + nyudo + inu + crush + pit;
         int[] actorLocations = new int[actors];
         int of = ofuda;
         int on = oni;
         int ch = chalk;
-        int tr = trap;
+        int sp = spike;
         int ny = nyudo;
         int ok = inu;
+        int cr = crush;
+        int pi = pit;
+        int available = PossiblePlaces;
 
         int counter = 0;
 
@@ -698,7 +759,7 @@ public class MazeGenerator : MonoBehaviour
 
         counter = 0;
 
-        while (visited.Count > 0)
+        while (visited.Count > 0 && available > 0)
         {
             current = visited.Pop();
             foreach (MazeNode n in current.GetAdjacentNodes())
@@ -710,16 +771,22 @@ public class MazeGenerator : MonoBehaviour
                         number++;
                         foreach (int loc in actorLocations)
                         {
-                            if (of == 0 && on == 0 && ch == 0 && tr == 0 && ok == 0 && ny == 0)
+                            if (of == 0 && on == 0 && ch == 0 && sp == 0 && ok == 0 && ny == 0 && cr == 0 && pi == 0)
                                 break;
                             if (loc == number)
                             {
+                                available--;
                                 bool usedUp = true;
                                 int counter2 = 0;
-                                while (usedUp)
+                                while (usedUp)// && counter2 < 10000)
                                 {
                                     usedUp = false;
-                                    int type = rand.Next(0, 6);
+                                    int type = rand.Next(0, 8);
+                                    if(((on == 0 && ok == 0 && ny == 0) || (DistanceBetween3(n, root) <= 3)) && (of == 0 && ch == 0) && ((sp == 0 && cr == 0 && pi == 0) || (n.GetAdjacentNodes().Count == 1)))
+                                    {
+                                        number--;
+                                        break;
+                                    }
                                     if (type == 0 && of == 0)
                                         usedUp = true;
                                     else if (type == 0)
@@ -727,9 +794,9 @@ public class MazeGenerator : MonoBehaviour
                                         n.actor = ActorType.Ofuda_Pickup;
                                         of--;
                                     }
-                                    else if (type == 1 && on == 0)
+                                    else if (type == 1 && on == 0 || type == 1 && DistanceBetween3(n, root) <= 3)
                                         usedUp = true;
-                                    else if (type == 1)
+                                    else if (type == 1 && DistanceBetween3(n, root) > 3)
                                     {
                                         n.actor = ActorType.Oni;
                                         on--;
@@ -741,26 +808,40 @@ public class MazeGenerator : MonoBehaviour
                                         n.actor = ActorType.Chalk_Pickup;
                                         ch--;
                                     }
-                                    else if (type == 3 && tr == 0 || type == 3 && n.GetAdjacentNodes().Count == 1)
+                                    else if (type == 3 && sp == 0 || type == 3 && n.GetAdjacentNodes().Count == 1)
                                         usedUp = true;
-                                    else if(type == 3 && n.GetAdjacentNodes().Count > 1)
+                                    else if (type == 3 && n.GetAdjacentNodes().Count > 1)
                                     {
                                         n.actor = ActorType.Spike_Trap;
-                                        tr--;
+                                        sp--;
                                     }
-                                    else if (type == 4 && ny == 0)
+                                    else if (type == 4 && ny == 0 || type == 4 && DistanceBetween3(n, root) <= 3)
                                         usedUp = true;
-                                    else if (type == 4)
+                                    else if (type == 4 && DistanceBetween3(n, root) > 3)
                                     {
                                         n.actor = ActorType.Taka_Nyudo;
                                         ny--;
                                     }
-                                    else if (type == 5 && ok == 0)
+                                    else if (type == 5 && ok == 0 || type == 5 && DistanceBetween3(n, root) <= 3)
                                         usedUp = true;
-                                    else if (type == 5)
+                                    else if (type == 5 && DistanceBetween3(n, root) > 3)
                                     {
                                         n.actor = ActorType.Okuri_Inu;
                                         ok--;
+                                    }
+                                    else if (type == 6 && cr == 0)
+                                        usedUp = true;
+                                    else if (type == 6)
+                                    {
+                                        n.actor = ActorType.Crush_Trap;
+                                        cr--;
+                                    }
+                                    else if (type == 7 && pi == 0 || type == 3 && n.GetAdjacentNodes().Count == 1)
+                                        usedUp = true;
+                                    else if(type == 7 && n.GetAdjacentNodes().Count > 1)
+                                    {
+                                        n.actor = ActorType.Pit_Trap;
+                                        pi--;
                                     }
                                     counter2++;
                                 }
@@ -799,6 +880,8 @@ public class MazeGenerator : MonoBehaviour
             root.actor = ActorType.Ladder;
             FarthestDeadEndFromNode(root).actor = ActorType.Ladder;
         }
+
+        resetPath(root, FarthestDeadEndFromNode(root));
     }
 
     public static void GenerateLoops(MazeNode root, int loops, int size)
@@ -914,9 +997,10 @@ public class MazeGenerator : MonoBehaviour
 
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 8; j++)
-                foreach (MazeNode n in nodesInSection(DifferentSections[i, j]))
-                    if (n.Col == column && n.Row == row && n.Floor == floor)
-                        return DifferentSections[i, j];
+                if (DifferentSections[i, j] != null)
+                    foreach (MazeNode n in nodesInSection(DifferentSections[i, j]))
+                        if (n.Col == column && n.Row == row && n.Floor == floor)
+                            return DifferentSections[i, j];
         return null;
     }
 }
