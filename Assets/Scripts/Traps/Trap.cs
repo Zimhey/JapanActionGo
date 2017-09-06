@@ -90,6 +90,7 @@ public class Trap : MonoBehaviour
         if (complete < 1.0)
         {
             gameObject.transform.localPosition = Vector3.Lerp(ArmedPosition, UnarmedPosition, complete);
+            gameObject.transform.localRotation = Quaternion.Slerp(Quaternion.Euler(ArmedRotation), Quaternion.Euler(UnarmedRotation), complete);
         }
         else
         {
@@ -105,6 +106,7 @@ public class Trap : MonoBehaviour
         if (complete < 1.0)
         {
             gameObject.transform.localPosition = Vector3.Lerp(UnarmedPosition, ArmedPosition, complete);
+            gameObject.transform.localRotation = Quaternion.Slerp(Quaternion.Euler(UnarmedRotation), Quaternion.Euler(ArmedRotation), complete);
         }
         else
             state = TrapState.Armed;

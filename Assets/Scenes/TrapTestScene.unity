@@ -117124,7 +117124,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4099826551336400, guid: 033fb5bfb08c58d4c9a08f501c6a0d4d, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 50
+      value: 26
       objectReference: {fileID: 0}
     - target: {fileID: 4099826551336400, guid: 033fb5bfb08c58d4c9a08f501c6a0d4d, type: 2}
       propertyPath: m_LocalPosition.y
@@ -117132,7 +117132,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4099826551336400, guid: 033fb5bfb08c58d4c9a08f501c6a0d4d, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 14
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 4099826551336400, guid: 033fb5bfb08c58d4c9a08f501c6a0d4d, type: 2}
       propertyPath: m_LocalRotation.x
@@ -132752,9 +132752,20 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1469468210264814, guid: c89432c301895ff44bd2e23f436d0ac4, type: 2}
-      propertyPath: m_Name
-      value: SpikeTrapPrefab
+    - target: {fileID: 114946143774543184, guid: c89432c301895ff44bd2e23f436d0ac4,
+        type: 2}
+      propertyPath: ArmedRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114946143774543184, guid: c89432c301895ff44bd2e23f436d0ac4,
+        type: 2}
+      propertyPath: ArmedRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114946143774543184, guid: c89432c301895ff44bd2e23f436d0ac4,
+        type: 2}
+      propertyPath: ArmedRotation.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c89432c301895ff44bd2e23f436d0ac4, type: 2}
