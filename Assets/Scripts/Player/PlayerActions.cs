@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class PlayerActions : MonoBehaviour
 {
-    public LayerMask levelLayer;
+    private LayerMask drawingLayerMask;
+    private int levelLayer;
+    private int dynamicObjectLayer;
+
     public Inventory PlayerInventory;
 
     public float PullLeverRadius;
@@ -18,6 +21,9 @@ public class PlayerActions : MonoBehaviour
     private GameObject chalkPrefab;
     private LineRenderer currentMark;
     private Vector3 chalkFaceNormal;
+    private Vector3 lastDrawnPoint;
+    private GameObject lastObjectDrawnOn;
+
 
     private GameObject ofudaPrefab;
     private GameObject thrownOfudaParent;
@@ -43,8 +49,11 @@ public class PlayerActions : MonoBehaviour
         chalkMarksParent.transform.parent = GameManager.Instance.GameParent.transform;
         thrownOfudaParent = new GameObject("Thrown Ofuda");
         thrownOfudaParent.transform.parent = GameManager.Instance.GameParent.transform;
+        levelLayer = LayerMask.NameToLayer("Level");
+        dynamicObjectLayer = LayerMask.NameToLayer("DynamicObject");
+        drawingLayerMask =  1 << levelLayer | 1 << dynamicObjectLayer;
 
-        if(Compass != null)
+        if (Compass != null)
             Compass.SetActive(false);
 
         if (UsingVR) 
@@ -107,41 +116,47 @@ public class PlayerActions : MonoBehaviour
 
     void DrawChalk()
     {
-        
-        if (!drawing) // just started drawing
-        {
-            drawing = true;
-            StartNewMark();
-        }
+        Transform pointer;
 
-		Transform pointer;
 		if (UsingVR)
 			pointer = DrawingHand.transform;
 		else
 			pointer = cam.transform;
+
 		Vector3 dir = pointer.transform.rotation * Vector3.forward; 
 		Ray ray = new Ray(pointer.transform.position, dir);	         
         RaycastHit rayHit;
 
-        if (Physics.Raycast(ray, out rayHit, DrawingDistance, levelLayer)) // if object to draw on
+        if (Physics.Raycast(ray, out rayHit, DrawingDistance, drawingLayerMask)) // if object to draw on
         {
+
             // If can't draw across objects, start a new line when objects change
-            if (rayHit.normal != chalkFaceNormal)
+            if (rayHit.normal != chalkFaceNormal || !drawing || (lastObjectDrawnOn != rayHit.collider.gameObject && rayHit.collider.gameObject.layer == dynamicObjectLayer))
             {
+                drawing = true;
                 StartNewMark();
+                currentMark.transform.rotation = Quaternion.LookRotation(-rayHit.normal);
                 chalkFaceNormal = rayHit.normal;
+                lastObjectDrawnOn = rayHit.collider.gameObject;
+                if (rayHit.collider.gameObject.layer == dynamicObjectLayer)
+                {
+                    AttachTo a = currentMark.gameObject.AddComponent<AttachTo>();
+                    a.To = rayHit.collider.gameObject;
+                }
             }
 
-            currentMark.transform.rotation = Quaternion.LookRotation(-rayHit.normal);
+            //
             Vector3 offset = rayHit.normal * 0.001f;
-
+            Vector3 position = (Vector3)(currentMark.transform.worldToLocalMatrix * (rayHit.point + offset)) - currentMark.transform.position;
+            
             // Add point to the line render
             currentMark.positionCount++;
-            currentMark.SetPosition(currentMark.positionCount - 1, rayHit.point + offset);
+            currentMark.SetPosition(currentMark.positionCount - 1, position);
 
             // Track distance drawn
             if (currentMark.positionCount > 1)
-                DistanceDrawn += Vector3.Distance(currentMark.GetPosition(currentMark.positionCount - 2), rayHit.point);
+                DistanceDrawn += Vector3.Distance(lastDrawnPoint, rayHit.point);
+            lastDrawnPoint = rayHit.point;
 
             // Update Inventory
             if (DistanceDrawn > PlayerInventory.DistancePerCharge)
