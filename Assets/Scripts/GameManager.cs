@@ -417,7 +417,6 @@ public class GameManager : MonoBehaviour {
             if (t != null)
                 t.text = "P" + piecesSpawned++;
         }
-        
     }
 
     public void SpawnActor(MazeNode node, GameObject actors)

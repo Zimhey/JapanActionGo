@@ -721,6 +721,7 @@ public class MazeGenerator : MonoBehaviour
         int ok = inu;
         int cr = crush;
         int pi = pit;
+        int available = PossiblePlaces;
 
         int counter = 0;
 
@@ -758,14 +759,14 @@ public class MazeGenerator : MonoBehaviour
 
         counter = 0;
 
-        while (visited.Count > 0)
+        while (visited.Count > 0 && available > 0)
         {
             current = visited.Pop();
             foreach (MazeNode n in current.GetAdjacentNodes())
             {
                 if (!visited2.Contains(n))
                 {
-                    if (!n.OnExitPath)//&& DistanceBetween3(root, n) > 3)
+                    if (!n.OnExitPath)
                     {
                         number++;
                         foreach (int loc in actorLocations)
@@ -774,12 +775,18 @@ public class MazeGenerator : MonoBehaviour
                                 break;
                             if (loc == number)
                             {
+                                available--;
                                 bool usedUp = true;
                                 int counter2 = 0;
-                                while (usedUp)
+                                while (usedUp)// && counter2 < 10000)
                                 {
                                     usedUp = false;
                                     int type = rand.Next(0, 8);
+                                    if(((on == 0 && ok == 0 && ny == 0) || (DistanceBetween3(n, root) <= 3)) && (of == 0 && ch == 0) && ((sp == 0 && cr == 0 && pi == 0) || (n.GetAdjacentNodes().Count == 1)))
+                                    {
+                                        number--;
+                                        break;
+                                    }
                                     if (type == 0 && of == 0)
                                         usedUp = true;
                                     else if (type == 0)
@@ -787,9 +794,9 @@ public class MazeGenerator : MonoBehaviour
                                         n.actor = ActorType.Ofuda_Pickup;
                                         of--;
                                     }
-                                    else if (type == 1 && on == 0)
+                                    else if (type == 1 && on == 0 || type == 1 && DistanceBetween3(n, root) <= 3)
                                         usedUp = true;
-                                    else if (type == 1)
+                                    else if (type == 1 && DistanceBetween3(n, root) > 3)
                                     {
                                         n.actor = ActorType.Oni;
                                         on--;
@@ -808,16 +815,16 @@ public class MazeGenerator : MonoBehaviour
                                         n.actor = ActorType.Spike_Trap;
                                         sp--;
                                     }
-                                    else if (type == 4 && ny == 0)
+                                    else if (type == 4 && ny == 0 || type == 4 && DistanceBetween3(n, root) <= 3)
                                         usedUp = true;
-                                    else if (type == 4)
+                                    else if (type == 4 && DistanceBetween3(n, root) > 3)
                                     {
                                         n.actor = ActorType.Taka_Nyudo;
                                         ny--;
                                     }
-                                    else if (type == 5 && ok == 0)
+                                    else if (type == 5 && ok == 0 || type == 5 && DistanceBetween3(n, root) <= 3)
                                         usedUp = true;
-                                    else if (type == 5)
+                                    else if (type == 5 && DistanceBetween3(n, root) > 3)
                                     {
                                         n.actor = ActorType.Okuri_Inu;
                                         ok--;
@@ -990,9 +997,10 @@ public class MazeGenerator : MonoBehaviour
 
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 8; j++)
-                foreach (MazeNode n in nodesInSection(DifferentSections[i, j]))
-                    if (n.Col == column && n.Row == row && n.Floor == floor)
-                        return DifferentSections[i, j];
+                if (DifferentSections[i, j] != null)
+                    foreach (MazeNode n in nodesInSection(DifferentSections[i, j]))
+                        if (n.Col == column && n.Row == row && n.Floor == floor)
+                            return DifferentSections[i, j];
         return null;
     }
 }
