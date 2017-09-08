@@ -27,6 +27,9 @@ public class AttachVRCameraRigTo : MonoBehaviour {
         cameraPosition.y = 0;
         rigPosition.y = 0;
 
+        Vector3 deltaOffset = cameraOffset - (rigPosition - cameraPosition);
+        controller.Move(deltaOffset);
+
         cameraOffset = rigPosition - cameraPosition;
         CameraRig.transform.position = transform.position + cameraOffset - new Vector3(0, controller.height / 2F);
 
