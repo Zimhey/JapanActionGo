@@ -78,7 +78,7 @@ public class SamplePlayerController : OVRPlayerController
         InitialYRotation_ = transform.rotation.eulerAngles.y;
     }
 
-    protected new void Update()
+    protected void Update()
     {
         if (useProfileData)
         {
