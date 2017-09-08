@@ -26,6 +26,8 @@ GameObject:
   - component: {fileID: 54389670203100684}
   - component: {fileID: 82362258178654672}
   - component: {fileID: 114683835348176892}
+  - component: {fileID: 114764283589509814}
+  - component: {fileID: 114775669356914998}
   m_Layer: 9
   m_Name: FPS_Player
   m_TagString: Player
@@ -341,7 +343,7 @@ AudioSource:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1258190664246256}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
@@ -402,7 +404,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -546,13 +548,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8be96cb98895b7d4096c689d38b13203, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelLayer:
-    serializedVersion: 2
-    m_Bits: 256
   PlayerInventory: {fileID: 114283534115715642}
   PullLeverRadius: 3
   DrawingDistance: 5
-  CanDrawAcrossObjects: 0
   DistanceDrawn: 0
   Marks: []
   UsingVR: 0
@@ -575,6 +573,50 @@ MonoBehaviour:
   LevelMask:
     serializedVersion: 2
     m_Bits: 256
+--- !u!114 &114764283589509814
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1258190664246256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cd19a5715dc50f4d960e569e67ac865, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_positionOffsetData:
+    positionOffset: {x: 0, y: 0, z: 0}
+    KeepMe: 0
+  isEnvironmentAware: 1
+  isStaticObject: 0
+  m_listeners:
+    initialListenerList: []
+  m_posOffsetData: {fileID: 0}
+  listenerMask: 1
+--- !u!114 &114775669356914998
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1258190664246256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a73d44937bc0ab49b710b857f0e7606, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerList: ae8d9d44
+  useOtherObject: 0
+  valueGuid: 7c0bf12cffa6584d95bee24fd53e8c48
+  eventID: -2147406166
+  soundEmitterObject: {fileID: 0}
+  enableActionOnEvent: 0
+  actionOnEventType: 0
+  curveInterpolation: 4
+  transitionDuration: 0
+  m_callbackData: {fileID: 0}
+  playingId: 0
+  multiPositionTypeLabel: 0
+  multiPositionArray: []
 --- !u!114 &114975369955367368
 MonoBehaviour:
   m_ObjectHideFlags: 1
