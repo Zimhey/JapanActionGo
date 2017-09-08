@@ -178,7 +178,7 @@ public class GameManager : MonoBehaviour {
 
     void Start()
     {
-
+        difficulty = Difficulty.Medium;
     }
 
     // Update is called once per frame
