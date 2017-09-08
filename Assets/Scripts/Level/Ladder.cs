@@ -7,7 +7,7 @@ public class Ladder : MonoBehaviour {
     public GameObject ConnectedLadder;
     public MazeNode ConnectedLadderNode;
     public bool teleportable = true;
-    MazeNode SectionRoot;
+    public MazeNode location;
     public int SectionID;
 
 	// Use this for initialization
@@ -20,33 +20,14 @@ public class Ladder : MonoBehaviour {
 		
 	}
 
-
-
-    
     void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject != null)
+        if (collider.gameObject.tag == "Player")
         {
-            if (ConnectedLadder == null && collider.gameObject.tag == "Player")
-            {
-                foreach(MazeSection sec in GameManager.Sections)
-                {
-                    if (sec.SectionID == ConnectedLadderNode.SectionID)
-                        GameManager.SpawnSection(sec);
-                }
-                ConnectedLadder = ConnectedLadderNode.ladder;
-                ConnectedLadder.GetComponent<Ladder>().ConnectedLadder = this.gameObject;
-            }
-            //Debug.Log(collider.gameObject.tag + " entered Cell R: " + Row + " C: " + Col + " at Time: " + Time.time);
-            if (collider.gameObject.tag == "Player")
-            {
-                if (teleportable == true && ConnectedLadder.GetComponent<Ladder>().teleportable == true)
-                {
-                    teleportable = false;
-                    ConnectedLadder.GetComponent<Ladder>().teleportable = false;
-                    collider.gameObject.transform.position = ConnectedLadder.transform.position;
-                }
-            }
+            if (location.Col == MazeGenerator.GetSize(GameManager.difficulty) - 1 && location.Col == MazeGenerator.GetSize(GameManager.difficulty) - 1 && location.Floor == 0)
+                GameManager.Win();
+            else
+                GameManager.Instance.EnterSection(this.gameObject, collider.gameObject);
         }
     }
 

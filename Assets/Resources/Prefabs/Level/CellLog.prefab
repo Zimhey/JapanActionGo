@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4646672687718522}
   - component: {fileID: 65505031467766628}
   - component: {fileID: 114071488074566722}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: CellLog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66,3 +66,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Row: 0
   Col: 0
+  CellID: 0

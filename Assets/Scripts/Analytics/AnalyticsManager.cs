@@ -94,6 +94,13 @@ public class AnalyticsManager : MonoBehaviour
 
     private static void CreateDatabase()
     {
+        string directoryPath = System.IO.Path.GetDirectoryName(dbName);
+
+        if (!System.IO.Directory.Exists(directoryPath))
+        {
+            System.IO.Directory.CreateDirectory(directoryPath);
+        }
+
         if (!System.IO.File.Exists(dbName))
         {
             SqliteConnection.CreateFile(dbName);
@@ -195,9 +202,9 @@ public class AnalyticsManager : MonoBehaviour
         return ReturnSecondQueryAsInt(insert, getID);
     }
 
-    public static void UpdateSessionTime(int sessionID)
+    public static void UpdateSessionTime(int sessionID, float time)
     {
-        string update = "UPDATE `Sessions` SET `PlayTime` = " + Time.time + " WHERE `SessionID` = " + sessionID + ";";
+        string update = "UPDATE `Sessions` SET `PlayTime` = " + time + " WHERE `SessionID` = " + sessionID + ";";
         SimpleQuery(update);
     }
 

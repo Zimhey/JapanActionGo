@@ -5,58 +5,16 @@ using UnityEngine.AI;
 
 public class MazeGenerator : MonoBehaviour
 {
-    public static int Seed;
-    public bool DebugLabelsOn;
-    private NavMeshSurface surface;
-    public static Difficulty dif = Difficulty.Small;
+    public static int Seed; // TODO FIX THESE STATE VARS
+    //public static Difficulty dif = Difficulty.Small;
     public static MazeNode[,] DifferentSections = new MazeNode[5,8];
+    public static MazeNode[] tutorialSections = new MazeNode[4];
+    public static MazeNode endNode;
 
     // Use this for initialization
     void Start()
     {
-        GenerateMaze(dif);
-    }
-
-    public void AddRandomActors(MazeNode root)
-    {
-        List<MazeNode> visited = new List<MazeNode>();
-        Stack<MazeNode> nodesToVisit = new Stack<MazeNode>();
-
-        nodesToVisit.Push(root);
-
-        while (nodesToVisit.Count > 0)
-        {
-            MazeNode node = nodesToVisit.Pop();
-            AddRandomActor(node);
-            visited.Add(node);
-            foreach (MazeNode n in node.GetAdjacentNodes())
-                if (!nodesToVisit.Contains(n) && !visited.Contains(n))
-                    nodesToVisit.Push(n);
-        }
-    }
-
-    System.Random rand = new System.Random();
-
-    public void AddRandomActor(MazeNode node)
-    {
-        int type = rand.Next() % 7;
-        if (type == 0)
-            node.actor = ActorType.Chalk_Pickup;
-        else if (type == 1)
-            node.actor = ActorType.Ofuda_Pickup;
-        else if (type == 2)
-            node.actor = ActorType.Oni;
-        else if (type == 3)
-            node.actor = ActorType.Okuri_Inu;
-        else if (type == 4)
-            node.actor = ActorType.Taka_Nyudo;
-        else if (type == 5)
-            node.actor = ActorType.Spike_Trap;
-        else if (type == 6)
-            node.actor = ActorType.Crush_Trap;
-        else
-            node.actor = ActorType.Null;
-
+        //GenerateMaze(dif);
     }
 
     // Update is called once per frame
@@ -91,9 +49,8 @@ public class MazeGenerator : MonoBehaviour
         return maze[0, 0];
     }
 
-    public void GenerateMaze(Difficulty difficulty)
+    public static void GenerateMaze(Difficulty difficulty)
     {
-        print("started generating maze");
         int size = 0;
         int[] sections = new int[] { };
         int loops = 0;
@@ -141,130 +98,124 @@ public class MazeGenerator : MonoBehaviour
             floors = 5;
         }
 
-        GenerateMazeHelper(size, sections, loops, floors, difficulty);
+        GenerateMazeHelper(size, sections, loops, floors, difficulty, Seed);
     }
 
-    public void GenerateMazeHelper(int size, int[] sections, int loops, int floors, Difficulty difficulty)
+    public static void GenerateMazeHelper(int size, int[] sections, int loops, int floors, Difficulty difficulty, int seed)
     {
         MazeNode[,] roots = new MazeNode[5, 8];
         for (int i = 0; i < floors; i++)
         {
             int section = 0;
-            MazeNode root = DFSMazeGenerator.GenerateMaze(Seed, size, size, i);
+            MazeNode root = DFSMazeGenerator.GenerateMaze(seed, size, size, i);
             List<MazeNode> sectionroots;
 
             sectionroots = GenerateSections(root, sections[i], size, size);
 
             foreach (MazeNode r in sectionroots)
             {
-                GenerateActors(r, 1, 1, 1, 1, Seed);
-                GenerateLadders(i, section, r, floors, sections[i]);
-                SetIntersectionNodes(r);
                 roots[i, section] = r;
                 GenerateLoops(r, loops, size);
-                //SpawnMaze(r, size);
+                GenerateLadders(i, section, r, floors, sections[i]);
+                ActorGenerator.GenerateActorsHelper(difficulty, r, seed);
+                SetIntersectionNodes(r);
                 section++;
+                seed++;
             }
         }
         DifferentSections = roots;
         connectLadderNodes(difficulty, roots);
     }
 
-    public void connectLadderNodes(Difficulty difficulty, MazeNode[,] roots)
+    public static void connectLadderNodes(Difficulty difficulty, MazeNode[,] roots)
     {
         if (difficulty == Difficulty.Small || difficulty == Difficulty.Medium)
         {
-            connectLadders(FindPathEnd(roots[0, 0]), roots[1, 0]);
-            connectLadders(FindPathEnd(roots[1, 0]), roots[2, 0]);
-            connectLadders(FindPathEnd(roots[2, 0]), roots[1, 1]);
-            connectLadders(FindPathEnd(roots[1, 1]), roots[0, 1]);
+            FarthestDeadEndFromNode(roots[0, 0]).AddLadderTo(roots[1, 0]);
+            FarthestDeadEndFromNode(roots[1, 0]).AddLadderTo(roots[2, 0]);
+            FarthestDeadEndFromNode(roots[2, 0]).AddLadderTo(roots[1, 1]);
+            FarthestDeadEndFromNode(roots[1, 1]).AddLadderTo(roots[0, 1]);
         }
         if(difficulty == Difficulty.Large)
         {
-            connectLadders(FindPathEnd(roots[0, 0]), roots[1, 0]);
-            connectLadders(FindPathEnd(roots[1, 0]), roots[2, 0]);
-            connectLadders(FindPathEnd(roots[2, 0]), roots[1, 1]);
-            connectLadders(FindPathEnd(roots[1, 1]), roots[2, 1]);
-            connectLadders(FindPathEnd(roots[2, 1]), roots[1, 2]);
-            connectLadders(FindPathEnd(roots[1, 2]), roots[0, 1]);
+            FarthestDeadEndFromNode(roots[0, 0]).AddLadderTo(roots[1, 0]);
+            FarthestDeadEndFromNode(roots[1, 0]).AddLadderTo(roots[2, 0]);
+            FarthestDeadEndFromNode(roots[2, 0]).AddLadderTo(roots[1, 1]);
+            FarthestDeadEndFromNode(roots[1, 1]).AddLadderTo(roots[2, 1]);
+            FarthestDeadEndFromNode(roots[2, 1]).AddLadderTo(roots[1, 2]);
+            FarthestDeadEndFromNode(roots[1, 2]).AddLadderTo(roots[0, 1]);
         }
         if(difficulty == Difficulty.Excessive)
         {
-            connectLadders(FindPathEnd(roots[0, 0]), roots[1, 0]);
-            connectLadders(FindPathEnd(roots[1, 0]), roots[2, 0]);
-            connectLadders(FindPathEnd(roots[2, 0]), roots[3, 0]);
-            connectLadders(FindPathEnd(roots[3, 0]), roots[2, 1]);
-            connectLadders(FindPathEnd(roots[2, 1]), roots[1, 1]);
-            connectLadders(FindPathEnd(roots[1, 1]), roots[0, 1]);
-            connectLadders(FindPathEnd(roots[0, 1]), roots[1, 2]);
-            connectLadders(FindPathEnd(roots[1, 2]), roots[2, 2]);
-            connectLadders(FindPathEnd(roots[2, 2]), roots[3, 1]);
-            connectLadders(FindPathEnd(roots[3, 1]), roots[2, 3]);
-            connectLadders(FindPathEnd(roots[2, 3]), roots[1, 3]);
-            connectLadders(FindPathEnd(roots[1, 3]), roots[0, 2]);
+            FarthestDeadEndFromNode(roots[0, 0]).AddLadderTo(roots[1, 0]);
+            FarthestDeadEndFromNode(roots[1, 0]).AddLadderTo(roots[2, 0]);
+            FarthestDeadEndFromNode(roots[2, 0]).AddLadderTo(roots[3, 0]);
+            FarthestDeadEndFromNode(roots[3, 0]).AddLadderTo(roots[2, 1]);
+            FarthestDeadEndFromNode(roots[2, 1]).AddLadderTo(roots[1, 1]);
+            FarthestDeadEndFromNode(roots[1, 1]).AddLadderTo(roots[0, 1]);
+            FarthestDeadEndFromNode(roots[0, 1]).AddLadderTo(roots[1, 2]);
+            FarthestDeadEndFromNode(roots[1, 2]).AddLadderTo(roots[2, 2]);
+            FarthestDeadEndFromNode(roots[2, 2]).AddLadderTo(roots[3, 1]);
+            FarthestDeadEndFromNode(roots[3, 1]).AddLadderTo(roots[2, 3]);
+            FarthestDeadEndFromNode(roots[2, 3]).AddLadderTo(roots[1, 3]);
+            FarthestDeadEndFromNode(roots[1, 3]).AddLadderTo(roots[0, 2]);
         }
         if (difficulty == Difficulty.AlreadyLost)
         {
-            connectLadders(FindPathEnd(roots[0, 0]), roots[1, 0]);
-            connectLadders(FindPathEnd(roots[1, 0]), roots[2, 0]);
-            connectLadders(FindPathEnd(roots[2, 0]), roots[3, 0]);
-            connectLadders(FindPathEnd(roots[3, 0]), roots[2, 1]);
-            connectLadders(FindPathEnd(roots[2, 1]), roots[1, 1]);
-            connectLadders(FindPathEnd(roots[1, 1]), roots[0, 1]);
-            connectLadders(FindPathEnd(roots[0, 1]), roots[1, 2]);
-            connectLadders(FindPathEnd(roots[1, 2]), roots[2, 2]);
-            connectLadders(FindPathEnd(roots[2, 2]), roots[3, 1]);
-            connectLadders(FindPathEnd(roots[3, 1]), roots[2, 3]);
-            connectLadders(FindPathEnd(roots[2, 3]), roots[1, 3]);
-            connectLadders(FindPathEnd(roots[1, 3]), roots[0, 2]);
-            connectLadders(FindPathEnd(roots[0, 2]), roots[1, 4]);
-            connectLadders(FindPathEnd(roots[1, 4]), roots[2, 4]);
-            connectLadders(FindPathEnd(roots[2, 4]), roots[3, 2]);
-            connectLadders(FindPathEnd(roots[3, 2]), roots[2, 5]);
-            connectLadders(FindPathEnd(roots[2, 5]), roots[1, 5]);
-            connectLadders(FindPathEnd(roots[1, 5]), roots[0, 3]);
+            FarthestDeadEndFromNode(roots[0, 0]).AddLadderTo(roots[1, 0]);
+            FarthestDeadEndFromNode(roots[1, 0]).AddLadderTo(roots[2, 0]);
+            FarthestDeadEndFromNode(roots[2, 0]).AddLadderTo(roots[3, 0]);
+            FarthestDeadEndFromNode(roots[3, 0]).AddLadderTo(roots[2, 1]);
+            FarthestDeadEndFromNode(roots[2, 1]).AddLadderTo(roots[1, 1]);
+            FarthestDeadEndFromNode(roots[1, 1]).AddLadderTo(roots[0, 1]);
+            FarthestDeadEndFromNode(roots[0, 1]).AddLadderTo(roots[1, 2]);
+            FarthestDeadEndFromNode(roots[1, 2]).AddLadderTo(roots[2, 2]);
+            FarthestDeadEndFromNode(roots[2, 2]).AddLadderTo(roots[3, 1]);
+            FarthestDeadEndFromNode(roots[3, 1]).AddLadderTo(roots[2, 3]);
+            FarthestDeadEndFromNode(roots[2, 3]).AddLadderTo(roots[1, 3]);
+            FarthestDeadEndFromNode(roots[1, 3]).AddLadderTo(roots[0, 2]);
+            FarthestDeadEndFromNode(roots[0, 2]).AddLadderTo(roots[1, 4]);
+            FarthestDeadEndFromNode(roots[1, 4]).AddLadderTo(roots[2, 4]);
+            FarthestDeadEndFromNode(roots[2, 4]).AddLadderTo(roots[3, 2]);
+            FarthestDeadEndFromNode(roots[3, 2]).AddLadderTo(roots[2, 5]);
+            FarthestDeadEndFromNode(roots[2, 5]).AddLadderTo(roots[1, 5]);
+            FarthestDeadEndFromNode(roots[1, 5]).AddLadderTo(roots[0, 3]);
         }
         if (difficulty == Difficulty.JustWhy)
         {
-            connectLadders(FindPathEnd(roots[0, 0]), roots[1, 0]);
-            connectLadders(FindPathEnd(roots[1, 0]), roots[2, 0]);
-            connectLadders(FindPathEnd(roots[2, 0]), roots[3, 0]);
-            connectLadders(FindPathEnd(roots[2, 0]), roots[4, 0]);
-            connectLadders(FindPathEnd(roots[2, 0]), roots[3, 1]);
-            connectLadders(FindPathEnd(roots[3, 0]), roots[2, 1]);
-            connectLadders(FindPathEnd(roots[2, 1]), roots[1, 1]);
-            connectLadders(FindPathEnd(roots[1, 1]), roots[0, 1]);
-            connectLadders(FindPathEnd(roots[0, 1]), roots[1, 2]);
-            connectLadders(FindPathEnd(roots[1, 2]), roots[2, 2]);
-            connectLadders(FindPathEnd(roots[2, 2]), roots[3, 2]);
-            connectLadders(FindPathEnd(roots[2, 2]), roots[4, 1]);
-            connectLadders(FindPathEnd(roots[2, 2]), roots[3, 3]);
-            connectLadders(FindPathEnd(roots[3, 1]), roots[2, 3]);
-            connectLadders(FindPathEnd(roots[2, 3]), roots[1, 3]);
-            connectLadders(FindPathEnd(roots[1, 3]), roots[0, 2]);
-            connectLadders(FindPathEnd(roots[0, 2]), roots[1, 4]);
-            connectLadders(FindPathEnd(roots[1, 4]), roots[2, 4]);
-            connectLadders(FindPathEnd(roots[2, 4]), roots[3, 4]);
-            connectLadders(FindPathEnd(roots[2, 4]), roots[4, 2]);
-            connectLadders(FindPathEnd(roots[2, 4]), roots[3, 5]);
-            connectLadders(FindPathEnd(roots[3, 2]), roots[2, 5]);
-            connectLadders(FindPathEnd(roots[2, 5]), roots[1, 5]);
-            connectLadders(FindPathEnd(roots[1, 5]), roots[0, 3]);
-            connectLadders(FindPathEnd(roots[2, 4]), roots[1, 6]);
-            connectLadders(FindPathEnd(roots[3, 2]), roots[2, 6]);
-            connectLadders(FindPathEnd(roots[2, 5]), roots[3, 6]);
-            connectLadders(FindPathEnd(roots[2, 4]), roots[4, 3]);
-            connectLadders(FindPathEnd(roots[2, 4]), roots[3, 7]);
-            connectLadders(FindPathEnd(roots[3, 2]), roots[2, 7]);
-            connectLadders(FindPathEnd(roots[2, 5]), roots[1, 7]);
-            connectLadders(FindPathEnd(roots[1, 5]), roots[0, 4]);
+            FarthestDeadEndFromNode(roots[0, 0]).AddLadderTo(roots[1, 0]);
+            FarthestDeadEndFromNode(roots[1, 0]).AddLadderTo(roots[2, 0]);
+            FarthestDeadEndFromNode(roots[2, 0]).AddLadderTo(roots[3, 0]);
+            FarthestDeadEndFromNode(roots[2, 0]).AddLadderTo(roots[4, 0]);
+            FarthestDeadEndFromNode(roots[2, 0]).AddLadderTo(roots[3, 1]);
+            FarthestDeadEndFromNode(roots[3, 0]).AddLadderTo(roots[2, 1]);
+            FarthestDeadEndFromNode(roots[2, 1]).AddLadderTo(roots[1, 1]);
+            FarthestDeadEndFromNode(roots[1, 1]).AddLadderTo(roots[0, 1]);
+            FarthestDeadEndFromNode(roots[0, 1]).AddLadderTo(roots[1, 2]);
+            FarthestDeadEndFromNode(roots[1, 2]).AddLadderTo(roots[2, 2]);
+            FarthestDeadEndFromNode(roots[2, 2]).AddLadderTo(roots[3, 2]);
+            FarthestDeadEndFromNode(roots[2, 2]).AddLadderTo(roots[4, 1]);
+            FarthestDeadEndFromNode(roots[2, 2]).AddLadderTo(roots[3, 3]);
+            FarthestDeadEndFromNode(roots[3, 1]).AddLadderTo(roots[2, 3]);
+            FarthestDeadEndFromNode(roots[2, 3]).AddLadderTo(roots[1, 3]);
+            FarthestDeadEndFromNode(roots[1, 3]).AddLadderTo(roots[0, 2]);
+            FarthestDeadEndFromNode(roots[0, 2]).AddLadderTo(roots[1, 4]);
+            FarthestDeadEndFromNode(roots[1, 4]).AddLadderTo(roots[2, 4]);
+            FarthestDeadEndFromNode(roots[2, 4]).AddLadderTo(roots[3, 4]);
+            FarthestDeadEndFromNode(roots[2, 4]).AddLadderTo(roots[4, 2]);
+            FarthestDeadEndFromNode(roots[2, 4]).AddLadderTo(roots[3, 5]);
+            FarthestDeadEndFromNode(roots[3, 2]).AddLadderTo(roots[2, 5]);
+            FarthestDeadEndFromNode(roots[2, 5]).AddLadderTo(roots[1, 5]);
+            FarthestDeadEndFromNode(roots[1, 5]).AddLadderTo(roots[0, 3]);
+            FarthestDeadEndFromNode(roots[2, 4]).AddLadderTo(roots[1, 6]);
+            FarthestDeadEndFromNode(roots[3, 2]).AddLadderTo(roots[2, 6]);
+            FarthestDeadEndFromNode(roots[2, 5]).AddLadderTo(roots[3, 6]);
+            FarthestDeadEndFromNode(roots[2, 4]).AddLadderTo(roots[4, 3]);
+            FarthestDeadEndFromNode(roots[2, 4]).AddLadderTo(roots[3, 7]);
+            FarthestDeadEndFromNode(roots[3, 2]).AddLadderTo(roots[2, 7]);
+            FarthestDeadEndFromNode(roots[2, 5]).AddLadderTo(roots[1, 7]);
+            FarthestDeadEndFromNode(roots[1, 5]).AddLadderTo(roots[0, 4]);
         }
-    }
-
-    public void connectLadders(MazeNode node1, MazeNode node2)
-    {
-        node1.ladderMazeNode = node2;
-        node2.ladderMazeNode = node1;
     }
 
     public static LinkedList<MazeNode> GetPath(MazeNode start, MazeNode end)
@@ -301,6 +252,45 @@ public class MazeGenerator : MonoBehaviour
                     return path;
                 }
             }
+        }
+        return null;
+    }
+
+    public static LinkedList<MazeNode> GetPath2(MazeNode start, MazeNode finish)
+    {
+        Queue<MazeNode> next = new Queue<MazeNode>();
+        Queue<MazeNode> prev = new Queue<MazeNode>();
+        Queue<LinkedList<MazeNode>> visited = new Queue<LinkedList<MazeNode>>();
+        LinkedList<MazeNode> initial = new LinkedList<MazeNode>();
+
+        initial.AddFirst(start);
+        next.Enqueue(start);
+        prev.Enqueue(start);
+        visited.Enqueue(initial);
+
+        int count = 0;
+
+        while (next.Count > 0)
+        {
+            MazeNode current = next.Dequeue();
+            MazeNode previous = prev.Dequeue();
+            LinkedList<MazeNode> vis = visited.Dequeue();
+            if (current.Col == finish.Col && current.Row == finish.Row && current.Floor == finish.Floor)
+                return vis;
+            foreach (MazeNode n in current.GetAdjacentNodes())
+            {
+                LinkedList<MazeNode> visited2 = new LinkedList<MazeNode>();
+                foreach (MazeNode node in vis)
+                    visited2.AddLast(node);
+                if (!vis.Contains(n))
+                {
+                    visited2.AddLast(n);
+                    next.Enqueue(n);
+                    prev.Enqueue(current);
+                    visited.Enqueue(visited2);
+                }
+            }
+            count++;
         }
         return null;
     }
@@ -445,6 +435,16 @@ public class MazeGenerator : MonoBehaviour
         return sectionRoots;
     }
 
+    public static void resetPath(MazeNode root, MazeNode end)
+    {
+        foreach(MazeNode n in nodesInSection(root))
+        {
+            n.OnExitPath = false;
+        }
+
+        SetAsExitPath(GetPath2(root, end));
+    }
+
     public static List<MazeNode> nodesInSection(MazeNode root)
     {
         List<MazeNode> nodes = new List<MazeNode>();
@@ -466,7 +466,24 @@ public class MazeGenerator : MonoBehaviour
         return nodes;
     }
 
-    public static int GetSize()
+    public static MazeNode FarthestDeadEndFromNode(MazeNode node)
+    {
+        int maxDistance = 0;
+        MazeNode farthestDeadEnd = new MazeNode();
+        foreach(MazeNode n in nodesInSection(node))
+        { 
+            int currentDistance = DistanceBetween3(node, n);
+            if (currentDistance > maxDistance && n.GetAdjacentNodes().Count == 1)
+            {
+                maxDistance = currentDistance;
+                farthestDeadEnd = n;
+            }
+        }
+
+        return farthestDeadEnd;
+    }
+
+    public static int GetSize(Difficulty dif)
     {
         if (dif == Difficulty.Small)
             return 10;
@@ -590,6 +607,52 @@ public class MazeGenerator : MonoBehaviour
         return branchDistance;
     }
 
+    public static int DistanceBetween2(MazeNode start, MazeNode finish)
+    {
+        Queue<MazeNode> next = new Queue<MazeNode>();
+        Queue<MazeNode> prev = new Queue<MazeNode>();
+        Queue<Stack<MazeNode>> visited = new Queue<Stack<MazeNode>>();
+        Queue<int> distances = new Queue<int>();
+        Stack<MazeNode> initial = new Stack<MazeNode>();
+
+        initial.Push(start);
+        next.Enqueue(start);
+        distances.Enqueue(0);
+        prev.Enqueue(start);
+        visited.Enqueue(initial);
+
+        int count = 0;
+
+        while(next.Count > 0)
+        {
+            MazeNode current = next.Dequeue();
+            MazeNode previous = prev.Dequeue();
+            Stack<MazeNode> vis = visited.Dequeue();
+            int distance = distances.Dequeue();
+            if (current.Col == finish.Col && current.Row == finish.Row && current.Floor == finish.Floor)
+                return distance;
+            foreach(MazeNode n in current.GetAdjacentNodes())
+            {
+                Stack<MazeNode> visited2 = vis;
+                if (!vis.Contains(n))
+                {
+                    visited2.Push(n);
+                    next.Enqueue(n);
+                    distances.Enqueue(distance + 1);
+                    prev.Enqueue(current);
+                    visited.Enqueue(visited2);
+                }
+            }
+            count++;
+        }
+        return 0;
+    }
+
+    public static int DistanceBetween3(MazeNode start, MazeNode finish)
+    {
+        return GetPath2(start, finish).Count;
+    }
+
     public static int NumberOfDeadEndNodes(MazeNode root)
     {
         int number = 0;
@@ -644,16 +707,21 @@ public class MazeGenerator : MonoBehaviour
         return current;
     }
 
-    public static void GenerateActors(MazeNode root, int ofuda, int oni, int chalk, int trap, int seed)
+    public static void GenerateActors(MazeNode root, int ofuda, int oni, int chalk, int spike, int nyudo, int inu, int crush, int pit, int seed)
     {
-        System.Random rand = new System.Random();//(seed);
+        System.Random rand = new System.Random(seed);
         int PossiblePlaces = NumberOfDeadEndNodes(root);
-        int actors = ofuda + oni + chalk;
+        int actors = ofuda + oni + chalk + spike + nyudo + inu + crush + pit;
         int[] actorLocations = new int[actors];
         int of = ofuda;
         int on = oni;
         int ch = chalk;
-        int tr = trap;
+        int sp = spike;
+        int ny = nyudo;
+        int ok = inu;
+        int cr = crush;
+        int pi = pit;
+        int available = PossiblePlaces;
 
         int counter = 0;
 
@@ -689,7 +757,9 @@ public class MazeGenerator : MonoBehaviour
             actorLocations[i] = temp;
         }
 
-        while (visited.Count > 0 && counter < 1000)
+        counter = 0;
+
+        while (visited.Count > 0 && available > 0)
         {
             current = visited.Pop();
             foreach (MazeNode n in current.GetAdjacentNodes())
@@ -701,17 +771,22 @@ public class MazeGenerator : MonoBehaviour
                         number++;
                         foreach (int loc in actorLocations)
                         {
-                            if (of == 0 && on == 0 && ch == 0 && tr == 0)
+                            if (of == 0 && on == 0 && ch == 0 && sp == 0 && ok == 0 && ny == 0 && cr == 0 && pi == 0)
                                 break;
                             if (loc == number)
                             {
+                                available--;
                                 bool usedUp = true;
-
                                 int counter2 = 0;
-                                while (usedUp && counter2 < 1000)
+                                while (usedUp)// && counter2 < 10000)
                                 {
                                     usedUp = false;
-                                    int type = rand.Next(0, 4);
+                                    int type = rand.Next(0, 8);
+                                    if(((on == 0 && ok == 0 && ny == 0) || (DistanceBetween3(n, root) <= 3)) && (of == 0 && ch == 0) && ((sp == 0 && cr == 0 && pi == 0) || (n.GetAdjacentNodes().Count == 1)))
+                                    {
+                                        number--;
+                                        break;
+                                    }
                                     if (type == 0 && of == 0)
                                         usedUp = true;
                                     else if (type == 0)
@@ -719,9 +794,9 @@ public class MazeGenerator : MonoBehaviour
                                         n.actor = ActorType.Ofuda_Pickup;
                                         of--;
                                     }
-                                    else if (type == 1 && on == 0)
+                                    else if (type == 1 && on == 0 || type == 1 && DistanceBetween3(n, root) <= 3)
                                         usedUp = true;
-                                    else if (type == 1)
+                                    else if (type == 1 && DistanceBetween3(n, root) > 3)
                                     {
                                         n.actor = ActorType.Oni;
                                         on--;
@@ -733,12 +808,40 @@ public class MazeGenerator : MonoBehaviour
                                         n.actor = ActorType.Chalk_Pickup;
                                         ch--;
                                     }
-                                    else if (type == 3 && tr == 0)
+                                    else if (type == 3 && sp == 0 || type == 3 && n.GetAdjacentNodes().Count == 1)
                                         usedUp = true;
-                                    else if(type == 3 && n.GetAdjacentNodes().Count > 1)
+                                    else if (type == 3 && n.GetAdjacentNodes().Count > 1)
                                     {
                                         n.actor = ActorType.Spike_Trap;
-                                        tr--;
+                                        sp--;
+                                    }
+                                    else if (type == 4 && ny == 0 || type == 4 && DistanceBetween3(n, root) <= 3)
+                                        usedUp = true;
+                                    else if (type == 4 && DistanceBetween3(n, root) > 3)
+                                    {
+                                        n.actor = ActorType.Taka_Nyudo;
+                                        ny--;
+                                    }
+                                    else if (type == 5 && ok == 0 || type == 5 && DistanceBetween3(n, root) <= 3)
+                                        usedUp = true;
+                                    else if (type == 5 && DistanceBetween3(n, root) > 3)
+                                    {
+                                        n.actor = ActorType.Okuri_Inu;
+                                        ok--;
+                                    }
+                                    else if (type == 6 && cr == 0)
+                                        usedUp = true;
+                                    else if (type == 6)
+                                    {
+                                        n.actor = ActorType.Crush_Trap;
+                                        cr--;
+                                    }
+                                    else if (type == 7 && pi == 0 || type == 3 && n.GetAdjacentNodes().Count == 1)
+                                        usedUp = true;
+                                    else if(type == 7 && n.GetAdjacentNodes().Count > 1)
+                                    {
+                                        n.actor = ActorType.Pit_Trap;
+                                        pi--;
                                     }
                                     counter2++;
                                 }
@@ -756,20 +859,29 @@ public class MazeGenerator : MonoBehaviour
     {
         if (floor == 0)
         {
+            if (section == 0)
+                if (GameManager.Instance.TutorialOn)
+                    root.actor = ActorType.Ladder;
             if (section > 0)
             {
                 root.actor = ActorType.Ladder;
             }
             if (section < TotalSections - 1)
             {
-                FindPathEnd(root).actor = ActorType.Ladder;
+                FarthestDeadEndFromNode(root).actor = ActorType.Ladder;
+            }
+            if(section == TotalSections - 1)
+            {
+                FarthestDeadEndFromNode(root).actor = ActorType.Ladder;
             }
         }
         else
         {
             root.actor = ActorType.Ladder;
-            FindPathEnd(root).actor = ActorType.Ladder;
+            FarthestDeadEndFromNode(root).actor = ActorType.Ladder;
         }
+
+        resetPath(root, FarthestDeadEndFromNode(root));
     }
 
     public static void GenerateLoops(MazeNode root, int loops, int size)
@@ -868,97 +980,27 @@ public class MazeGenerator : MonoBehaviour
         }
     }
     
-    public void SpawnMaze(MazeNode root, int size)
-    {
-        // TODO use DFS to search through maze and spawn each piece
-        bool[,] visited = new bool[size, size];
-
-        Stack<MazeNode> stack = new Stack<MazeNode>();
-
-        stack.Push(root);
-
-        while(stack.Count != 0)
-        {
-            MazeNode node = stack.Pop();
-
-            // Spawn
-            SpawnPiece(node);
-            SpawnActor(node);
-
-            // Set Visited
-            visited[node.Row, node.Col] = true;
-
-            // visit each adjecent node
-            foreach(MazeNode adjecentNode in node.GetAdjacentNodes())
-            {
-                if(!visited[adjecentNode.Row, adjecentNode.Col])
-                {
-                    stack.Push(adjecentNode);
-                    visited[adjecentNode.Row, adjecentNode.Col] = true;
-                }
-            }
-
-        }
-
-    }
-
-    int piecesSpawned;
-
-    public void SpawnPiece(MazeNode node)
-    {
-        Vector3 location = new Vector3(node.Col * 6 + 8, node.Floor * 30, node.Row * 6 + 8);
-
-        GameObject obj = Instantiate(Resources.Load(node.GetPrefabName()), location, node.GetRotation()) as GameObject;
-        obj.transform.parent = this.transform;
-
-        obj = Instantiate(Resources.Load("Prefabs/Level/CellLog"), location, node.GetRotation()) as GameObject;
-        obj.transform.parent = this.transform;
-        CellLog cellLog = obj.GetComponent<CellLog>();
-        cellLog.Row = node.Row;
-        cellLog.Col = node.Col;
-
-        if(DebugLabelsOn)
-        {
-            GameObject textObj = Instantiate(Resources.Load("Prefabs/Level/CellTextPrefab"), location + new Vector3(0, 0.5f, -1), new Quaternion()) as GameObject;
-            textObj.transform.parent = obj.transform;
-
-            TextMesh t = textObj.GetComponentInChildren<TextMesh>();
-            if (t != null)
-                t.text = "R: " + node.Row + " C: " + node.Col;
-
-            textObj = Instantiate(Resources.Load("Prefabs/Level/CellTextPrefab"), location + new Vector3(0, 0.5f, 0), new Quaternion()) as GameObject;
-            textObj.transform.parent = obj.transform;
-
-            t = textObj.GetComponentInChildren<TextMesh>();
-            if (t != null)
-                t.text = "P" + piecesSpawned++;
-        }
-
-    }
-
-    public void SpawnActor(MazeNode node)
-    {
-        Vector3 location = new Vector3(node.Col * 6 + 8, node.Floor * 30, node.Row * 6 + 8);
-        if (node.actor != ActorType.Null)
-        {
-            //if (node.actor == ActorType.Ladder)
-                //node.ladder = Instantiate(Actors.Prefabs[node.actor], location, node.GetRotation());
-            //else
-                Instantiate(Actors.Prefabs[node.actor], location, node.GetRotation());
-        }
-    }
-    
     public static MazeNode getSectionBasedOnLocation(Vector3 location)
     {
         int column = (int) ((location.x - 8) / 6);
         int floor = (int) (location.y / 30);
         int row = (int)((location.z - 8) / 6);
 
+        if (floor == -4)
+            return tutorialSections[0];
+        else if (floor == -3)
+            return tutorialSections[1];
+        else if (floor == -2)
+            return tutorialSections[2];
+        else if (floor == -1)
+            return tutorialSections[3];
+
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 8; j++)
-                foreach (MazeNode n in nodesInSection(DifferentSections[i, j]))
-                    if (n.Col == column && n.Row == row && n.Floor == floor)
-                        return DifferentSections[i, j];
+                if (DifferentSections[i, j] != null)
+                    foreach (MazeNode n in nodesInSection(DifferentSections[i, j]))
+                        if (n.Col == column && n.Row == row && n.Floor == floor)
+                            return DifferentSections[i, j];
         return null;
     }
 }

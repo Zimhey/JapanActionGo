@@ -39,22 +39,22 @@ public class RecursiveMazeGenerator : MonoBehaviour
                 n = maze[columnCounter, rowCounter];
                 if (columnCounter > 0)
                 {
-                    n.connectBackward(maze[columnCounter - 1, rowCounter]);
+                    n.AddEdge(maze[columnCounter - 1, rowCounter]);
                     //maze[columnCounter - 1, rowCounter].connectForward(n);
                 }
                 if (columnCounter < columns - 1)
                 {
-                    n.connectForward(maze[columnCounter + 1, rowCounter]);
+                    n.AddEdge(maze[columnCounter + 1, rowCounter]);
                     //maze[columnCounter + 1, rowCounter].connectBackward(n);
                 }
                 if (rowCounter > 0)
                 {
-                    n.connectLeft(maze[columnCounter, rowCounter - 1]);
+                    n.AddEdge(maze[columnCounter, rowCounter - 1]);
                     //maze[columnCounter, rowCounter - 1].connectRight(n);
                 }
                 if (rowCounter < rows - 1)
                 {
-                    n.connectRight(maze[columnCounter, rowCounter + 1]);
+                    n.AddEdge(maze[columnCounter, rowCounter + 1]);
                     //maze[columnCounter, rowCounter + 1].connectLeft(n);
                 }
             }
@@ -89,8 +89,7 @@ public class RecursiveMazeGenerator : MonoBehaviour
         {
             if(counter != randHole)
             {
-                maze[randLine - 1, counter].DisconnectForward();
-                maze[randLine, counter].DisconnectBackward();
+                maze[randLine - 1, counter].RemoveEdge(maze[randLine, counter]);
             }
         }
         //print(randLine + " " + randHole);
@@ -117,8 +116,7 @@ public class RecursiveMazeGenerator : MonoBehaviour
         {
             if(counter != randHole)
             {
-                maze[counter, randLine - 1].DisconnectRight();
-                maze[counter, randLine].DisconnectLeft();
+                maze[counter, randLine - 1].RemoveEdge(maze[counter, randLine]);
             }
         }
         //print(randLine + " " + randHole);
