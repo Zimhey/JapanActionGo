@@ -189,7 +189,7 @@ public class PlayerActions : MonoBehaviour
 
     void Die()
     {
-        
+        GameManager.Instance.GameOver();
     }
     
 
