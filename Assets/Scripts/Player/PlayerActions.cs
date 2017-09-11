@@ -66,9 +66,8 @@ public class PlayerActions : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		bool attemptDraw = UsingVR ? drawingController.triggerPressed : Input.GetButton("Draw") | Input.GetAxis("Draw") != 0;
-        bool attemptThrow = UsingVR ? throwingController.triggerPressed : Input.GetButton("Throw") | Input.GetAxis("Throw") != 0;
-
+        bool attemptDraw = UsingVR ? drawingController.triggerPressed : Input.GetKey(KeyBindingScript.buttons["Draw"]);
+        bool attemptThrow = UsingVR ? throwingController.triggerPressed : Input.GetKeyDown(KeyBindingScript.buttons["Throw"]);
         // Use Lever
         if (Input.GetButtonDown("Grab_Items"))
             Use();
