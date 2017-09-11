@@ -16,8 +16,8 @@ MonoBehaviour:
   - PhysicalPath: Events\Default Work Unit.wwu
     ParentPhysicalPath: 
     Guid: '{04DB0B75-80DF-476E-9EE7-8B1F40736277}'
-    m_lastTimePsrt1: 644409490
-    m_lastTimePart2: -1999309187
+    m_lastTimePsrt1: -10205801
+    m_lastTimePart2: -1999309179
     List:
     - Name: Player_Walk
       Path: Default Work Unit\Player_Walk
@@ -28,35 +28,44 @@ MonoBehaviour:
         ObjectType: 3
       ID: -2147406166
       Guid: 7c0bf12cffa6584d95bee24fd53e8c48
-      maxAttenuation: 0
+      maxAttenuation: 100
   AuxBusWwu:
   - PhysicalPath: Master-Mixer Hierarchy\Default Work Unit.wwu
     ParentPhysicalPath: 
     Guid: '{406444DB-8A2A-4432-BB15-553BD64BA7D7}'
-    m_lastTimePsrt1: 807377587
-    m_lastTimePart2: -1999311210
+    m_lastTimePsrt1: -9565280
+    m_lastTimePart2: -1999309179
     List: []
   StateWwu:
   - PhysicalPath: States\Default Work Unit.wwu
     ParentPhysicalPath: 
     Guid: '{34FF9177-191A-4155-9313-8325497F07C7}'
-    m_lastTimePsrt1: 807877656
-    m_lastTimePart2: -1999311210
+    m_lastTimePsrt1: -8685138
+    m_lastTimePart2: -1999309179
     List: []
   SwitchWwu:
   - PhysicalPath: Switches\Default Work Unit.wwu
     ParentPhysicalPath: 
     Guid: '{2F287D9F-C95B-460A-AD4F-FB1F4A424978}'
-    m_lastTimePsrt1: 807982657
-    m_lastTimePart2: -1999311210
+    m_lastTimePsrt1: -8625098
+    m_lastTimePart2: -1999309179
     List: []
   BankWwu:
   - PhysicalPath: SoundBanks\Default Work Unit.wwu
     ParentPhysicalPath: 
     Guid: '{099535CA-BA81-4CB8-A0C8-B8B15C7ED2B1}'
-    m_lastTimePsrt1: -1094151657
-    m_lastTimePart2: -1999309192
+    m_lastTimePsrt1: -8785210
+    m_lastTimePart2: -1999309179
     List:
+    - Name: Main
+      Path: Default Work Unit\Main
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: Main
+        ObjectType: 7
+      ID: -1133058374
+      Guid: c16573748350da4fa79e8de1d3e47872
     - Name: Soundbank_1
       Path: Default Work Unit\Soundbank_1
       PathAndIcons:
@@ -70,24 +79,21 @@ MonoBehaviour:
   - PhysicalPath: Game Parameters\Default Work Unit.wwu
     ParentPhysicalPath: 
     Guid: '{116FB4D8-1C7F-4A13-9E6E-72875D40C9C8}'
-    m_lastTimePsrt1: 807207567
-    m_lastTimePart2: -1999311210
+    m_lastTimePsrt1: -10155773
+    m_lastTimePart2: -1999309179
     List: []
   TriggerWwu:
   - PhysicalPath: Triggers\Default Work Unit.wwu
     ParentPhysicalPath: 
     Guid: '{90C663CA-CC3E-4CD2-B2BA-DE767337CC2E}'
-    m_lastTimePsrt1: 807312570
-    m_lastTimePart2: -1999311210
+    m_lastTimePsrt1: -8575075
+    m_lastTimePart2: -1999309179
     List: []
-  ExpandedItems:
-  - /JapanActionGo_WwiseProject
-  - /JapanActionGo_WwiseProject/Events
-  - /JapanActionGo_WwiseProject/Events/Default Work Unit
+  ExpandedItems: []
   m_lastPopulateTimePsrt1: 0
   m_lastPopulateTimePart2: 0
   autoPopulateEnabled: 1
-  basePath: Assets\Wwise
+  basePath: Audio\GeneratedSoundBanks
   language: English(US)
   defaultPoolSize: 4096
   lowerPoolSize: 2048
