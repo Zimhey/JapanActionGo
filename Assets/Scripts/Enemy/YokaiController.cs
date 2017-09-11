@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class YokaiController : MonoBehaviour {
+
     public void Die()
     {
         print(gameObject);

@@ -30,7 +30,6 @@ public enum TakaAnim
     Glare // taka glaring
 }
 
-
 public class TakaController : YokaiController
 {
     //player game object
