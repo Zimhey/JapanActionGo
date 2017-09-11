@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using UnityEngine.AI;
 
 //state machine for oni AI
 public enum OniState
@@ -98,12 +99,21 @@ public class OniController : YokaiController
         posTimer = 60;
         root = MazeGenerator.getSectionBasedOnLocation(home);
         currentNode = StartingNode;
+
+        NavMeshAgent agent = GetComponent<NavMeshAgent>();
+        agent.updatePosition = false;
+        agent.updateRotation = false;
+        agent.SetDestination(PlayerObject.transform.position);
     }
 
     void LateUpdate()
     {
+
+        MoveYokai();
         //manage state machine each update, call functions based on state
         //print(state);
+        //state = OniState.Patrol;
+        /*
         if (nextFootprint != null)
         {
             print(nextFootprint.transform.position);
@@ -202,6 +212,8 @@ public class OniController : YokaiController
                 //print("reseting path");
             }
         }
+
+    */
     }
 
     void idle()

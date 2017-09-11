@@ -775,6 +775,8 @@ GameObject:
   - component: {fileID: 20293097277960900}
   - component: {fileID: 124162422289747654}
   - component: {fileID: 114568702430207934}
+  - component: {fileID: 114930266281418976}
+  - component: {fileID: 114580951645581704}
   m_Layer: 0
   m_Name: Camera (eye)
   m_TagString: MainCamera
@@ -2030,6 +2032,26 @@ MonoBehaviour:
   _head: {fileID: 4396230267882672}
   _ears: {fileID: 4412134508140850}
   wireframe: 0
+--- !u!114 &114580951645581704
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1982689282113568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cd19a5715dc50f4d960e569e67ac865, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_positionOffsetData:
+    positionOffset: {x: 0, y: 0, z: 0}
+    KeepMe: 0
+  isEnvironmentAware: 0
+  isStaticObject: 0
+  m_listeners:
+    initialListenerList: []
+  m_posOffsetData: {fileID: 0}
+  listenerMask: 1
 --- !u!114 &114590032360590416
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2147,6 +2169,19 @@ MonoBehaviour:
   GravityMultiplier: 2
   SnapRotationToHead: 1
   Head: {fileID: 1021384057505752}
+--- !u!114 &114930266281418976
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1982689282113568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92157c3b97cee2646a44833190df78bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDefaultListener: 1
+  listenerId: 0
 --- !u!114 &114964569938248560
 MonoBehaviour:
   m_ObjectHideFlags: 1

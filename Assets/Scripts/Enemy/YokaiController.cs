@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class YokaiController : MonoBehaviour {
     public void Die()
@@ -29,6 +30,19 @@ public class YokaiController : MonoBehaviour {
             return false;
         }
         return true;
+    }
+
+    public void MoveYokai()
+    {
+        CharacterController controller = GetComponent<CharacterController>(); // TODO make this and other components fields
+        NavMeshAgent agent = GetComponent<NavMeshAgent>();
+
+        agent.nextPosition = transform.position;
+        Vector3 velocity = agent.desiredVelocity;
+        velocity.y = -10F; // TODO add a variable to store current y velocity, rather than having it constant
+        agent.velocity = velocity;
+        controller.Move(velocity * Time.deltaTime * 2);
+
     }
 
     public GameObject SeeFootprint(LayerMask levelMask)
