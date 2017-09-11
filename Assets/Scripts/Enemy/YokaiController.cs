@@ -24,9 +24,10 @@ public class YokaiController : MonoBehaviour {
         rayDirection.Normalize();
         Ray ray = new Ray(gameObject.transform.position, rayDirection);
         RaycastHit rayHit;
-
+        
         if (Physics.Raycast(ray, out rayHit, maxDistance, levelMask))
         {
+            print("wall found");
             return false;
         }
         return true;
@@ -40,7 +41,7 @@ public class YokaiController : MonoBehaviour {
         agent.nextPosition = transform.position;
         Vector3 velocity = agent.desiredVelocity + Physics.gravity;
         agent.velocity = velocity;
-        controller.Move(velocity * Time.deltaTime * 2);
+        controller.Move(velocity * Time.deltaTime * 1);
 
     }
 
@@ -150,8 +151,11 @@ public class YokaiController : MonoBehaviour {
         int maxDistance = 25;
         int maxDistanceSquared = maxDistance * maxDistance;
         Vector3 rayDirection = desiredObject.transform.localPosition - transform.localPosition;
+        print(rayDirection);
         Vector3 observerDirection = transform.TransformDirection(Vector3.forward);
+        print(observerDirection);
         float angleDot = Vector3.Dot(rayDirection, observerDirection);
+        print(angleDot);
         System.Boolean objectCloseToObserver = rayDirection.sqrMagnitude < maxDistanceSquared;
 
         //float crossangle = Vector3.Angle(enemyDirection, rayDirection);

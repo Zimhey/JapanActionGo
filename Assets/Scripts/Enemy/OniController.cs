@@ -81,6 +81,7 @@ public class OniController : YokaiController
 
             actorID = GetComponent<Actor>();
             GameManager.Instance.ActorStateChange(actorID, (int) state);
+            print(state);
         }
     }
 
@@ -103,7 +104,7 @@ public class OniController : YokaiController
 
         agent = GetComponent<NavMeshAgent>();
         agent.updatePosition = false;
-        agent.updateRotation = false;
+        agent.updateRotation = true;
         //agent.SetDestination(PlayerObject.transform.position);
     }
 
@@ -175,7 +176,7 @@ public class OniController : YokaiController
 
         if (awake == true)
         {
-            //TurnTowardsPlayer(PlayerObject);
+            TurnTowardsPlayer(PlayerObject);
         }
         
         if(FleeInu(LevelMask))
@@ -210,6 +211,7 @@ public class OniController : YokaiController
                 //print("reseting path");
             }
         }
+
         MoveYokai();
     }
 
@@ -230,7 +232,7 @@ public class OniController : YokaiController
         }
         else if (root != null)//awake == true && 
         {
-            //state = OniState.Patrol;
+            state = OniState.Patrol;
         }
     }
     
@@ -317,12 +319,10 @@ public class OniController : YokaiController
             GameObject foundFootprint = SeeFootprint(LevelMask);
             if (foundFootprint != null)
             {
-                print("following");
                 state = OniState.Follow;
             }
             else
             {
-                print("idling");
                 state = OniState.Idle;
             }
         }
