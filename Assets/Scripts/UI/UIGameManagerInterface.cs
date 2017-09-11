@@ -14,7 +14,8 @@ public enum GameUIScreens
     GameOverPanel,
     FirstPersonHUDPanel,
     VirtualRealityHUDPanel,
-    WinPanel
+    WinPanel,
+    AchievementPanel
 }
 
 public class UIGameManagerInterface : MonoBehaviour {
@@ -30,6 +31,7 @@ public class UIGameManagerInterface : MonoBehaviour {
     public GameObject FirstPersonHUDPanel;
     public GameObject VirtualRealityHUDPanel;
     public GameObject WinPanel;
+    public GameObject AchievementPanel;
 
     public GameUIScreens StartScreen;
 
@@ -101,6 +103,9 @@ public class UIGameManagerInterface : MonoBehaviour {
                 break;
             case GameUIScreens.WinPanel:
                 ShowWinMenu();
+                break;
+            case GameUIScreens.AchievementPanel:
+                ShowAchievementMenu();
                 break;
         }
     }
@@ -223,6 +228,12 @@ public class UIGameManagerInterface : MonoBehaviour {
     {
         camera.SetActive(true);
         CurrentPanel = WinPanel;
+    }
+
+    public void ShowAchievementMenu()
+    {
+        camera.SetActive(true);
+        CurrentPanel = AchievementPanel;
     }
 
 }
