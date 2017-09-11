@@ -340,6 +340,7 @@ GameObject:
   - component: {fileID: 195182205998125912}
   - component: {fileID: 136358452493297278}
   - component: {fileID: 114631532898733810}
+  - component: {fileID: 143879539404174848}
   m_Layer: 0
   m_Name: Oni
   m_TagString: Oni
@@ -1059,7 +1060,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1387403371569988}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 23.208786, y: -12.368792, z: 50.8536}
+  m_LocalPosition: {x: 46.586853, y: 8.938678, z: 9.362235}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4750672980381592}
@@ -1703,6 +1704,23 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.009942241, y: -0.0021860637, z: 0.0035198294}
     m_Extent: {x: 0.052654333, y: 0.03776027, z: 0.027851589}
   m_DirtyAABB: 0
+--- !u!143 &143879539404174848
+CharacterController:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1387403371569988}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 5.5
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 2.5, z: 0}
 --- !u!195 &195182205998125912
 NavMeshAgent:
   m_ObjectHideFlags: 1

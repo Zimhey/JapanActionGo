@@ -1,0 +1,2116 @@
+
+LICENSE SYSTEM [2017911 13:55:33] No start/stop license dates set
+
+LICENSE SYSTEM [2017911 13:55:33] Next license update check is after 2017-09-12T00:27:24
+
+Built from '2017.1/release' branch; Version is '2017.1.0f3 (472613c02cf7) revision 4662803'; Using compiler version '160040219'
+OS: 'Windows 10  (10.0.0) 64bit' Language: 'en' Physical Memory: 16242 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 0
+
+ COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Editor\Unity.exe
+-batchmode
+-nographics
+-logFile
+logRunSetup.txt
+-projectPath
+C:\Users\willi\OneDrive\Documents\GitHub\JapanActionGo_WwiseIntegrationTemp
+-executeMethod
+WwiseSetupWizard.RunModify
+Successfully changed project path to: C:\Users\willi\OneDrive\Documents\GitHub\JapanActionGo_WwiseIntegrationTemp
+C:/Users/willi/OneDrive/Documents/GitHub/JapanActionGo_WwiseIntegrationTemp
+Loading GUID <-> Path mappings...0.000071 seconds
+Loading Asset Database...0.010427 seconds
+Audio: FMOD Profiler initialized on port 54900
+AssetDatabase consistency checks...0.034456 seconds
+Refreshing native plugins compatible for Editor in 16.78 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2017.1.0f3 (472613c02cf7)
+Forcing GfxDevice: Null
+NullGfxDevice:
+    Version:  NULL 1.0 [1.0]
+    Renderer: Null Device
+    Vendor:   Unity Technologies
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Editor/Data/Mono/lib/mono/2.0'
+Mono config path = 'C:/Program Files/Unity/Editor/Data/Mono/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,defer=y,address=0.0.0.0:56872
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Program Files\Unity\Editor\Data\Managed\UnityEngine.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Managed\UnityEditor.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Managed\Unity.Locator.dll (this message is harmless)
+Refreshing native plugins compatible for Editor in 0.82 ms, found 5 plugins.
+Platform assembly: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\2.0\I18N.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\2.0\I18N.West.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Managed\Unity.DataContract.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\2.0\System.Core.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Managed\Unity.IvyParser.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\2.0\System.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\2.0\System.Xml.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\2.0\System.Configuration.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\PackageManager\Unity\PackageManager\2017.1.0\Unity.PackageManager.dll (this message is harmless)
+Initializing Unity.PackageManager (PackageManager) v2017.1.0 for Unity v2017.1.0f3
+Setting Android:Android v2017.1.0 for Unity v2017.1.0f3 to C:\Program Files\Unity\Editor\Data\PlaybackEngines\AndroidPlayer
+Setting WebGL:WebGL v2017.1.0 for Unity v2017.1.0f3 to C:\Program Files\Unity\Editor\Data\PlaybackEngines\WebGLSupport
+Setting Standalone:StandaloneWindows v2017.1.0 for Unity v2017.1.0f3 to C:\Program Files\Unity\Editor\Data\PlaybackEngines\windowsstandalonesupport
+Setting Advertisements v2017.1.0 for Unity v2017.1.0f3 to C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Advertisements
+  UnityEngine.Advertisements.dll (Extension) GUID: 739bbd9f364b4268874f9fd86ab3beef
+  Editor/UnityEditor.Advertisements.dll (Extension) GUID: 97decbdab0634cdd991f8d23ddf0dead
+Setting GUISystem v2017.1.0 for Unity v2017.1.0f3 to C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\GUISystem
+  UnityEngine.UI.dll (Extension) GUID: f5f67c52d1564df4a8936ccd202a3bd8
+  Standalone/UnityEngine.UI.dll (Extension) GUID: f70555f144d8491a825f0804e09c671c
+  Editor/UnityEditor.UI.dll (Extension) GUID: 80a3616ca19596e4da0f10f14d241e9f
+Setting UNetHLAPI v2017.1.0 for Unity v2017.1.0f3 to C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Networking
+  UnityEngine.Networking.dll (Extension) GUID: 870353891bb340e2b2a9c8707e7419ba
+  Standalone/UnityEngine.Networking.dll (Extension) GUID: dc443db3e92b4983b9738c1131f555cb
+  Editor/UnityEditor.Networking.dll (Extension) GUID: 5f32cd94baa94578a686d4b9d6b660f7
+Setting TestRunner v2017.1.0 for Unity v2017.1.0f3 to C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\TestRunner
+  Editor/UnityEditor.TestRunner.dll (Extension) GUID: 4113173d5e95493ab8765d7b08371de4
+  UnityEngine.TestRunner.dll (Extension) GUID: 53ebcfaa2e1e4e2dbc85882cd5a73fa1
+  net35/unity-custom/nunit.framework.dll (Extension) GUID: 4b3fa4bde7f1451a8218c03ee6a8ded8
+  portable/nunit.framework.dll (Extension) GUID: 405b9b51bb344a128608d968297df79c
+Setting Timeline v2017.1.0 for Unity v2017.1.0f3 to C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Timeline
+  RuntimeEditor/UnityEngine.Timeline.dll (Extension) GUID: 844F815391DB42D49455CBF1A7BFC434
+  Runtime/UnityEngine.Timeline.dll (Extension) GUID: 6a10b2909283487f913b00d94cd3faf5
+  Editor/UnityEditor.Timeline.dll (Extension) GUID: 7668179ede524d6396c8b7d84461ea29
+Setting TreeEditor v2017.1.0 for Unity v2017.1.0f3 to C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\TreeEditor
+  Editor/UnityEditor.TreeEditor.dll (Extension) GUID: adebbd281f1a4ef3a30be7f21937e02f
+Setting UnityAnalytics v2017.1.0 for Unity v2017.1.0f3 to C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityAnalytics
+  UnityEngine.Analytics.dll (Extension) GUID: 852E56802EB941638ACBB491814497B0
+  Editor/UnityEditor.Analytics.dll (Extension) GUID: 86f4de9468454445ac2f39e207fafa3a
+Setting UnityHoloLens v2017.1.0 for Unity v2017.1.0f3 to C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityHoloLens
+  Editor/UnityEditor.HoloLens.dll (Extension) GUID: 12fd8a0055b84bb59e84c9835a37e333
+  Runtime/UnityEngine.HoloLens.dll (Extension) GUID: f7b54ff4a43d4fcf81b4538b678e0bcc
+  RuntimeEditor/UnityEngine.HoloLens.dll (Extension) GUID: 1c6d1fbb51834b64847b1b73a75bfc77
+Setting UnityPurchasing v2017.1.0 for Unity v2017.1.0f3 to C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityPurchasing
+  UnityEngine.Purchasing.dll (Extension) GUID: 8E0CD8ED44D4412CBE0642067ABC9E44
+  Editor/UnityEditor.Purchasing.dll (Extension) GUID: 8382B2BB260241859771B69B7F377A8D
+Setting UnityVR v2017.1.0 for Unity v2017.1.0f3 to C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityVR
+  Editor/UnityEditor.VR.dll (Extension) GUID: 4ba2329b63d54f0187bcaa12486b1b0f
+Registering precompiled unity dll's ...
+Register platform support module: C:\Program Files\Unity\Editor\Data\PlaybackEngines\AndroidPlayer/UnityEditor.Android.Extensions.dll
+Register platform support module: C:\Program Files\Unity\Editor\Data\PlaybackEngines\WebGLSupport/UnityEditor.WebGL.Extensions.dll
+Register platform support module: C:\Program Files\Unity\Editor\Data\PlaybackEngines\windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.002289 seconds.
+Platform assembly: C:\Program Files\Unity\Editor\Data\PackageManager\Unity\PackageManager\2017.1.0\Unity.PackageManager.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\PackageManager\Unity\PackageManager\2017.1.0\Unity.PackageManager.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Advertisements\Editor\UnityEditor.Advertisements.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Advertisements\Editor\UnityEditor.Advertisements.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\GUISystem\Editor\UnityEditor.UI.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\GUISystem\Editor\UnityEditor.UI.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Networking\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Networking\UnityEngine.Networking.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Networking\Editor\UnityEditor.Networking.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Networking\Editor\UnityEditor.Networking.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\TestRunner\Editor\UnityEditor.TestRunner.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\TestRunner\Editor\UnityEditor.TestRunner.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\TestRunner\UnityEngine.TestRunner.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\TestRunner\UnityEngine.TestRunner.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\TestRunner\net35\unity-custom\nunit.framework.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\TestRunner\net35\unity-custom\nunit.framework.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Timeline\RuntimeEditor\UnityEngine.Timeline.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Timeline\RuntimeEditor\UnityEngine.Timeline.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Timeline\Editor\UnityEditor.Timeline.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Timeline\Editor\UnityEditor.Timeline.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\TreeEditor\Editor\UnityEditor.TreeEditor.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\TreeEditor\Editor\UnityEditor.TreeEditor.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityAnalytics\UnityEngine.Analytics.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityAnalytics\UnityEngine.Analytics.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityAnalytics\Editor\UnityEditor.Analytics.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityAnalytics\Editor\UnityEditor.Analytics.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityHoloLens\Editor\UnityEditor.HoloLens.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityHoloLens\Editor\UnityEditor.HoloLens.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityHoloLens\RuntimeEditor\UnityEngine.HoloLens.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityHoloLens\RuntimeEditor\UnityEngine.HoloLens.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityPurchasing\Editor\UnityEditor.Purchasing.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityPurchasing\Editor\UnityEditor.Purchasing.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityVR\Editor\UnityEditor.VR.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityVR\Editor\UnityEditor.VR.dll into Unity Child Domain
+Platform assembly: C:\Program Files\Unity\Editor\Data\Managed\UnityEditor.Graphs.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\Managed\UnityEditor.Graphs.dll into Unity Child Domain
+Platform assembly: C:\Program Files\Unity\Editor\Data\PlaybackEngines\AndroidPlayer\UnityEditor.Android.Extensions.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\PlaybackEngines\AndroidPlayer\UnityEditor.Android.Extensions.dll into Unity Child Domain
+Platform assembly: C:\Program Files\Unity\Editor\Data\PlaybackEngines\WebGLSupport\UnityEditor.WebGL.Extensions.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\PlaybackEngines\WebGLSupport\UnityEditor.WebGL.Extensions.dll into Unity Child Domain
+Platform assembly: C:\Program Files\Unity\Editor\Data\PlaybackEngines\windowsstandalonesupport\UnityEditor.WindowsStandalone.Extensions.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\PlaybackEngines\windowsstandalonesupport\UnityEditor.WindowsStandalone.Extensions.dll into Unity Child Domain
+Platform assembly: C:\Program Files\Unity\Editor\Data\Managed\ExCSS.Unity.dll (this message is harmless)
+Refreshing native plugins compatible for Editor in 1.01 ms, found 5 plugins.
+Preloading 2 native plugins for Editor in 1.52 ms.
+Platform assembly: C:\Program Files\Unity\Editor\Data\Managed\Mono.Cecil.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Managed\Unity.SerializationLogic.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\2.0\UnityScript.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Managed\Unity.Legacy.NRefactory.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\2.0\System.Xml.Linq.dll (this message is harmless)
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityVR\Editor\UnityEditor.iOS.Extensions.Xcode.dll (this message is harmless)
+Mono: successfully reloaded assembly
+- Completed reload, in  0.826 seconds
+Registering platform support modules:
+Platform assembly: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\2.0\Boo.Lang.Compiler.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\2.0\Boo.Lang.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\2.0\Boo.Lang.Parser.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\2.0\UnityScript.Lang.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\2.0\Mono.Security.dll (this message is harmless)
+Registered platform support modules in: 0.1031964s.
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Native extension for Android target not found
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Program Files\Unity\Editor\Data\Managed\UnityEngine.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Managed\UnityEditor.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Managed\Unity.Locator.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\2.0\I18N.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\2.0\I18N.West.dll (this message is harmless)
+Registering precompiled user dll's ...
+Platform assembly: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\2.0\System.Core.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Managed\Unity.DataContract.dll (this message is harmless)
+Registered in 0.034067 seconds.
+Non platform assembly: C:\Users\willi\OneDrive\Documents\GitHub\JapanActionGo_WwiseIntegrationTemp\Library\ScriptAssemblies\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading C:\Users\willi\OneDrive\Documents\GitHub\JapanActionGo_WwiseIntegrationTemp\Library\ScriptAssemblies\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Non platform assembly: C:\Users\willi\OneDrive\Documents\GitHub\JapanActionGo_WwiseIntegrationTemp\Library\ScriptAssemblies\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\willi\OneDrive\Documents\GitHub\JapanActionGo_WwiseIntegrationTemp\Library\ScriptAssemblies\Assembly-CSharp.dll into Unity Child Domain
+Non platform assembly: C:\Users\willi\OneDrive\Documents\GitHub\JapanActionGo_WwiseIntegrationTemp\Library\ScriptAssemblies\Assembly-CSharp-Editor-firstpass.dll (this message is harmless)
+Loading C:\Users\willi\OneDrive\Documents\GitHub\JapanActionGo_WwiseIntegrationTemp\Library\ScriptAssemblies\Assembly-CSharp-Editor-firstpass.dll into Unity Child Domain
+Non platform assembly: C:\Users\willi\OneDrive\Documents\GitHub\JapanActionGo_WwiseIntegrationTemp\Library\ScriptAssemblies\Assembly-CSharp-Editor.dll (this message is harmless)
+Loading C:\Users\willi\OneDrive\Documents\GitHub\JapanActionGo_WwiseIntegrationTemp\Library\ScriptAssemblies\Assembly-CSharp-Editor.dll into Unity Child Domain
+Platform assembly: C:\Program Files\Unity\Editor\Data\PackageManager\Unity\PackageManager\2017.1.0\Unity.PackageManager.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\PackageManager\Unity\PackageManager\2017.1.0\Unity.PackageManager.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Advertisements\Editor\UnityEditor.Advertisements.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Advertisements\Editor\UnityEditor.Advertisements.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\GUISystem\Editor\UnityEditor.UI.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\GUISystem\Editor\UnityEditor.UI.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Networking\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Networking\UnityEngine.Networking.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Networking\Editor\UnityEditor.Networking.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Networking\Editor\UnityEditor.Networking.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\TestRunner\Editor\UnityEditor.TestRunner.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\TestRunner\Editor\UnityEditor.TestRunner.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\TestRunner\UnityEngine.TestRunner.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\TestRunner\UnityEngine.TestRunner.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\TestRunner\net35\unity-custom\nunit.framework.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\TestRunner\net35\unity-custom\nunit.framework.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Timeline\RuntimeEditor\UnityEngine.Timeline.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Timeline\RuntimeEditor\UnityEngine.Timeline.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Timeline\Editor\UnityEditor.Timeline.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Timeline\Editor\UnityEditor.Timeline.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\TreeEditor\Editor\UnityEditor.TreeEditor.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\TreeEditor\Editor\UnityEditor.TreeEditor.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityAnalytics\UnityEngine.Analytics.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityAnalytics\UnityEngine.Analytics.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityAnalytics\Editor\UnityEditor.Analytics.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityAnalytics\Editor\UnityEditor.Analytics.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityHoloLens\Editor\UnityEditor.HoloLens.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityHoloLens\Editor\UnityEditor.HoloLens.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityHoloLens\RuntimeEditor\UnityEngine.HoloLens.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityHoloLens\RuntimeEditor\UnityEngine.HoloLens.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityPurchasing\Editor\UnityEditor.Purchasing.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityPurchasing\Editor\UnityEditor.Purchasing.dll into Unity Child Domain
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityVR\Editor\UnityEditor.VR.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityVR\Editor\UnityEditor.VR.dll into Unity Child Domain
+Platform assembly: C:\Program Files\Unity\Editor\Data\Managed\UnityEditor.Graphs.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\Managed\UnityEditor.Graphs.dll into Unity Child Domain
+Platform assembly: C:\Program Files\Unity\Editor\Data\PlaybackEngines\AndroidPlayer\UnityEditor.Android.Extensions.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\PlaybackEngines\AndroidPlayer\UnityEditor.Android.Extensions.dll into Unity Child Domain
+Platform assembly: C:\Program Files\Unity\Editor\Data\PlaybackEngines\WebGLSupport\UnityEditor.WebGL.Extensions.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\PlaybackEngines\WebGLSupport\UnityEditor.WebGL.Extensions.dll into Unity Child Domain
+Platform assembly: C:\Program Files\Unity\Editor\Data\PlaybackEngines\windowsstandalonesupport\UnityEditor.WindowsStandalone.Extensions.dll (this message is harmless)
+Loading C:\Program Files\Unity\Editor\Data\PlaybackEngines\windowsstandalonesupport\UnityEditor.WindowsStandalone.Extensions.dll into Unity Child Domain
+Non platform assembly: C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\15.0\Editor\SyntaxTree.VisualStudio.Unity.Bridge.dll (this message is harmless)
+Loading C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\15.0\Editor\SyntaxTree.VisualStudio.Unity.Bridge.dll into Unity Child Domain
+Non platform assembly: C:\Users\willi\OneDrive\Documents\GitHub\JapanActionGo_WwiseIntegrationTemp\Assets\Plugins\Mono.Data.dll (this message is harmless)
+Loading C:\Users\willi\OneDrive\Documents\GitHub\JapanActionGo_WwiseIntegrationTemp\Assets\Plugins\Mono.Data.dll into Unity Child Domain
+Non platform assembly: C:\Users\willi\OneDrive\Documents\GitHub\JapanActionGo_WwiseIntegrationTemp\Assets\Plugins\Mono.Data.Sqlite.dll (this message is harmless)
+Loading C:\Users\willi\OneDrive\Documents\GitHub\JapanActionGo_WwiseIntegrationTemp\Assets\Plugins\Mono.Data.Sqlite.dll into Unity Child Domain
+Non platform assembly: C:\Users\willi\OneDrive\Documents\GitHub\JapanActionGo_WwiseIntegrationTemp\Assets\Plugins\Mono.Data.SqliteClient.dll (this message is harmless)
+Loading C:\Users\willi\OneDrive\Documents\GitHub\JapanActionGo_WwiseIntegrationTemp\Assets\Plugins\Mono.Data.SqliteClient.dll into Unity Child Domain
+Non platform assembly: C:\Users\willi\OneDrive\Documents\GitHub\JapanActionGo_WwiseIntegrationTemp\Assets\Plugins\System.Data.dll (this message is harmless)
+Loading C:\Users\willi\OneDrive\Documents\GitHub\JapanActionGo_WwiseIntegrationTemp\Assets\Plugins\System.Data.dll into Unity Child Domain
+Platform assembly: C:\Program Files\Unity\Editor\Data\Managed\ExCSS.Unity.dll (this message is harmless)
+Refreshing native plugins compatible for Editor in 0.88 ms, found 5 plugins.
+Preloading 2 native plugins for Editor in 0.17 ms.
+Platform assembly: C:\Program Files\Unity\Editor\Data\Managed\Mono.Cecil.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Managed\Unity.SerializationLogic.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\2.0\UnityScript.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Managed\Unity.Legacy.NRefactory.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\2.0\System.Xml.Linq.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Managed\Unity.IvyParser.dll (this message is harmless)
+Non platform assembly: C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityVR\Editor\UnityEditor.iOS.Extensions.Xcode.dll (this message is harmless)
+Non platform assembly: C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\15.0\Editor\SyntaxTree.VisualStudio.Unity.Messaging.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\2.0\System.Transactions.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\2.0\Mono.Data.Tds.dll (this message is harmless)
+Mono: successfully reloaded assembly
+- Completed reload, in  0.898 seconds
+Initializing Unity.PackageManager (PackageManager) v2017.1.0 for Unity v2017.1.0f3
+Setting Android:Android v2017.1.0 for Unity v2017.1.0f3 to C:\Program Files\Unity\Editor\Data\PlaybackEngines\AndroidPlayer
+Setting WebGL:WebGL v2017.1.0 for Unity v2017.1.0f3 to C:\Program Files\Unity\Editor\Data\PlaybackEngines\WebGLSupport
+Setting Standalone:StandaloneWindows v2017.1.0 for Unity v2017.1.0f3 to C:\Program Files\Unity\Editor\Data\PlaybackEngines\windowsstandalonesupport
+Setting Advertisements v2017.1.0 for Unity v2017.1.0f3 to C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Advertisements
+  UnityEngine.Advertisements.dll (Extension) GUID: 739bbd9f364b4268874f9fd86ab3beef
+  Editor/UnityEditor.Advertisements.dll (Extension) GUID: 97decbdab0634cdd991f8d23ddf0dead
+Setting GUISystem v2017.1.0 for Unity v2017.1.0f3 to C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\GUISystem
+  UnityEngine.UI.dll (Extension) GUID: f5f67c52d1564df4a8936ccd202a3bd8
+  Standalone/UnityEngine.UI.dll (Extension) GUID: f70555f144d8491a825f0804e09c671c
+  Editor/UnityEditor.UI.dll (Extension) GUID: 80a3616ca19596e4da0f10f14d241e9f
+Setting UNetHLAPI v2017.1.0 for Unity v2017.1.0f3 to C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Networking
+  UnityEngine.Networking.dll (Extension) GUID: 870353891bb340e2b2a9c8707e7419ba
+  Standalone/UnityEngine.Networking.dll (Extension) GUID: dc443db3e92b4983b9738c1131f555cb
+  Editor/UnityEditor.Networking.dll (Extension) GUID: 5f32cd94baa94578a686d4b9d6b660f7
+Setting TestRunner v2017.1.0 for Unity v2017.1.0f3 to C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\TestRunner
+  Editor/UnityEditor.TestRunner.dll (Extension) GUID: 4113173d5e95493ab8765d7b08371de4
+  UnityEngine.TestRunner.dll (Extension) GUID: 53ebcfaa2e1e4e2dbc85882cd5a73fa1
+  net35/unity-custom/nunit.framework.dll (Extension) GUID: 4b3fa4bde7f1451a8218c03ee6a8ded8
+  portable/nunit.framework.dll (Extension) GUID: 405b9b51bb344a128608d968297df79c
+Setting Timeline v2017.1.0 for Unity v2017.1.0f3 to C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Timeline
+  RuntimeEditor/UnityEngine.Timeline.dll (Extension) GUID: 844F815391DB42D49455CBF1A7BFC434
+  Runtime/UnityEngine.Timeline.dll (Extension) GUID: 6a10b2909283487f913b00d94cd3faf5
+  Editor/UnityEditor.Timeline.dll (Extension) GUID: 7668179ede524d6396c8b7d84461ea29
+Setting TreeEditor v2017.1.0 for Unity v2017.1.0f3 to C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\TreeEditor
+  Editor/UnityEditor.TreeEditor.dll (Extension) GUID: adebbd281f1a4ef3a30be7f21937e02f
+Setting UnityAnalytics v2017.1.0 for Unity v2017.1.0f3 to C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityAnalytics
+  UnityEngine.Analytics.dll (Extension) GUID: 852E56802EB941638ACBB491814497B0
+  Editor/UnityEditor.Analytics.dll (Extension) GUID: 86f4de9468454445ac2f39e207fafa3a
+Setting UnityHoloLens v2017.1.0 for Unity v2017.1.0f3 to C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityHoloLens
+  Editor/UnityEditor.HoloLens.dll (Extension) GUID: 12fd8a0055b84bb59e84c9835a37e333
+  Runtime/UnityEngine.HoloLens.dll (Extension) GUID: f7b54ff4a43d4fcf81b4538b678e0bcc
+  RuntimeEditor/UnityEngine.HoloLens.dll (Extension) GUID: 1c6d1fbb51834b64847b1b73a75bfc77
+Setting UnityPurchasing v2017.1.0 for Unity v2017.1.0f3 to C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityPurchasing
+  UnityEngine.Purchasing.dll (Extension) GUID: 8E0CD8ED44D4412CBE0642067ABC9E44
+  Editor/UnityEditor.Purchasing.dll (Extension) GUID: 8382B2BB260241859771B69B7F377A8D
+Setting UnityVR v2017.1.0 for Unity v2017.1.0f3 to C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\UnityVR
+  Editor/UnityEditor.VR.dll (Extension) GUID: 4ba2329b63d54f0187bcaa12486b1b0f
+Registering platform support modules:
+Platform assembly: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\2.0\Boo.Lang.Compiler.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\2.0\Boo.Lang.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\2.0\Boo.Lang.Parser.dll (this message is harmless)
+Platform assembly: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\2.0\UnityScript.Lang.dll (this message is harmless)
+Registered platform support modules in: 0.0606333s.
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Native extension for Android target not found
+Validating Project structure ... 0.018706 seconds.
+Refresh: detecting if any assets need to be imported or removed ... 
+Hashing assets ... 0.833 seconds
+  file open: 0.138 seconds (1938 files)
+  file read: 0.166 seconds (384.171 MB)
+  hash: 0.627 seconds
+----- Compute hash(es) for 969 asset(s).
+----- Asset named Assets/AIMainMenuTestLevel.unity is skipped as no actual change.
+----- Asset named Assets/AssetScene.unity is skipped as no actual change.
+----- Asset named Assets/FirstPersonCharacter/Audio/Footstep01.wav is skipped as no actual change.
+----- Asset named Assets/FirstPersonCharacter/Audio/Footstep02.wav is skipped as no actual change.
+----- Asset named Assets/FirstPersonCharacter/Audio/Footstep03.wav is skipped as no actual change.
+----- Asset named Assets/FirstPersonCharacter/Audio/Footstep04.wav is skipped as no actual change.
+----- Asset named Assets/FirstPersonCharacter/Audio/Jump.wav is skipped as no actual change.
+----- Asset named Assets/FirstPersonCharacter/Audio/Land.wav is skipped as no actual change.
+----- Asset named Assets/FirstPersonCharacter/FirstPersonCharacterGuidelines.txt is skipped as no actual change.
+----- Asset named Assets/FirstPersonCharacter/Prefabs/FPSController.prefab is skipped as no actual change.
+----- Asset named Assets/FirstPersonCharacter/Prefabs/RigidBodyFPSController.prefab is skipped as no actual change.
+----- Asset named Assets/FirstPersonCharacter/Scripts/FirstPersonController.cs is skipped as no actual change.
+----- Asset named Assets/FirstPersonCharacter/Scripts/HeadBob.cs is skipped as no actual change.
+----- Asset named Assets/FirstPersonCharacter/Scripts/MouseLook.cs is skipped as no actual change.
+----- Asset named Assets/FirstPersonCharacter/Scripts/RigidbodyFirstPersonController.cs is skipped as no actual change.
+----- Asset named Assets/MainMenu.unity is skipped as no actual change.
+----- Asset named Assets/MainScene.unity is skipped as no actual change.
+----- Asset named Assets/Materials/Asphalt.mat is skipped as no actual change.
+----- Asset named Assets/Materials/Basic_Brick.mat is skipped as no actual change.
+----- Asset named Assets/Materials/Basic_Dark_Brick.mat is skipped as no actual change.
+----- Asset named Assets/Materials/Brushed_Metal_Bright.mat is skipped as no actual change.
+----- Asset named Assets/Materials/Brushed_Metal_Circle_Bright.mat is skipped as no actual change.
+----- Asset named Assets/Materials/Brushed_Metal_Circle_Dark.mat is skipped as no actual change.
+----- Asset named Assets/Materials/Brushed_Metal_Circle_Light.mat is skipped as no actual change.
+----- Asset named Assets/Materials/Brushed_Metal_Circle_Mixed1.mat is skipped as no actual change.
+----- Asset named Assets/Materials/Brushed_Metal_Circle_Mixed2.mat is skipped as no actual change.
+----- Asset named Assets/Materials/Brushed_Metal_Dark.mat is skipped as no actual change.
+----- Asset named Assets/Materials/Brushed_Metal_Light.mat is skipped as no actual change.
+----- Asset named Assets/Materials/Chalk.mat is skipped as no actual change.
+----- Asset named Assets/Materials/Compass.mat is skipped as no actual change.
+----- Asset named Assets/Materials/Concrete.mat is skipped as no actual change.
+----- Asset named Assets/Materials/Connector.mat is skipped as no actual change.
+----- Asset named Assets/Materials/Dark_Asphalt.mat is skipped as no actual change.
+----- Asset named Assets/Materials/Dark_Concrete.mat is skipped as no actual change.
+----- Asset named Assets/Materials/Dark_Sand.mat is skipped as no actual change.
+----- Asset named Assets/Materials/New Material 1.mat is skipped as no actual change.
+----- Asset named Assets/Materials/New Material.mat is skipped as no actual change.
+----- Asset named Assets/Materials/Oni.mat is skipped as no actual change.
+----- Asset named Assets/Materials/Pattern_Brick.mat is skipped as no actual change.
+----- Asset named Assets/Materials/Pillar.mat is skipped as no actual change.
+----- Asset named Assets/Materials/Puzzle.mat is skipped as no actual change.
+----- Asset named Assets/Materials/Sand.mat is skipped as no actual change.
+----- Asset named Assets/Materials/SpikeMat.mat is skipped as no actual change.
+----- Asset named Assets/Materials/Stun.mat is skipped as no actual change.
+----- Asset named Assets/Materials/Swirly_Brick.mat is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Asphalt/Asphalt_Dark_Diffuse_2k.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Asphalt/Asphalt_Diffuse_2k.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Asphalt/Asphalt_Normal_2k.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Asphalt/Asphalt_Specular_2k.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Brick/Basic_Brick_Darker_Diffuse_2k.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Brick/Basic_Brick_Diffuse_2k.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Brick/Basic_Brick_Displacement_2k.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Brick/Basic_Brick_Normal_2k.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Brick/Basic_Brick_Specular_2k.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Brick/Pattern_Brick_Diffuse_2k.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Brick/Pattern_Brick_Displacement_2k.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Brick/Pattern_Brick_Normal_2k.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Brick/Pattern_Brick_Specular_2k.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Brick/Swirly_Brick_Diffuse_2k.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Brick/Swirly_Brick_Normal_2k.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Brick/Swirly_Brick_Specular_2k.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Chalk/Chalk_Diffuse.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Chalk/Chalk_Green_Diffuse.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Chalk/Chalk_Normal.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Chalk/Chalk_Specular.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Compass/Compass.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Compass/Compass_Spec.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Concrete/Concrete_Dark_Diffuse.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Concrete/Concrete_Diffuse.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Concrete/Concrete_Normal.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Concrete/Concrete_Specular.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Metal/Brushed Metal_Bright_Diffuse.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Metal/Brushed Metal_Dark_Diffuse.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Metal/Brushed Metal_Light_Diffuse.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Metal/Brushed Metal_Normal.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Metal/Brushed Metal_Specular.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Metal/Brushed_Circle_Pattern_Dark_Diffuse.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Metal/Brushed_Circle_Pattern_Light_Diffuse.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Metal/Brushed_Circle_Pattern_Mixed1_Diffuse.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Metal/Brushed_Circle_Pattern_Mixed2_Diffuse.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Metal/Brushed_Circle_Pattern_Normal.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Metal/Brushed_Circle_Pattern_Specular.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Sand/Sand_Dark_Diffuse_2k.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Sand/Sand_Diffuse_2k.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Sand/Sand_Normal_2k.png is skipped as no actual change.
+----- Asset named Assets/Materials/Textures/Sand/Sand_Specular_2k.png is skipped as no actual change.
+----- Asset named Assets/Materials/Trap.mat is skipped as no actual change.
+----- Asset named Assets/Materials/Wall.mat is skipped as no actual change.
+----- Asset named Assets/MazeGenerator.unity is skipped as no actual change.
+----- Asset named Assets/Models/Animations/SkeletonAnims.controller is skipped as no actual change.
+----- Asset named Assets/Models/Animations/TakaController.controller is skipped as no actual change.
+----- Asset named Assets/Models/Compass.fbx is skipped as no actual change.
+----- Asset named Assets/Models/Materials/No Name.mat is skipped as no actual change.
+----- Asset named Assets/Models/Materials/l arm.mat is skipped as no actual change.
+----- Asset named Assets/Models/Materials/l leg.mat is skipped as no actual change.
+----- Asset named Assets/Models/Materials/r arm.mat is skipped as no actual change.
+----- Asset named Assets/Models/Materials/r leg.mat is skipped as no actual change.
+----- Asset named Assets/Models/Materials/skull.mat is skipped as no actual change.
+----- Asset named Assets/Models/Materials/torso.mat is skipped as no actual change.
+----- Asset named Assets/Models/Traps/Spikes.fbx is skipped as no actual change.
+----- Asset named Assets/Models/skeleton rig.FBX is skipped as no actual change.
+----- Asset named Assets/Models/skeleton_attack.FBX is skipped as no actual change.
+----- Asset named Assets/Models/skeleton_walk.FBX is skipped as no actual change.
+----- Asset named Assets/NavMeshComponents/Editor/NavMeshComponentsGUIUtility.cs is skipped as no actual change.
+----- Asset named Assets/NavMeshComponents/Editor/NavMeshLinkEditor.cs is skipped as no actual change.
+----- Asset named Assets/NavMeshComponents/Editor/NavMeshModifierEditor.cs is skipped as no actual change.
+----- Asset named Assets/NavMeshComponents/Editor/NavMeshModifierVolumeEditor.cs is skipped as no actual change.
+----- Asset named Assets/NavMeshComponents/Editor/NavMeshSurfaceEditor.cs is skipped as no actual change.
+----- Asset named Assets/NavMeshComponents/Scripts/NavMeshLink.cs is skipped as no actual change.
+----- Asset named Assets/NavMeshComponents/Scripts/NavMeshModifier.cs is skipped as no actual change.
+----- Asset named Assets/NavMeshComponents/Scripts/NavMeshModifierVolume.cs is skipped as no actual change.
+----- Asset named Assets/NavMeshComponents/Scripts/NavMeshSurface.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Editor/AndroidManifest.OVRSubmission.xml is skipped as no actual change.
+----- Asset named Assets/OVR/Editor/OVRBuild.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Editor/OVRManifestPreprocessor.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Editor/OVRMoonlightLoader.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Editor/OVRPluginUpdater.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Editor/OVRPluginUpdaterStub.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Editor/OVRScreenshotWizard.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Materials/Arrow.mat is skipped as no actual change.
+----- Asset named Assets/OVR/Materials/CubeMaterial.mat is skipped as no actual change.
+----- Asset named Assets/OVR/Materials/GearVrController/GearVrControllerMat_1024.mat is skipped as no actual change.
+----- Asset named Assets/OVR/Materials/GearVrController/GearVrControllerMat_128.mat is skipped as no actual change.
+----- Asset named Assets/OVR/Materials/cursor_timer_material.mat is skipped as no actual change.
+----- Asset named Assets/OVR/Materials/gaze_cursor.mat is skipped as no actual change.
+----- Asset named Assets/OVR/Meshes/Cone.obj is skipped as no actual change.
+----- Asset named Assets/OVR/Meshes/GearVrController/GearVrController.fbx is skipped as no actual change.
+----- Asset named Assets/OVR/Meshes/GearVrController/Materials/malibuController_color_1024.mat is skipped as no actual change.
+----- Asset named Assets/OVR/Plugins/1.14.1/Android/OVRPlugin.aar is skipped as no actual change.
+----- Asset named Assets/OVR/Plugins/1.14.1/OSXUniversal/OVRPlugin.bundle/Contents/Info.plist is skipped as no actual change.
+----- Asset named Assets/OVR/Plugins/1.14.1/OSXUniversal/OVRPlugin.bundle/Contents/MacOS/OVRPlugin is skipped as no actual change.
+----- Asset named Assets/OVR/Plugins/1.14.1/Win/OVRPlugin.dll is skipped as no actual change.
+----- Asset named Assets/OVR/Plugins/1.14.1/Win64/OVRPlugin.dll is skipped as no actual change.
+----- Asset named Assets/OVR/Plugins/placeholder.txt is skipped as no actual change.
+----- Asset named Assets/OVR/Prefabs/Cursor_Timer.prefab is skipped as no actual change.
+----- Asset named Assets/OVR/Prefabs/GearVrController.prefab is skipped as no actual change.
+----- Asset named Assets/OVR/Prefabs/OVRCameraRig.prefab is skipped as no actual change.
+----- Asset named Assets/OVR/Prefabs/OVRCubemapCaptureProbe.prefab is skipped as no actual change.
+----- Asset named Assets/OVR/Prefabs/OVRPlayerController.prefab is skipped as no actual change.
+----- Asset named Assets/OVR/Resources/Underlay Impostor.shader is skipped as no actual change.
+----- Asset named Assets/OVR/Resources/Underlay Transparent Occluder.shader is skipped as no actual change.
+----- Asset named Assets/OVR/Resources/Unlit Transparent Color.shader is skipped as no actual change.
+----- Asset named Assets/OVR/Scenes/Cubes.unity is skipped as no actual change.
+----- Asset named Assets/OVR/Scenes/GearVrControllerTest.unity is skipped as no actual change.
+----- Asset named Assets/OVR/Scenes/Room.unity is skipped as no actual change.
+----- Asset named Assets/OVR/Scenes/Trivial.unity is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/OVRBoundary.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/OVRCameraRig.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/OVRCommon.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/OVRDebugHeadController.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/OVRDisplay.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/OVRHaptics.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/OVRHapticsClip.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/OVRInput.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/OVRLint.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/OVRManager.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/OVROnCompleteListener.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/OVROverlay.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/OVRPlatformMenu.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/OVRPlugin.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/OVRProfile.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/OVRTouchpad.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/OVRTracker.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/Util/OVRChromaticAberration.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/Util/OVRCubemapCapture.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/Util/OVRDebugInfo.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/Util/OVRGearVrController.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/Util/OVRGearVrControllerTest.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/Util/OVRGrabbable.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/Util/OVRGrabber.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/Util/OVRGridCube.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/Util/OVRModeParms.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/Util/OVRMonoscopic.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/Util/OVRPlayerController.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/Util/OVRRTOverlayConnector.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/Util/OVRResetOrientation.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/Util/OVRSceneSampleController.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/Util/OVRScreenFade.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Scripts/Util/OVRWaitCursor.cs is skipped as no actual change.
+----- Asset named Assets/OVR/Shaders/OVRColorRampAlpha.shader is skipped as no actual change.
+----- Asset named Assets/OVR/Shaders/Unlit Crosshair.shader is skipped as no actual change.
+----- Asset named Assets/OVR/Textures/Black.png is skipped as no actual change.
+----- Asset named Assets/OVR/Textures/GearVrController/GearVrController_ao_1024.tif is skipped as no actual change.
+----- Asset named Assets/OVR/Textures/GearVrController/GearVrController_ao_128.tif is skipped as no actual change.
+----- Asset named Assets/OVR/Textures/GearVrController/GearVrController_color_1024.tif is skipped as no actual change.
+----- Asset named Assets/OVR/Textures/GearVrController/GearVrController_color_128.tif is skipped as no actual change.
+----- Asset named Assets/OVR/Textures/GearVrController/GearVrController_normal_1024.tif is skipped as no actual change.
+----- Asset named Assets/OVR/Textures/GearVrController/GearVrController_normal_128.tif is skipped as no actual change.
+----- Asset named Assets/OVR/Textures/GearVrController/GearVrController_roughness_1024.tif is skipped as no actual change.
+----- Asset named Assets/OVR/Textures/GearVrController/GearVrController_roughness_128.tif is skipped as no actual change.
+----- Asset named Assets/OVR/Textures/Icons/OculusIcon.png is skipped as no actual change.
+----- Asset named Assets/OVR/Textures/Logos/OculusLogo.png is skipped as no actual change.
+----- Asset named Assets/OVR/Textures/Logos/OculusLogoSplash.png is skipped as no actual change.
+----- Asset named Assets/OVR/Textures/color_ramp_timer.tga is skipped as no actual change.
+----- Asset named Assets/OVR/Textures/cube_texture.png is skipped as no actual change.
+----- Asset named Assets/OVR/Textures/gaze_cursor.png is skipped as no actual change.
+----- Asset named Assets/OVR/Textures/gaze_cursor_timer.tga is skipped as no actual change.
+----- Asset named Assets/PauseMenu.unity is skipped as no actual change.
+----- Asset named Assets/Plugins/Mono.Data.Sqlite.dll is skipped as no actual change.
+----- Asset named Assets/Plugins/Mono.Data.SqliteClient.dll is skipped as no actual change.
+----- Asset named Assets/Plugins/Mono.Data.dll is skipped as no actual change.
+----- Asset named Assets/Plugins/OVRGamepad.bundle/Contents/Info.plist is skipped as no actual change.
+----- Asset named Assets/Plugins/OVRGamepad.bundle/Contents/MacOS/OVRGamepad is skipped as no actual change.
+----- Asset named Assets/Plugins/System.Data.dll is skipped as no actual change.
+----- Asset named Assets/Plugins/sqlite3.def is skipped as no actual change.
+----- Asset named Assets/Plugins/sqlite3.dll is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Enemy/InuFootprint.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Enemy/OkuriInu.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Enemy/Oni.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Enemy/OniFootprint.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Enemy/OniWrapper.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Enemy/PatrolNode.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Enemy/TakaNyudo.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Level/CellLog.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Level/CellTextPrefab.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Level/CornerWallPrefab.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Level/Ladder.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Level/Lantern.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Level/NoWallPrefab.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Level/OneWallPrefab.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Level/OrphanTextPrefab.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Level/SafeZone.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Level/ThreeWallPrefab.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Level/TwoWallPrefab.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Pickups/ChalkPickup.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Pickups/CompassPickup.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Pickups/MirrorPickup.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Pickups/OfudaPickup.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Player/ChalkMark.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Player/Compass.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Player/FPS_Player.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Player/Footprint.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Player/Oculus_Player.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Player/OfudaProjectile.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Player/SteamVR_Player.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Player/old/Steam_VR_Player.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Puzzle/Puzzle.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Traps/CrushingTrapPrefab.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Traps/FloorTrapPrefab.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Traps/Lever.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/Traps/SpikeTrapPrefab.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/UI/MainMenuPrefab.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/UI/SampleAchievement.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/UI/UIPrefab.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/UI/UserInterfacePrefab.prefab is skipped as no actual change.
+----- Asset named Assets/Resources/Prefabs/UI/VRUserInterfacePrefab.prefab is skipped as no actual change.
+----- Asset named Assets/Scenes/AITestLevel.unity is skipped as no actual change.
+----- Asset named Assets/Scenes/AITestLevel/NavMesh.asset is skipped as no actual change.
+----- Asset named Assets/Scenes/AssetScene.unity is skipped as no actual change.
+----- Asset named Assets/Scenes/GameManagerTest.unity is skipped as no actual change.
+----- Asset named Assets/Scenes/MainScene.unity is skipped as no actual change.
+----- Asset named Assets/Scenes/MazeGenerationTest.unity is skipped as no actual change.
+----- Asset named Assets/Scenes/StartingRoom.unity is skipped as no actual change.
+----- Asset named Assets/Scenes/TrapTestScene.unity is skipped as no actual change.
+----- Asset named Assets/Scenes/TrapTestScene/NavMesh-Maze.asset is skipped as no actual change.
+----- Asset named Assets/Scenes/TrapTestScene/NavMesh-Section 1.asset is skipped as no actual change.
+----- Asset named Assets/Scenes/Tutorial1.unity is skipped as no actual change.
+----- Asset named Assets/Scenes/Tutorial2.unity is skipped as no actual change.
+----- Asset named Assets/Scenes/Tutorial3.unity is skipped as no actual change.
+----- Asset named Assets/Scenes/Tutorial3/NavMesh.asset is skipped as no actual change.
+----- Asset named Assets/Scenes/Tutorial4.unity is skipped as no actual change.
+----- Asset named Assets/Scenes/Tutorial4/NavMesh.asset is skipped as no actual change.
+----- Asset named Assets/Scenes/VRMenuTest.unity is skipped as no actual change.
+----- Asset named Assets/Scripts/Achievement/Achievement.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Achievement/AchievementManager.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Actor.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Actors.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Analytics/AnalyticsManager.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Analytics/CellLog.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/AttachTo.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Enemy/InuController.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Enemy/NodeScript.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Enemy/OniController.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Enemy/TakaController.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Enemy/YokaiController.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/FootprintDecay.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/FootprintList.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/FootprintPlacer.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/GameManager.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/ItemType.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Level/ActorGenerator.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Level/DFSMazeGenerator.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Level/Ladder.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Level/MazeGenerator.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Level/MazeNode.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Level/Pickup.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Level/RecursiveMazeGenerator.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Level/SafeZoneCollider.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Level/TestObject.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Level/TutorialGenerator.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Old/CameraController.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Old/PlayerController.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Player/AttachVRCameraRigTo.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Player/CompassPin.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Player/FootprintTrigger.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Player/Inventory.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Player/LoadLevel.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Player/Oculus/SamplePlayerController.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Player/OfudaProjectile.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Player/PlayerActions.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Player/VRPlayerController.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Traps/Lever.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Traps/PressurePlate.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/Traps/Trap.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/UI/ChalkCounter.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/UI/CompassScript.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/UI/KeyBindingScript.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/UI/LoadSceneOnClick.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/UI/OfudaCounter.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/UI/QuitOnClick.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/UI/SelectOnInput.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/UI/Timer.cs is skipped as no actual change.
+----- Asset named Assets/Scripts/UI/UIGameManagerInterface.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/CrossPlatformInputGuidelines.txt is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Prefabs/CarTiltControls.prefab is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Prefabs/DualTouchControls.prefab is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Prefabs/MobileAircraftControls.prefab is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Prefabs/MobileSingleStickControl.prefab is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Prefabs/MobileTiltControlRig.prefab is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Scripts/AxisTouchButton.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Scripts/ButtonHandler.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Scripts/CrossPlatformInputManager.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Scripts/InputAxisScrollbar.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Scripts/Joystick.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Scripts/MobileControlRig.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Scripts/PlatformSpecific/MobileInput.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Scripts/PlatformSpecific/StandaloneInput.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Scripts/TiltInput.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Scripts/TouchPad.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Scripts/VirtualInput.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Sprites/ButtonAcceleratorOverSprite.png is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Sprites/ButtonAcceleratorUpSprite.png is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Sprites/ButtonArrowOverSprite.png is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Sprites/ButtonArrowUpSprite.png is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Sprites/ButtonBrakeOverSprite.png is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Sprites/ButtonBrakeUpSprite.png is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Sprites/ButtonCameraCycleUpSprite.png is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Sprites/ButtonResetSprite.png is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Sprites/ButtonSpacebarSprite.png is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Sprites/ButtonThumbstickOverSprite.png is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Sprites/ButtonThumbstickUpSprite.png is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Sprites/ButtonTimescaleFullUpSprite.png is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Sprites/ButtonTimescaleSlowUpSprite.png is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Sprites/SliderBackgroundSprite.png is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Sprites/SliderHandleSprite.png is skipped as no actual change.
+----- Asset named Assets/Standard Assets/CrossPlatformInput/Sprites/TouchpadSprite.png is skipped as no actual change.
+----- Asset named Assets/Standard Assets/Editor/CrossPlatformInput/CrossPlatformInputInitialize.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/Utility/ActivateTrigger.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/Utility/AlphaButtonClickMask.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/Utility/AutoMobileShaderSwitch.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/Utility/AutoMoveAndRotate.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/Utility/CameraRefocus.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/Utility/CurveControlledBob.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/Utility/DragRigidbody.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/Utility/DynamicShadowSettings.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/Utility/EventSystemChecker.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/Utility/FOVKick.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/Utility/FPSCounter.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/Utility/FollowTarget.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/Utility/ForcedReset.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/Utility/LerpControlledBob.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/Utility/ObjectResetter.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/Utility/ParticleSystemDestroyer.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/Utility/PlatformSpecificContent.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/Utility/Prefabs/FramerateCounter.prefab is skipped as no actual change.
+----- Asset named Assets/Standard Assets/Utility/SimpleActivatorMenu.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/Utility/SimpleMouseRotator.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/Utility/SmoothFollow.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/Utility/TimedObjectActivator.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/Utility/TimedObjectDestructor.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/Utility/WaypointCircuit.cs is skipped as no actual change.
+----- Asset named Assets/Standard Assets/Utility/WaypointProgressTracker.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Editor/SteamVR_Editor.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Editor/SteamVR_Preferences.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Editor/SteamVR_RenderModelEditor.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Editor/SteamVR_Settings.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Editor/SteamVR_SkyboxEditor.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Editor/SteamVR_Update.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Extras/SteamVR_GazeTracker.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Extras/SteamVR_LaserPointer.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Extras/SteamVR_Teleporter.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Extras/SteamVR_TestIK.unity is skipped as no actual change.
+----- Asset named Assets/SteamVR/Extras/SteamVR_TestThrow.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Extras/SteamVR_TestThrow.unity is skipped as no actual change.
+----- Asset named Assets/SteamVR/Extras/SteamVR_TestTrackedCamera.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Extras/SteamVR_TestTrackedCamera.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/Extras/SteamVR_TestTrackedCamera.unity is skipped as no actual change.
+----- Asset named Assets/SteamVR/Extras/SteamVR_TrackedController.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Icons/vr_interaction_system.png is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Icons/vr_interaction_system_feet.png is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Icons/vr_interaction_system_left_hand.png is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Icons/vr_interaction_system_left_hand_question.png is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Icons/vr_interaction_system_right_hand.png is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Icons/vr_interaction_system_right_hand_question.png is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Icons/vr_interaction_system_unknown_hand.png is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Materials/FallbackHandIndicator.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Materials/HoverHighlight.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Materials/SeeThru.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Materials/SteamVRControllerModel.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Prefabs/BlankController.prefab is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Prefabs/Player.prefab is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/BodyCollider.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/CircularDrive.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/ComplexThrowable.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/ControllerHoverHighlight.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/CustomEvents.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/DebugUI.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/DestroyOnDetachedFromHand.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/DestroyOnParticleSystemDeath.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/DestroyOnTriggerEnter.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/DistanceHaptics.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/DontDestroyOnLoad.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/EnumFlags.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/FallbackCameraController.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/Hand.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/HapticRack.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/HideOnHandFocusLost.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/IgnoreHovering.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/InputModule.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/Interactable.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/InteractableButtonEvents.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/InteractableHoverEvents.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/ItemPackage.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/ItemPackageReference.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/ItemPackageSpawner.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/LinearAnimation.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/LinearAnimator.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/LinearAudioPitch.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/LinearBlendshape.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/LinearDisplacement.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/LinearDrive.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/LinearMapping.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/PlaySound.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/Player.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/SeeThru.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/SleepOnAwake.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/SoundDeparent.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/SoundPlayOneshot.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/SpawnAndAttachAfterControllerIsTracking.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/SpawnAndAttachToHand.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/SpawnRenderModel.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/Throwable.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/UIElement.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/Unparent.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/Util.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Scripts/VelocityEstimator.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Shaders/SeeThru.shader is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Core/Shaders/Silhouette.shader is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Hints/Materials/ControllerButtonHints.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Hints/Materials/ControllerTextHintAnchor.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Hints/Materials/ControllerTextHintLine.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Hints/Prefabs/ControllerTextHint.prefab is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Hints/Scripts/ControllerButtonHints.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Hints/Shaders/ControllerButtonHints.shader is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Hints/Textures/HintBackground.png is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/InteractionSystem.pdf is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Animators/LongbowAnimationController.controller is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Materials/ArcheryTargetWeeble.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Materials/Arrow.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Materials/ArrowGlint.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Materials/BalloonColor.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Materials/BalloonPop.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Materials/BalloonPopLine.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Materials/ItemPickupOutline.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Materials/ItemPickupOutlineThick.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Materials/Longbow.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Materials/LongbowNotch.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Materials/LongbowString.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Materials/TorchFire.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Materials/TorchHead.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Materials/TorchShaft.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Models/Arrow.fbx is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Models/Balloon.fbx is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Models/Longbow.fbx is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/PhysicMaterials/ArcheryTargetPhysMaterial.physicMaterial is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Prefabs/ArcheryWeeble.prefab is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Prefabs/Arrow.prefab is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Prefabs/ArrowHand.prefab is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Prefabs/Balloon.prefab is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Prefabs/BalloonPop.prefab is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Prefabs/BalloonPopNoSound.prefab is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Prefabs/BalloonSpawner.prefab is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Prefabs/FireSmall.prefab is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Prefabs/FireTiny.prefab is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Prefabs/FireWhip.prefab is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Prefabs/Longbow.prefab is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Prefabs/LongbowItemPackage.prefab is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Prefabs/LongbowOutline.prefab is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Prefabs/LongbowPreview.prefab is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Prefabs/Torch.prefab is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Scripts/ArcheryTarget.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Scripts/Arrow.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Scripts/ArrowHand.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Scripts/ArrowheadRotation.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Scripts/Balloon.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Scripts/BalloonColliders.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Scripts/BalloonHapticBump.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Scripts/BalloonSpawner.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Scripts/ExplosionWobble.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Scripts/FireSource.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Scripts/Longbow.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Scripts/SoundBowClick.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowAir01.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowAir02.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowAir03.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowAir04.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowAir05.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowAir06.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowAir07.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowAir08.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowAir09.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowFallGround01.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowFallGround02.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowFallGround03.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowFallGround04.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowFallGround05.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowFallGround06.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowFallGround07.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowFireLoop01.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowHit01.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowHit02.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowHit03.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowHit04.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowHit05.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowHit06.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowIgnite01.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowLaunchFire01.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowLaunchFire02.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowLaunchFire03.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowLaunchFire04.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowLaunchFire05.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowLaunchFire06.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowLaunchFire07.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowLaunchFire08.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowLaunchFire09.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowLaunchFire10.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowLaunchFire11.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowLaunchFire12.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowLaunchFire13.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowNock01.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowNock02.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowNock03.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowNock04.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowNock05.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowNock06.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowNock07.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowNock08.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowNock09.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowNock10.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowNock11.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowNock12.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowNock13.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowNock14.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowNock15.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowNock16.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowNock17.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowRelease01.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowRelease02.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowRelease03.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowRelease04.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowRelease05.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowRelease06.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowRelease07.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowRelease08.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowRelease09.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowSpawn01.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowSpawn02.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowSpawn03.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowSpawn04.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowSpawn05.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowSpawn06.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowSpawn07.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/ArrowSpawn08.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/BalloonBounce01.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/BalloonBounce02.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/BalloonBounce03.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/BalloonBounce04.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/BalloonBounce05.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/BalloonBounce07.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/BalloonInflate01.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/BalloonPop01.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/BalloonPop02.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/BalloonPop03.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/BalloonPop04.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/BalloonPop05.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/BalloonPop06.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/BalloonPop07.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/BalloonRubber01.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/BalloonRubber02.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/BalloonRubber03.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/LongbowPullBack01.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/LongbowPullBack02.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/LongbowPullBack03.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/LongbowPullBack04.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/LongbowPullBack05.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/LongbowPullBack06.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/LongbowPullBack07.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/LongbowPullBack08.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/LongbowPullBack09.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/LongbowPullBack10.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/LongbowPullBack11.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/LongbowPullBack12.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/LongbowPullBack13.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/LongbowPullBack14.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/LongbowPullBack15.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/LongbowPullBack16.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/LongbowPullBackclick_01.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/MasterLongbowMix.mixer is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/TorchFireLoop01.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/TorchFireLoop02.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/TorchFireLoop03.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Sounds/TorchFireLoop04.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Textures/ArcheryWeebleTarget.png is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Textures/ArrowAlbedoTransparency.tga is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Textures/ArrowAmbientOcclusion.tga is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Textures/ArrowEmissive.psd is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Textures/ArrowGlint.png is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Textures/ArrowMetallicSmoothness.tga is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Textures/ArrowNormal.tga is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Textures/BalloonColor.tga is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Textures/BalloonPop.png is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Textures/BalloonPopLine.png is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Textures/Longbow.psd is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Longbow/Textures/TorchFire.png is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Readme_InteractionSystem.txt is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Samples/Animations/BallAnimation.anim is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Samples/Animators/BallAnimationController.controller is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Samples/Materials/Grey.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Samples/Materials/LightGreen.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Samples/Materials/ShinyWhite.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Samples/Materials/ShinyWhiteHighlighted.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Samples/Materials/ShinyYellow.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Samples/Prefabs/ThrowableBall.prefab is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Samples/Prefabs/ThrowableCube.prefab is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Samples/Scenes/Interactions_Example.unity is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Samples/Scripts/ControllerHintsExample.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Samples/Scripts/InteractableExample.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Materials/TeleportAreaHighlighted.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Materials/TeleportAreaHighlightedBright.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Materials/TeleportAreaHighlightedLow.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Materials/TeleportAreaLocked.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Materials/TeleportAreaVisible.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Materials/TeleportAreaVisibleBright.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Materials/TeleportAreaVisibleLow.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Materials/TeleportPlaySpace.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Materials/TeleportPlayspaceVisualize.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Materials/TeleportPointHighlighted.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Materials/TeleportPointInvalid.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Materials/TeleportPointLocked.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Materials/TeleportPointText.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Materials/TeleportPointVisible.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Materials/TeleportPointer.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Models/TeleportDestination.fbx is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Models/TeleportDestinationInvalid.fbx is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Models/TeleportMarker.fbx is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Models/TeleportPlayAreaPieces.fbx is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Prefabs/TeleportPoint.prefab is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Prefabs/Teleporting.prefab is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Scripts/AllowTeleportWhileAttachedToHand.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Scripts/ChaperoneInfo.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Scripts/IgnoreTeleportTrace.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Scripts/Teleport.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Scripts/TeleportArc.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Scripts/TeleportArea.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Scripts/TeleportMarkerBase.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Scripts/TeleportPoint.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Shaders/Highlight.shader is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Sounds/TeleportBadArea.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Sounds/TeleportGo.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Sounds/TeleportGoodArea.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Sounds/TeleportPointerLoop.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Sounds/TeleportPointerStart.wav is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Textures/TeleportAreaPatternColor.tga is skipped as no actual change.
+----- Asset named Assets/SteamVR/InteractionSystem/Teleport/Textures/TeleportMarker.psd is skipped as no actual change.
+----- Asset named Assets/SteamVR/Materials/workshop.mat is skipped as no actual change.
+----- Asset named Assets/SteamVR/Plugins/openvr_api.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Prefabs/[CameraRig].prefab is skipped as no actual change.
+----- Asset named Assets/SteamVR/Prefabs/[Status].prefab is skipped as no actual change.
+----- Asset named Assets/SteamVR/Prefabs/[SteamVR].prefab is skipped as no actual change.
+----- Asset named Assets/SteamVR/Resources/SteamVR_AlphaOut.shader is skipped as no actual change.
+----- Asset named Assets/SteamVR/Resources/SteamVR_ClearAll.shader is skipped as no actual change.
+----- Asset named Assets/SteamVR/Resources/SteamVR_ColorOut.shader is skipped as no actual change.
+----- Asset named Assets/SteamVR/Resources/SteamVR_ExternalCamera.prefab is skipped as no actual change.
+----- Asset named Assets/SteamVR/Resources/SteamVR_Fade.shader is skipped as no actual change.
+----- Asset named Assets/SteamVR/Resources/SteamVR_SphericalProjection.shader is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scenes/example.unity is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scripts/SteamVR.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scripts/SteamVR_Camera.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scripts/SteamVR_CameraFlip.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scripts/SteamVR_CameraMask.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scripts/SteamVR_Controller.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scripts/SteamVR_ControllerManager.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scripts/SteamVR_Ears.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scripts/SteamVR_Events.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scripts/SteamVR_ExternalCamera.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scripts/SteamVR_Fade.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scripts/SteamVR_Frustum.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scripts/SteamVR_GameView.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scripts/SteamVR_IK.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scripts/SteamVR_LoadLevel.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scripts/SteamVR_Menu.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scripts/SteamVR_Overlay.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scripts/SteamVR_PlayArea.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scripts/SteamVR_Render.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scripts/SteamVR_RenderModel.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scripts/SteamVR_Skybox.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scripts/SteamVR_SphericalProjection.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scripts/SteamVR_Stats.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scripts/SteamVR_TestController.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scripts/SteamVR_TrackedCamera.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scripts/SteamVR_TrackedObject.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scripts/SteamVR_UpdatePoses.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Scripts/SteamVR_Utils.cs is skipped as no actual change.
+----- Asset named Assets/SteamVR/Textures/arrow.png is skipped as no actual change.
+----- Asset named Assets/SteamVR/Textures/background.png is skipped as no actual change.
+----- Asset named Assets/SteamVR/Textures/logo.png is skipped as no actual change.
+----- Asset named Assets/SteamVR/Textures/overlay.renderTexture is skipped as no actual change.
+----- Asset named Assets/SteamVR/Textures/workshop.png is skipped as no actual change.
+----- Asset named Assets/SteamVR/quickstart.pdf is skipped as no actual change.
+----- Asset named Assets/SteamVR/readme.txt is skipped as no actual change.
+----- Asset named Assets/StreamingAssets/Audio/GeneratedSoundBanks/Wwise_IDs.h is skipped as no actual change.
+----- Asset named Assets/StreamingAssets/desc.txt is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AKRESULT.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkActionOnEventType.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkAudioDeviceState.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkAudioFormat.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkAudioInterruptionCallbackInfo.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkAudioSettings.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkAudioSourceChangeCallbackInfo.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkAuxSendValue.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkAuxSendValueProxy.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkBankCallbackInfo.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkBankContent.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkBusHierarchyFlags.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkCallbackInfo.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkCallbackSerializer.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkCallbackType.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkChannelConfig.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkChannelConfigType.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkChannelEmitter.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkChannelEmitterEx.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkChannelOrdering.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkConnectionType.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkCurveInterpolation.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkDeviceSettings.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkDurationCallbackInfo.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkDynamicSequenceItemCallbackInfo.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkEventCallbackInfo.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkExternalSourceInfo.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkGlobalCallbackLocation.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkGroupType.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkInitSettings.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkMIDIEventCallbackInfo.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkMIDIPost.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkMarkerCallbackInfo.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkMemSettings.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkMeteringFlags.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkMonitoringCallbackInfo.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkMusicPlaylistCallbackInfo.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkMusicSettings.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkMusicSyncCallbackInfo.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkNodeType.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkObjectInfo.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkObstructionOcclusionValues.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkOutputSettings.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkPannerType.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkPanningRule.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkPlaylistArray.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkPluginType.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkPositionSourceType.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkPositioningInfo.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkRamp.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkSegmentInfo.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkSerializedCallbackHeader.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkSourceChannelOrdering.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkSourceSettings.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkStreamMgrSettings.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkTransform.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/AkVector.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/DynamicSequenceType.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/EnvelopePoint.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/ErrorCode.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/ErrorLevel.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/Iterator.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/MultiPositionType.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/Playlist.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/PlaylistItem.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/PreparationType.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/RTPCValue_type.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/WwiseObjectID.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/WwiseObjectIDext.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/_ArrayPoolDefault.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Common/_ArrayPoolLEngineDefault.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Mac/AkAudioOutputType_Mac.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Mac/AkMemPoolAttributes_Mac.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Mac/AkPlatformInitSettings_Mac.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Mac/AkSoundEnginePINVOKE_Mac.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Mac/AkSoundEngine_Mac.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Mac/AkThreadProperties_Mac.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Windows/AkAudioAPI_Windows.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Windows/AkAudioOutputType_Windows.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Windows/AkMemPoolAttributes_Windows.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Windows/AkPlatformInitSettings_Windows.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Windows/AkSoundEnginePINVOKE_Windows.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Windows/AkSoundEngine_Windows.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Generated/Windows/AkThreadProperties_Windows.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Handwritten/AkAuxSendArray.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Handwritten/AkBankManager.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Handwritten/AkBasePathGetter.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Handwritten/AkCallbackManager.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Handwritten/AkChannelEmitterArray.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Handwritten/AkPositionArray.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Handwritten/AkSoundEngine.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Handwritten/AkUtilities.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/API/Handwritten/WwiseTypes.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/AkWwiseSDKVersion.h is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkAmbient.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkAudioListener.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkBank.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkDragDropHelper.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkEnvironment.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkEnvironmentPortal.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkEvent.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkEventCallbackData.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkGameObj.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkGameObjEnvironmentData.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkGameObjListenerList.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkGameObjPosOffsetData.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkGameObjPositionData.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkGameObjPositionOffsetData.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkInitializer.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkMemBankLoader.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkState.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkSwitch.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkTerminator.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkTriggerBase.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkTriggerCollisionEnter.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkTriggerCollisionExit.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkTriggerDisable.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkTriggerEnable.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkTriggerEnter.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkTriggerExit.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkTriggerMouseDown.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkTriggerMouseEnter.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkTriggerMouseExit.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkTriggerMouseUp.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Components/AkUnityEventHandler.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkConvolutionReverb.bundle is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkFlanger.bundle is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkGuitarDistortion.bundle is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkHarmonizer.bundle is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkMotion.bundle is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkPitchShifter.bundle is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkRecorder.bundle is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkReflect.bundle is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkRoomVerb.bundle is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkSoundSeedAir.bundle is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkSoundSeedImpact.bundle is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkStereoDelay.bundle is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkTimeStretch.bundle is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkTremolo.bundle is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/DSP/libAuro.bundle is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/DSP/libCrankcaseAudioREVModelPlayer.bundle is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/DSP/libMcDSP.bundle is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/DSP/libSynthOne.bundle is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/Debug/AkSoundEngine.bundle/Contents/Info.plist is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/Debug/AkSoundEngine.bundle/Contents/MacOS/AkSoundEngine is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/Debug/AkSoundEngine.bundle/Contents/Resources/en.lproj/InfoPlist.strings is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/Debug/AkSoundEngine.bundle/Contents/Resources/readme.txt is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/Profile/AkSoundEngine.bundle/Contents/Info.plist is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/Profile/AkSoundEngine.bundle/Contents/MacOS/AkSoundEngine is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/Profile/AkSoundEngine.bundle/Contents/Resources/en.lproj/InfoPlist.strings is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/Profile/AkSoundEngine.bundle/Contents/Resources/readme.txt is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/Release/AkSoundEngine.bundle/Contents/Info.plist is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/Release/AkSoundEngine.bundle/Contents/MacOS/AkSoundEngine is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/Release/AkSoundEngine.bundle/Contents/Resources/en.lproj/InfoPlist.strings is skipped as no actual change.
+----- Asset named Assets/Wwise/Deployment/Plugins/Mac/Release/AkSoundEngine.bundle/Contents/Resources/readme.txt is skipped as no actual change.
+----- Asset named Assets/Wwise/Documentation/AppleCommon/en/WwiseUnityIntegrationHelp_en.zip is skipped as no actual change.
+----- Asset named Assets/Wwise/Documentation/AppleCommon/ja/WwiseUnityIntegrationHelp_ja.zip is skipped as no actual change.
+----- Asset named Assets/Wwise/Documentation/Windows/en/WwiseUnityIntegrationHelp_en.chm is skipped as no actual change.
+----- Asset named Assets/Wwise/Documentation/Windows/ja/WwiseUnityIntegrationHelp_ja.chm is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/ProjectData/AkWwiseProjectData.asset is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseComponents/AkAmbientInspector.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseComponents/AkAudioListenerInspector.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseComponents/AkBankInspector.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseComponents/AkBaseInspector.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseComponents/AkEnvironmentInspector.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseComponents/AkEnvironmentPortalInspector.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseComponents/AkEventCallbackDataDrawer.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseComponents/AkEventInspector.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseComponents/AkGameObjListenerListDrawer.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseComponents/AkGameObjectInspector.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseComponents/AkInitializerInspector.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseComponents/AkPortalManager.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseComponents/AkStateInspector.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseComponents/AkSwitchInspector.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseComponents/AkUnityEventHandlerInspector.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseComponents/AkWwiseXMLWatcher.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseMenu/Common/AkExampleAppBuilderBase.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseMenu/Common/AkUnityBuilderBase.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseMenu/Common/AkUnityPluginInstallerBase.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseMenu/Common/AkWwiseIdConverter.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseMenu/Mac/AkWwiseMenu_Mac.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseMenu/Windows/AkWwiseMenu_Windows.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseSetupWizard/AkPluginActivator.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseSetupWizard/AkSceneUtils.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseSetupWizard/AkUnitySettingsParser.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseSetupWizard/AkWwisePostImportCallbackSetup.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseSetupWizard/AkWwiseSettingsWindow.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseSetupWizard/AkWwiseSetupWizard.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseSetupWizard/AkXboxOneUtils.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseTypes/AuxBusDrawer.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseTypes/BankDrawer.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseTypes/BaseTypeDrawer.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseTypes/CallbackFlagsDrawer.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseTypes/EventDrawer.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseTypes/RTPCDrawer.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseTypes/StateDrawer.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseTypes/SwitchDrawer.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseTypes/TriggerDrawer.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/AkWwiseComponentPicker.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/AkWwisePicker.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/AkWwiseProjectData.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/AkWwiseProjectInfo.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/AkWwiseTreeView.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/AkWwiseWWUBuilder.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/AkWwiseXMLBuilder.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/TreeViewControl.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/TreeViewHoverSkin.guiskin is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/TreeViewItem.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/TreeViewSelectedSkin.guiskin is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/TreeViewUnselectedSkin.guiskin is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/auxbus_nor.png is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/blank.png is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/bus_nor.png is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/event_nor.png is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/folder_nor.png is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/guide.png is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/last_sibling_collapsed.png is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/last_sibling_expanded.png is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/last_sibling_nochild.png is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/middle_sibling_collapsed.png is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/middle_sibling_expanded.png is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/middle_sibling_nochild.png is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/normal_checked.png is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/normal_unchecked.png is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/physical_folder_nor.png is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/selected_background_color.png is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/soundbank_nor.png is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/state_nor.png is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/stategroup_nor.png is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/switch_nor.png is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/switchgroup_nor.png is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/workunit_nor.png is skipped as no actual change.
+----- Asset named Assets/Wwise/Editor/WwiseWindows/TreeViewControl/wproj.png is skipped as no actual change.
+----- Asset named Assets/Wwise/Extensions/AkSoundEngine.extensions.cs is skipped as no actual change.
+----- Asset named Assets/Wwise/Gizmos/WwiseAudioSpeaker.png is skipped as no actual change.
+----- Asset named Assets/Wwise/Gizmos/wwise_white_on_gray.png is skipped as no actual change.
+----- Asset named Assets/Wwise/Init.bnk is skipped as no actual change.
+----- Asset named Assets/Wwise/Init.txt is skipped as no actual change.
+----- Asset named Assets/Wwise/Main.bnk is skipped as no actual change.
+----- Asset named Assets/Wwise/Main.txt is skipped as no actual change.
+----- Asset named Assets/Wwise/PluginInfo.xml is skipped as no actual change.
+----- Asset named Assets/Wwise/Soundbank_1.bnk is skipped as no actual change.
+----- Asset named Assets/Wwise/Soundbank_1.txt is skipped as no actual change.
+----- Asset named Assets/Wwise/SoundbanksInfo.xml is skipped as no actual change.
+----- Asset named Assets/Wwise/Tools/WwiseIDConverter.py is skipped as no actual change.
+----- Asset named Assets/Wwise/Version.txt is skipped as no actual change.
+
+Refresh: elapses 1.399243 seconds
+Updating ProjectSettings/InputManager.asset - GUID: 00000000000000002000000000000000...
+ done. [Time: 89.752781 ms] 
+Unloading 822 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 81.1 MB.
+System memory in use after: 81.0 MB.
+
+Unloading 136 unused Assets to reduce memory usage. Loaded Objects now: 3266.
+Total: 6.563736 ms (FindLiveObjects: 0.660786 ms CreateObjectMapping: 0.139304 ms MarkObjects: 5.625070 ms  DeleteObjects: 0.123259 ms)
+
+Updating ProjectSettings/TagManager.asset - GUID: 00000000000000003000000000000000...
+ done. [Time: 14.163142 ms] 
+Updating ProjectSettings/ProjectSettings.asset - GUID: 00000000000000004000000000000000...
+ done. [Time: 14.911085 ms] 
+Updating ProjectSettings/NavMeshAreas.asset - GUID: 00000000000000004100000000000000...
+ done. [Time: 13.988100 ms] 
+Updating Library/BuildPlayer.prefs - GUID: 00000000000000005000000000000000...
+ done. [Time: 17.912703 ms] 
+Updating ProjectSettings/Physics2DSettings.asset - GUID: 00000000000000005100000000000000...
+ done. [Time: 14.544954 ms] 
+Updating ProjectSettings/AudioManager.asset - GUID: 00000000000000006000000000000000...
+Audio: FMOD Profiler initialized on port 54900
+ done. [Time: 61.675567 ms] 
+Updating ProjectSettings/GraphicsSettings.asset - GUID: 00000000000000006100000000000000...
+ done. [Time: 12.927632 ms] 
+Updating ProjectSettings/TimeManager.asset - GUID: 00000000000000007000000000000000...
+ done. [Time: 12.833182 ms] 
+Updating ProjectSettings/ClusterInputManager.asset - GUID: 00000000000000007100000000000000...
+ done. [Time: 12.874755 ms] 
+Updating ProjectSettings/DynamicsManager.asset - GUID: 00000000000000008000000000000000...
+ done. [Time: 13.824726 ms] 
+Updating ProjectSettings/QualitySettings.asset - GUID: 00000000000000009000000000000000...
+ done. [Time: 14.825022 ms] 
+Updating ProjectSettings/NetworkManager.asset - GUID: 0000000000000000a000000000000000...
+ done. [Time: 24.284257 ms] 
+Updating ProjectSettings/UnityConnectSettings.asset - GUID: 0000000000000000a100000000000000...
+ done. [Time: 13.139507 ms] 
+Updating ProjectSettings/EditorBuildSettings.asset - GUID: 0000000000000000b000000000000000...
+ done. [Time: 13.998675 ms] 
+Updating ProjectSettings/EditorSettings.asset - GUID: 0000000000000000c000000000000000...
+ done. [Time: 13.643484 ms] 
+Updating Assets/Scripts - GUID: 070d61fd90579df40a85d8265384dc48...
+ done. [Time: 17.584862 ms] 
+Updating Assets/Wwise - GUID: 22abb8d5ff41f9f4b9386ee92e141e64...
+ done. [Time: 17.619142 ms] 
+Updating Assets/VRTK - GUID: 4059ce01087290b4fbceecc3f36cf113...
+ done. [Time: 17.173512 ms] 
+Updating Assets/Standard Assets - GUID: 40f4909278b2411448c69da53853ccf5...
+ done. [Time: 14.417683 ms] 
+Updating Assets/Resources - GUID: 54a2e0066c12ccb44a6697566644b51d...
+ done. [Time: 17.247176 ms] 
+Updating Assets/Scenes - GUID: 5c90688f3e4c7b7429904c4fec380051...
+ done. [Time: 17.321934 ms] 
+Updating Assets/Materials - GUID: 5efbae0fceba76c4284915d4d2459ee0...
+ done. [Time: 16.689592 ms] 
+Updating Assets/OVR - GUID: 869fc009969608e4a9071237c584be0d...
+ done. [Time: 13.896931 ms] 
+Updating Assets/NavMeshComponents - GUID: 88eb34e8c41af1440ab34e7213e198ea...
+ done. [Time: 16.820145 ms] 
+Updating Assets/SteamVR - GUID: 8b94b8349ea63804fb6d778a425950e8...
+ done. [Time: 17.380646 ms] 
+Updating Assets/Plugins - GUID: 91e804e4aa872a24eb36ca884b11f3b4...
+ done. [Time: 17.332874 ms] 
+Updating Assets/FirstPersonCharacter - GUID: 943e057eaae705e43b9e9b2e53d6adb0...
+ done. [Time: 15.511700 ms] 
+Updating Assets/StreamingAssets - GUID: ae3dd2a8f7b4df94383abb424bfaf666...
+ done. [Time: 15.723210 ms] 
+Updating Assets/Models - GUID: f514db3359f837e4b90a7f63e6f3a9b5...
+ done. [Time: 15.498572 ms] 
+Updating Assets/Wwise/Deployment - GUID: 028b44b53584eb54c811593712d0cf36...
+ done. [Time: 17.397786 ms] 
+Updating Assets/FirstPersonCharacter/Prefabs - GUID: 0bfb2599080d5d24e84362b4ae314ae7...
+ done. [Time: 17.734743 ms] 
+Updating Assets/Scripts/Enemy - GUID: 0c2f778e6a452e049a590d4272e41109...
+ done. [Time: 17.358036 ms] 
+Updating Assets/Scripts/Traps - GUID: 115042f519ab2c74084040b1fbd41fa6...
+ done. [Time: 16.936840 ms] 
+Updating Assets/Resources/Prefabs - GUID: 13e5065e23066e44591d5e8bbd790151...
+ done. [Time: 18.617979 ms] 
+Updating Assets/SteamVR/Materials - GUID: 1459d94e0a5b7af4a8a3fa067ae575e9...
+ done. [Time: 18.118378 ms] 
+Updating Assets/OVR/Textures - GUID: 1938789817fe3974ea20e502ed4bcd76...
+ done. [Time: 18.475027 ms] 
+Updating Assets/SteamVR/Scenes - GUID: 1c7547f24e8b4864d87d59903b1f8c40...
+ done. [Time: 18.906070 ms] 
+Updating Assets/Scripts/Old - GUID: 1e2272e4ec63ba241b2673e87f88475c...
+ done. [Time: 14.920567 ms] 
+Updating Assets/Plugins/OVRGamepad.bundle - GUID: 21b567b84a15d0c4da39b709bc231d39...
+ done. [Time: 19.393272 ms] 
+Updating Assets/StreamingAssets/Audio - GUID: 28b35d9292b36414ca23869d8a6afe4f...
+ done. [Time: 17.645033 ms] 
+Updating Assets/Scenes/Tutorial3 - GUID: 2da57cfdeda7d3343a8342b8fc53e88d...
+ done. [Time: 17.645398 ms] 
+Updating Assets/FirstPersonCharacter/Audio - GUID: 2dac79461900e0f4c93561031c2e6902...
+ done. [Time: 17.828463 ms] 
+Updating Assets/FirstPersonCharacter/Scripts - GUID: 314f49b24dc9d5d40956a7b28c67b237...
+ done. [Time: 18.795574 ms] 
+Updating Assets/SteamVR/Prefabs - GUID: 3e2543c4beea3eb4e9ea1e02a4bc2df2...
+ done. [Time: 18.971711 ms] 
+Updating Assets/SteamVR/Resources - GUID: 40af2f692be87864ba388a27fcac9ed8...
+ done. [Time: 18.236167 ms] 
+Updating Assets/Standard Assets/Utility - GUID: 4539eb30e895bbb41b5eae6df2dde978...
+ done. [Time: 19.952315 ms] 
+Updating Assets/Wwise/Documentation - GUID: 4770355acf8ea2b4bbc36ee6ebe84f1e...
+ done. [Time: 15.461740 ms] 
+Updating Assets/Scripts/Level - GUID: 4aca58c586835344bbb61647ba1eb973...
+ done. [Time: 15.102903 ms] 
+Updating Assets/Scenes/TrapTestScene - GUID: 5832990a2fd08a542b45e910218c44b6...
+ done. [Time: 17.854720 ms] 
+Updating Assets/Models/Materials - GUID: 5e0e671e6cd52514fa3b5b399bc9a9bf...
+ done. [Time: 15.315871 ms] 
+Updating Assets/SteamVR/Extras - GUID: 61f4796ee4f00314e8d8b1ad39a78c28...
+ done. [Time: 17.546936 ms] 
+Updating Assets/NavMeshComponents/Editor - GUID: 63b588f3892bb4b5eb73ad3d2791e05c...
+ done. [Time: 17.661808 ms] 
+Updating Assets/Scripts/Analytics - GUID: 6544fc0bf2ca9c248afd8b861dd7c669...
+ done. [Time: 17.378458 ms] 
+Updating Assets/OVR/Scenes - GUID: 68bc04068edcc1a4d89699ab4e2e69ae...
+ done. [Time: 19.079289 ms] 
+Updating Assets/Scenes/Tutorial4 - GUID: 69c705c633c83b0419cba34ae12aaa73...
+ done. [Time: 16.552475 ms] 
+Updating Assets/Wwise/Tools - GUID: 6ffa69f367a7341409fbac1a8a46798d...
+ done. [Time: 20.419095 ms] 
+Updating Assets/Standard Assets/CrossPlatformInput - GUID: 710bc43f80d178548bd226c252c8e65b...
+ done. [Time: 13.702196 ms] 
+Updating Assets/OVR/Editor - GUID: 76c19abd24bec62459b5f0d26fdd9a85...
+ done. [Time: 14.287131 ms] 
+Updating Assets/Scripts/Achievement - GUID: 772f0c430854cda47b4c57ff6b2fb68b...
+ done. [Time: 11.212579 ms] 
+Updating Assets/OVR/Resources - GUID: 807714291dbf2a54c9b3975c271b2493...
+ done. [Time: 17.267233 ms] 
+Updating Assets/OVR/Scripts - GUID: 859d6d3fcffe1bb41ac06f93d267fc9d...
+ done. [Time: 17.340897 ms] 
+Updating Assets/Materials/Textures - GUID: 8729d984f4d17d04ab846aad9b3524f6...
+ done. [Time: 17.292395 ms] 
+Updating Assets/Scripts/UI - GUID: 8be19269793d24442be9022fb4457f1e...
+ done. [Time: 16.470789 ms] 
+Updating Assets/Wwise/Extensions - GUID: 952fc634f047f22448f5813c710f3418...
+ done. [Time: 16.743563 ms] 
+Updating Assets/OVR/Materials - GUID: 981b5bce7fc4a2d43a2169710da4b892...
+ done. [Time: 18.099780 ms] 
+Updating Assets/Wwise/Editor - GUID: 9e49f90e616c64d409acd61fdc405896...
+ done. [Time: 14.845444 ms] 
+Updating Assets/Scenes/AITestLevel - GUID: a837f00f7a4254f498ccb3a79769243a...
+ done. [Time: 18.782811 ms] 
+Updating Assets/Models/Traps - GUID: ab6f501d38239f644a097ae6c10547a3...
+ done. [Time: 12.351815 ms] 
+Updating Assets/SteamVR/Textures - GUID: abfc00e0350ad744083849e2d7ae06ee...
+ done. [Time: 16.926264 ms] 
+Updating Assets/SteamVR/Plugins - GUID: b2a747d8f314a8449a70c1fb1807f8dd...
+ done. [Time: 12.967382 ms] 
+Updating Assets/OVR/Prefabs - GUID: bfe39332fdb4cb044b619b3e4b890396...
+ done. [Time: 14.597102 ms] 
+Updating Assets/SteamVR/Editor - GUID: c33af0785775d7548b22541da37936fe...
+ done. [Time: 13.859006 ms] 
+Updating Assets/Scripts/Player - GUID: c529b5bcdf737914cb7588442c7f1743...
+ done. [Time: 16.614469 ms] 
+Updating Assets/SteamVR/InteractionSystem - GUID: c8941a9f98c35d84cb19a5e044467de9...
+ done. [Time: 16.895267 ms] 
+Updating Assets/NavMeshComponents/Scripts - GUID: ce67aa87f613246dda63a54a59c6399e...
+ done. [Time: 14.386686 ms] 
+Updating Assets/OVR/Shaders - GUID: d79c5fa4d57bda54f88884a89963d684...
+ done. [Time: 16.789512 ms] 
+Updating Assets/SteamVR/Scripts - GUID: d88af1b1098a33a42bc43c910c864102...
+ done. [Time: 14.920202 ms] 
+Updating Assets/OVR/Meshes - GUID: db348133d6680dd459f3e1cb19922746...
+ done. [Time: 13.819986 ms] 
+Updating Assets/OVR/Plugins - GUID: e1f06b56b3e7614419c5db24e2262938...
+ done. [Time: 9.754983 ms] 
+Updating Assets/Standard Assets/Editor - GUID: e440864d62a60e7458a443202dee855e...
+ done. [Time: 16.310697 ms] 
+Updating Assets/Wwise/Gizmos - GUID: e94477062e3a6f540a3a1565da4de845...
+ done. [Time: 10.687086 ms] 
+Updating Assets/Models/Animations - GUID: f46b16748cb1e2c43899c91e6bc91543...
+ done. [Time: 19.247403 ms] 
+Updating Assets/Standard Assets/CrossPlatformInput/Sprites - GUID: 1835e4537efbdd94b93c2dd136860f1d...
+ done. [Time: 25.608747 ms] 
+Updating Assets/SteamVR/InteractionSystem/Core - GUID: 1ab2780fe1da2544b86a1020e5f638e2...
+ done. [Time: 19.113569 ms] 
+Updating Assets/OVR/Textures/Logos - GUID: 1c18650754748f647bacde4e2116cbff...
+ done. [Time: 19.589101 ms] 
+Updating Assets/OVR/Meshes/GearVrController - GUID: 1f5d118b13c965a40a0cd4e358205ac3...
+ done. [Time: 16.137843 ms] 
+Updating Assets/Wwise/Editor/WwiseWindows - GUID: 25b4bf01e935ed54e887ce29c1fdfbe3...
+ done. [Time: 19.871722 ms] 
+Updating Assets/Materials/Textures/Sand - GUID: 2cbc76ff3be94eb4dbc78b673b6f8955...
+ done. [Time: 19.023859 ms] 
+Updating Assets/SteamVR/InteractionSystem/Teleport - GUID: 2f105d731b4539940bf471aeb837ac94...
+ done. [Time: 18.869603 ms] 
+Updating Assets/SteamVR/InteractionSystem/Hints - GUID: 30dfcd9dafb9bea459e0b03505e418a1...
+ done. [Time: 14.531461 ms] 
+Updating Assets/Wwise/Documentation/Windows - GUID: 38de4a897a8d43642bb21a7c87634e07...
+ done. [Time: 14.956304 ms] 
+Updating Assets/Resources/Prefabs/Level - GUID: 3e69a326866e81b4bbb40f25231ec5bc...
+ done. [Time: 19.351335 ms] 
+Updating Assets/Standard Assets/CrossPlatformInput/Scripts - GUID: 3f66eeca8ac36914e9ec9a716a9d9f73...
+ done. [Time: 18.500919 ms] 
+Updating Assets/Materials/Textures/Concrete - GUID: 40cffa46a4ef21d448d19882d2c4ba44...
+ done. [Time: 16.622492 ms] 
+Updating Assets/Scripts/Player/Oculus - GUID: 45a942a755e583540b438694a2e6b191...
+ done. [Time: 16.256361 ms] 
+Updating Assets/Standard Assets/CrossPlatformInput/Prefabs - GUID: 5d3fb8e05edcf4b41aef584ca1b0d06f...
+ done. [Time: 18.880543 ms] 
+Updating Assets/OVR/Plugins/1.14.1 - GUID: 5fd1f1722e04e8740a7aaf1834ccd4e5...
+ done. [Time: 16.614469 ms] 
+Updating Assets/Wwise/Editor/WwiseTypes - GUID: 601250445c02ddb468c53f398abf4ba3...
+ done. [Time: 16.434321 ms] 
+Updating Assets/Resources/Prefabs/UI - GUID: 62a71b07bae3c0f4a851478cf64d9e40...
+ done. [Time: 13.820350 ms] 
+Updating Assets/Plugins/OVRGamepad.bundle/Contents - GUID: 648a2605a2bc848728f27adc59fe8010...
+ done. [Time: 13.809775 ms] 
+Updating Assets/Standard Assets/Editor/CrossPlatformInput - GUID: 696c0e7b8c74e1442acbf15c2df9e72d...
+ done. [Time: 16.676828 ms] 
+Updating Assets/OVR/Textures/GearVrController - GUID: 6f0243e2a75c57c4dbd1b782c7557b50...
+ done. [Time: 16.437239 ms] 
+Updating Assets/Wwise/Deployment/Components - GUID: 704c8af7913f0be45969fc890d906980...
+ done. [Time: 17.278538 ms] 
+Updating Assets/Resources/Prefabs/Enemy - GUID: 72a5af76cc74694448b890c91cf19320...
+ done. [Time: 17.725991 ms] 
+Updating Assets/Materials/Textures/Compass - GUID: 79515c7ed6e1679439610b430b471ee9...
+ done. [Time: 16.255267 ms] 
+Updating Assets/Wwise/Deployment/API - GUID: 7a6deab6b781b924798c1e23f6edbf07...
+ done. [Time: 17.919996 ms] 
+Updating Assets/Wwise/Editor/WwiseMenu - GUID: 7d257d45c7589e442a7ed31d9dd23251...
+ done. [Time: 18.754731 ms] 
+Updating Assets/OVR/Materials/GearVrController - GUID: 856d6414a7cf7e94888ee2d5f959efd7...
+ done. [Time: 18.375107 ms] 
+Updating Assets/Wwise/Deployment/Plugins - GUID: 863af2f18576edc488736cb050fff161...
+ done. [Time: 16.966743 ms] 
+Updating Assets/Materials/Textures/Chalk - GUID: 866441a25913b54428eb9e29d7102a4f...
+ done. [Time: 16.362116 ms] 
+Updating Assets/Resources/Prefabs/Traps - GUID: 959134e16dc6c164cb0c0b61cc0d38ae...
+ done. [Time: 17.061558 ms] 
+Updating Assets/Wwise/Editor/ProjectData - GUID: 95abbee2139ec8c4ab4a397a7621ce5d...
+ done. [Time: 13.871040 ms] 
+Updating Assets/Materials/Textures/Metal - GUID: a0d4247184640694fa6a636920015a6d...
+ done. [Time: 18.164327 ms] 
+Updating Assets/Wwise/Documentation/AppleCommon - GUID: ac328b6b1de31794abc7e0f9bae1e081...
+ done. [Time: 16.710743 ms] 
+Updating Assets/Materials/Textures/Brick - GUID: ad2941cf7aa3f1149b899213949fc54f...
+ done. [Time: 21.980622 ms] 
+Updating Assets/Wwise/Editor/WwiseComponents - GUID: af880797f83e9d544ad2313702b9be9b...
+ done. [Time: 19.085489 ms] 
+Updating Assets/Resources/Prefabs/Player - GUID: b14052ad771a8f84cb3323027d9feb7e...
+ done. [Time: 14.158037 ms] 
+Updating Assets/Resources/Prefabs/Pickups - GUID: b1788f01406b9cd479e8d5e3a66d0400...
+ done. [Time: 16.707461 ms] 
+Updating Assets/Standard Assets/Utility/Prefabs - GUID: b43a4ef15621158419a2b639f7a98245...
+ done. [Time: 21.455859 ms] 
+Updating Assets/SteamVR/InteractionSystem/Samples - GUID: bd2dd58615e1ced41ae3178451fab370...
+ done. [Time: 21.681591 ms] 
+Updating Assets/OVR/Scripts/Util - GUID: c0c7a593695f68e4bbe0cabb0f4f93f2...
+ done. [Time: 19.377956 ms] 
+Updating Assets/Resources/Prefabs/Puzzle - GUID: cb92a0baf1cd39c4f9d35f508e1e7556...
+ done. [Time: 13.513661 ms] 
+Updating Assets/StreamingAssets/Audio/GeneratedSoundBanks - GUID: d2f6b1483dd8d9c47b8688a66c4c7de5...
+ done. [Time: 19.505956 ms] 
+Updating Assets/Materials/Textures/Asphalt - GUID: d3202bf4113b88241b7a243d8e0ba8b7...
+ done. [Time: 22.759562 ms] 
+Updating Assets/OVR/Textures/Icons - GUID: e081f465852cec14380da085e957c52b...
+ done. [Time: 16.423746 ms] 
+Updating Assets/SteamVR/InteractionSystem/Longbow - GUID: ee2359d7e6460d4449d8b8c70d3045b4...
+ done. [Time: 19.354982 ms] 
+Updating Assets/Wwise/Editor/WwiseSetupWizard - GUID: f8fce7cf2e91c644886183793dcb29e1...
+ done. [Time: 19.534400 ms] 
+Updating Assets/Wwise/Editor/WwiseMenu/Mac - GUID: 002cd030c70cb22459f8361ef849cdef...
+ done. [Time: 19.628121 ms] 
+Updating Assets/SteamVR/InteractionSystem/Teleport/Textures - GUID: 0339153ea7d8a9e4b8411691b9a95fdc...
+ done. [Time: 17.713592 ms] 
+Updating Assets/SteamVR/InteractionSystem/Samples/Scenes - GUID: 03889921b093f9047aa4cc9b216d6e03...
+ done. [Time: 18.338275 ms] 
+Updating Assets/SteamVR/InteractionSystem/Core/Materials - GUID: 05a69997deb9f5944a894239434f00a9...
+ done. [Time: 18.427620 ms] 
+Updating Assets/SteamVR/InteractionSystem/Teleport/Prefabs - GUID: 068e188dddb83fb489788207ff119e08...
+ done. [Time: 20.266662 ms] 
+Updating Assets/Standard Assets/CrossPlatformInput/Scripts/PlatformSpecific - GUID: 0bc72db1e9dcb9647818df5a07871127...
+ done. [Time: 18.321500 ms] 
+Updating Assets/SteamVR/InteractionSystem/Hints/Shaders - GUID: 1375c26e5558daa48ae7ab8a8117cbe1...
+ done. [Time: 19.073455 ms] 
+Updating Assets/SteamVR/InteractionSystem/Teleport/Shaders - GUID: 15041afb62e0f4f4382863e73ff1eeb5...
+ done. [Time: 17.553501 ms] 
+Updating Assets/OVR/Meshes/GearVrController/Materials - GUID: 1f3bd5b7b89f2bc43b851174a56851f3...
+ done. [Time: 17.828099 ms] 
+Updating Assets/SteamVR/InteractionSystem/Core/Icons - GUID: 1fcf8377413b60c44afff7b2e4efd8f7...
+ done. [Time: 19.164258 ms] 
+Updating Assets/Resources/Prefabs/Player/old - GUID: 28f3581e97f87ce42be9196711c1bb24...
+ done. [Time: 20.320634 ms] 
+Updating Assets/SteamVR/InteractionSystem/Longbow/Models - GUID: 2f4c3e904395a784199b9a0e3166fd96...
+ done. [Time: 20.351631 ms] 
+Updating Assets/SteamVR/InteractionSystem/Longbow/Materials - GUID: 38392bbe7ae2c464daae1fe24a1147c1...
+ done. [Time: 15.978481 ms] 
+Updating Assets/SteamVR/InteractionSystem/Samples/Scripts - GUID: 39bd76f2a1f5f3d4fa65ddb1d3c4e978...
+ done. [Time: 18.050549 ms] 
+Updating Assets/SteamVR/InteractionSystem/Longbow/Animators - GUID: 44a536d7fede4b140b3647935ea8c8fa...
+ done. [Time: 18.253671 ms] 
+Updating Assets/Wwise/Editor/WwiseMenu/Common - GUID: 44bf66492a57b0849a3f0371c9eca668...
+ done. [Time: 25.279083 ms] 
+Updating Assets/SteamVR/InteractionSystem/Samples/Materials - GUID: 452b45a02bfe51243a19acb7251c865b...
+ done. [Time: 19.499392 ms] 
+Updating Assets/Wwise/Documentation/Windows/ja - GUID: 4756cd00a00cc014eb8d052f8163dad4...
+ done. [Time: 17.169136 ms] 
+Updating Assets/OVR/Plugins/1.14.1/Win64 - GUID: 4ae2a733fa97f1242afa71e81e6da830...
+ done. [Time: 16.776019 ms] 
+Updating Assets/SteamVR/InteractionSystem/Longbow/Textures - GUID: 4cab18f37a1da964ba73601017942665...
+ done. [Time: 18.023198 ms] 
+Updating Assets/SteamVR/InteractionSystem/Longbow/Scripts - GUID: 6596adb54aab23a40abe01461d35a26f...
+ done. [Time: 19.983677 ms] 
+Updating Assets/SteamVR/InteractionSystem/Core/Prefabs - GUID: 6d60d25020af6fb4f8d436244db7cc4b...
+ done. [Time: 18.368178 ms] 
+Updating Assets/SteamVR/InteractionSystem/Hints/Textures - GUID: 6fa11a15b6830ea40808c51f7a5f0a4e...
+ done. [Time: 19.660212 ms] 
+Updating Assets/Wwise/Deployment/API/Generated - GUID: 6fa62a725e89bab46beca0a7ef08a005...
+ done. [Time: 17.128657 ms] 
+Updating Assets/Wwise/Documentation/AppleCommon/ja - GUID: 772b02f6639d9074d9ce25cf0392f86a...
+ done. [Time: 15.719928 ms] 
+Updating Assets/SteamVR/InteractionSystem/Core/Scripts - GUID: 77a23888f82e2ab4c8bc825f20235e1e...
+ done. [Time: 17.994389 ms] 
+Updating Assets/SteamVR/InteractionSystem/Teleport/Materials - GUID: 7aaf325fc9c2739499d94017488bd120...
+ done. [Time: 18.471745 ms] 
+Updating Assets/Wwise/Documentation/Windows/en - GUID: 82e8c78039f166a41bb256de82a9393b...
+ done. [Time: 17.620965 ms] 
+Updating Assets/SteamVR/InteractionSystem/Samples/Animations - GUID: 8ad10a5377ae04748b1455a7184c6971...
+ done. [Time: 18.678150 ms] 
+Updating Assets/SteamVR/InteractionSystem/Hints/Scripts - GUID: 8f511b02628aaca43be0aecee58c1b71...
+ done. [Time: 17.233683 ms] 
+Updating Assets/Plugins/OVRGamepad.bundle/Contents/MacOS - GUID: 8fad9c333897547a59f91edacd69f7db...
+ done. [Time: 17.946617 ms] 
+Updating Assets/SteamVR/InteractionSystem/Teleport/Sounds - GUID: 95cdcc94cf9ba8348b4384b840e4c54c...
+ done. [Time: 18.337181 ms] 
+Updating Assets/OVR/Plugins/1.14.1/Win - GUID: 9e09f7241e0aa624ebd86b6e6122b5f9...
+ done. [Time: 18.487426 ms] 
+Updating Assets/SteamVR/InteractionSystem/Hints/Materials - GUID: a2300d431cc9116478ccc8bb42061072...
+ done. [Time: 17.595803 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Windows - GUID: a406762b23d98a042a605d3b3070d3c4...
+ done. [Time: 17.494424 ms] 
+Updating Assets/SteamVR/InteractionSystem/Core/Shaders - GUID: a4939542f83f4e84f8604e20bce42eba...
+ done. [Time: 17.781785 ms] 
+Updating Assets/SteamVR/InteractionSystem/Longbow/Prefabs - GUID: a4acc435c26639c4fac0c4358c455259...
+ done. [Time: 14.904521 ms] 
+Updating Assets/Wwise/Deployment/API/Handwritten - GUID: b423365236d84d44d975df9d9991e4fd...
+ done. [Time: 19.038446 ms] 
+Updating Assets/SteamVR/InteractionSystem/Longbow/Sounds - GUID: b5c78ec7a0919a445ad9472465dc95e3...
+ done. [Time: 30.212005 ms] 
+Updating Assets/SteamVR/InteractionSystem/Hints/Prefabs - GUID: bbecae3d442b2b0478f2e6a2afc24059...
+ done. [Time: 20.236759 ms] 
+Updating Assets/SteamVR/InteractionSystem/Longbow/PhysicMaterials - GUID: c360cf037a4ff3f4cb643392da004156...
+ done. [Time: 15.379324 ms] 
+Updating Assets/Wwise/Documentation/AppleCommon/en - GUID: c5ad6e2b0be3db1438435d83f23b89dd...
+ done. [Time: 17.182264 ms] 
+Updating Assets/OVR/Plugins/1.14.1/OSXUniversal - GUID: c9848134a9882634a869531ef3d251ed...
+ done. [Time: 13.758721 ms] 
+Updating Assets/Wwise/Editor/WwiseWindows/TreeViewControl - GUID: cafd0896e9b8de84f87421d807d78909...
+ done. [Time: 16.714390 ms] 
+Updating Assets/Wwise/Editor/WwiseMenu/Windows - GUID: d020434f52caf1b419aa0064ddc63b4b...
+ done. [Time: 19.519449 ms] 
+Updating Assets/SteamVR/InteractionSystem/Samples/Prefabs - GUID: d1a38babac376b7418f11ad0254a0cf2...
+ done. [Time: 51.711625 ms] 
+Updating Assets/OVR/Plugins/1.14.1/Android - GUID: d897cdd9a3fcd504f948a71476a0c1b6...
+ done. [Time: 12.124989 ms] 
+Updating Assets/SteamVR/InteractionSystem/Samples/Animators - GUID: e1c0e3b33fba81e4f854a8bc367fc1d7...
+ done. [Time: 19.495381 ms] 
+Updating Assets/SteamVR/InteractionSystem/Teleport/Scripts - GUID: e4c4a2a27a81a8047ab1987a441abb3e...
+ done. [Time: 10.036510 ms] 
+Updating Assets/SteamVR/InteractionSystem/Teleport/Models - GUID: e5d8794b03b325e4eb7f26642c221012...
+ done. [Time: 19.961432 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Mac - GUID: ed0bebc391d353c4da8177be0dbeec18...
+ done. [Time: 20.765534 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Windows/x86 - GUID: 1086634641e48f547a8b48b58ff2747f...
+ done. [Time: 18.781352 ms] 
+Updating Assets/OVR/Plugins/1.14.1/OSXUniversal/OVRPlugin.bundle - GUID: 33b7e0199100f6546829b26ac15909c2...
+ done. [Time: 14.955210 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Mac/Debug - GUID: 5a42136615f28374ba3b9d3af5bb6b36...
+ done. [Time: 18.147552 ms] 
+Updating Assets/Wwise/Deployment/API/Generated/Common - GUID: 61c99f23993895245b6a9ab4015b1718...
+ done. [Time: 17.830652 ms] 
+Updating Assets/Wwise/Deployment/API/Generated/Mac - GUID: 6a25456e200b1354380cd1a7e13e44be...
+ done. [Time: 15.773900 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Mac/DSP - GUID: 6eb92c02cf9e0114e891c95776cae9d7...
+ done. [Time: 16.730071 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Mac/Release - GUID: 9191f08c22b4c4d419852152524000e7...
+ done. [Time: 17.049159 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Windows/x86_64 - GUID: ab63f7d763a8061448a1f19a72bbf5db...
+ done. [Time: 16.674276 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Mac/Profile - GUID: d93724a705c3db34cb9cb096df4cd6e8...
+ done. [Time: 17.089637 ms] 
+Updating Assets/Wwise/Deployment/API/Generated/Windows - GUID: f6b3950e8dba6b943b4b1ec6d97fa127...
+ done. [Time: 17.100942 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Mac/Profile/AkSoundEngine.bundle - GUID: 021bbf0756c4e1e488288175efe33a34...
+ done. [Time: 20.675460 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Windows/x86/Profile - GUID: 3ca95d18733e22b49823aeebba0fbdf0...
+ done. [Time: 19.734241 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Windows/x86/Debug - GUID: 5d53984de0924174299a3a8a3df907ba...
+ done. [Time: 20.031449 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Windows/x86_64/Debug - GUID: 5df13603e94148c4dbba24ef226697db...
+ done. [Time: 15.636054 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Windows/x86_64/Profile - GUID: 795ea11c80eca894f8ba87a65cacdd7a...
+ done. [Time: 26.418684 ms] 
+Updating Assets/OVR/Plugins/1.14.1/OSXUniversal/OVRPlugin.bundle/Contents - GUID: 8f534d2274f9d4645804dc35682fd33c...
+ done. [Time: 14.165330 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Mac/Debug/AkSoundEngine.bundle - GUID: 9384de2209d88bb48a5f2667795e15d1...
+ done. [Time: 16.267666 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Windows/x86_64/Release - GUID: 9f17e79a8f2353646b7276ccaf565813...
+ done. [Time: 17.214720 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Windows/x86_64/DSP - GUID: b2ac9e6be09f242458b5ef1a4689078c...
+ done. [Time: 17.149444 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Mac/Release/AkSoundEngine.bundle - GUID: bcd068670bdbbf846bd63cfb8f6c6c47...
+ done. [Time: 19.951950 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Windows/x86/DSP - GUID: fad5ed7b408fd1544b222710c476a342...
+ done. [Time: 14.704681 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Windows/x86/Release - GUID: fb6f7a8928bf43a49a367bd94b831f2c...
+ done. [Time: 10.774972 ms] 
+Updating Assets/OVR/Plugins/1.14.1/OSXUniversal/OVRPlugin.bundle/Contents/MacOS - GUID: 75aca5027007b564889312a1972aea91...
+ done. [Time: 17.053170 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Mac/Release/AkSoundEngine.bundle/Contents - GUID: 85fab7e3131a0fc449f3f4f422a3f958...
+ done. [Time: 15.122595 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Mac/Debug/AkSoundEngine.bundle/Contents - GUID: 8cfb7a7c6a50a04409acf436f0e198a6...
+ done. [Time: 16.852965 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Mac/Profile/AkSoundEngine.bundle/Contents - GUID: 90f23d2d904c34e44b292375143d0e40...
+ done. [Time: 17.612577 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Mac/Profile/AkSoundEngine.bundle/Contents/MacOS - GUID: 41130539497ae7241b6f447bed061d78...
+ done. [Time: 18.413033 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Mac/Release/AkSoundEngine.bundle/Contents/MacOS - GUID: 461c234d4aa0127429da0b846c06369e...
+ done. [Time: 17.039313 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Mac/Debug/AkSoundEngine.bundle/Contents/Resources - GUID: 4c7b6ba3ff216744eaf3fb01f7c04d66...
+ done. [Time: 17.994389 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Mac/Release/AkSoundEngine.bundle/Contents/Resources - GUID: 9aab1fd3b2f153942a0fbc2e91d9066c...
+ done. [Time: 19.589101 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Mac/Debug/AkSoundEngine.bundle/Contents/MacOS - GUID: a3d5f447997d2cd4c97be326f165247d...
+ done. [Time: 17.665820 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Mac/Profile/AkSoundEngine.bundle/Contents/Resources - GUID: ad33c2100f3b6644cbfb0f5a3dc3144d...
+ done. [Time: 16.091529 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Mac/Debug/AkSoundEngine.bundle/Contents/Resources/en.lproj - GUID: 4ae3f43a8fbe162429d693ceea7c1688...
+ done. [Time: 18.178914 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Mac/Profile/AkSoundEngine.bundle/Contents/Resources/en.lproj - GUID: 705e2f895b5322e4ba54543588f3121f...
+ done. [Time: 19.105911 ms] 
+Updating Assets/Wwise/Deployment/Plugins/Mac/Release/AkSoundEngine.bundle/Contents/Resources/en.lproj - GUID: fa2165070f095164eb2efc12c8dbe9ad...
+ done. [Time: 14.880817 ms] 
+Updating Assets/WwiseSettings.xml - GUID: b4878bc0ba176f14f931427f52be36b4...
+ done. [Time: 19.019483 ms] 
+Unloading 15 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 48.5 MB.
+System memory in use after: 48.6 MB.
+
+Unloading 5 unused Assets to reduce memory usage. Loaded Objects now: 3267.
+Total: 6.773423 ms (FindLiveObjects: 0.331487 ms CreateObjectMapping: 0.077675 ms MarkObjects: 6.321229 ms  DeleteObjects: 0.041207 ms)
+
+Refreshing native plugins compatible for Editor in 134.13 ms, found 5 plugins.
+Preloading 2 native plugins for Editor in 0.18 ms.
+
+----- Total AssetImport time: 5.784437s, AssetImport time: 4.267050s, Asset hashing: 0.832728s [384.2 MB, 461.339722 mb/s]
+
+Warming cache for 1723 main assets: 0.005907 seconds elapsed
+Initializing Unity extensions:
+ 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/Editor/UnityEditor.HoloLens.dll'  GUID: 12fd8a0055b84bb59e84c9835a37e333
+ 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll'  GUID: 852e56802eb941638acbb491814497b0
+ 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Timeline/Runtime/UnityEngine.Timeline.dll'  GUID: 6a10b2909283487f913b00d94cd3faf5
+ 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/TestRunner/portable/nunit.framework.dll'  GUID: 405b9b51bb344a128608d968297df79c
+ 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/Standalone/UnityEngine.UI.dll'  GUID: f70555f144d8491a825f0804e09c671c
+ 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll'  GUID: f5f67c52d1564df4a8936ccd202a3bd8
+ 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Timeline/RuntimeEditor/UnityEngine.Timeline.dll'  GUID: 844f815391db42d49455cbf1a7bfc434
+ 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/Standalone/UnityEngine.Networking.dll'  GUID: dc443db3e92b4983b9738c1131f555cb
+ 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/Editor/UnityEditor.Networking.dll'  GUID: 5f32cd94baa94578a686d4b9d6b660f7
+ 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/Editor/UnityEditor.Analytics.dll'  GUID: 86f4de9468454445ac2f39e207fafa3a
+ 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/Runtime/UnityEngine.HoloLens.dll'  GUID: f7b54ff4a43d4fcf81b4538b678e0bcc
+ 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/TreeEditor/Editor/UnityEditor.TreeEditor.dll'  GUID: adebbd281f1a4ef3a30be7f21937e02f
+ 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll'  GUID: 870353891bb340e2b2a9c8707e7419ba
+ 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll'  GUID: 53ebcfaa2e1e4e2dbc85882cd5a73fa1
+ 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/Editor/UnityEditor.Advertisements.dll'  GUID: 97decbdab0634cdd991f8d23ddf0dead
+ 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/Editor/UnityEditor.VR.dll'  GUID: 4ba2329b63d54f0187bcaa12486b1b0f
+ 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityPurchasing/Editor/UnityEditor.Purchasing.dll'  GUID: 8382b2bb260241859771b69b7f377a8d
+ 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll'  GUID: 1c6d1fbb51834b64847b1b73a75bfc77
+ 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/Editor/UnityEditor.UI.dll'  GUID: 80a3616ca19596e4da0f10f14d241e9f
+ 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/TestRunner/Editor/UnityEditor.TestRunner.dll'  GUID: 4113173d5e95493ab8765d7b08371de4
+ 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/TestRunner/net35/unity-custom/nunit.framework.dll'  GUID: 4b3fa4bde7f1451a8218c03ee6a8ded8
+ 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityPurchasing/UnityEngine.Purchasing.dll'  GUID: 8e0cd8ed44d4412cbe0642067abc9e44
+ 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Timeline/Editor/UnityEditor.Timeline.dll'  GUID: 7668179ede524d6396c8b7d84461ea29
+ 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll'  GUID: 739bbd9f364b4268874f9fd86ab3beef
+    Ignoring 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll' because we're compiling for Editor:Editor
+    Ignoring 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/Standalone/UnityEngine.UI.dll' because we're compiling for Editor:Editor
+    Ignoring 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/Standalone/UnityEngine.Networking.dll' because we're compiling for Editor:Editor
+    Ignoring 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Timeline/Runtime/UnityEngine.Timeline.dll' because we're compiling for Editor:Editor
+    Ignoring 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/Runtime/UnityEngine.HoloLens.dll' because we're compiling for Editor:Editor
+    Ignoring 'C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityPurchasing/UnityEngine.Purchasing.dll' because we're compiling for Editor:Editor
+Platform assembly: C:\Program Files\Unity\Editor\Data\Mono\lib\mono\2.0\System.EnterpriseServices.dll (this message is harmless)
+Unloading 485 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 72.3 MB.
+System memory in use after: 72.3 MB.
+
+Unloading 445 unused Assets to reduce memory usage. Loaded Objects now: 3303.
+Total: 5.850437 ms (FindLiveObjects: 0.626507 ms CreateObjectMapping: 0.153891 ms MarkObjects: 4.966472 ms  DeleteObjects: 0.101743 ms)
+
+WwiseUnity: Running modify setup...
+0x00000001409897FB (Unity) StackWalker::GetCurrentCallstack
+0x000000014098CD5F (Unity) StackWalker::ShowCallstack
+0x0000000140D35030 (Unity) GetStacktrace
+0x0000000141079D56 (Unity) DebugStringToFile
+0x000000014107A52C (Unity) DebugStringToFile
+0x0000000141869242 (Unity) DebugLogHandler_CUSTOM_Internal_Log
+0x000000002E3EBA0B (Mono JIT Code) (wrapper managed-to-native) UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,string,UnityEngine.Object)
+0x000000002E3EB8F4 (Mono JIT Code) [DebugLogHandler.cs:9] UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[]) 
+0x000000002E3EB1F5 (Mono JIT Code) [Logger.cs:47] UnityEngine.Logger:Log (UnityEngine.LogType,object) 
+0x000000002E3EAA36 (Mono JIT Code) [DebugBindings.gen.cs:103] UnityEngine.Debug:Log (object) 
+0x000000002E3EA651 (Mono JIT Code) [AkWwiseSetupWizard.cs:38] WwiseSetupWizard:RunModifyImpl () 
+0x000000002E3EA579 (Mono JIT Code) [EditorApplication.cs:118] UnityEditor.EditorApplication:Internal_CallDelayFunctions () 
+0x0000000029DA0A8E (Mono JIT Code) (wrapper runtime-invoke) object:runtime_invoke_void (object,intptr,intptr,intptr)
+0x00007FFCD8C65B63 (mono) [mini.c:4937] mono_jit_runtime_invoke 
+0x00007FFCD8BB872D (mono) [object.c:2623] mono_runtime_invoke 
+0x00000001403DE343 (Unity) mono_runtime_invoke_profiled
+0x000000014140499B (Unity) CallStaticMonoMethod
+0x0000000141405DC7 (Unity) CallStaticMonoMethod
+0x0000000140130A63 (Unity) Application::TickTimer
+0x0000000141A87E5D (Unity) MainMessageLoop
+0x0000000141A89827 (Unity) WinMain
+0x0000000141CEC8BC (Unity) __tmainCRTStartup
+0x00007FFD07662774 (KERNEL32) BaseThreadInitThunk
+0x00007FFD07F80D51 (ntdll) RtlUserThreadStart
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 48.6 MB.
+System memory in use after: 48.8 MB.
+
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 3307.
+Total: 5.088272 ms (FindLiveObjects: 0.427395 ms CreateObjectMapping: 0.111589 ms MarkObjects: 4.529229 ms  DeleteObjects: 0.016774 ms)
+
+
+Hashing assets ... 0.000 seconds
+  file open: 0.000 seconds (2 files)
+  file read: 0.000 seconds (0.073 MB)
+  hash: 0.000 seconds
+Updating Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkRecorder.bundle - GUID: 9c83fe2050a831c4cb5535e26a3b6764...
+ done. [Time: 20.839563 ms] 
+Refreshing native plugins compatible for Editor in 1.32 ms, found 5 plugins.
+Preloading 2 native plugins for Editor in 0.13 ms.
+
+----- Total AssetImport time: 0.105509s, AssetImport time: 0.065518s, Asset hashing: 0.000609s [74.9 KB, 120.157654 mb/s]
+
+
+Hashing assets ... 0.021 seconds
+  file open: 0.000 seconds (2 files)
+  file read: 0.005 seconds (12.419 MB)
+  hash: 0.020 seconds
+Updating Assets/Wwise/Deployment/Plugins/Mac/DSP/libAuro.bundle - GUID: eaeea91112d82be44a1af982862ef3dc...
+ done. [Time: 15.368384 ms] 
+Refreshing native plugins compatible for Editor in 1.36 ms, found 5 plugins.
+Preloading 2 native plugins for Editor in 0.14 ms.
+
+----- Total AssetImport time: 0.128048s, AssetImport time: 0.066986s, Asset hashing: 0.021081s [12.4 MB, 589.092651 mb/s]
+
+
+Hashing assets ... 0.001 seconds
+  file open: 0.000 seconds (2 files)
+  file read: 0.000 seconds (0.181 MB)
+  hash: 0.000 seconds
+Updating Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkSoundSeedAir.bundle - GUID: 70c17691a69b18c47a263665103e7c4a...
+ done. [Time: 20.524850 ms] 
+Refreshing native plugins compatible for Editor in 2.08 ms, found 5 plugins.
+Preloading 2 native plugins for Editor in 0.22 ms.
+
+----- Total AssetImport time: 0.111790s, AssetImport time: 0.069078s, Asset hashing: 0.000739s [185.4 KB, 244.910019 mb/s]
+
+Updating Assets/Wwise/Deployment/Plugins/Mac/Debug/AkSoundEngine.bundle - GUID: 9384de2209d88bb48a5f2667795e15d1...
+ done. [Time: 10.908442 ms] 
+Refreshing native plugins compatible for Editor in 1.28 ms, found 5 plugins.
+Preloading 2 native plugins for Editor in 0.13 ms.
+
+----- Total AssetImport time: 0.110060s, AssetImport time: 0.066994s, Asset hashing: 0.000000s [0 B, 0.000000 mb/s]
+
+
+Hashing assets ... 0.001 seconds
+  file open: 0.000 seconds (2 files)
+  file read: 0.000 seconds (0.078 MB)
+  hash: 0.000 seconds
+Updating Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkStereoDelay.bundle - GUID: 90a47e423b62e1d41a09391928af0767...
+ done. [Time: 15.927791 ms] 
+Refreshing native plugins compatible for Editor in 1.30 ms, found 5 plugins.
+Preloading 2 native plugins for Editor in 0.13 ms.
+
+----- Total AssetImport time: 0.111899s, AssetImport time: 0.065967s, Asset hashing: 0.000918s [80.3 KB, 85.435028 mb/s]
+
+
+Hashing assets ... 0.000 seconds
+  file open: 0.000 seconds (2 files)
+  file read: 0.000 seconds (0.081 MB)
+  hash: 0.000 seconds
+Updating Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkGuitarDistortion.bundle - GUID: 1e2bf7e339fe4944c8f38e20c8ac4714...
+ done. [Time: 15.248772 ms] 
+Refreshing native plugins compatible for Editor in 1.39 ms, found 5 plugins.
+Preloading 2 native plugins for Editor in 0.13 ms.
+
+----- Total AssetImport time: 0.097461s, AssetImport time: 0.058450s, Asset hashing: 0.000585s [83.1 KB, 138.867630 mb/s]
+
+
+Hashing assets ... 0.001 seconds
+  file open: 0.000 seconds (2 files)
+  file read: 0.000 seconds (0.108 MB)
+  hash: 0.000 seconds
+Updating Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkReflect.bundle - GUID: 0118ffb46f9f83a4fb29267df988c32b...
+ done. [Time: 18.448406 ms] 
+Refreshing native plugins compatible for Editor in 1.78 ms, found 5 plugins.
+Preloading 2 native plugins for Editor in 0.21 ms.
+
+----- Total AssetImport time: 0.108984s, AssetImport time: 0.059745s, Asset hashing: 0.000674s [111.0 KB, 160.912750 mb/s]
+
+
+Hashing assets ... 0.000 seconds
+  file open: 0.000 seconds (2 files)
+  file read: 0.000 seconds (0.063 MB)
+  hash: 0.000 seconds
+Updating Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkTremolo.bundle - GUID: 3baebf65ddf518f4f951b4811b54c723...
+ done. [Time: 18.269717 ms] 
+Refreshing native plugins compatible for Editor in 1.70 ms, found 5 plugins.
+Preloading 2 native plugins for Editor in 0.15 ms.
+
+----- Total AssetImport time: 0.107579s, AssetImport time: 0.064423s, Asset hashing: 0.000604s [64.5 KB, 104.374084 mb/s]
+
+
+Hashing assets ... 0.001 seconds
+  file open: 0.000 seconds (2 files)
+  file read: 0.000 seconds (0.180 MB)
+  hash: 0.000 seconds
+Updating Assets/Wwise/Deployment/Plugins/Mac/DSP/libCrankcaseAudioREVModelPlayer.bundle - GUID: c2b81606aec5ca6419fafd8379caf10f...
+ done. [Time: 19.211666 ms] 
+Refreshing native plugins compatible for Editor in 1.38 ms, found 5 plugins.
+Preloading 2 native plugins for Editor in 0.13 ms.
+
+----- Total AssetImport time: 0.116612s, AssetImport time: 0.065590s, Asset hashing: 0.000778s [184.1 KB, 230.963425 mb/s]
+
+
+Hashing assets ... 0.000 seconds
+  file open: 0.000 seconds (2 files)
+  file read: 0.000 seconds (0.055 MB)
+  hash: 0.000 seconds
+Updating Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkSoundSeedImpact.bundle - GUID: 2100a146797bd57458761d93c095024d...
+ done. [Time: 19.460737 ms] 
+Refreshing native plugins compatible for Editor in 1.29 ms, found 5 plugins.
+Preloading 2 native plugins for Editor in 0.14 ms.
+
+----- Total AssetImport time: 0.106236s, AssetImport time: 0.065611s, Asset hashing: 0.000573s [56.0 KB, 95.439888 mb/s]
+
+
+Hashing assets ... 0.000 seconds
+  file open: 0.000 seconds (2 files)
+  file read: 0.000 seconds (0.076 MB)
+  hash: 0.000 seconds
+Updating Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkPitchShifter.bundle - GUID: 83a0ad4609a011e4a99a20b0ea7b657c...
+ done. [Time: 61.383099 ms] 
+Refreshing native plugins compatible for Editor in 2.00 ms, found 5 plugins.
+Preloading 2 native plugins for Editor in 0.23 ms.
+
+----- Total AssetImport time: 0.194784s, AssetImport time: 0.125527s, Asset hashing: 0.000620s [78.0 KB, 122.724800 mb/s]
+
+Updating Assets/Wwise/Deployment/Plugins/Mac/Profile/AkSoundEngine.bundle - GUID: 021bbf0756c4e1e488288175efe33a34...
+ done. [Time: 11.760681 ms] 
+Refreshing native plugins compatible for Editor in 1.71 ms, found 5 plugins.
+Preloading 2 native plugins for Editor in 0.15 ms.
+
+----- Total AssetImport time: 0.159947s, AssetImport time: 0.086606s, Asset hashing: 0.000000s [0 B, 0.000000 mb/s]
+
+Updating Assets/Wwise/Deployment/Plugins/Mac/Release/AkSoundEngine.bundle - GUID: bcd068670bdbbf846bd63cfb8f6c6c47...
+ done. [Time: 11.685559 ms] 
+Refreshing native plugins compatible for Editor in 1.30 ms, found 5 plugins.
+Preloading 2 native plugins for Editor in 0.13 ms.
+
+----- Total AssetImport time: 0.105604s, AssetImport time: 0.063800s, Asset hashing: 0.000000s [0 B, 0.000000 mb/s]
+
+
+Hashing assets ... 0.001 seconds
+  file open: 0.000 seconds (2 files)
+  file read: 0.000 seconds (0.476 MB)
+  hash: 0.001 seconds
+Updating Assets/Wwise/Deployment/Plugins/Mac/DSP/libMcDSP.bundle - GUID: 0b37abe7c86c8184284b26006f7e2742...
+ done. [Time: 18.216110 ms] 
+Refreshing native plugins compatible for Editor in 1.33 ms, found 5 plugins.
+Preloading 2 native plugins for Editor in 0.13 ms.
+
+----- Total AssetImport time: 0.102509s, AssetImport time: 0.063295s, Asset hashing: 0.001214s [487.5 KB, 392.261475 mb/s]
+
+
+Hashing assets ... 0.000 seconds
+  file open: 0.000 seconds (2 files)
+  file read: 0.000 seconds (0.113 MB)
+  hash: 0.000 seconds
+Updating Assets/Wwise/Deployment/Plugins/Mac/DSP/libSynthOne.bundle - GUID: 2dc0c8f7cdc5c9e4f8619b5cacf4b061...
+ done. [Time: 17.946982 ms] 
+Refreshing native plugins compatible for Editor in 1.32 ms, found 5 plugins.
+Preloading 2 native plugins for Editor in 0.13 ms.
+
+----- Total AssetImport time: 0.100455s, AssetImport time: 0.058260s, Asset hashing: 0.000662s [115.7 KB, 170.714157 mb/s]
+
+
+Hashing assets ... 0.001 seconds
+  file open: 0.000 seconds (2 files)
+  file read: 0.000 seconds (0.144 MB)
+  hash: 0.000 seconds
+Updating Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkHarmonizer.bundle - GUID: f73dcf1a44cc98641b93eae1956d1d12...
+ done. [Time: 17.575746 ms] 
+Refreshing native plugins compatible for Editor in 1.42 ms, found 5 plugins.
+Preloading 2 native plugins for Editor in 0.13 ms.
+
+----- Total AssetImport time: 0.108799s, AssetImport time: 0.061484s, Asset hashing: 0.000737s [147.1 KB, 194.954056 mb/s]
+
+
+Hashing assets ... 0.000 seconds
+  file open: 0.000 seconds (2 files)
+  file read: 0.000 seconds (0.040 MB)
+  hash: 0.000 seconds
+Updating Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkMotion.bundle - GUID: f7307d4b034f6074bb6fef594ec67832...
+ done. [Time: 13.623063 ms] 
+Refreshing native plugins compatible for Editor in 1.80 ms, found 5 plugins.
+Preloading 2 native plugins for Editor in 0.22 ms.
+
+----- Total AssetImport time: 0.094226s, AssetImport time: 0.055360s, Asset hashing: 0.000555s [41.0 KB, 72.215126 mb/s]
+
+
+Hashing assets ... 0.001 seconds
+  file open: 0.000 seconds (2 files)
+  file read: 0.000 seconds (0.224 MB)
+  hash: 0.000 seconds
+Updating Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkRoomVerb.bundle - GUID: 78c8c7fd4b1873f4f8fd73a9a9d358a5...
+ done. [Time: 15.117854 ms] 
+Refreshing native plugins compatible for Editor in 1.45 ms, found 5 plugins.
+Preloading 2 native plugins for Editor in 0.15 ms.
+
+----- Total AssetImport time: 0.103058s, AssetImport time: 0.063405s, Asset hashing: 0.000861s [229.7 KB, 260.405212 mb/s]
+
+
+Hashing assets ... 0.000 seconds
+  file open: 0.000 seconds (2 files)
+  file read: 0.000 seconds (0.134 MB)
+  hash: 0.000 seconds
+Updating Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkConvolutionReverb.bundle - GUID: 9e23884ef2b8eab4783c924788b9954e...
+ done. [Time: 19.636873 ms] 
+Refreshing native plugins compatible for Editor in 2.59 ms, found 5 plugins.
+Preloading 2 native plugins for Editor in 0.25 ms.
+
+----- Total AssetImport time: 0.107244s, AssetImport time: 0.067451s, Asset hashing: 0.000624s [137.0 KB, 214.303970 mb/s]
+
+
+Hashing assets ... 0.001 seconds
+  file open: 0.000 seconds (2 files)
+  file read: 0.000 seconds (0.107 MB)
+  hash: 0.000 seconds
+Updating Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkTimeStretch.bundle - GUID: c541d7feeae87ed4ab2889e29a3b43b5...
+ done. [Time: 37.833292 ms] 
+Refreshing native plugins compatible for Editor in 1.87 ms, found 5 plugins.
+Preloading 2 native plugins for Editor in 0.23 ms.
+
+----- Total AssetImport time: 0.160330s, AssetImport time: 0.107977s, Asset hashing: 0.000642s [109.6 KB, 166.818680 mb/s]
+
+
+Hashing assets ... 0.000 seconds
+  file open: 0.000 seconds (2 files)
+  file read: 0.000 seconds (0.082 MB)
+  hash: 0.000 seconds
+Updating Assets/Wwise/Deployment/Plugins/Mac/DSP/libAkFlanger.bundle - GUID: fa061e4f4a2c90f4a80a6879ba9057ba...
+ done. [Time: 24.179961 ms] 
+Refreshing native plugins compatible for Editor in 1.40 ms, found 5 plugins.
+Preloading 2 native plugins for Editor in 0.13 ms.
+
+----- Total AssetImport time: 0.186687s, AssetImport time: 0.106027s, Asset hashing: 0.000662s [84.5 KB, 124.635559 mb/s]
+
+WwiseUnity: Refreshing asset database.
+0x00000001409897FB (Unity) StackWalker::GetCurrentCallstack
+0x000000014098CD5F (Unity) StackWalker::ShowCallstack
+0x0000000140D35030 (Unity) GetStacktrace
+0x0000000141079D56 (Unity) DebugStringToFile
+0x000000014107A52C (Unity) DebugStringToFile
+0x0000000141869242 (Unity) DebugLogHandler_CUSTOM_Internal_Log
+0x000000002E3EBA0B (Mono JIT Code) (wrapper managed-to-native) UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,string,UnityEngine.Object)
+0x000000002E3EB8F4 (Mono JIT Code) [DebugLogHandler.cs:9] UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[]) 
+0x000000002E3EB1F5 (Mono JIT Code) [Logger.cs:47] UnityEngine.Logger:Log (UnityEngine.LogType,object) 
+0x000000002E3EAA36 (Mono JIT Code) [DebugBindings.gen.cs:103] UnityEngine.Debug:Log (object) 
+0x000000002E3EA6E9 (Mono JIT Code) [AkWwiseSetupWizard.cs:44] WwiseSetupWizard:RunModifyImpl () 
+0x000000002E3EA579 (Mono JIT Code) [EditorApplication.cs:118] UnityEditor.EditorApplication:Internal_CallDelayFunctions () 
+0x0000000029DA0A8E (Mono JIT Code) (wrapper runtime-invoke) object:runtime_invoke_void (object,intptr,intptr,intptr)
+0x00007FFCD8C65B63 (mono) [mini.c:4937] mono_jit_runtime_invoke 
+0x00007FFCD8BB872D (mono) [object.c:2623] mono_runtime_invoke 
+0x00000001403DE343 (Unity) mono_runtime_invoke_profiled
+0x000000014140499B (Unity) CallStaticMonoMethod
+0x0000000141405DC7 (Unity) CallStaticMonoMethod
+0x0000000140130A63 (Unity) Application::TickTimer
+0x0000000141A87E5D (Unity) MainMessageLoop
+0x0000000141A89827 (Unity) WinMain
+0x0000000141CEC8BC (Unity) __tmainCRTStartup
+0x00007FFD07662774 (KERNEL32) BaseThreadInitThunk
+0x00007FFD07F80D51 (ntdll) RtlUserThreadStart
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Refresh: detecting if any assets need to be imported or removed ... Refresh: elapses 0.016557 seconds (Nothing changed)
+WwiseUnity: End of modify setup, exiting Unity.
+0x00000001409897FB (Unity) StackWalker::GetCurrentCallstack
+0x000000014098CD5F (Unity) StackWalker::ShowCallstack
+0x0000000140D35030 (Unity) GetStacktrace
+0x0000000141079D56 (Unity) DebugStringToFile
+0x000000014107A52C (Unity) DebugStringToFile
+0x0000000141869242 (Unity) DebugLogHandler_CUSTOM_Internal_Log
+0x000000002E3EBA0B (Mono JIT Code) (wrapper managed-to-native) UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,string,UnityEngine.Object)
+0x000000002E3EB8F4 (Mono JIT Code) [DebugLogHandler.cs:9] UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[]) 
+0x000000002E3EB1F5 (Mono JIT Code) [Logger.cs:47] UnityEngine.Logger:Log (UnityEngine.LogType,object) 
+0x000000002E3EAA36 (Mono JIT Code) [DebugBindings.gen.cs:103] UnityEngine.Debug:Log (object) 
+0x000000002E3EA757 (Mono JIT Code) [AkWwiseSetupWizard.cs:47] WwiseSetupWizard:RunModifyImpl () 
+0x000000002E3EA579 (Mono JIT Code) [EditorApplication.cs:118] UnityEditor.EditorApplication:Internal_CallDelayFunctions () 
+0x0000000029DA0A8E (Mono JIT Code) (wrapper runtime-invoke) object:runtime_invoke_void (object,intptr,intptr,intptr)
+0x00007FFCD8C65B63 (mono) [mini.c:4937] mono_jit_runtime_invoke 
+0x00007FFCD8BB872D (mono) [object.c:2623] mono_runtime_invoke 
+0x00000001403DE343 (Unity) mono_runtime_invoke_profiled
+0x000000014140499B (Unity) CallStaticMonoMethod
+0x0000000141405DC7 (Unity) CallStaticMonoMethod
+0x0000000140130A63 (Unity) Application::TickTimer
+0x0000000141A87E5D (Unity) MainMessageLoop
+0x0000000141A89827 (Unity) WinMain
+0x0000000141CEC8BC (Unity) __tmainCRTStartup
+0x00007FFD07662774 (KERNEL32) BaseThreadInitThunk
+0x00007FFD07F80D51 (ntdll) RtlUserThreadStart
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Refresh: detecting if any assets need to be imported or removed ... Refresh: elapses 0.017757 seconds (Nothing changed)
+
+Hashing assets ... 0.000 seconds
+  file open: 0.000 seconds (2 files)
+  file read: 0.000 seconds (0.003 MB)
+  hash: 0.000 seconds
+Updating ProjectSettings/ProjectSettings.asset - GUID: 00000000000000004000000000000000...
+ done. [Time: 12.326653 ms] 
+Updating Assets/Wwise/Editor/ProjectData/AkWwiseProjectData.asset - GUID: 6e99a0bce59957e4e8dfd8d3f9c8e2dd...
+ done. [Time: 15.303837 ms] 
+Refreshing native plugins compatible for Editor in 0.88 ms, found 5 plugins.
+Preloading 2 native plugins for Editor in 0.16 ms.
+
+----- Total AssetImport time: 0.129478s, AssetImport time: 0.065504s, Asset hashing: 0.000573s [3.3 KB, 5.625085 mb/s]
+
+Refresh: detecting if any assets need to be imported or removed ... Refresh: elapses 0.017059 seconds (Nothing changed)
+Cleanup mono
+Checking for leaked weakptr:
+  Found no leaked weakptrs.
+##utp:{"type":"MemoryLeaks","allocatedMemory":180447,"memoryLabels":[{"Default":68},{"Permanent":20960},{"NewDelete":62734},{"Thread":632},{"Manager":2704},{"GfxDevice":6596},{"Physics":8},{"Serialization":15712},{"JobScheduler":136},{"Renderer":224},{"Terrain":224},{"STL":1024},{"String":21039},{"DynamicArray":19484},{"Curl":1296},{"PoolAlloc":-224},{"ScriptManager":4040},{"Sprites":1200},{"WebRequest":2501},{"VR":8848},{"EditorGui":12},{"EditorUtility":544},{"AssetImporter":32},{"RestService":72},{"License":637},{"UnityConnect":9240},{"Collab":704}]}
+
+Unhandled Exception: System.NullReferenceException: DownloadHandler has already been destroyed
+  at (wrapper managed-to-native) UnityEngine.Networking.UnityWebRequest:GetDownloadHandler ()
+  at UnityEngine.Networking.UnityWebRequest.DisposeHandlers () [0x0000e] in C:\buildslave\unity\build\artifacts\generated\common\modules\UnityWebRequest\WebRequestBindings.gen.cs:173 
+  at UnityEngine.Networking.UnityWebRequest.Finalize () [0x00002] in C:\buildslave\unity\build\artifacts\generated\common\modules\UnityWebRequest\WebRequestBindings.gen.cs:153 
+debugger-agent: Unable to listen on 3452

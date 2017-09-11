@@ -38,8 +38,7 @@ public class YokaiController : MonoBehaviour {
         NavMeshAgent agent = GetComponent<NavMeshAgent>();
 
         agent.nextPosition = transform.position;
-        Vector3 velocity = agent.desiredVelocity;
-        velocity.y = -10F; // TODO add a variable to store current y velocity, rather than having it constant
+        Vector3 velocity = agent.desiredVelocity + Physics.gravity;
         agent.velocity = velocity;
         controller.Move(velocity * Time.deltaTime * 2);
 
