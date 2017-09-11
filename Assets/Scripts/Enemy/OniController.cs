@@ -111,7 +111,7 @@ public class OniController : YokaiController
     void LateUpdate()
     {
         //manage state machine each update, call functions based on state
-        //print(state);
+        print(state);
         //state = OniState.Patrol;
         
         if (nextFootprint != null)
@@ -327,9 +327,6 @@ public class OniController : YokaiController
             }
         }
 
-        //by using a Raycast you make sure an enemy does not see you
-        //if there is a building separating you from his view, for example
-        //the enemy only sees you if it has you in open view
         //Transform goal = PlayerObject.transform; // set current player location as desired location
         //agent.destination = goal.position; // set destination to player's current location
         agent.SetDestination(PlayerObject.transform.position);
