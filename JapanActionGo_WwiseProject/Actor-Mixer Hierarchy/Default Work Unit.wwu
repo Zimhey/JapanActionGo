@@ -309,7 +309,7 @@
 								</Reference>
 							</ReferenceList>
 							<ChildrenList>
-								<Sound Name="sfx_player_footstep_01" ID="{FECA5753-68BE-41F5-B28A-46C66DE53756}" ShortID="1057834763">
+								<Sound Name="sfx_player_footstep_05" ID="{FECA5753-68BE-41F5-B28A-46C66DE53756}" ShortID="1057834763">
 									<ReferenceList>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{336E5602-0BF9-43A7-9D2E-B706A82B9322}"/>
@@ -331,7 +331,7 @@
 										<ActiveSource Name="sfx_player_footstep_01" ID="{C4007A12-338C-4833-B8D4-C0DE5CD2B9EC}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
-								<Sound Name="sfx_player_footstep_02" ID="{2F726F0C-44FA-4816-ABA7-AFA1796967BF}" ShortID="827564786">
+								<Sound Name="sfx_player_footstep_06" ID="{2F726F0C-44FA-4816-ABA7-AFA1796967BF}" ShortID="827564786">
 									<PropertyList>
 										<Property Name="Lowpass" Type="int16">
 											<ValueList>
@@ -365,7 +365,7 @@
 										<ActiveSource Name="sfx_player_footstep_01" ID="{02F1E709-A976-453E-B13B-111DA4FD3DDD}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
-								<Sound Name="sfx_player_footstep_03" ID="{AB7C2A06-F0D0-4F43-838B-B14FE8E1CB69}" ShortID="969624402">
+								<Sound Name="sfx_player_footstep_07" ID="{AB7C2A06-F0D0-4F43-838B-B14FE8E1CB69}" ShortID="969624402">
 									<PropertyList>
 										<Property Name="Pitch" Type="int32">
 											<ValueList>
@@ -394,7 +394,7 @@
 										<ActiveSource Name="sfx_player_footstep_01" ID="{63B9AFC6-D55A-443E-BEF8-5F6771A7F204}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
-								<Sound Name="sfx_player_footstep_04" ID="{7D5B8434-419D-4885-A26B-8D20AA932BDD}" ShortID="225527452">
+								<Sound Name="sfx_player_footstep_08" ID="{7D5B8434-419D-4885-A26B-8D20AA932BDD}" ShortID="225527452">
 									<PropertyList>
 										<Property Name="Lowpass" Type="int16">
 											<ValueList>

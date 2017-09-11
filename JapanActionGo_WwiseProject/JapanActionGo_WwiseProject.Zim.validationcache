@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ValidationCache Version="1" SchemaVersion="80">
+	<ValidationCacheItem File="C:\Users\Zim\Desktop\JapanActionGo\JapanActionGo_WwiseProject\Actor-Mixer Hierarchy\Default Work Unit.wwu" DateLow="1334576114" DateHigh="30616226"/>
+	<ValidationCacheItem File="C:\Users\Zim\Desktop\JapanActionGo\JapanActionGo_WwiseProject\Attenuations\Default Work Unit.wwu" DateLow="3706117086" DateHigh="30615662"/>
+	<ValidationCacheItem File="C:\Users\Zim\Desktop\JapanActionGo\JapanActionGo_WwiseProject\Audio Devices\Default Work Unit.wwu" DateLow="3706167119" DateHigh="30615662"/>
+	<ValidationCacheItem File="C:\Users\Zim\Desktop\JapanActionGo\JapanActionGo_WwiseProject\Control Surface Sessions\Default Work Unit.wwu" DateLow="3706217148" DateHigh="30615662"/>
+	<ValidationCacheItem File="C:\Users\Zim\Desktop\JapanActionGo\JapanActionGo_WwiseProject\Conversion Settings\Default Work Unit.wwu" DateLow="3706267181" DateHigh="30615662"/>
+	<ValidationCacheItem File="C:\Users\Zim\Desktop\JapanActionGo\JapanActionGo_WwiseProject\Conversion Settings\Factory Conversion Settings.wwu" DateLow="3706317225" DateHigh="30615662"/>
+	<ValidationCacheItem File="C:\Users\Zim\Desktop\JapanActionGo\JapanActionGo_WwiseProject\Dynamic Dialogue\Default Work Unit.wwu" DateLow="3706367238" DateHigh="30615662"/>
+	<ValidationCacheItem File="C:\Users\Zim\Desktop\JapanActionGo\JapanActionGo_WwiseProject\Effects\Default Work Unit.wwu" DateLow="3706417282" DateHigh="30615662"/>
+	<ValidationCacheItem File="C:\Users\Zim\Desktop\JapanActionGo\JapanActionGo_WwiseProject\Effects\Factory Effects.wwu" DateLow="3706497335" DateHigh="30615662"/>
+	<ValidationCacheItem File="C:\Users\Zim\Desktop\JapanActionGo\JapanActionGo_WwiseProject\Events\Default Work Unit.wwu" DateLow="3706537367" DateHigh="30615662"/>
+	<ValidationCacheItem File="C:\Users\Zim\Desktop\JapanActionGo\JapanActionGo_WwiseProject\Game Parameters\Default Work Unit.wwu" DateLow="3706587395" DateHigh="30615662"/>
+	<ValidationCacheItem File="C:\Users\Zim\Desktop\JapanActionGo\JapanActionGo_WwiseProject\Interactive Music Hierarchy\Default Work Unit.wwu" DateLow="3706847580" DateHigh="30615662"/>
+	<ValidationCacheItem File="C:\Users\Zim\Desktop\JapanActionGo\JapanActionGo_WwiseProject\JapanActionGo_WwiseProject.wproj" DateLow="3805022990" DateHigh="30616239"/>
+	<ValidationCacheItem File="C:\Users\Zim\Desktop\JapanActionGo\JapanActionGo_WwiseProject\JapanActionGo_WwiseProject.Zim.wsettings" DateLow="1113003160" DateHigh="30616228"/>
+	<ValidationCacheItem File="C:\Users\Zim\Desktop\JapanActionGo\JapanActionGo_WwiseProject\Master-Mixer Hierarchy\Default Work Unit.wwu" DateLow="3707177888" DateHigh="30615662"/>
+	<ValidationCacheItem File="C:\Users\Zim\Desktop\JapanActionGo\JapanActionGo_WwiseProject\Mixing Sessions\Default Work Unit.wwu" DateLow="3707237440" DateHigh="30615662"/>
+	<ValidationCacheItem File="C:\Users\Zim\Desktop\JapanActionGo\JapanActionGo_WwiseProject\Modulators\Default Work Unit.wwu" DateLow="3707277503" DateHigh="30615662"/>
+	<ValidationCacheItem File="C:\Users\Zim\Desktop\JapanActionGo\JapanActionGo_WwiseProject\Presets\Default Work Unit.wwu" DateLow="3707457623" DateHigh="30615662"/>
+	<ValidationCacheItem File="C:\Users\Zim\Desktop\JapanActionGo\JapanActionGo_WwiseProject\Queries\Default Work Unit.wwu" DateLow="3707847884" DateHigh="30615662"/>
+	<ValidationCacheItem File="C:\Users\Zim\Desktop\JapanActionGo\JapanActionGo_WwiseProject\Queries\Factory Queries.wwu" DateLow="3707907930" DateHigh="30615662"/>
+	<ValidationCacheItem File="C:\Users\Zim\Desktop\JapanActionGo\JapanActionGo_WwiseProject\SoundBanks\Default Work Unit.wwu" DateLow="3707957958" DateHigh="30615662"/>
+	<ValidationCacheItem File="C:\Users\Zim\Desktop\JapanActionGo\JapanActionGo_WwiseProject\Soundcaster Sessions\Default Work Unit.wwu" DateLow="3708007992" DateHigh="30615662"/>
+	<ValidationCacheItem File="C:\Users\Zim\Desktop\JapanActionGo\JapanActionGo_WwiseProject\States\Default Work Unit.wwu" DateLow="3708058030" DateHigh="30615662"/>
+	<ValidationCacheItem File="C:\Users\Zim\Desktop\JapanActionGo\JapanActionGo_WwiseProject\Switches\Default Work Unit.wwu" DateLow="3708118070" DateHigh="30615662"/>
+	<ValidationCacheItem File="C:\Users\Zim\Desktop\JapanActionGo\JapanActionGo_WwiseProject\Triggers\Default Work Unit.wwu" DateLow="3708168093" DateHigh="30615662"/>
+	<ValidationCacheItem File="C:\Users\Zim\Desktop\JapanActionGo\JapanActionGo_WwiseProject\Virtual Acoustics\Default Work Unit.wwu" DateLow="3708228144" DateHigh="30615662"/>
+</ValidationCache>
