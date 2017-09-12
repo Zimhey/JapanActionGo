@@ -12,10 +12,14 @@ public class VRPlayerController : MonoBehaviour
     public float GravityMultiplier;
 
     public bool SnapRotationToHead;
+    public float DegreeSegment;
+    public float RotationSensitivity;
     public GameObject Head;
+    public GameObject Rig;
 
     private CharacterController controller;
     private float yVelocity;
+    private float yRotation;
 
 	void Start()
     {
@@ -60,11 +64,30 @@ public class VRPlayerController : MonoBehaviour
 
     private void UpdateRotation()
     {
-        if(SnapRotationToHead)
+        float y = CrossPlatformInputManager.GetAxis("Mouse X") * RotationSensitivity;
+
+        if (SnapRotationToHead)
         {
             float yRot = Head.transform.rotation.eulerAngles.y;
             transform.rotation = Quaternion.Euler(0, yRot, 0);
         }
+
+        // Q and E
+        if (Input.GetKeyDown(KeyCode.Q))
+            yRotation -= DegreeSegment;
+        if (Input.GetKeyDown(KeyCode.E))
+            yRotation += DegreeSegment;
+
+        // Mouse X
+        yRotation += CrossPlatformInputManager.GetAxis("Mouse X") * RotationSensitivity;
+
+        if (yRotation < 0)
+            yRotation += 360;
+
+        float finalRot = (((int)yRotation) / (int)DegreeSegment) * DegreeSegment; // min max stuff
+
+        transform.rotation = Quaternion.Euler(0, finalRot, 0);
+        Rig.transform.rotation = Quaternion.Euler(0, finalRot, 0);
     }
 
     private Vector2 getAnalog()
