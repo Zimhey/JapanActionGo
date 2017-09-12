@@ -65,9 +65,11 @@ public class GameManager : MonoBehaviour {
 
     public bool TutorialOn;
     public bool DebugLabelsOn;
+    public bool DebugPlay;
     public bool CanPause;
 
     private GameObject parent;
+
     public GameObject GameParent
     {
         get
@@ -86,6 +88,7 @@ public class GameManager : MonoBehaviour {
 
     private float sessionTime;
     private float lastUpdateTime;
+
     public float SessionTime
     {
         get
@@ -108,6 +111,7 @@ public class GameManager : MonoBehaviour {
 
     private static GameState prevState;
     private static GameState currState;
+
     public static GameState CurrentState
     {
         get
@@ -181,6 +185,12 @@ public class GameManager : MonoBehaviour {
             PlayersVRType = VirtualRealityType.SteamVR;
         else
             PlayersVRType = VirtualRealityType.None;
+
+        if (DebugPlay)
+        {
+            CurrentState = GameState.Play;
+            AnalyticsEnabled = false;
+        }
     }
 
     // Update is called once per frame
@@ -500,10 +510,18 @@ public class GameManager : MonoBehaviour {
         // TODO change Ladder code to call this and add player movement to here
     }
 
+    private void SetCurrentActive(bool state)
+    {
+        if(!DebugPlay)
+        {
+            PlayersCurrentSection.section.SetActive(state);
+            PlayerObj.SetActive(state);
+        }
+    }
+
     public void PauseGame()
     {
-        PlayersCurrentSection.section.SetActive(false);
-        PlayerObj.SetActive(false);
+        SetCurrentActive(false);
         CurrentState = GameState.Pause;
         if (UserInterface != null)
             UserInterface.ShowPauseMenu();
@@ -515,8 +533,7 @@ public class GameManager : MonoBehaviour {
 
     public void UnPause()
     {
-        PlayersCurrentSection.section.SetActive(true);
-        PlayerObj.SetActive(true);
+        SetCurrentActive(true);
         CurrentState = GameState.Play;
         if (UserInterface != null)
             UserInterface.ShowHUD();
@@ -528,8 +545,9 @@ public class GameManager : MonoBehaviour {
 
     public void GameOver()
     {
-        PlayersCurrentSection.section.SetActive(false);
-        PlayerObj.SetActive(false);
+        if (DebugPlay)
+            return;
+        SetCurrentActive(false);
         CurrentState = GameState.GameOver;
         if (UserInterface != null)
             UserInterface.ShowGameOverMenu();
@@ -539,10 +557,9 @@ public class GameManager : MonoBehaviour {
         Cursor.visible = true;
     }
 
-    public static void Win()
+    public void Win()
     {
-        PlayersCurrentSection.section.SetActive(false);
-        PlayerObj.SetActive(false);
+        SetCurrentActive(false);
         CurrentState = GameState.Win;
         if (UserInterface != null)
             UserInterface.ShowWinMenu();
