@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using UnityEngine.AI;
 
 //state machine for taka AI
 public enum TakaState
@@ -28,7 +29,6 @@ public enum TakaAnim
     Taunt, // taka taunting player
     Glare // taka glaring
 }
-
 
 public class TakaController : YokaiController
 {
@@ -71,6 +71,7 @@ public class TakaController : YokaiController
     private Vector3 newPosition;
     private int posTimer;
     private GameObject nextFootprint;
+    private NavMeshAgent agent;
 
     public TakaState State
     {
@@ -99,6 +100,9 @@ public class TakaController : YokaiController
         posTimer = 60;
         root = MazeGenerator.getSectionBasedOnLocation(home);
         currentNode = StartingNode;
+        agent = GetComponent<NavMeshAgent>();
+        agent.updatePosition = false;
+        agent.updateRotation = true;
     }
 
     void LateUpdate()
@@ -193,11 +197,11 @@ public class TakaController : YokaiController
             float difMag = difference.magnitude;
             if (difMag < .25)
             {
-                UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
                 agent.ResetPath();
                 currentNode = null;
             }
         }
+        MoveYokai();
     }
 
     void idle()
@@ -267,8 +271,7 @@ public class TakaController : YokaiController
                     currentNode = closest;
                 }
             }
-
-            UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>(); // get oni's navigation agent
+            
 
             if (rb.transform.position.x < agent.destination.x + 2 && rb.transform.position.x > agent.destination.x - 2)
             {
@@ -282,8 +285,7 @@ public class TakaController : YokaiController
                 }
             }
 
-            Vector3 goal = currentNodePosition; // set current node location as desired location
-            agent.destination = goal; // set destination to current node's location
+            agent.SetDestination(currentNodePosition);
             //print(goal);
         }
     }
@@ -295,7 +297,6 @@ public class TakaController : YokaiController
 
     void chase()
     {
-        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         agent.ResetPath();
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
@@ -311,15 +312,11 @@ public class TakaController : YokaiController
                 state = TakaState.Idle;
             }
         }
-
-        //by using a Raycast you make sure an enemy does not see you
-        //if there is a building separating you from his view, for example
-        //the enemy only sees you if it has you in open view
-        Transform goal = PlayerObject.transform; // set current player location as desired location
-        agent.destination = goal.position; // set destination to player's current location
+        
+        agent.SetDestination(PlayerObject.transform.position);
 
         Vector3 dest = PlayerObject.transform.position;
-        agent.destination = dest;
+        //agent.destination = dest;
         //print(dest);
 
         if (rb.transform.position.x < dest.x + 5 && rb.transform.position.x > dest.x - 5)
@@ -329,7 +326,7 @@ public class TakaController : YokaiController
                 if (rb.transform.position.z < dest.z + 5 && rb.transform.position.z > dest.z - 5)
                 {
                     state = TakaState.Taunt;
-                    agent.destination = rb.transform.position;
+                    agent.SetDestination(rb.transform.position);
                     gameObject.transform.rotation = startingRotation;
                 }
             }
@@ -425,9 +422,8 @@ public class TakaController : YokaiController
 
     void flee()
     {
-        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         agent.ResetPath();
-        agent.destination = home;
+        agent.SetDestination(PlayerObject.transform.position);
         if (gameObject.transform.localScale.y > 5)
         {
             gameObject.transform.localScale -= new Vector3(0, 0.01F, 0);
@@ -454,7 +450,6 @@ public class TakaController : YokaiController
 
     void follow()
     {
-        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         agent.ResetPath();
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
@@ -474,8 +469,7 @@ public class TakaController : YokaiController
             if (foundFootprint != null)
             {
                 nextFootprint = foundFootprint;
-                GameObject goal = foundFootprint;
-                agent.destination = goal.transform.position;
+                agent.SetDestination(foundFootprint.transform.position);
             }
         }
         else
@@ -488,8 +482,7 @@ public class TakaController : YokaiController
                 }
             }
 
-            GameObject goal = nextFootprint;
-            agent.destination = goal.transform.position;
+            agent.SetDestination(nextFootprint.transform.position);
         }
     }
 
@@ -520,8 +513,7 @@ public class TakaController : YokaiController
     {
         state = TakaState.Stun;
         stunTimer = 120;
-        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        agent.destination = rb.position;
+        agent.SetDestination(rb.transform.position);
     }
 
     void SafeZoneCollision()

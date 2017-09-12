@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class YokaiController : MonoBehaviour {
+
     public void Die()
     {
         print(gameObject);
@@ -24,11 +25,12 @@ public class YokaiController : MonoBehaviour {
         rayDirection.Normalize();
         Ray ray = new Ray(gameObject.transform.position, rayDirection);
         RaycastHit rayHit;
-
+        
         if (Physics.Raycast(ray, out rayHit, maxDistance, levelMask))
         {
             return false;
         }
+        //print("player found");
         return true;
     }
 
@@ -38,10 +40,9 @@ public class YokaiController : MonoBehaviour {
         NavMeshAgent agent = GetComponent<NavMeshAgent>();
 
         agent.nextPosition = transform.position;
-        Vector3 velocity = agent.desiredVelocity;
-        velocity.y = -10F; // TODO add a variable to store current y velocity, rather than having it constant
+        Vector3 velocity = agent.desiredVelocity + Physics.gravity;
         agent.velocity = velocity;
-        controller.Move(velocity * Time.deltaTime * 2);
+        controller.Move(velocity * Time.deltaTime * 1);
 
     }
 
@@ -151,8 +152,11 @@ public class YokaiController : MonoBehaviour {
         int maxDistance = 25;
         int maxDistanceSquared = maxDistance * maxDistance;
         Vector3 rayDirection = desiredObject.transform.localPosition - transform.localPosition;
+        //print(rayDirection);
         Vector3 observerDirection = transform.TransformDirection(Vector3.forward);
+        //print(observerDirection);
         float angleDot = Vector3.Dot(rayDirection, observerDirection);
+        //print(angleDot);
         System.Boolean objectCloseToObserver = rayDirection.sqrMagnitude < maxDistanceSquared;
 
         //float crossangle = Vector3.Angle(enemyDirection, rayDirection);

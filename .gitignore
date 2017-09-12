@@ -33,6 +33,6 @@ sysinfo.txt
 *.apk
 *.unitypackage
 Analytics/GameAnalytics.sqlite
+
 TestBuilds/
-logRunSetup.txt
-JapanActionGo_WwiseProject/.cache/
+Assets/StreamingAssets/desc.txt.meta

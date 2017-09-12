@@ -67,6 +67,7 @@ public class OniController : YokaiController
     private Vector3 newPosition;
     private int posTimer;
     private GameObject nextFootprint;
+    private NavMeshAgent agent;
 
     private Animator anim;
 
@@ -80,6 +81,7 @@ public class OniController : YokaiController
 
             actorID = GetComponent<Actor>();
             GameManager.Instance.ActorStateChange(actorID, (int) state);
+            print(state);
         }
     }
 
@@ -100,20 +102,18 @@ public class OniController : YokaiController
         root = MazeGenerator.getSectionBasedOnLocation(home);
         currentNode = StartingNode;
 
-        NavMeshAgent agent = GetComponent<NavMeshAgent>();
+        agent = GetComponent<NavMeshAgent>();
         agent.updatePosition = false;
-        agent.updateRotation = false;
-        agent.SetDestination(PlayerObject.transform.position);
+        agent.updateRotation = true;
+        //agent.SetDestination(PlayerObject.transform.position);
     }
 
     void LateUpdate()
     {
-
-        MoveYokai();
         //manage state machine each update, call functions based on state
-        //print(state);
+        print(state);
         //state = OniState.Patrol;
-        /*
+        
         if (nextFootprint != null)
         {
             print(nextFootprint.transform.position);
@@ -202,7 +202,6 @@ public class OniController : YokaiController
             float difMag = difference.magnitude;
             if (difMag < .25)
             {
-                UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
                 agent.ResetPath();
                 currentNode = null;
                 if (state != OniState.Idle)
@@ -213,7 +212,7 @@ public class OniController : YokaiController
             }
         }
 
-    */
+        MoveYokai();
     }
 
     void idle()
@@ -284,8 +283,6 @@ public class OniController : YokaiController
                 }
             }
 
-            UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>(); // get oni's navigation agent
-
             if (rb.transform.position.x < agent.destination.x + 2 && rb.transform.position.x > agent.destination.x - 2)
             {
                 if (rb.transform.position.z < agent.destination.z + 2 && rb.transform.position.z > agent.destination.z - 2)
@@ -298,8 +295,9 @@ public class OniController : YokaiController
                 }
             }
 
-            Vector3 goal = currentNodePosition; // set current node location as desired location
-            agent.destination = goal; // set destination to current node's location
+            //Vector3 goal = currentNodePosition; // set current node location as desired location
+            //agent.destination = goal; // set destination to current node's location
+            agent.SetDestination(currentNodePosition);
             //print("goal" + goal);
         }
     }
@@ -308,13 +306,11 @@ public class OniController : YokaiController
     {
         Vector3 newdir = transform.forward * 10;
         Vector3 goal = transform.position - newdir;
-        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>(); 
         agent.destination = goal; 
     }
 
     void chase()
     {
-        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         agent.ResetPath();
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
@@ -323,29 +319,24 @@ public class OniController : YokaiController
             GameObject foundFootprint = SeeFootprint(LevelMask);
             if (foundFootprint != null)
             {
-                print("following");
                 state = OniState.Follow;
             }
             else
             {
-                print("idling");
                 state = OniState.Idle;
             }
         }
 
-        //by using a Raycast you make sure an enemy does not see you
-        //if there is a building separating you from his view, for example
-        //the enemy only sees you if it has you in open view
-        Transform goal = PlayerObject.transform; // set current player location as desired location
-        agent.destination = goal.position; // set destination to player's current location
+        //Transform goal = PlayerObject.transform; // set current player location as desired location
+        //agent.destination = goal.position; // set destination to player's current location
+        agent.SetDestination(PlayerObject.transform.position);
     }
 
     void flee()
     {
-        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         agent.ResetPath();
         //print("OriDest" + agent.destination);
-        agent.destination = home;
+        agent.SetDestination(home);
         //print("NewDest" + agent.destination);
         //print("Curpos" + rb.transform.position);
         if (rb.transform.position.x < home.x + 2 && rb.transform.position.x > home.x - 2)
@@ -369,7 +360,6 @@ public class OniController : YokaiController
 
     void follow()
     {
-        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         agent.ResetPath();
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
@@ -389,8 +379,9 @@ public class OniController : YokaiController
             if (foundFootprint != null)
             {
                 nextFootprint = foundFootprint;
-                GameObject goal = foundFootprint;
-                agent.destination = goal.transform.position;
+                //GameObject goal = foundFootprint;
+                //agent.destination = goal.transform.position;
+                agent.SetDestination(foundFootprint.transform.position);
             }
         }
         else
@@ -403,8 +394,9 @@ public class OniController : YokaiController
                 }
             }
 
-            GameObject goal = nextFootprint;
-            agent.destination = goal.transform.position;
+            //GameObject goal = nextFootprint;
+            //agent.destination = goal.transform.position;
+            agent.SetDestination(nextFootprint.transform.position);
         }
     }
 
@@ -437,8 +429,7 @@ public class OniController : YokaiController
         state = OniState.Stun;
         animState = OniAnim.Stunned;
         stunTimer = 300;
-        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        agent.destination = rb.position;
+        agent.SetDestination(rb.position);
     }
 
     void gameOver()

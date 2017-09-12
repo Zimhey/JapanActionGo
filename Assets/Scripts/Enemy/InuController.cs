@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 using System;
+using UnityEngine.AI;
 
 //state machine for inu AI
 public enum InuState
@@ -85,7 +86,8 @@ public class InuController : YokaiController
     private Vector3 newPosition;
     private int posTimer;
     private GameObject nextFootprint;
-    
+    private NavMeshAgent agent;
+
     void Start()
     {
         //intialize variables
@@ -102,6 +104,9 @@ public class InuController : YokaiController
         posTimer = 60;
         root = MazeGenerator.getSectionBasedOnLocation(home);
         currentNode = StartingNode;
+        agent = GetComponent<NavMeshAgent>();
+        agent.updatePosition = false;
+        agent.updateRotation = true;
     }
 
     void LateUpdate()
@@ -202,11 +207,11 @@ public class InuController : YokaiController
             float difMag = difference.magnitude;
             if (difMag < .25)
             {
-                UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
                 agent.ResetPath();
                 currentNode = null;
             }
         }
+        MoveYokai();
     }
 
     void idle()
@@ -282,8 +287,6 @@ public class InuController : YokaiController
                 }
             }
 
-            UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>(); // get oni's navigation agent
-
             if (rb.transform.position.x < agent.destination.x + 2 && rb.transform.position.x > agent.destination.x - 2)
             {
                 if (rb.transform.position.z < agent.destination.z + 2 && rb.transform.position.z > agent.destination.z - 2)
@@ -297,9 +300,7 @@ public class InuController : YokaiController
                 }
             }
 
-            Vector3 goal = currentNodePosition; // set current node location as desired location
-            agent.destination = goal; // set destination to current node's location
-            //print("goal" + goal);
+            agent.SetDestination(currentNodePosition);
         }
     }
 
@@ -310,7 +311,6 @@ public class InuController : YokaiController
 
     void chase()
     {
-        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         agent.ResetPath();
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
@@ -326,15 +326,10 @@ public class InuController : YokaiController
                 state = InuState.Idle;
             }
         }
-
-        //by using a Raycast you make sure an enemy does not see you
-        //if there is a building separating you from his view, for example
-        //the enemy only sees you if it has you in open view
-        Transform goal = PlayerObject.transform; // set current player location as desired location
-        agent.destination = goal.position; // set destination to player's current location
-
+        
         Vector3 dest = PlayerObject.transform.position;
-        agent.destination = dest;
+        agent.SetDestination(PlayerObject.transform.position);
+
         if (rb.transform.position.x < dest.x + 5 && rb.transform.position.x > dest.x - 5)
         {
             if (rb.transform.position.y < dest.y + 5 && rb.transform.position.y > dest.y - 5)
@@ -342,7 +337,7 @@ public class InuController : YokaiController
                 if (rb.transform.position.z < dest.z + 5 && rb.transform.position.z > dest.z - 5)
                 {
                     state = InuState.Stalk;
-                    agent.destination = rb.transform.position;
+                    agent.SetDestination(rb.transform.position);
                     gameObject.transform.rotation = startingRotation;
                 }
             }
@@ -406,9 +401,8 @@ public class InuController : YokaiController
             }
             else
             {
-                UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
                 agent.ResetPath();
-                agent.destination = goal;
+                agent.SetDestination(goal);
                 print(goal);
             }
         }
@@ -468,17 +462,15 @@ public class InuController : YokaiController
         if (playerTooCloseToEnemy && beenTooClose == false)
         {
             Vector3 goal = PlayerObject.transform.position;
-            UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
             agent.ResetPath();
-            agent.destination = goal;
+            agent.SetDestination(goal);
         }
     }
 
     void flee()
     {
-        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         agent.ResetPath();
-        agent.destination = home;
+        agent.SetDestination(home);
         if (rb.transform.position.x < home.x + 2 && rb.transform.position.x > home.x - 2)
         {
             if (rb.transform.position.y < home.y + 1 && rb.transform.position.y > home.y - 1)
@@ -499,7 +491,6 @@ public class InuController : YokaiController
 
     void follow()
     {
-        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         agent.ResetPath();
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
@@ -519,8 +510,7 @@ public class InuController : YokaiController
             if (foundFootprint != null)
             {
                 nextFootprint = foundFootprint;
-                GameObject goal = foundFootprint;
-                agent.destination = goal.transform.position;
+                agent.SetDestination(foundFootprint.transform.position);
             }
         }
         else
@@ -533,8 +523,7 @@ public class InuController : YokaiController
                 }
             }
 
-            GameObject goal = nextFootprint;
-            agent.destination = goal.transform.position;
+            agent.SetDestination(nextFootprint.transform.position);
         }
     }
 
@@ -565,8 +554,7 @@ public class InuController : YokaiController
     {
         state = InuState.Stun;
         stunTimer = 480;
-        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        agent.destination = rb.position;
+        agent.SetDestination(rb.transform.position);
     }
 
     void SafeZoneCollision()

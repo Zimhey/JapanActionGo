@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VR;
 using UnityEngine.AI;
 
 public enum GameState
@@ -167,9 +168,6 @@ public class GameManager : MonoBehaviour {
             case VirtualRealityType.None:
                 PlayerTypeLoc = "Prefabs/Player/FPS_Player";
                 break;
-            case VirtualRealityType.Oculus:
-                PlayerTypeLoc = "Prefabs/Player/Oculus_Player";
-                break;
             case VirtualRealityType.SteamVR:
                 PlayerTypeLoc = "Prefabs/Player/Steam_VR_Player";
                 break;
@@ -179,6 +177,10 @@ public class GameManager : MonoBehaviour {
     void Start()
     {
         difficulty = Difficulty.Medium;
+        if (VRDevice.isPresent)
+            PlayersVRType = VirtualRealityType.SteamVR;
+        else
+            PlayersVRType = VirtualRealityType.None;
     }
 
     // Update is called once per frame
