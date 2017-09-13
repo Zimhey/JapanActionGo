@@ -5,6 +5,7 @@ using UnityEngine;
 public enum TrapState
 {
     Armed, // armed and ready to fire
+    Triggered, // delay before fire
     Firing, // running the firing animation
     Unarmed, // waiting to be reset
     Resetting, // resetting animation
@@ -13,17 +14,28 @@ public enum TrapState
 public class Trap : MonoBehaviour
 {
     public TrapState state;
+
+    public float TriggerDelay;
     public float FireAnimTime;
     public float HoldAnimTime;
     public float ResetAnimTime;
-    // public float TriggerDelay;
+
     public bool CanReset;
-   // public float ResetTime;
     public bool ResetRequested;
 
     protected float activationTime;
 
-    private Actor actorID;
+    public Actor actor;
+
+    public Actor ThisActor
+    {
+        get
+        {
+            if (actor == null)
+              actor = GetComponent<Actor>();
+            return actor;
+        }
+    }
 
     public Vector3 ArmedPosition;
     public Vector3 ArmedRotation;
@@ -32,12 +44,14 @@ public class Trap : MonoBehaviour
 
     public TrapState State
     {
+        get
+        {
+            return state;
+        }
         set
         {
             state = value;
-
-            actorID = GetComponent<Actor>();
-            GameManager.Instance.ActorStateChange(actorID, (int)state);
+            GameManager.Instance.ActorStateChange(ThisActor, (int)state);
         }
     }
 
@@ -48,18 +62,22 @@ public class Trap : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () {
-        switch (state)
+        switch (State)
         {
             case TrapState.Armed:
                 gameObject.transform.localPosition = ArmedPosition;
                 ResetRequested = false;
+                break;
+            case TrapState.Triggered:
+                gameObject.transform.localPosition = ArmedPosition;
+                TryFire();
                 break;
             case TrapState.Firing:
                 PlayFireAnimation();
                 break;
             case TrapState.Unarmed:
                 gameObject.transform.localPosition = UnarmedPosition;
-                tryReset();
+                TryReset();
                 break;
             case TrapState.Resetting:
                 PlayResetAnimation();
@@ -69,18 +87,28 @@ public class Trap : MonoBehaviour
 
     public void TriggerTrap()
     {
-        if (state != TrapState.Armed)
-            return;
-        activationTime = Time.time;
-        state = TrapState.Firing;
+        if (State == TrapState.Armed)
+        {
+            activationTime = Time.time;
+            State = TrapState.Triggered;
+        }
     }
 
-    protected void tryReset()
+    private void TryFire()
+    {
+        if(Time.time > activationTime + TriggerDelay)
+        {
+            activationTime = Time.time;
+            State = TrapState.Firing;
+        }
+    }
+
+    protected void TryReset()
     {
         if (CanReset && ResetRequested && Time.time > activationTime + HoldAnimTime)
         {
             activationTime = Time.time;
-            state = TrapState.Resetting;
+            State = TrapState.Resetting;
         }
     }
 
@@ -95,7 +123,7 @@ public class Trap : MonoBehaviour
         else
         {
             activationTime = Time.time;
-            state = TrapState.Unarmed;
+            State = TrapState.Unarmed;
         }
             
     }
@@ -109,16 +137,15 @@ public class Trap : MonoBehaviour
             gameObject.transform.localRotation = Quaternion.Slerp(Quaternion.Euler(UnarmedRotation), Quaternion.Euler(ArmedRotation), complete);
         }
         else
-            state = TrapState.Armed;
+            State = TrapState.Armed;
     }
 
     void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject != null)
+        if (collider.gameObject != null && State != TrapState.Resetting)
         {
-            Debug.Log(gameObject.name + " Kill " + collider.gameObject.name);
             GameManager.Instance.ActorKilled(collider.gameObject.GetComponent<Actor>(), GetComponentInParent<Actor>());
-            print("killing" + collider.gameObject);
+            print("Killing " + collider.gameObject);
             collider.gameObject.SendMessage("Die");
         }
     }

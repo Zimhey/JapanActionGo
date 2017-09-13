@@ -63,7 +63,8 @@ public class UIGameManagerInterface : MonoBehaviour {
         camera = GameObject.FindGameObjectWithTag("MainCamera");
 
         // Set Start Screen
-        ShowPanel(StartScreen);
+        if(!GameManager.Instance.DebugPlay)
+            ShowPanel(StartScreen);
 
 	}
 

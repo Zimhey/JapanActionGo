@@ -44,8 +44,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4111733994536036}
   - component: {fileID: 20563247861178950}
-  - component: {fileID: 81306931633756240}
   - component: {fileID: 124418648003474446}
+  - component: {fileID: 114364051345548824}
+  - component: {fileID: 114509828218644184}
   m_Layer: 9
   m_Name: FirstPersonCharacter
   m_TagString: MainCamera
@@ -153,7 +154,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1258190664246256}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 8, y: 2, z: 8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4111733994536036}
@@ -330,13 +331,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!81 &81306931633756240
-AudioListener:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1529445942019698}
-  m_Enabled: 1
 --- !u!82 &82362258178654672
 AudioSource:
   m_ObjectHideFlags: 1
@@ -435,6 +429,19 @@ MonoBehaviour:
   OfudaChargesPerPickup: 1
   hasMirror: 0
   hasCompass: 0
+--- !u!114 &114364051345548824
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1529445942019698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92157c3b97cee2646a44833190df78bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDefaultListener: 1
+  listenerId: 0
 --- !u!114 &114498427886422192
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -537,6 +544,26 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8bc94ec6ed537e743b481638bdcd503d, type: 3}
   m_JumpSound: {fileID: 8300000, guid: 5897aeed9b676024fbb8c694b421a861, type: 3}
   m_LandSound: {fileID: 8300000, guid: 3b09d59f4499d45428baa7a21e954296, type: 3}
+--- !u!114 &114509828218644184
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1529445942019698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cd19a5715dc50f4d960e569e67ac865, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_positionOffsetData:
+    positionOffset: {x: 0, y: 0, z: 0}
+    KeepMe: 0
+  isEnvironmentAware: 0
+  isStaticObject: 0
+  m_listeners:
+    initialListenerList: []
+  m_posOffsetData: {fileID: 0}
+  listenerMask: 1
 --- !u!114 &114643781217128530
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -568,11 +595,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b735feee9ce3d4db465df08c7f89d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Prefab: {fileID: 1197280942452824, guid: c92bd99ffe4e2104f88d5d139d2cecba, type: 2}
-  PlaceDistance: 5
-  LevelMask:
-    serializedVersion: 2
-    m_Bits: 256
+  LeftPrefabs:
+  - {fileID: 1847215028700000, guid: e95b4f20f329a10428a0d0c17aeee4ec, type: 2}
+  - {fileID: 1856480371346072, guid: 3f50a6cff4ed96e4f9c0bacd3d18ec86, type: 2}
+  RightPrefabs:
+  - {fileID: 1417024583629010, guid: 0ab96a12a675cca45b0814fa578d323c, type: 2}
+  - {fileID: 1667974125281640, guid: d5e4cb8076c80fd468c4524583372c33, type: 2}
+  Stride: 1
+  Radius: 0.5
+  PlaceFootprintOnLanding: 0
 --- !u!114 &114764283589509814
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -25,7 +25,7 @@ public class Ladder : MonoBehaviour {
         if (collider.gameObject.tag == "Player")
         {
             if (location.Col == MazeGenerator.GetSize(GameManager.difficulty) - 1 && location.Col == MazeGenerator.GetSize(GameManager.difficulty) - 1 && location.Floor == 0)
-                GameManager.Win();
+                GameManager.Instance.Win();
             else
                 GameManager.Instance.EnterSection(this.gameObject, collider.gameObject);
         }

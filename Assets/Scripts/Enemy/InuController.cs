@@ -66,6 +66,7 @@ public class InuController : YokaiController
 
             actorID = GetComponent<Actor>();
             GameManager.Instance.ActorStateChange(actorID, (int)state);
+            print("State" + state);
         }
     }
 
@@ -205,10 +206,13 @@ public class InuController : YokaiController
         {
             Vector3 difference = newPosition - oldPosition;
             float difMag = difference.magnitude;
-            if (difMag < .25)
+            if (state != InuState.Stalk)
             {
-                agent.ResetPath();
-                currentNode = null;
+                if (difMag < .25)
+                {
+                    agent.ResetPath();
+                    currentNode = null;
+                }
             }
         }
         MoveYokai();
@@ -338,7 +342,7 @@ public class InuController : YokaiController
                 {
                     state = InuState.Stalk;
                     agent.SetDestination(rb.transform.position);
-                    gameObject.transform.rotation = startingRotation;
+                    //gameObject.transform.rotation = startingRotation;
                 }
             }
         }
@@ -380,24 +384,37 @@ public class InuController : YokaiController
         System.Boolean playerTooCloseToEnemy = rayDirection.sqrMagnitude < maxDistance;
         if (playerTooCloseToEnemy && beenTooClose == false)
         {
+            //signify the player is too close to the inu
             beenTooClose = true;
             print("too close");
-            Vector3 newdir = PlayerObject.transform.localPosition - transform.localPosition;
+            //get the distance from inu to player
+            Vector3 newdir = transform.localPosition - PlayerObject.transform.localPosition;
+            Vector3 newdir2 = newdir;
+            //normalize to get direction only
             newdir.Normalize();
-            float scalar = (float)Math.Sqrt(100 / 3);
-            newdir.Scale(new Vector3(scalar, scalar, scalar));
+            //create a scalar
+            float scalar = (float)Math.Sqrt(5);
+            //scale direction vector to set distace to go
+            newdir.Scale(new Vector3(scalar, 1, scalar));
+            //set inu to go from current direction to scalar distance in normalized direction
             Vector3 goal = PlayerObject.transform.localPosition - newdir;
 
-            float wallDistance = 25;
-            wallDistance = rayDirection.magnitude;
+            //get distance to check
+            float wallDistance = newdir.magnitude;
             //rayDirection = Vector3.MoveTowards
-            rayDirection.Normalize();
-            Ray ray = new Ray(gameObject.transform.position, rayDirection);
+            newdir2.Normalize();
+            Ray ray = new Ray(PlayerObject.transform.position, -newdir2);
+            Debug.DrawRay(PlayerObject.transform.position, -newdir, Color.green, 20.0F);
             RaycastHit rayHit;
 
-            if (Physics.Raycast(ray, out rayHit, maxDistance, LevelMask))
+            if (Physics.Raycast(ray, out rayHit, wallDistance, LevelMask))
             {
                 state = InuState.Cornered;
+                print(rayHit.transform.position);
+                //print("ray length" + newdir.magnitude);
+                print("ray hit wall");
+                print(rayHit.collider.gameObject.name);
+                return;
             }
             else
             {
@@ -409,6 +426,19 @@ public class InuController : YokaiController
         else if (!playerTooCloseToEnemy)
         {
             beenTooClose = false;
+            agent.SetDestination(PlayerObject.transform.position);
+        }
+
+        Vector3 dest = PlayerObject.transform.position;
+        if (rb.transform.position.x < dest.x + 5 && rb.transform.position.x > dest.x - 5)
+        {
+            if (rb.transform.position.y < dest.y + 5 && rb.transform.position.y > dest.y - 5)
+            {
+                if (rb.transform.position.z < dest.z + 5 && rb.transform.position.z > dest.z - 5)
+                {
+                    agent.SetDestination(rb.transform.position);
+                }
+            }
         }
 
         if (hasPlayerTripped())
@@ -423,7 +453,7 @@ public class InuController : YokaiController
 
     void cornered()
     {
-        int maxDistance = 5;
+        int maxDistance = 3;
         int maxDistanceSquared = maxDistance * maxDistance;
         Vector3 rayDirection = PlayerObject.transform.localPosition - transform.localPosition;
         System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < maxDistanceSquared;

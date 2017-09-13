@@ -255,9 +255,8 @@ GameObject:
   - component: {fileID: 82538820907311740}
   - component: {fileID: 143358825195817160}
   - component: {fileID: 54883907218831556}
-  - component: {fileID: 114269591360846370}
   - component: {fileID: 114927163136682402}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Character
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1038,7 +1037,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1021384057505752}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4275303439308030}
@@ -1299,7 +1298,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1233799790753312}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 8.53578, y: 2.197, z: 7.7636595}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4894277588239372}
@@ -1440,7 +1439,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1335075823182566}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8, y: 3, z: 8}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4288313468492298}
@@ -1914,19 +1913,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   index: 0
   origin: {fileID: 0}
---- !u!114 &114269591360846370
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1335075823182566}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c108ca2716f61747ba091c606887aca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CameraRig: {fileID: 1613150506977916}
-  HMD: {fileID: 1021384057505752}
 --- !u!114 &114328402665125004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2167,8 +2153,12 @@ MonoBehaviour:
   RunSpeed: 10
   JumpSpeed: 10
   GravityMultiplier: 2
-  SnapRotationToHead: 1
+  SnapRotationToHead: 0
+  DegreeSegment: 1
+  RotationSensitivity: 2
   Head: {fileID: 1021384057505752}
+  Rig: {fileID: 1613150506977916}
+  IsJumping: 0
 --- !u!114 &114930266281418976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2245,10 +2235,10 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 2
+  m_Height: 1.8
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
+  m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0, z: 0}
