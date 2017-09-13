@@ -25,12 +25,11 @@ public enum InuAnim
 {
     Idle, // inu doing nothing
     Walk, // inu walking around patrolling
-    Run, // inu chasing player
+    Creep, //inu stalking player
+    Run, // inu killing player
     Attack, // inu attacking player
     Stunned, // inu stunned by player
-    Sit, // inu sitting down
-    Stand, // inu standing up
-    Growl // inu growling
+    Sit // inu sitting down
 }
 
 public class InuController : YokaiController
@@ -89,6 +88,8 @@ public class InuController : YokaiController
     private GameObject nextFootprint;
     private NavMeshAgent agent;
 
+    private Animator anim;
+
     void Start()
     {
         //intialize variables
@@ -100,6 +101,7 @@ public class InuController : YokaiController
         animState = InuAnim.Idle;
         awake = false;
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
+        anim = GetComponentInChildren<Animator>();
         beenTooClose = false;
         oldPosition = home;
         posTimer = 60;
@@ -120,8 +122,10 @@ public class InuController : YokaiController
         //manage state machine each update, call functions based on state
         if (state != InuState.Idle)
         {
-            //print("State" + state);
+            print("State" + state);
         }
+        print("AnimState" + animState);
+        print("AnimStateInt" + anim.GetInteger("State"));
 
         switch (state)
         {
@@ -165,6 +169,9 @@ public class InuController : YokaiController
             case InuAnim.Walk:
                 animWalk();
                 break;
+            case InuAnim.Creep:
+                animCreep();
+                break;
             case InuAnim.Run:
                 animRun();
                 break;
@@ -176,12 +183,6 @@ public class InuController : YokaiController
                 break;
             case InuAnim.Sit:
                 animSit();
-                break;
-            case InuAnim.Stand:
-                animStand();
-                break;
-            case InuAnim.Growl:
-                animGrowl();
                 break;
         }
 
@@ -350,6 +351,7 @@ public class InuController : YokaiController
 
     void stalk()
     {
+        animState = InuAnim.Creep;
         int maxDistance = 10;
         int maxDistanceSquared = maxDistance * maxDistance;
         Vector3 rayDirection = PlayerObject.transform.localPosition - transform.localPosition;
@@ -603,10 +605,10 @@ public class InuController : YokaiController
 
     void animIdle()
     {
-        UnityEngine.AI.NavMeshAgent agent0 = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        NavMeshAgent agent0 = GetComponent<NavMeshAgent>();
         if (agent0.velocity.magnitude < 0.5)
         {
-            //anim.SetInteger("State", 0);
+            anim.SetInteger("State", 0);
         }
         else
             animState = InuAnim.Walk;
@@ -614,10 +616,14 @@ public class InuController : YokaiController
 
     void animWalk()
     {
-        UnityEngine.AI.NavMeshAgent agent0 = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        NavMeshAgent agent0 = GetComponent<NavMeshAgent>();
         if (agent0.velocity.magnitude > 0.5)
         {
-            //anim.SetInteger("State", 1);
+            anim.SetInteger("State", 1);
+        }
+        if (agent0.velocity.magnitude > 2.5)
+        {
+            animState = InuAnim.Run;
         }
         else
             animState = InuAnim.Idle;
@@ -625,42 +631,59 @@ public class InuController : YokaiController
 
     void animRun()
     {
-        UnityEngine.AI.NavMeshAgent agent0 = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        if (agent0.velocity.magnitude > 5.5)
+        NavMeshAgent agent0 = GetComponent<NavMeshAgent>();
+        if (agent0.velocity.magnitude > 2.5)
         {
-            //anim.SetInteger("State", 2);
+            anim.SetInteger("State", 2);
         }
         else
             animState = InuAnim.Walk;
+    }
+    
+    void animCreep()
+    {
+        // if stalking player
+        NavMeshAgent agent0 = GetComponent<NavMeshAgent>();
+
+        if(state != InuState.Stalk)
+        {
+            if(state != InuState.Cornered)
+            {
+                animState = InuAnim.Idle;
+            }
+        }
+
+        if (agent0.velocity.magnitude > 0.5)
+        {
+            anim.SetInteger("State", 3);
+        }
+        else
+        {
+            animState = InuAnim.Sit;
+        }
     }
 
     void animAttack()
     {
         // if attacking player
-        //anim.SetInteger("State", 3);
+        anim.SetInteger("State", 4);
     }
 
     void animStunned()
     {
-        //anim.SetInteger("State", 4);
+        anim.SetInteger("State", 5);
     }
 
     void animSit()
     {
-        // if looking around
-        //anim.SetInteger("State", 5);
-    }
-
-    void animStand()
-    {
-        // if looking around
-        //anim.SetInteger("State", 6);
-    }
-
-    void animGrowl()
-    {
-        // if looking around
-        //anim.SetInteger("State", 7);
+        // if stalking player but player is not moving
+        NavMeshAgent agent0 = GetComponent<NavMeshAgent>();
+        if (agent0.velocity.magnitude < 0.5)
+        {
+            anim.SetInteger("State", 6);
+        }
+        else
+            animState = InuAnim.Creep;
     }
 
     void OnCollisionEnter(Collision col)
