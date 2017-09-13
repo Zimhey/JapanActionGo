@@ -389,22 +389,23 @@ public class InuController : YokaiController
             print("too close");
             //get the distance from inu to player
             Vector3 newdir = transform.localPosition - PlayerObject.transform.localPosition;
+            newdir.y = 0;
             Vector3 newdir2 = newdir;
             //normalize to get direction only
             newdir.Normalize();
             //create a scalar
-            float scalar = (float)Math.Sqrt(5);
+            float scalar = (float)Math.Sqrt(15);
             //scale direction vector to set distace to go
             newdir.Scale(new Vector3(scalar, 1, scalar));
             //set inu to go from current direction to scalar distance in normalized direction
-            Vector3 goal = PlayerObject.transform.localPosition - newdir;
+            Vector3 goal = PlayerObject.transform.localPosition + newdir;
 
             //get distance to check
             float wallDistance = newdir.magnitude;
             //rayDirection = Vector3.MoveTowards
             newdir2.Normalize();
-            Ray ray = new Ray(PlayerObject.transform.position, -newdir2);
-            Debug.DrawRay(PlayerObject.transform.position, -newdir, Color.green, 20.0F);
+            Ray ray = new Ray(PlayerObject.transform.position, newdir);
+            Debug.DrawRay(PlayerObject.transform.position, newdir, Color.green, 20.0F);
             RaycastHit rayHit;
 
             if (Physics.Raycast(ray, out rayHit, wallDistance, LevelMask))
@@ -420,7 +421,7 @@ public class InuController : YokaiController
             {
                 agent.ResetPath();
                 agent.SetDestination(goal);
-                print(goal);
+                print("goal" + goal);
             }
         }
         else if (!playerTooCloseToEnemy)
@@ -430,13 +431,16 @@ public class InuController : YokaiController
         }
 
         Vector3 dest = PlayerObject.transform.position;
-        if (rb.transform.position.x < dest.x + 5 && rb.transform.position.x > dest.x - 5)
+        if (!playerTooCloseToEnemy)
         {
-            if (rb.transform.position.y < dest.y + 5 && rb.transform.position.y > dest.y - 5)
+            if (rb.transform.position.x < dest.x + 5 && rb.transform.position.x > dest.x - 5)
             {
-                if (rb.transform.position.z < dest.z + 5 && rb.transform.position.z > dest.z - 5)
+                if (rb.transform.position.y < dest.y + 5 && rb.transform.position.y > dest.y - 5)
                 {
-                    agent.SetDestination(rb.transform.position);
+                    if (rb.transform.position.z < dest.z + 5 && rb.transform.position.z > dest.z - 5)
+                    {
+                        agent.SetDestination(rb.transform.position);
+                    }
                 }
             }
         }
