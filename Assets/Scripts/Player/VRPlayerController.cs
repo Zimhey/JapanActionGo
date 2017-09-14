@@ -106,12 +106,6 @@ public class VRPlayerController : MonoBehaviour
     {
         float y = CrossPlatformInputManager.GetAxis("Mouse X") * RotationSensitivity;
 
-        if (SnapRotationToHead)
-        {
-            float yRot = Head.transform.rotation.eulerAngles.y;
-            transform.rotation = Quaternion.Euler(0, yRot, 0);
-        }
-
         // Q and E
         if (Input.GetKeyDown(KeyCode.Q))
             yRotation -= DegreeSegment;
@@ -128,6 +122,12 @@ public class VRPlayerController : MonoBehaviour
 
         transform.rotation = Quaternion.Euler(0, finalRot, 0);
         Rig.transform.rotation = Quaternion.Euler(0, finalRot, 0);
+		
+        if (SnapRotationToHead)
+        {
+            float yRot = Head.transform.rotation.eulerAngles.y;
+            transform.rotation = Quaternion.Euler(0, yRot, 0);
+        }
     }
 
     private Vector2 getAnalog()

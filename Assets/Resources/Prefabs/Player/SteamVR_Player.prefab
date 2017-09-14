@@ -773,9 +773,9 @@ GameObject:
   - component: {fileID: 4275303439308030}
   - component: {fileID: 20293097277960900}
   - component: {fileID: 124162422289747654}
-  - component: {fileID: 114568702430207934}
   - component: {fileID: 114930266281418976}
   - component: {fileID: 114580951645581704}
+  - component: {fileID: 114268400238735926}
   m_Layer: 0
   m_Name: Camera (eye)
   m_TagString: MainCamera
@@ -1913,6 +1913,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   index: 0
   origin: {fileID: 0}
+--- !u!114 &114268400238735926
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1982689282113568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bca9ccf900ccc84c887d783321d27e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _head: {fileID: 4396230267882672}
+  _ears: {fileID: 4412134508140850}
+  wireframe: 0
 --- !u!114 &114328402665125004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1970,11 +1984,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b735feee9ce3d4db465df08c7f89d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Prefab: {fileID: 1197280942452824, guid: c92bd99ffe4e2104f88d5d139d2cecba, type: 2}
-  PlaceDistance: 1
-  LevelMask:
-    serializedVersion: 2
-    m_Bits: 256
+  LeftPrefabs:
+  - {fileID: 1847215028700000, guid: e95b4f20f329a10428a0d0c17aeee4ec, type: 2}
+  - {fileID: 1856480371346072, guid: 3f50a6cff4ed96e4f9c0bacd3d18ec86, type: 2}
+  RightPrefabs:
+  - {fileID: 1417024583629010, guid: 0ab96a12a675cca45b0814fa578d323c, type: 2}
+  - {fileID: 1667974125281640, guid: d5e4cb8076c80fd468c4524583372c33, type: 2}
+  Stride: 1
+  Radius: 0.5
+  PlaceFootprintOnLanding: 0
 --- !u!114 &114533125829653166
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2004,20 +2022,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cfca788d177aff4398e37f6333e9533, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114568702430207934
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1982689282113568}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bca9ccf900ccc84c887d783321d27e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _head: {fileID: 4396230267882672}
-  _ears: {fileID: 4412134508140850}
-  wireframe: 0
 --- !u!114 &114580951645581704
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2153,9 +2157,9 @@ MonoBehaviour:
   RunSpeed: 10
   JumpSpeed: 10
   GravityMultiplier: 2
-  SnapRotationToHead: 0
-  DegreeSegment: 1
-  RotationSensitivity: 2
+  SnapRotationToHead: 1
+  DegreeSegment: 30
+  RotationSensitivity: 1
   Head: {fileID: 1021384057505752}
   Rig: {fileID: 1613150506977916}
   IsJumping: 0
