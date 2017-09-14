@@ -122,10 +122,10 @@ public class InuController : YokaiController
         //manage state machine each update, call functions based on state
         if (state != InuState.Idle)
         {
-            print("State" + state);
+            print("State " + state);
         }
-        print("AnimState" + animState);
-        print("AnimStateInt" + anim.GetInteger("State"));
+        print("AnimState " + animState);
+        print("AnimStateInt " + anim.GetInteger(" State"));
 
         switch (state)
         {
@@ -182,9 +182,12 @@ public class InuController : YokaiController
                 animStunned();
                 break;
             case InuAnim.Sit:
+                print("did something p0");
                 animSit();
                 break;
         }
+
+        print("after second switch");
 
         //PlaceFootprints(previousLocations, lessEnough, footprintPrefab, rb, distanceToFloor);
 
@@ -611,7 +614,9 @@ public class InuController : YokaiController
             anim.SetInteger("State", 0);
         }
         else
+        {
             animState = InuAnim.Walk;
+        }
     }
 
     void animWalk()
@@ -626,7 +631,9 @@ public class InuController : YokaiController
             animState = InuAnim.Run;
         }
         else
+        {
             animState = InuAnim.Idle;
+        }
     }
 
     void animRun()
@@ -637,7 +644,9 @@ public class InuController : YokaiController
             anim.SetInteger("State", 2);
         }
         else
+        {
             animState = InuAnim.Walk;
+        }
     }
     
     void animCreep()
@@ -677,13 +686,20 @@ public class InuController : YokaiController
     void animSit()
     {
         // if stalking player but player is not moving
+
+        print("did something p1");
         NavMeshAgent agent0 = GetComponent<NavMeshAgent>();
         if (agent0.velocity.magnitude < 0.5)
         {
             anim.SetInteger("State", 6);
+            print("did the thing");
         }
         else
+        {
             animState = InuAnim.Creep;
+            print("thing didn't happen");
+        }
+        print("did something p2");
     }
 
     void OnCollisionEnter(Collision col)
