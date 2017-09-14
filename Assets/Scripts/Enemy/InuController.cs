@@ -89,6 +89,9 @@ public class InuController : YokaiController
     private NavMeshAgent agent;
 
     private Animator anim;
+    private Vector3 oldSitPosition;
+    private Vector3 newSitPosition;
+    private int sitTimer;
 
     void Start()
     {
@@ -164,25 +167,31 @@ public class InuController : YokaiController
         switch (animState)
         {
             case InuAnim.Idle:
+                print("doing idle");
                 animIdle();
                 break;
             case InuAnim.Walk:
+                print("doing walk");
                 animWalk();
                 break;
             case InuAnim.Creep:
+                print("doing creep");
                 animCreep();
                 break;
             case InuAnim.Run:
+                print("doing run");
                 animRun();
                 break;
             case InuAnim.Attack:
+                print("doing attack");
                 animAttack();
                 break;
             case InuAnim.Stunned:
+                print("doing stunned");
                 animStunned();
                 break;
             case InuAnim.Sit:
-                print("did something p0");
+                print("doing sit");
                 animSit();
                 break;
         }
@@ -651,6 +660,10 @@ public class InuController : YokaiController
     
     void animCreep()
     {
+        if (anim.GetInteger("State") == 2)
+        {
+            //anim.SetInteger("State", 1);
+        }
         // if stalking player
         NavMeshAgent agent0 = GetComponent<NavMeshAgent>();
 
@@ -686,7 +699,6 @@ public class InuController : YokaiController
     void animSit()
     {
         // if stalking player but player is not moving
-
         print("did something p1");
         NavMeshAgent agent0 = GetComponent<NavMeshAgent>();
         if (agent0.velocity.magnitude < 0.5)
