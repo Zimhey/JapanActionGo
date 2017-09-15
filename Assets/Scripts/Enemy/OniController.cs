@@ -266,11 +266,6 @@ public class OniController : YokaiController
                 closest = setClosest(closest, nodes, rb);
                 currentNode = closest;
             }
-            else
-            {
-                currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
-                //print("closest" + currentNodePosition);
-            }
 
             if (rb.transform.position.x < currentNodePosition.x + 2 && rb.transform.position.x > currentNodePosition.x - 2)
             {
@@ -285,6 +280,7 @@ public class OniController : YokaiController
                 }
             }
 
+            /*
             if (rb.transform.position.x < agent.destination.x + 2 && rb.transform.position.x > agent.destination.x - 2)
             {
                 if (rb.transform.position.z < agent.destination.z + 2 && rb.transform.position.z > agent.destination.z - 2)
@@ -296,7 +292,9 @@ public class OniController : YokaiController
                     currentNode = closest;
                     agent.ResetPath();
                 }
-            }
+            }*/
+
+            currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
 
             //Vector3 goal = currentNodePosition; // set current node location as desired location
             //agent.destination = goal; // set destination to current node's location

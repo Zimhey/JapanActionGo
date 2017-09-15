@@ -284,11 +284,6 @@ public class InuController : YokaiController
                 currentNode = closest;
                 //print("found");
             }
-            else if(currentNode != null)
-            {
-                currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
-                //print("closest" + currentNodePosition);
-            }
 
             if (currentNode != null)
             {
@@ -306,6 +301,7 @@ public class InuController : YokaiController
                 }
             }
 
+            /*
             if (rb.transform.position.x < agent.destination.x + 2 && rb.transform.position.x > agent.destination.x - 2)
             {
                 if (rb.transform.position.z < agent.destination.z + 2 && rb.transform.position.z > agent.destination.z - 2)
@@ -318,7 +314,9 @@ public class InuController : YokaiController
                     agent.ResetPath();
                     //print("ressetting");
                 }
-            }
+            }*/
+
+            currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
 
             agent.SetDestination(currentNodePosition);
         }
