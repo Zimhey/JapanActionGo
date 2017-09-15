@@ -28,15 +28,15 @@ public class KeyBindingScript : MonoBehaviour {
         chalk.text = buttons["Draw"].ToString();
         ofuda.text = buttons["Throw"].ToString();
 
-        controller.Add("Run", KeyCode.Joystick1Button0);
-        controller.Add("Jump", KeyCode.Joystick1Button1);
-        controller.Add("Draw", KeyCode.Joystick1Button2);
-        controller.Add("Throw", KeyCode.Joystick1Button3);
+        controller.Add("C_Run", KeyCode.Joystick1Button0);
+        controller.Add("C_Jump", KeyCode.Joystick1Button1);
+        controller.Add("C_Draw", KeyCode.Joystick1Button2);
+        controller.Add("C_Throw", KeyCode.Joystick1Button3);
 
-        c_run.text = controller["Run"].ToString();
-        c_jump.text = controller["Jump"].ToString();
-        c_chalk.text = controller["Draw"].ToString();
-        c_ofuda.text = controller["Throw"].ToString();
+        c_run.text = controller["C_Run"].ToString();
+        c_jump.text = controller["C_Jump"].ToString();
+        c_chalk.text = controller["C_Draw"].ToString();
+        c_ofuda.text = controller["C_Throw"].ToString();
 
         vr.Add("Run", "Trigger1");
         vr.Add("Jump", "Trigger2");
@@ -59,7 +59,7 @@ public class KeyBindingScript : MonoBehaviour {
         if(currentKey != null)
         {
             Event e = Event.current;
-            if(e.isKey && !currentKey.name.Contains("c_"))
+            if(e.isKey && !currentKey.name.Contains("C_"))
             {
                 buttons[currentKey.name] = e.keyCode;
                 currentKey.transform.GetChild(0).GetComponent<Text>().text = e.keyCode.ToString();
@@ -67,25 +67,32 @@ public class KeyBindingScript : MonoBehaviour {
             }
             else if(e.isKey)
             {
-                controller[currentKey.name] = e.keyCode;
-                currentKey.transform.GetChild(0).GetComponent<Text>().text = e.keyCode.ToString();
-                currentKey = null;
+                if (e.keyCode.ToString().Contains("Joystick1Button"))
+                {
+                    controller[currentKey.name] = e.keyCode;
+                    currentKey.transform.GetChild(0).GetComponent<Text>().text = e.keyCode.ToString();
+                    currentKey = null;
+                }
             }
             else if(controller1.triggerPressed)
             {
                 vr[currentKey.name] = "Trigger1";
+                currentKey.transform.GetChild(0).GetComponent<Text>().text = "Trigger1";
             }
             else if (controller2.triggerPressed)
             {
                 vr[currentKey.name] = "Trigger2";
+                currentKey.transform.GetChild(0).GetComponent<Text>().text = "Trigger2";
             }
             else if (controller1.padPressed)
             {
                 vr[currentKey.name] = "Pad1";
+                currentKey.transform.GetChild(0).GetComponent<Text>().text = "Pad1";
             }
             else if (controller1.padPressed)
             {
                 vr[currentKey.name] = "Pad2";
+                currentKey.transform.GetChild(0).GetComponent<Text>().text = "Pad2";
             }
         }
     }

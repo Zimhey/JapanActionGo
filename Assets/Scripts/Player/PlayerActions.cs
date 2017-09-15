@@ -69,8 +69,8 @@ public class PlayerActions : MonoBehaviour
         //bool attemptDraw = UsingVR ? drawingController.triggerPressed : (Input.GetKey(KeyBindingScript.buttons["Draw"]) || Input.GetKey(KeyBindingScript.controller["Draw"]) || Input.GetKey(KeyBindingScript.vr["Draw"]));
         //bool attemptThrow = UsingVR ? throwingController.triggerPressed : (Input.GetKeyDown(KeyBindingScript.buttons["Throw"]) || Input.GetKey(KeyBindingScript.controller["Throw"]) || Input.GetKey(KeyBindingScript.vr["Throw"]));
 
-        bool attemptDraw = (KeyBindingScript.DrawPressedVR() || Input.GetKey(KeyBindingScript.buttons["Draw"]) || Input.GetKey(KeyBindingScript.controller["Draw"]));
-        bool attemptThrow = (KeyBindingScript.ThrowPressedVR() || Input.GetKeyDown(KeyBindingScript.buttons["Throw"]) || Input.GetKey(KeyBindingScript.controller["Throw"]));
+        bool attemptDraw = (KeyBindingScript.DrawPressedVR() || Input.GetKey(KeyBindingScript.buttons["Draw"]) || Input.GetKey(KeyBindingScript.controller["C_Draw"]));
+        bool attemptThrow = (KeyBindingScript.ThrowPressedVR() || Input.GetKeyDown(KeyBindingScript.buttons["Throw"]) || Input.GetKey(KeyBindingScript.controller["C_Throw"]));
         
         // Use Lever
         if (Input.GetButtonDown("Grab_Items"))
