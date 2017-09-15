@@ -77,6 +77,7 @@ public class InuController : YokaiController
     private MazeNode currentNode;
     private MazeNode root;
     private MazeNode previous;
+    private MazeNode previous2;
     //countdown until no longer stunned
     private int stunTimer;
     //has player been too close
@@ -296,7 +297,8 @@ public class InuController : YokaiController
                     if (rb.transform.position.z < currentNodePosition.z + 2 && rb.transform.position.z > currentNodePosition.z - 2)
                     {
                         MazeNode closest = null;
-                        closest = updateClosest(closest, nodes, currentNode, previous, rb);
+                        closest = updateClosest(closest, nodes, currentNode, previous, previous2, rb);
+                        previous2 = previous;
                         previous = currentNode;
                         currentNode = closest;
                         return;
@@ -309,7 +311,8 @@ public class InuController : YokaiController
                 if (rb.transform.position.z < agent.destination.z + 2 && rb.transform.position.z > agent.destination.z - 2)
                 {
                     MazeNode closest = null;
-                    closest = updateClosest(closest, nodes, currentNode, previous, rb);
+                    closest = updateClosest(closest, nodes, currentNode, previous, previous2, rb);
+                    previous2 = previous;
                     previous = currentNode;
                     currentNode = closest;
                     agent.ResetPath();

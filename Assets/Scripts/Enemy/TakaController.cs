@@ -63,6 +63,7 @@ public class TakaController : YokaiController
     private MazeNode currentNode;
     private MazeNode root;
     private MazeNode previous;
+    private MazeNode previous2;
     //countdown until no longer stunned
     private int stunTimer;
     private Camera cam;
@@ -195,10 +196,13 @@ public class TakaController : YokaiController
         {
             Vector3 difference = newPosition - oldPosition;
             float difMag = difference.magnitude;
-            if (difMag < .25)
+            if (state != TakaState.Taunt)
             {
-                agent.ResetPath();
-                currentNode = null;
+                if (difMag < .25)
+                {
+                    agent.ResetPath();
+                    currentNode = null;
+                }
             }
         }
         MoveYokai();
@@ -266,7 +270,8 @@ public class TakaController : YokaiController
                 if (rb.transform.position.z < currentNodePosition.z + 2 && rb.transform.position.z > currentNodePosition.z - 2)
                 {
                     MazeNode closest = null;
-                    closest = updateClosest(closest, nodes, currentNode, previous, rb);
+                    closest = updateClosest(closest, nodes, currentNode, previous, previous2, rb);
+                    previous2 = previous;
                     previous = currentNode;
                     currentNode = closest;
                 }
@@ -278,7 +283,8 @@ public class TakaController : YokaiController
                 if (rb.transform.position.z < agent.destination.z + 2 && rb.transform.position.z > agent.destination.z - 2)
                 {
                     MazeNode closest = null;
-                    closest = updateClosest(closest, nodes, currentNode, previous, rb);
+                    closest = updateClosest(closest, nodes, currentNode, previous, previous2, rb);
+                    previous2 = previous;
                     previous = currentNode;
                     currentNode = closest;
                     agent.ResetPath();

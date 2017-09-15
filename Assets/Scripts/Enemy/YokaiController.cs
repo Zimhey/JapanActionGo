@@ -194,11 +194,11 @@ public class YokaiController : MonoBehaviour {
         return closest;
     }
 
-    public MazeNode updateClosest(MazeNode closest, List<MazeNode> nodes, MazeNode currentNode, MazeNode previous, Rigidbody rb)
+    public MazeNode updateClosest(MazeNode closest, List<MazeNode> nodes, MazeNode currentNode, MazeNode previous, MazeNode previous2, Rigidbody rb)
     {
         for (int iter = 0; iter < nodes.Count; iter++)
         {
-            if (nodes[iter] != currentNode && nodes[iter] != previous)
+            if (nodes[iter] != currentNode && nodes[iter] != previous && nodes[iter] != previous2)
             {
                 if (closest == null)
                 {
