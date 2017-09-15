@@ -262,12 +262,12 @@ public class InuController : YokaiController
     {
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
-        print("doing patrol");
+        //print("doing patrol");
         if (seen)
         {
             awake = true;
             state = InuState.Chase;
-            print("patrol to chase");
+            //print("patrol to chase");
             return;
         }
 
@@ -276,13 +276,13 @@ public class InuController : YokaiController
         if (foundFootprint != null)
         {
             state = InuState.Follow;
-            print("patrol to follow");
+            //print("patrol to follow");
             return;
         }
 
         if (root != null)
         {
-            print("starting patrol execute");
+            //print("starting patrol execute");
             List<MazeNode> nodes = MazeGenerator.GetIntersectionNodes(root);
             Vector3 currentNodePosition;
 
@@ -300,28 +300,24 @@ public class InuController : YokaiController
 
             currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
 
-            print("found current");
+            //print("found current");
 
             if (rb.transform.position.x < currentNodePosition.x + 2 && rb.transform.position.x > currentNodePosition.x - 2)
             {
-                print("attempting z");
+                //print("attempting z");
                 if (rb.transform.position.z < currentNodePosition.z + 2 && rb.transform.position.z > currentNodePosition.z - 2)
                 {
-                    print("attempting to update");
+                    //print("attempting to update");
                     MazeNode closest = null;
                     closest = updateClosest(closest, nodes, currentNode, previous, previous2, rb);
                     previous2 = previous;
                     previous = currentNode;
                     currentNode = closest;
-                    print("updated current");
+                    //print("updated current");
                 }
             }
-            else
-            {
-                print("rb not close to current");
-            }
 
-            print("current is up to date");
+            //print("current is up to date");
 
             /*
             if (rb.transform.position.x < agent.destination.x + 2 && rb.transform.position.x > agent.destination.x - 2)
@@ -338,11 +334,11 @@ public class InuController : YokaiController
             }*/
 
             currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
-            print("position updated");
+            //print("position updated");
 
             agent.SetDestination(currentNodePosition);
-            print("set destination");
-            print("dest " + currentNodePosition);
+            //print("set destination");
+            //print("dest " + currentNodePosition);
             //print("loc " + rb.transform.position);
             //print(goal);
         }

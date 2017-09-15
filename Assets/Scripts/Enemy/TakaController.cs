@@ -449,13 +449,10 @@ public class TakaController : YokaiController
         }
         if (rb.transform.position.x < home.x + 2 && rb.transform.position.x > home.x - 2)
         {
-            if (rb.transform.position.y < home.y + 1 && rb.transform.position.y > home.y - 1)
+            if (rb.transform.position.z < home.z + 2 && rb.transform.position.z > home.z - 2)
             {
-                if (rb.transform.position.z < home.z + 2 && rb.transform.position.z > home.z - 2)
-                {
-                    state = TakaState.Idle;
-                    gameObject.transform.rotation = startingRotation;
-                }
+                state = TakaState.Idle;
+                gameObject.transform.rotation = startingRotation;
             }
         }
     }

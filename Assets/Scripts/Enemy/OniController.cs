@@ -346,13 +346,10 @@ public class OniController : YokaiController
         //print("Curpos" + rb.transform.position);
         if (rb.transform.position.x < home.x + 2 && rb.transform.position.x > home.x - 2)
         {
-            if (rb.transform.position.y < home.y + 2 && rb.transform.position.y > home.y - 2)
+            if (rb.transform.position.z < home.z + 2 && rb.transform.position.z > home.z - 2)
             {
-                if (rb.transform.position.z < home.z + 2 && rb.transform.position.z > home.z - 2)
-                {
-                    state = OniState.Idle;
-                    gameObject.transform.rotation = startingRotation;
-                }
+                state = OniState.Idle;
+                gameObject.transform.rotation = startingRotation;
             }
         }
     }
