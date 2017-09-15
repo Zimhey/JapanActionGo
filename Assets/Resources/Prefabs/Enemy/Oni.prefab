@@ -338,7 +338,6 @@ GameObject:
   - component: {fileID: 54643054224203460}
   - component: {fileID: 114733998702376110}
   - component: {fileID: 195182205998125912}
-  - component: {fileID: 136358452493297278}
   - component: {fileID: 114631532898733810}
   - component: {fileID: 143879539404174848}
   m_Layer: 0
@@ -1595,19 +1594,6 @@ MonoBehaviour:
   PlayerMask:
     serializedVersion: 2
     m_Bits: 512
---- !u!136 &136358452493297278
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1387403371569988}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.6
-  m_Height: 5
-  m_Direction: 1
-  m_Center: {x: 0, y: 2.5, z: 0}
 --- !u!137 &137189522198172176
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
