@@ -112,7 +112,7 @@ public class OniController : YokaiController
     void LateUpdate()
     {
         //manage state machine each update, call functions based on state
-        //print(state);
+        print("Onistate " + state);
         //state = OniState.Patrol;
         
         if (nextFootprint != null)
@@ -204,6 +204,8 @@ public class OniController : YokaiController
             if (difMag < .25)
             {
                 agent.ResetPath();
+                previous2 = previous;
+                previous = currentNode;
                 currentNode = null;
                 if (state != OniState.Idle)
                 {
@@ -266,6 +268,8 @@ public class OniController : YokaiController
                 closest = setClosest(closest, nodes, rb);
                 currentNode = closest;
             }
+
+            currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
 
             if (rb.transform.position.x < currentNodePosition.x + 2 && rb.transform.position.x > currentNodePosition.x - 2)
             {
@@ -492,7 +496,21 @@ public class OniController : YokaiController
         if (col.gameObject.CompareTag("Trap"))
         {
             dead();
+        }/*
+        if (col.gameObject.CompareTag("Inu"))
+        {
+            Vector3 colVector = col.gameObject.transform.position - rb.transform.position;
+            colVector.y = 0;
+            colVector.Normalize();
+            rb.AddForce(-colVector);
         }
+        if (col.gameObject.CompareTag("Taka"))
+        {
+            Vector3 colVector = col.gameObject.transform.position - rb.transform.position;
+            colVector.y = 0;
+            colVector.Normalize();
+            rb.AddForce(-colVector);
+        }*/
         if (col.gameObject == PlayerObject)
         {
             actorID = GetComponent<Actor>();

@@ -111,7 +111,7 @@ public class TakaController : YokaiController
         //manage state machine each update, call functions based on state
         if (state != TakaState.Idle)
         {
-            //print("State" + state);
+            print("TakaState " + state);
         }
         switch (state)
         {
@@ -201,6 +201,8 @@ public class TakaController : YokaiController
                 if (difMag < .25)
                 {
                     agent.ResetPath();
+                    previous2 = previous;
+                    previous = currentNode;
                     currentNode = null;
                 }
             }
@@ -233,11 +235,12 @@ public class TakaController : YokaiController
     {
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
-
+        //print("doing patrol");
         if (seen)
         {
             awake = true;
             state = TakaState.Chase;
+            //print("patrol to chase");
             return;
         }
 
@@ -246,11 +249,13 @@ public class TakaController : YokaiController
         if (foundFootprint != null)
         {
             state = TakaState.Follow;
+            //print("patrol to follow");
             return;
         }
 
         if (root != null)
         {
+            //print("starting patrol execute");
             List<MazeNode> nodes = MazeGenerator.GetIntersectionNodes(root);
             Vector3 currentNodePosition = new Vector3(0, 0, 0);
 
@@ -260,6 +265,9 @@ public class TakaController : YokaiController
                 closest = setClosest(closest, nodes, rb);
                 currentNode = closest;
             }
+
+            // print("found current");
+            currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
 
             if (rb.transform.position.x < currentNodePosition.x + 2 && rb.transform.position.x > currentNodePosition.x - 2)
             {
@@ -272,6 +280,8 @@ public class TakaController : YokaiController
                     currentNode = closest;
                 }
             }
+
+           // print("current is up to date");
             
             /*
             if (rb.transform.position.x < agent.destination.x + 2 && rb.transform.position.x > agent.destination.x - 2)
@@ -288,8 +298,11 @@ public class TakaController : YokaiController
             }*/
 
             currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
+           // print("position updated");
 
             agent.SetDestination(currentNodePosition);
+            //print("set destination");
+            //print(currentNodePosition);
             //print(goal);
         }
     }
@@ -427,7 +440,7 @@ public class TakaController : YokaiController
     void flee()
     {
         agent.ResetPath();
-        agent.SetDestination(PlayerObject.transform.position);
+        agent.SetDestination(home);
         if (gameObject.transform.localScale.y > 5)
         {
             gameObject.transform.localScale -= new Vector3(0, 0.01F, 0);
@@ -602,7 +615,21 @@ public class TakaController : YokaiController
         if (col.gameObject.CompareTag("Trap"))
         {
             dead();
+        }/*
+        if (col.gameObject.CompareTag("Oni"))
+        {
+            Vector3 colVector = col.gameObject.transform.position - rb.transform.position;
+            colVector.y = 0;
+            colVector.Normalize();
+            rb.AddForce(-colVector);
         }
+        if (col.gameObject.CompareTag("Inu"))
+        {
+            Vector3 colVector = col.gameObject.transform.position - rb.transform.position;
+            colVector.y = 0;
+            colVector.Normalize();
+            rb.AddForce(-colVector);
+        }*/
         if (col.gameObject == PlayerObject)
         {
             actorID = GetComponent<Actor>();

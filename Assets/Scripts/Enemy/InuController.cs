@@ -126,10 +126,10 @@ public class InuController : YokaiController
         //manage state machine each update, call functions based on state
         if (state != InuState.Idle)
         {
-            print("State " + state);
+            print("InuState " + state);
         }
-        print("AnimState " + animState);
-        print("AnimStateInt " + anim.GetInteger(" State"));
+       // print("AnimState " + animState);
+        //print("AnimStateInt " + anim.GetInteger(" State"));
 
         switch (state)
         {
@@ -168,36 +168,36 @@ public class InuController : YokaiController
         switch (animState)
         {
             case InuAnim.Idle:
-                print("doing idle");
+                //print("doing idle");
                 animIdle();
                 break;
             case InuAnim.Walk:
-                print("doing walk");
+                //print("doing walk");
                 animWalk();
                 break;
             case InuAnim.Creep:
-                print("doing creep");
+                //print("doing creep");
                 animCreep();
                 break;
             case InuAnim.Run:
-                print("doing run");
+                //print("doing run");
                 animRun();
                 break;
             case InuAnim.Attack:
-                print("doing attack");
+                //print("doing attack");
                 animAttack();
                 break;
             case InuAnim.Stunned:
-                print("doing stunned");
+                //print("doing stunned");
                 animStunned();
                 break;
             case InuAnim.Sit:
-                print("doing sit");
+                //print("doing sit");
                 animSit();
                 break;
         }
 
-        print("after second switch");
+        //print("after second switch");
 
         //PlaceFootprints(previousLocations, lessEnough, footprintPrefab, rb, distanceToFloor);
 
@@ -225,6 +225,8 @@ public class InuController : YokaiController
                 if (difMag < .25)
                 {
                     agent.ResetPath();
+                    previous2 = previous;
+                    previous = currentNode;
                     currentNode = null;
                 }
             }
@@ -260,46 +262,66 @@ public class InuController : YokaiController
     {
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
+        print("doing patrol");
         if (seen)
         {
             awake = true;
             state = InuState.Chase;
+            print("patrol to chase");
             return;
         }
+
         GameObject foundFootprint = SeeFootprint(LevelMask);
+
         if (foundFootprint != null)
         {
             state = InuState.Follow;
+            print("patrol to follow");
             return;
         }
+
         if (root != null)
         {
+            print("starting patrol execute");
             List<MazeNode> nodes = MazeGenerator.GetIntersectionNodes(root);
-            Vector3 currentNodePosition = new Vector3(0, 0, 0);
+            Vector3 currentNodePosition;
 
             if (currentNode == null)
             {
                 MazeNode closest = null;
                 closest = setClosest(closest, nodes, rb);
                 currentNode = closest;
-                //print("found");
-            }
-
-            if (currentNode != null)
-            {
-                if (rb.transform.position.x < currentNodePosition.x + 2 && rb.transform.position.x > currentNodePosition.x - 2)
+                if (previous == null)
                 {
-                    if (rb.transform.position.z < currentNodePosition.z + 2 && rb.transform.position.z > currentNodePosition.z - 2)
-                    {
-                        MazeNode closest = null;
-                        closest = updateClosest(closest, nodes, currentNode, previous, previous2, rb);
-                        previous2 = previous;
-                        previous = currentNode;
-                        currentNode = closest;
-                        return;
-                    }
+                    previous = currentNode;
+                    previous2 = previous;
                 }
             }
+
+            currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
+
+            print("found current");
+
+            if (rb.transform.position.x < currentNodePosition.x + 2 && rb.transform.position.x > currentNodePosition.x - 2)
+            {
+                print("attempting z");
+                if (rb.transform.position.z < currentNodePosition.z + 2 && rb.transform.position.z > currentNodePosition.z - 2)
+                {
+                    print("attempting to update");
+                    MazeNode closest = null;
+                    closest = updateClosest(closest, nodes, currentNode, previous, previous2, rb);
+                    previous2 = previous;
+                    previous = currentNode;
+                    currentNode = closest;
+                    print("updated current");
+                }
+            }
+            else
+            {
+                print("rb not close to current");
+            }
+
+            print("current is up to date");
 
             /*
             if (rb.transform.position.x < agent.destination.x + 2 && rb.transform.position.x > agent.destination.x - 2)
@@ -312,13 +334,17 @@ public class InuController : YokaiController
                     previous = currentNode;
                     currentNode = closest;
                     agent.ResetPath();
-                    //print("ressetting");
                 }
             }*/
 
             currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
+            print("position updated");
 
             agent.SetDestination(currentNodePosition);
+            print("set destination");
+            print("dest " + currentNodePosition);
+            //print("loc " + rb.transform.position);
+            //print(goal);
         }
     }
 
@@ -401,7 +427,7 @@ public class InuController : YokaiController
         {
             //signify the player is too close to the inu
             beenTooClose = true;
-            print("too close");
+            //print("too close");
             //get the distance from inu to player
             Vector3 newdir = transform.localPosition - PlayerObject.transform.localPosition;
             newdir.y = 0;
@@ -428,7 +454,7 @@ public class InuController : YokaiController
                 state = InuState.Cornered;
                 print(rayHit.transform.position);
                 //print("ray length" + newdir.magnitude);
-                print("ray hit wall");
+                //print("ray hit wall");
                 print(rayHit.collider.gameObject.name);
                 return;
             }
@@ -436,7 +462,7 @@ public class InuController : YokaiController
             {
                 agent.ResetPath();
                 agent.SetDestination(goal);
-                print("goal" + goal);
+                //print("goal" + goal);
             }
         }
         else if (!playerTooCloseToEnemy)
@@ -700,20 +726,20 @@ public class InuController : YokaiController
     void animSit()
     {
         // if stalking player but player is not moving
-        print("did something p1");
+        //print("did something p1");
         NavMeshAgent agent0 = GetComponent<NavMeshAgent>();
-        print("vmag" + agent0.velocity.magnitude);
+       // print("vmag" + agent0.velocity.magnitude);
         if (agent0.velocity.magnitude < 0.5)
         {
             anim.SetInteger("State", 6);
-            print("did the thing");
+            //print("did the thing");
         }
         else
         {
             animState = InuAnim.Creep;
-            print("thing didn't happen");
+            //print("thing didn't happen");
         }
-        print("did something p2");
+        //print("did something p2");
     }
 
     void OnCollisionEnter(Collision col)
@@ -722,6 +748,21 @@ public class InuController : YokaiController
         {
             dead();
         }
+        /*
+        if(col.gameObject.CompareTag("Oni"))
+        {
+            Vector3 colVector = col.gameObject.transform.position - rb.transform.position;
+            colVector.y = 0;
+            colVector.Normalize();
+            rb.AddForce(-colVector);
+        }
+        if (col.gameObject.CompareTag("Taka"))
+        {
+            Vector3 colVector = col.gameObject.transform.position - rb.transform.position;
+            colVector.y = 0;
+            colVector.Normalize();
+            rb.AddForce(-colVector);
+        }*/
         if (col.gameObject == PlayerObject)
         {
             actorID = GetComponent<Actor>();
