@@ -701,6 +701,7 @@ public class InuController : YokaiController
         // if stalking player but player is not moving
         print("did something p1");
         NavMeshAgent agent0 = GetComponent<NavMeshAgent>();
+        print("vmag" + agent0.velocity.magnitude);
         if (agent0.velocity.magnitude < 0.5)
         {
             anim.SetInteger("State", 6);
