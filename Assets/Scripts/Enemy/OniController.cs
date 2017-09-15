@@ -260,7 +260,7 @@ public class OniController : YokaiController
             //print("patrolling");
             List<MazeNode> nodes = MazeGenerator.GetIntersectionNodes(root);
 
-            Vector3 currentNodePosition = new Vector3(0, 0, 0);
+            Vector3 currentNodePosition;
 
             if (currentNode == null)
             {
