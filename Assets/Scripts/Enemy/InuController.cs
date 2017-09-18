@@ -100,7 +100,6 @@ public class InuController : YokaiController
         rb = GetComponent<Rigidbody>();
         home = gameObject.transform.position;
         startingRotation = gameObject.transform.rotation;
-        //print("OriHome" + home);
         state = InuState.Idle;
         animState = InuAnim.Idle;
         awake = false;
@@ -198,9 +197,7 @@ public class InuController : YokaiController
         }
 
         //print("after second switch");
-
-        //PlaceFootprints(previousLocations, lessEnough, footprintPrefab, rb, distanceToFloor);
-
+        
         if (awake == true)
         {
             TurnTowardsPlayer(PlayerObject);
@@ -316,31 +313,9 @@ public class InuController : YokaiController
                     //print("updated current");
                 }
             }
-
-            //print("current is up to date");
-
-            /*
-            if (rb.transform.position.x < agent.destination.x + 2 && rb.transform.position.x > agent.destination.x - 2)
-            {
-                if (rb.transform.position.z < agent.destination.z + 2 && rb.transform.position.z > agent.destination.z - 2)
-                {
-                    MazeNode closest = null;
-                    closest = updateClosest(closest, nodes, currentNode, previous, previous2, rb);
-                    previous2 = previous;
-                    previous = currentNode;
-                    currentNode = closest;
-                    agent.ResetPath();
-                }
-            }*/
-
+            
             currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
-            //print("position updated");
-
             agent.SetDestination(currentNodePosition);
-            //print("set destination");
-            //print("dest " + currentNodePosition);
-            //print("loc " + rb.transform.position);
-            //print(goal);
         }
     }
 
@@ -378,7 +353,6 @@ public class InuController : YokaiController
                 {
                     state = InuState.Stalk;
                     agent.SetDestination(rb.transform.position);
-                    //gameObject.transform.rotation = startingRotation;
                 }
             }
         }
@@ -744,21 +718,6 @@ public class InuController : YokaiController
         {
             dead();
         }
-        /*
-        if(col.gameObject.CompareTag("Oni"))
-        {
-            Vector3 colVector = col.gameObject.transform.position - rb.transform.position;
-            colVector.y = 0;
-            colVector.Normalize();
-            rb.AddForce(-colVector);
-        }
-        if (col.gameObject.CompareTag("Taka"))
-        {
-            Vector3 colVector = col.gameObject.transform.position - rb.transform.position;
-            colVector.y = 0;
-            colVector.Normalize();
-            rb.AddForce(-colVector);
-        }*/
         if (col.gameObject == PlayerObject)
         {
             actorID = GetComponent<Actor>();
@@ -766,6 +725,20 @@ public class InuController : YokaiController
             GameManager.Instance.GameOver();
             PlayerObject.SetActive(false);
             print("GameOver");
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Trap"))
+        {
+            dead();
+        }
+        if (other.gameObject == PlayerObject)
+        {
+            actorID = GetComponent<Actor>();
+            GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
+            GameManager.Instance.GameOver();
         }
     }
 }

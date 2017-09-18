@@ -169,8 +169,6 @@ public class TakaController : YokaiController
                 break;
         }
 
-        //PlaceFootprints(previousLocations, lessEnough, footprintPrefab, rb, distanceToFloor);
-
         if (awake == true)
         {
             TurnTowardsPlayer(PlayerObject);
@@ -235,12 +233,10 @@ public class TakaController : YokaiController
     {
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
-        //print("doing patrol");
         if (seen)
         {
             awake = true;
             state = TakaState.Chase;
-            //print("patrol to chase");
             return;
         }
 
@@ -249,13 +245,11 @@ public class TakaController : YokaiController
         if (foundFootprint != null)
         {
             state = TakaState.Follow;
-            //print("patrol to follow");
             return;
         }
 
         if (root != null)
         {
-            //print("starting patrol execute");
             List<MazeNode> nodes = MazeGenerator.GetIntersectionNodes(root);
             Vector3 currentNodePosition;
 
@@ -265,8 +259,7 @@ public class TakaController : YokaiController
                 closest = setClosest(closest, nodes, rb);
                 currentNode = closest;
             }
-
-            // print("found current");
+            
             currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
 
             if (rb.transform.position.x < currentNodePosition.x + 2 && rb.transform.position.x > currentNodePosition.x - 2)
@@ -280,30 +273,9 @@ public class TakaController : YokaiController
                     currentNode = closest;
                 }
             }
-
-           // print("current is up to date");
-            
-            /*
-            if (rb.transform.position.x < agent.destination.x + 2 && rb.transform.position.x > agent.destination.x - 2)
-            {
-                if (rb.transform.position.z < agent.destination.z + 2 && rb.transform.position.z > agent.destination.z - 2)
-                {
-                    MazeNode closest = null;
-                    closest = updateClosest(closest, nodes, currentNode, previous, previous2, rb);
-                    previous2 = previous;
-                    previous = currentNode;
-                    currentNode = closest;
-                    agent.ResetPath();
-                }
-            }*/
-
             currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
-           // print("position updated");
 
             agent.SetDestination(currentNodePosition);
-            //print("set destination");
-            //print(currentNodePosition);
-            //print(goal);
         }
     }
 
@@ -612,21 +584,7 @@ public class TakaController : YokaiController
         if (col.gameObject.CompareTag("Trap"))
         {
             dead();
-        }/*
-        if (col.gameObject.CompareTag("Oni"))
-        {
-            Vector3 colVector = col.gameObject.transform.position - rb.transform.position;
-            colVector.y = 0;
-            colVector.Normalize();
-            rb.AddForce(-colVector);
         }
-        if (col.gameObject.CompareTag("Inu"))
-        {
-            Vector3 colVector = col.gameObject.transform.position - rb.transform.position;
-            colVector.y = 0;
-            colVector.Normalize();
-            rb.AddForce(-colVector);
-        }*/
         if (col.gameObject == PlayerObject)
         {
             actorID = GetComponent<Actor>();
@@ -634,6 +592,20 @@ public class TakaController : YokaiController
             GameManager.Instance.GameOver();
             PlayerObject.SetActive(false);
             print("GameOver");
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Trap"))
+        {
+            dead();
+        }
+        if (other.gameObject == PlayerObject)
+        {
+            actorID = GetComponent<Actor>();
+            GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
+            GameManager.Instance.GameOver();
         }
     }
 }

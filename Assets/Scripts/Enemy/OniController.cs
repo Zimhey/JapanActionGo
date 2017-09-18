@@ -63,7 +63,6 @@ public class OniController : YokaiController
     private MazeNode previous2;
     //countdown until no longer stunned
     private int stunTimer;
-    //private float distanceToFloor = 0.0F;
     private Vector3 oldPosition;
     private Vector3 newPosition;
     private int posTimer;
@@ -92,7 +91,6 @@ public class OniController : YokaiController
         rb = GetComponent<Rigidbody>();
         home = gameObject.transform.position;
         startingRotation = gameObject.transform.rotation;
-        //print("OriHome" + home);
         state = OniState.Idle;
         animState = OniAnim.Idle;
         awake = false;
@@ -106,7 +104,6 @@ public class OniController : YokaiController
         agent = GetComponent<NavMeshAgent>();
         agent.updatePosition = false;
         agent.updateRotation = true;
-        //agent.SetDestination(PlayerObject.transform.position);
     }
 
     void LateUpdate()
@@ -173,8 +170,6 @@ public class OniController : YokaiController
                 break;
         }
 
-        //PlaceFootprints(previousLocations, lessEnough, footprintPrefab, rb, distanceToFloor);
-
         if (awake == true)
         {
             TurnTowardsPlayer(PlayerObject);
@@ -211,7 +206,6 @@ public class OniController : YokaiController
                 {
                     state = OniState.Idle;
                 }
-                //print("reseting path");
             }
         }
 
@@ -284,26 +278,8 @@ public class OniController : YokaiController
                 }
             }
 
-            /*
-            if (rb.transform.position.x < agent.destination.x + 2 && rb.transform.position.x > agent.destination.x - 2)
-            {
-                if (rb.transform.position.z < agent.destination.z + 2 && rb.transform.position.z > agent.destination.z - 2)
-                {
-                    MazeNode closest = null;
-                    closest = updateClosest(closest, nodes, currentNode, previous, previous2, rb);
-                    previous2 = previous;
-                    previous = currentNode;
-                    currentNode = closest;
-                    agent.ResetPath();
-                }
-            }*/
-
             currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
-
-            //Vector3 goal = currentNodePosition; // set current node location as desired location
-            //agent.destination = goal; // set destination to current node's location
             agent.SetDestination(currentNodePosition);
-            //print("goal" + goal);
         }
     }
 
@@ -331,19 +307,14 @@ public class OniController : YokaiController
                 state = OniState.Idle;
             }
         }
-
-        //Transform goal = PlayerObject.transform; // set current player location as desired location
-        //agent.destination = goal.position; // set destination to player's current location
+        
         agent.SetDestination(PlayerObject.transform.position);
     }
 
     void flee()
     {
         agent.ResetPath();
-        //print("OriDest" + agent.destination);
         agent.SetDestination(home);
-        //print("NewDest" + agent.destination);
-        //print("Curpos" + rb.transform.position);
         if (rb.transform.position.x < home.x + 2 && rb.transform.position.x > home.x - 2)
         {
             if (rb.transform.position.z < home.z + 2 && rb.transform.position.z > home.z - 2)
@@ -381,8 +352,6 @@ public class OniController : YokaiController
             if (foundFootprint != null)
             {
                 nextFootprint = foundFootprint;
-                //GameObject goal = foundFootprint;
-                //agent.destination = goal.transform.position;
                 agent.SetDestination(foundFootprint.transform.position);
             }
         }
@@ -395,9 +364,6 @@ public class OniController : YokaiController
                     nextFootprint = nextFootprint.GetComponent<FootprintList>().getNext();
                 }
             }
-
-            //GameObject goal = nextFootprint;
-            //agent.destination = goal.transform.position;
             agent.SetDestination(nextFootprint.transform.position);
         }
     }
@@ -493,22 +459,25 @@ public class OniController : YokaiController
         if (col.gameObject.CompareTag("Trap"))
         {
             dead();
-        }/*
-        if (col.gameObject.CompareTag("Inu"))
-        {
-            Vector3 colVector = col.gameObject.transform.position - rb.transform.position;
-            colVector.y = 0;
-            colVector.Normalize();
-            rb.AddForce(-colVector);
         }
-        if (col.gameObject.CompareTag("Taka"))
-        {
-            Vector3 colVector = col.gameObject.transform.position - rb.transform.position;
-            colVector.y = 0;
-            colVector.Normalize();
-            rb.AddForce(-colVector);
-        }*/
         if (col.gameObject == PlayerObject)
+        {
+            print("gameover1");
+            actorID = GetComponent<Actor>();
+            GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
+            state = OniState.GameOver;
+            GameManager.Instance.GameOver();
+            print("GameOver2");
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Trap"))
+        {
+            dead();
+        }
+        if (other.gameObject == PlayerObject)
         {
             actorID = GetComponent<Actor>();
             GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
