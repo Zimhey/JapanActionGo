@@ -929,11 +929,12 @@ public class MazeGenerator : MonoBehaviour
                     {
                         MazeNode disconnectedNode = findNode(current, counter);
                         if (disconnectedNode != null)
-                        {
-                            disconnected = DistanceBetween(current, disconnectedNode);
-                            disconnectingWalls[current.Col, current.Row, counter] = disconnected;
-                            disconnectedNodes[current.Col, current.Row, counter] = current;
-                        }
+                            if(disconnectedNode.Col != 0 && disconnectedNode.Row != 0)
+                            {
+                                disconnected = DistanceBetween(current, disconnectedNode);
+                                disconnectingWalls[current.Col, current.Row, counter] = disconnected;
+                                disconnectedNodes[current.Col, current.Row, counter] = current;
+                            }
                     }
                 }
 
