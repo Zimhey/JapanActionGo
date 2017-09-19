@@ -56,6 +56,7 @@ public class InuController : YokaiController
     //current anim state
     private InuAnim animState;
     private Actor actorID;
+    private bool retreating;
 
     public InuState State
     {
@@ -114,6 +115,7 @@ public class InuController : YokaiController
         agent = GetComponent<NavMeshAgent>();
         agent.updatePosition = false;
         agent.updateRotation = true;
+        retreating = false;
 
         int column = (int)((home.x - 8) / 6);
         int floor = (int)(home.y / 30);
@@ -126,6 +128,7 @@ public class InuController : YokaiController
 
     void LateUpdate()
     {
+        print("State" + state);
         if (PlayerObject != null)
         {
             PlayerObject = GameObject.FindGameObjectWithTag("Player");
@@ -398,7 +401,7 @@ public class InuController : YokaiController
         {
             //signify the player is too close to the inu
             beenTooClose = true;
-            //print("too close");
+            print("too close");
             //get the distance from inu to player
             Vector3 newdir = transform.localPosition - PlayerObject.transform.localPosition;
             newdir.y = 0;
@@ -426,34 +429,41 @@ public class InuController : YokaiController
                 print(rayHit.transform.position);
                 //print("ray length" + newdir.magnitude);
                 //print("ray hit wall");
-                print(rayHit.collider.gameObject.name);
+                //print(rayHit.collider.gameObject.name);
                 return;
             }
             else
             {
                 agent.ResetPath();
                 agent.SetDestination(goal);
-                //print("goal" + goal);
+                print("trying to back up to " + goal);
+                retreating = true;
+                return;
             }
         }
-        else if (!playerTooCloseToEnemy)
+
+        if(!playerTooCloseToEnemy && beenTooClose == true)
         {
+            retreating = false;
             beenTooClose = false;
-            agent.SetDestination(PlayerObject.transform.position);
         }
 
-        Vector3 dest = PlayerObject.transform.position;
-        if (!playerTooCloseToEnemy)
+        if (retreating != true)
         {
+            agent.ResetPath();
+            Vector3 dest = PlayerObject.transform.position;
+
             if (rb.transform.position.x < dest.x + 3 && rb.transform.position.x > dest.x - 3)
             {
-                if (rb.transform.position.y < dest.y + 3 && rb.transform.position.y > dest.y - 3)
+                if (rb.transform.position.z < dest.z + 3 && rb.transform.position.z > dest.z - 3)
                 {
-                    if (rb.transform.position.z < dest.z + 3 && rb.transform.position.z > dest.z - 3)
-                    {
-                        agent.SetDestination(rb.transform.position);
-                    }
+                    agent.ResetPath();
+                    agent.SetDestination(rb.transform.position);
                 }
+            }
+            else
+            {
+                agent.SetDestination(dest);
             }
         }
 
@@ -469,7 +479,8 @@ public class InuController : YokaiController
 
     void cornered()
     {
-        int maxDistance = 3;
+        print("inu is cornered");
+        int maxDistance = 5;
         int maxDistanceSquared = maxDistance * maxDistance;
         Vector3 rayDirection = PlayerObject.transform.localPosition - transform.localPosition;
         System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < maxDistanceSquared;
@@ -505,8 +516,9 @@ public class InuController : YokaiController
         //play growl
 
         System.Boolean playerTooCloseToEnemy = rayDirection.sqrMagnitude < maxDistance;
-        if (playerTooCloseToEnemy && beenTooClose == false)
+        if (playerTooCloseToEnemy && beenTooClose == true)
         {
+            print("trying to kill player");
             Vector3 goal = PlayerObject.transform.position;
             agent.ResetPath();
             agent.SetDestination(goal);
