@@ -2067,11 +2067,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
+  TriggerDelay: 0
   FireAnimTime: 0.3
   HoldAnimTime: 1
   ResetAnimTime: 1
   CanReset: 1
   ResetRequested: 0
+  CanLog: 1
+  actor: {fileID: 0}
   ArmedPosition: {x: -1, y: 0, z: 0}
   ArmedRotation: {x: 0, y: 0, z: 0}
   UnarmedPosition: {x: -2.9, y: 0, z: 0}
@@ -2088,11 +2091,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
+  TriggerDelay: 0
   FireAnimTime: 0
   HoldAnimTime: 0
   ResetAnimTime: 0
   CanReset: 0
   ResetRequested: 0
+  CanLog: 0
+  actor: {fileID: 0}
   ArmedPosition: {x: 0, y: 0, z: 0}
   ArmedRotation: {x: 0, y: 0, z: 0}
   UnarmedPosition: {x: 0, y: 0, z: 0}
@@ -2109,11 +2115,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
+  TriggerDelay: 0
   FireAnimTime: 0.3
   HoldAnimTime: 1
   ResetAnimTime: 1
   CanReset: 1
   ResetRequested: 0
+  CanLog: 0
+  actor: {fileID: 0}
   ArmedPosition: {x: 1, y: 0, z: 0}
   ArmedRotation: {x: 0, y: 0, z: 0}
   UnarmedPosition: {x: 2.9, y: 0, z: 0}
