@@ -134,7 +134,7 @@ public class InuController : YokaiController
         //manage state machine each update, call functions based on state
         if (state != InuState.Idle)
         {
-            print("InuState " + state);
+            //print("InuState " + state);
         }
        // print("AnimState " + animState);
         //print("AnimStateInt " + anim.GetInteger(" State"));

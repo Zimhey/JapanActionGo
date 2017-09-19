@@ -117,7 +117,7 @@ public class OniController : YokaiController
     void LateUpdate()
     {
         //manage state machine each update, call functions based on state
-        print("Onistate " + state);
+        //print("Onistate " + state);
         //state = OniState.Patrol;
         
         if (nextFootprint != null)
@@ -290,7 +290,7 @@ public class OniController : YokaiController
 
             currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
             agent.SetDestination(currentNodePosition);
-            print("Dest" + currentNodePosition);
+            //print("Dest" + currentNodePosition);
         }
     }
 

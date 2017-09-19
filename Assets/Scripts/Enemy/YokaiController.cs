@@ -184,32 +184,11 @@ public class YokaiController : MonoBehaviour {
     {
         for (int iter = 0; iter < nodes.Count; iter++)
         {
-            if (closest == null)
-            {
-                closest = nodes[iter];
-            }
-            Vector3 closestPosition = new Vector3(closest.Col * 6 + 8, closest.Floor * 30, closest.Row * 6 + 8) - rb.transform.position;
-            float closestMag = closestPosition.magnitude;
-            Vector3 iterPosition = new Vector3(nodes[iter].Col * 6 + 8, nodes[iter].Floor * 30, nodes[iter].Row * 6 + 8) - rb.transform.position;
-            float iterMag = iterPosition.magnitude;
-            if (iterMag < closestMag)
-            {
-                bool trapInWay = false;
-                foreach (MazeNode n in MazeGenerator.GetPath2(home, nodes[iter]))
-                    if (GameManager.trapNode(n) || GameManager.trapNode(nodes[iter]))
-                        trapInWay = true;
-                if (!trapInWay)
-                    closest = nodes[iter];
-            }
-        }
-        return closest;
-    }
-
-    public MazeNode updateClosest(MazeNode closest, List<MazeNode> nodes, MazeNode currentNode, MazeNode previous, MazeNode previous2, Rigidbody rb)
-    {
-        for (int iter = 0; iter < nodes.Count; iter++)
-        {
-            if (nodes[iter] != currentNode && nodes[iter] != previous && nodes[iter] != previous2)
+            bool trapInWay = false;
+            foreach (MazeNode n in MazeGenerator.GetPath2(home, nodes[iter]))
+                if (GameManager.trapNode(n))
+                    trapInWay = true;
+            if (!trapInWay)
             {
                 if (closest == null)
                 {
@@ -220,16 +199,33 @@ public class YokaiController : MonoBehaviour {
                 Vector3 iterPosition = new Vector3(nodes[iter].Col * 6 + 8, nodes[iter].Floor * 30, nodes[iter].Row * 6 + 8) - rb.transform.position;
                 float iterMag = iterPosition.magnitude;
                 if (iterMag < closestMag)
+                    closest = nodes[iter];
+            }
+        }
+        return closest;
+    }
+
+    public MazeNode updateClosest(MazeNode closest, List<MazeNode> nodes, MazeNode currentNode, MazeNode previous, MazeNode previous2, Rigidbody rb)
+    {
+        for (int iter = 0; iter < nodes.Count; iter++)
+        {
+            bool trapInWay = false;
+            foreach (MazeNode n in MazeGenerator.GetPath2(currentNode, nodes[iter]))
+                if (GameManager.trapNode(n))
+                    trapInWay = true;
+            if (!trapInWay)
+            {
+                if (nodes[iter] != currentNode && nodes[iter] != previous && nodes[iter] != previous2)
                 {
-                    bool trapInWay = false;
-                    foreach (MazeNode n in MazeGenerator.GetPath2(currentNode, nodes[iter]))
-                        if (GameManager.trapNode(n) || GameManager.trapNode(nodes[iter]))
-                        {
-                            trapInWay = true;
-                            print(n.Col + " " + n.Row);
-                            print(n.actor);
-                        }
-                    if (!trapInWay)
+                    if (closest == null)
+                    {
+                        closest = nodes[iter];
+                    }
+                    Vector3 closestPosition = new Vector3(closest.Col * 6 + 8, closest.Floor * 30, closest.Row * 6 + 8) - rb.transform.position;
+                    float closestMag = closestPosition.magnitude;
+                    Vector3 iterPosition = new Vector3(nodes[iter].Col * 6 + 8, nodes[iter].Floor * 30, nodes[iter].Row * 6 + 8) - rb.transform.position;
+                    float iterMag = iterPosition.magnitude;
+                    if (iterMag < closestMag)
                     {
                         closest = nodes[iter];
                     }
