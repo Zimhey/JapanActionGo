@@ -22,9 +22,12 @@ public class FootprintDecay : MonoBehaviour {
 
         float complete = timeAlive / Lifetime;
         mat.SetFloat("_Trans", 1 - complete);
-        
+
         if (timeAlive > Lifetime)
+        {
+            print("destroyed footprint");
             Destroy(gameObject);
+        }
 	}
 
     public void SetLifeTime(float lifeTime)

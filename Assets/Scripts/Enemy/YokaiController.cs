@@ -24,7 +24,7 @@ public class YokaiController : MonoBehaviour {
         //rayDirection = Vector3.MoveTowards
         rayDirection.Normalize();
         Ray ray = new Ray(gameObject.transform.position, -rayDirection);
-        Debug.DrawRay(gameObject.transform.position, -rayDirection, Color.green, 20.0F);
+        //Debug.DrawRay(gameObject.transform.position, -rayDirection, Color.green, 20.0F);
         RaycastHit rayHit;
         
         if (Physics.Raycast(ray, out rayHit, maxDistance, levelMask))

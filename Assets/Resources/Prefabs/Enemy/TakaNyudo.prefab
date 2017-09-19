@@ -19,12 +19,12 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4826612126787132}
+  - component: {fileID: 114080606360274906}
   - component: {fileID: 33120419961947006}
   - component: {fileID: 23178637004328802}
   - component: {fileID: 54316090242173410}
   - component: {fileID: 195293660191163708}
   - component: {fileID: 114178126778793846}
-  - component: {fileID: 114080606360274906}
   - component: {fileID: 143678964273987994}
   - component: {fileID: 136733453209516976}
   m_Layer: 0
@@ -118,6 +118,7 @@ MonoBehaviour:
   - {fileID: 1150202406731512, guid: 84908a3528f904f499fee595f06e5ab2, type: 2}
   Stride: 3
   Radius: 0.5
+  FootprintLifetime: 30
   PlaceFootprintOnLanding: 0
 --- !u!114 &114178126778793846
 MonoBehaviour:

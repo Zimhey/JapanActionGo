@@ -121,7 +121,7 @@ public class TakaController : YokaiController
         //manage state machine each update, call functions based on state
         if (state != TakaState.Idle)
         {
-            //print("TakaState " + state);
+            print("TakaState " + state);
         }
         switch (state)
         {
@@ -221,6 +221,7 @@ public class TakaController : YokaiController
             distanceToFloor = 3.0F;
         }
 
+        //print("Taka is grounded " + gameObject.GetComponent<CharacterController>().isGrounded);
         gameObject.transform.position = new Vector3(gameObject.transform.position.x, distanceToFloor, gameObject.transform.position.z);
         MoveYokai();
     }
@@ -390,7 +391,7 @@ public class TakaController : YokaiController
         }
         else if (mr.transform.localScale.y >= 6)
         {
-            agent.height = 0.6F;
+            //agent.height = 0.6F;
             state = TakaState.Flee;
             return;
         }
@@ -421,10 +422,6 @@ public class TakaController : YokaiController
             mr.transform.localScale -= new Vector3(0, 0.02F, 0);
             //mr.transform.position -= new Vector3(0, 0.01F, 0);
             distanceToFloor -= 0.01F;
-        }
-        else
-        {
-            agent.height = 1.0F;
         }
         //gameObject.transform.position.Set(gameObject.transform.position.x, distanceToFloor, gameObject.transform.position.z);
         if (rb.transform.position.x < home.x + 2 && rb.transform.position.x > home.x - 2)

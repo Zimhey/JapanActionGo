@@ -2217,6 +2217,7 @@ MonoBehaviour:
   - {fileID: 1885683017670046, guid: a085f0280c210f84c8690f24658c7df8, type: 2}
   Stride: 3
   Radius: 0.5
+  FootprintLifetime: 30
   PlaceFootprintOnLanding: 0
 --- !u!114 &114694237428642688
 MonoBehaviour:
