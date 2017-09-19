@@ -91,7 +91,7 @@ public class TakaController : YokaiController
         //intialize variables
         rb = GetComponent<Rigidbody>();
         home = gameObject.transform.position;
-        distanceToFloor = home.y;
+        distanceToFloor = home.y + 2.9F;
         startingRotation = gameObject.transform.rotation;
         //print("OriHome" + home);
         state = TakaState.Idle;
@@ -216,7 +216,12 @@ public class TakaController : YokaiController
             }
         }
 
-        //gameObject.transform.position.Set(gameObject.transform.position.x, distanceToFloor, gameObject.transform.position.z);
+        if(distanceToFloor < 3.0F)
+        {
+            distanceToFloor = 3.0F;
+        }
+
+        gameObject.transform.position = new Vector3(gameObject.transform.position.x, distanceToFloor, gameObject.transform.position.z);
         MoveYokai();
     }
 
