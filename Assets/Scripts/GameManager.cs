@@ -146,7 +146,7 @@ public class GameManager : MonoBehaviour {
     {
         get
         {
-            if(ui == null)
+            if (ui == null)
                 ui = GameObject.FindGameObjectWithTag("UserInterface").GetComponentInChildren<UIGameManagerInterface>();
             return ui;
         }
@@ -157,7 +157,7 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
@@ -201,12 +201,12 @@ public class GameManager : MonoBehaviour {
         {
             if (CurrentState == GameState.Pause)
                 UnPause();
-            else if(CurrentState == GameState.Play)
+            else if (CurrentState == GameState.Play)
                 PauseGame();
         }
 
         // update session time during play
-        if(CurrentState == GameState.Play)
+        if (CurrentState == GameState.Play)
         {
             SessionTime += Time.deltaTime;
         }
@@ -419,7 +419,7 @@ public class GameManager : MonoBehaviour {
         CellLog cellLog = obj.GetComponent<CellLog>();
         cellLog.Row = node.Row;
         cellLog.Col = node.Col;
-        
+
         if (DebugLabelsOn)
         {
             GameObject textObj = Instantiate(Resources.Load("Prefabs/Level/CellTextPrefab"), location + new Vector3(0, 0.5f, -1), new Quaternion()) as GameObject;
@@ -512,7 +512,7 @@ public class GameManager : MonoBehaviour {
 
     private void SetCurrentActive(bool state)
     {
-        if(!DebugPlay)
+        if (!DebugPlay)
         {
             PlayersCurrentSection.section.SetActive(state);
             PlayerObj.SetActive(state);
@@ -577,25 +577,25 @@ public class GameManager : MonoBehaviour {
 
     public void OnApplicationPause(bool pause)
     {
-        if(pause)
+        if (pause)
             PauseGame();
     }
 
     public void ActorVisitedCell(Actor actor, int cellID)
     {
-        if(AnalyticsEnabled)
+        if (AnalyticsEnabled)
             AnalyticsManager.EnteredCell(actor.ActorID, cellID);
     }
 
     public void ActorKilled(Actor killer, Actor dead)
     {
-        if(AnalyticsEnabled)
+        if (AnalyticsEnabled)
             AnalyticsManager.ActorKilled(killer.ActorID, dead.ActorID);
     }
 
     public void ActorStateChange(Actor actor, int state)
     {
-        if(AnalyticsEnabled)
+        if (AnalyticsEnabled)
             AnalyticsManager.ActorStateChange(actor.ActorID, state);
     }
 
@@ -605,6 +605,11 @@ public class GameManager : MonoBehaviour {
             return AnalyticsManager.UsedItem(SessionID, item);
         else
             return -1;
+    }
+
+    public static bool trapNode(MazeNode node)
+    {
+        return node.actor == ActorType.Crush_Trap || node.actor == ActorType.Pit_Trap || node.actor == ActorType.Spike_Trap;
     }
 
     public void OfudaHit(int eventID, Actor actor)

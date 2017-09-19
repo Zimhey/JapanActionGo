@@ -64,6 +64,7 @@ public class TakaController : YokaiController
     private MazeNode root;
     private MazeNode previous;
     private MazeNode previous2;
+    private MazeNode homeNode;
     //countdown until no longer stunned
     private int stunTimer;
     private Camera cam;
@@ -90,6 +91,7 @@ public class TakaController : YokaiController
         //intialize variables
         rb = GetComponent<Rigidbody>();
         home = gameObject.transform.position;
+        distanceToFloor = home.y;
         startingRotation = gameObject.transform.rotation;
         //print("OriHome" + home);
         state = TakaState.Idle;
@@ -104,6 +106,14 @@ public class TakaController : YokaiController
         agent = GetComponent<NavMeshAgent>();
         agent.updatePosition = false;
         agent.updateRotation = true;
+
+        int column = (int)((home.x - 8) / 6);
+        int floor = (int)(home.y / 30);
+        int row = (int)((home.z - 8) / 6);
+
+        foreach (MazeNode n in MazeGenerator.nodesInSection(root))
+            if (n.Col == column && n.Row == row)
+                homeNode = n;
     }
 
     void LateUpdate()
@@ -205,6 +215,8 @@ public class TakaController : YokaiController
                 }
             }
         }
+
+        //gameObject.transform.position.Set(gameObject.transform.position.x, distanceToFloor, gameObject.transform.position.z);
         MoveYokai();
     }
 
@@ -256,7 +268,7 @@ public class TakaController : YokaiController
             if (currentNode == null)
             {
                 MazeNode closest = null;
-                closest = setClosest(closest, nodes, rb);
+                closest = setClosest(closest, homeNode, nodes, rb);
                 currentNode = closest;
             }
             
@@ -320,30 +332,10 @@ public class TakaController : YokaiController
                 }
             }
         }
-
-        Vector3 enemyDirection = transform.TransformDirection(Vector3.forward);
-        Vector3 rayDirection = PlayerObject.transform.localPosition - (transform.localPosition - new Vector3(0, distanceToFloor, 0));
-        float angleDot = Vector3.Dot(rayDirection, enemyDirection);
-        System.Boolean playerInFrontOfEnemy = angleDot > 0.0;
-        System.Boolean noWallfound = NoWall(PlayerObject, LevelMask);
-
-        if (playerInFrontOfEnemy)
-        {
-            if (noWallfound)
-            {
-                if (playerLookingUp())
-                {
-                    actorID = GetComponent<Actor>();
-                    GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
-                    GameManager.Instance.GameOver();
-                    PlayerObject.SetActive(false);
-                    print("GameOver");
-                }
-            }
-        }
+        
     }
 
-    void taunt()
+    void taunt() //getting shoved into ground
     {
         int maxDistance = 7;
         int maxDistanceSquared = maxDistance * maxDistance;
@@ -378,18 +370,22 @@ public class TakaController : YokaiController
 
         //play taunt sounds
         Vector3 enemyDirection = transform.TransformDirection(Vector3.forward);
-        float angleDot = Vector3.Dot(rayDirection, enemyDirection);
+        rayDirection.Normalize();
+        enemyDirection.Normalize();
+        float angleDot = Vector3.Dot(enemyDirection, rayDirection);
         System.Boolean playerInFrontOfEnemy = angleDot > 0.0;
         System.Boolean noWallfound = NoWall(PlayerObject, LevelMask);
+        MeshRenderer mr = gameObject.GetComponent<MeshRenderer>();
 
-        if (gameObject.transform.localScale.y < 10)
+        if (mr.transform.localScale.y < 6)
         {
-            gameObject.transform.localScale += new Vector3(0, 0.02F, 0);
-            gameObject.transform.position += new Vector3(0, 0.01F, 0);
+            mr.transform.localScale += new Vector3(0, 0.02F, 0);
+            //mr.transform.position += new Vector3(0, 0.01F, 0);
             distanceToFloor += 0.01F;
         }
-        else if (gameObject.transform.localScale.y >= 10)
+        else if (mr.transform.localScale.y >= 6)
         {
+            agent.height = 0.6F;
             state = TakaState.Flee;
             return;
         }
@@ -413,12 +409,19 @@ public class TakaController : YokaiController
     {
         agent.ResetPath();
         agent.SetDestination(home);
-        if (gameObject.transform.localScale.y > 5)
+        MeshRenderer mr = gameObject.GetComponent<MeshRenderer>();
+
+        if (mr.transform.localScale.y > 5)
         {
-            gameObject.transform.localScale -= new Vector3(0, 0.01F, 0);
-            gameObject.transform.position -= new Vector3(0, 0.005F, 0);
-            distanceToFloor -= 0.005F;
+            mr.transform.localScale -= new Vector3(0, 0.02F, 0);
+            //mr.transform.position -= new Vector3(0, 0.01F, 0);
+            distanceToFloor -= 0.01F;
         }
+        else
+        {
+            agent.height = 1.0F;
+        }
+        //gameObject.transform.position.Set(gameObject.transform.position.x, distanceToFloor, gameObject.transform.position.z);
         if (rb.transform.position.x < home.x + 2 && rb.transform.position.x > home.x - 2)
         {
             if (rb.transform.position.z < home.z + 2 && rb.transform.position.z > home.z - 2)
@@ -511,6 +514,8 @@ public class TakaController : YokaiController
     {
         Vector3 dir = cam.transform.rotation * Vector3.up;
         Vector3 enemyDirection = PlayerObject.transform.TransformDirection(Vector3.forward);
+        dir.Normalize();
+        enemyDirection.Normalize();
         float angleDot = Vector3.Dot(dir, enemyDirection);
         System.Boolean playerlookup = angleDot < -0.5;
         if (playerlookup)
@@ -579,33 +584,20 @@ public class TakaController : YokaiController
         //anim.SetInteger("State", 6);
     }
 
-    void OnCollisionEnter(Collision col)
-    {
-        if (col.gameObject.CompareTag("Trap"))
-        {
-            dead();
-        }
-        if (col.gameObject == PlayerObject)
-        {
-            actorID = GetComponent<Actor>();
-            GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
-            GameManager.Instance.GameOver();
-            PlayerObject.SetActive(false);
-            print("GameOver");
-        }
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Trap"))
         {
-            dead();
+            //dead();
         }
         if (other.gameObject == PlayerObject)
         {
-            actorID = GetComponent<Actor>();
-            GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
-            GameManager.Instance.GameOver();
+            if (state == TakaState.Taunt)
+            {
+                actorID = GetComponent<Actor>();
+                GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
+                GameManager.Instance.GameOver();
+            }
         }
     }
 }

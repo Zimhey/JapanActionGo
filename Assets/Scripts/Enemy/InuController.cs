@@ -78,6 +78,7 @@ public class InuController : YokaiController
     private MazeNode root;
     private MazeNode previous;
     private MazeNode previous2;
+    private MazeNode homeNode;
     //countdown until no longer stunned
     private int stunTimer;
     //has player been too close
@@ -113,6 +114,14 @@ public class InuController : YokaiController
         agent = GetComponent<NavMeshAgent>();
         agent.updatePosition = false;
         agent.updateRotation = true;
+
+        int column = (int)((home.x - 8) / 6);
+        int floor = (int)(home.y / 30);
+        int row = (int)((home.z - 8) / 6);
+
+        foreach (MazeNode n in MazeGenerator.nodesInSection(root))
+            if (n.Col == column && n.Row == row)
+                homeNode = n;
     }
 
     void LateUpdate()
@@ -259,12 +268,10 @@ public class InuController : YokaiController
     {
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
-        //print("doing patrol");
         if (seen)
         {
             awake = true;
             state = InuState.Chase;
-            //print("patrol to chase");
             return;
         }
 
@@ -273,20 +280,18 @@ public class InuController : YokaiController
         if (foundFootprint != null)
         {
             state = InuState.Follow;
-            //print("patrol to follow");
             return;
         }
 
         if (root != null)
         {
-            //print("starting patrol execute");
             List<MazeNode> nodes = MazeGenerator.GetIntersectionNodes(root);
             Vector3 currentNodePosition;
 
             if (currentNode == null)
             {
                 MazeNode closest = null;
-                closest = setClosest(closest, nodes, rb);
+                closest = setClosest(closest, homeNode, nodes, rb);
                 currentNode = closest;
                 if (previous == null)
                 {
@@ -296,21 +301,17 @@ public class InuController : YokaiController
             }
 
             currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
-
-            //print("found current");
+            
 
             if (rb.transform.position.x < currentNodePosition.x + 2 && rb.transform.position.x > currentNodePosition.x - 2)
             {
-                //print("attempting z");
                 if (rb.transform.position.z < currentNodePosition.z + 2 && rb.transform.position.z > currentNodePosition.z - 2)
                 {
-                    //print("attempting to update");
                     MazeNode closest = null;
                     closest = updateClosest(closest, nodes, currentNode, previous, previous2, rb);
                     previous2 = previous;
                     previous = currentNode;
                     currentNode = closest;
-                    //print("updated current");
                 }
             }
             
@@ -326,7 +327,7 @@ public class InuController : YokaiController
 
     void chase()
     {
-        agent.ResetPath();
+        //agent.ResetPath();
         seen = false;
         seen = SeePlayer(PlayerObject, LevelMask);
         if (!seen)
@@ -343,13 +344,13 @@ public class InuController : YokaiController
         }
         
         Vector3 dest = PlayerObject.transform.position;
-        agent.SetDestination(PlayerObject.transform.position);
+        agent.SetDestination(dest);
 
-        if (rb.transform.position.x < dest.x + 5 && rb.transform.position.x > dest.x - 5)
+        if (rb.transform.position.x < dest.x + 3 && rb.transform.position.x > dest.x - 3)
         {
-            if (rb.transform.position.y < dest.y + 5 && rb.transform.position.y > dest.y - 5)
+            if (rb.transform.position.y < dest.y + 3 && rb.transform.position.y > dest.y - 3)
             {
-                if (rb.transform.position.z < dest.z + 5 && rb.transform.position.z > dest.z - 5)
+                if (rb.transform.position.z < dest.z + 3 && rb.transform.position.z > dest.z - 3)
                 {
                     state = InuState.Stalk;
                     agent.SetDestination(rb.transform.position);
@@ -444,11 +445,11 @@ public class InuController : YokaiController
         Vector3 dest = PlayerObject.transform.position;
         if (!playerTooCloseToEnemy)
         {
-            if (rb.transform.position.x < dest.x + 5 && rb.transform.position.x > dest.x - 5)
+            if (rb.transform.position.x < dest.x + 3 && rb.transform.position.x > dest.x - 3)
             {
-                if (rb.transform.position.y < dest.y + 5 && rb.transform.position.y > dest.y - 5)
+                if (rb.transform.position.y < dest.y + 3 && rb.transform.position.y > dest.y - 3)
                 {
-                    if (rb.transform.position.z < dest.z + 5 && rb.transform.position.z > dest.z - 5)
+                    if (rb.transform.position.z < dest.z + 3 && rb.transform.position.z > dest.z - 3)
                     {
                         agent.SetDestination(rb.transform.position);
                     }
@@ -712,33 +713,20 @@ public class InuController : YokaiController
         //print("did something p2");
     }
 
-    void OnCollisionEnter(Collision col)
-    {
-        if (col.gameObject.CompareTag("Trap"))
-        {
-            dead();
-        }
-        if (col.gameObject == PlayerObject)
-        {
-            actorID = GetComponent<Actor>();
-            GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
-            GameManager.Instance.GameOver();
-            PlayerObject.SetActive(false);
-            print("GameOver");
-        }
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Trap"))
         {
-            dead();
+            //dead();
         }
-        if (other.gameObject == PlayerObject)
+        if (state == InuState.Cornered)
         {
-            actorID = GetComponent<Actor>();
-            GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
-            GameManager.Instance.GameOver();
+            if (other.gameObject == PlayerObject)
+            {
+                actorID = GetComponent<Actor>();
+                GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
+                GameManager.Instance.GameOver();
+            }
         }
     }
 }
