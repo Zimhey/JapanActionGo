@@ -603,7 +603,8 @@ MonoBehaviour:
   - {fileID: 1667974125281640, guid: d5e4cb8076c80fd468c4524583372c33, type: 2}
   Stride: 1
   Radius: 0.5
-  PlaceFootprintOnLanding: 0
+  FootprintLifetime: 120
+  PlaceFootprintOnLanding: 1
 --- !u!114 &114764283589509814
 MonoBehaviour:
   m_ObjectHideFlags: 1

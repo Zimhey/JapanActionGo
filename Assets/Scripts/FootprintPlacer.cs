@@ -13,6 +13,7 @@ public class FootprintPlacer : MonoBehaviour {
     public GameObject[] RightPrefabs;
     public float Stride;
     public float Radius;
+    public float FootprintLifetime;
 
     private CharacterController controller;
     private GameObject previousFootprint;
@@ -91,6 +92,7 @@ public class FootprintPlacer : MonoBehaviour {
             currentFootprint.transform.position = position;
             currentFootprint.transform.rotation = transform.rotation;
             currentFootprint.transform.parent = footPrintParent.transform;
+            currentFootprint.GetComponent<FootprintDecay>().SetLifeTime(FootprintLifetime);
 
             if (rayHit.collider.gameObject.layer == dynamicObjectLayer)
             {
