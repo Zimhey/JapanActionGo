@@ -149,7 +149,7 @@ public class PlayerActions : MonoBehaviour
             }
 
             //
-            Vector3 offset = rayHit.normal * 0.001f;
+            Vector3 offset = rayHit.normal * 0.002f;
             Vector3 position = (Vector3)(currentMark.transform.worldToLocalMatrix * (rayHit.point + offset)) - currentMark.transform.position;
             
             // Add point to the line render
