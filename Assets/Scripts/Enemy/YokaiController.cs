@@ -70,7 +70,9 @@ public class YokaiController : MonoBehaviour {
             {
                 Vector3 rayDirection = close[iter2].transform.localPosition - transform.localPosition;
                 Vector3 observerDirection = transform.TransformDirection(Vector3.forward);
-                float angleDot = Vector3.Dot(rayDirection, observerDirection);
+                rayDirection.Normalize();
+                observerDirection.Normalize();
+                float angleDot = Vector3.Dot(observerDirection, rayDirection);
                 if (angleDot > 0)
                 {
                     valid.Add(close[iter2]);
@@ -103,8 +105,8 @@ public class YokaiController : MonoBehaviour {
         {
             if (inus[iter] != null)
             {
-                Vector3 distanceToFootprint = inus[iter].transform.position - transform.position;
-                float mag = distanceToFootprint.magnitude;
+                Vector3 distanceToInu = inus[iter].transform.position - transform.position;
+                float mag = distanceToInu.magnitude;
                 if (mag < 15)
                 {
                     close.Add(inus[iter]);
@@ -117,7 +119,9 @@ public class YokaiController : MonoBehaviour {
             {
                 Vector3 rayDirection = close[iter2].transform.localPosition - transform.localPosition;
                 Vector3 observerDirection = transform.TransformDirection(Vector3.forward);
-                float angleDot = Vector3.Dot(rayDirection, observerDirection);
+                rayDirection.Normalize();
+                observerDirection.Normalize();
+                float angleDot = Vector3.Dot(observerDirection, rayDirection);
                 if (angleDot > 0)
                 {
                     valid.Add(close[iter2]);
@@ -154,10 +158,12 @@ public class YokaiController : MonoBehaviour {
         Vector3 rayDirection = desiredObject.transform.localPosition - transform.localPosition;
         //print(rayDirection);
         Vector3 observerDirection = transform.TransformDirection(Vector3.forward);
-        //print(observerDirection);
-        float angleDot = Vector3.Dot(rayDirection, observerDirection);
-        //print(angleDot);
         System.Boolean objectCloseToObserver = rayDirection.sqrMagnitude < maxDistanceSquared;
+        //print(observerDirection);
+        rayDirection.Normalize();
+        observerDirection.Normalize();
+        float angleDot = Vector3.Dot(observerDirection, rayDirection);
+        //print(angleDot);
 
         //float crossangle = Vector3.Angle(enemyDirection, rayDirection);
         System.Boolean objectInFrontOfObserver = angleDot > 0.0;
@@ -174,31 +180,15 @@ public class YokaiController : MonoBehaviour {
         }
     }
 
-    public MazeNode setClosest(MazeNode closest, List<MazeNode> nodes, Rigidbody rb)
+    public MazeNode setClosest(MazeNode closest, MazeNode home, List<MazeNode> nodes, Rigidbody rb)
     {
         for (int iter = 0; iter < nodes.Count; iter++)
         {
-            if (closest == null)
-            {
-                closest = nodes[iter];
-            }
-            Vector3 closestPosition = new Vector3(closest.Col * 6 + 8, closest.Floor * 30, closest.Row * 6 + 8) - rb.transform.position;
-            float closestMag = closestPosition.magnitude;
-            Vector3 iterPosition = new Vector3(nodes[iter].Col * 6 + 8, nodes[iter].Floor * 30, nodes[iter].Row * 6 + 8) - rb.transform.position;
-            float iterMag = iterPosition.magnitude;
-            if (iterMag < closestMag)
-            {
-                closest = nodes[iter];
-            }
-        }
-        return closest;
-    }
-
-    public MazeNode updateClosest(MazeNode closest, List<MazeNode> nodes, MazeNode currentNode, MazeNode previous, MazeNode previous2, Rigidbody rb)
-    {
-        for (int iter = 0; iter < nodes.Count; iter++)
-        {
-            if (nodes[iter] != currentNode && nodes[iter] != previous && nodes[iter] != previous2)
+            bool trapInWay = false;
+            foreach (MazeNode n in MazeGenerator.GetPath2(home, nodes[iter]))
+                if (GameManager.trapNode(n))
+                    trapInWay = true;
+            if (!trapInWay)
             {
                 if (closest == null)
                 {
@@ -209,8 +199,36 @@ public class YokaiController : MonoBehaviour {
                 Vector3 iterPosition = new Vector3(nodes[iter].Col * 6 + 8, nodes[iter].Floor * 30, nodes[iter].Row * 6 + 8) - rb.transform.position;
                 float iterMag = iterPosition.magnitude;
                 if (iterMag < closestMag)
-                {
                     closest = nodes[iter];
+            }
+        }
+        return closest;
+    }
+
+    public MazeNode updateClosest(MazeNode closest, List<MazeNode> nodes, MazeNode currentNode, MazeNode previous, MazeNode previous2, Rigidbody rb)
+    {
+        for (int iter = 0; iter < nodes.Count; iter++)
+        {
+            bool trapInWay = false;
+            foreach (MazeNode n in MazeGenerator.GetPath2(currentNode, nodes[iter]))
+                if (GameManager.trapNode(n))
+                    trapInWay = true;
+            if (!trapInWay)
+            {
+                if (nodes[iter] != currentNode && nodes[iter] != previous && nodes[iter] != previous2)
+                {
+                    if (closest == null)
+                    {
+                        closest = nodes[iter];
+                    }
+                    Vector3 closestPosition = new Vector3(closest.Col * 6 + 8, closest.Floor * 30, closest.Row * 6 + 8) - rb.transform.position;
+                    float closestMag = closestPosition.magnitude;
+                    Vector3 iterPosition = new Vector3(nodes[iter].Col * 6 + 8, nodes[iter].Floor * 30, nodes[iter].Row * 6 + 8) - rb.transform.position;
+                    float iterMag = iterPosition.magnitude;
+                    if (iterMag < closestMag)
+                    {
+                        closest = nodes[iter];
+                    }
                 }
             }
         }

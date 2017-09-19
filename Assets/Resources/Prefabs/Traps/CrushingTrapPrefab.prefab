@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: 4099826551336400}
   m_Layer: 0
   m_Name: CrushingTrapPrefab
-  m_TagString: Untagged
+  m_TagString: Trap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
