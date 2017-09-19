@@ -53,8 +53,8 @@ public class Trap : MonoBehaviour
         set
         {
             state = value;
-            if (CanLog) ;
-            GameManager.Instance.ActorStateChange(ThisActor, (int)state);
+            if (CanLog) 
+                GameManager.Instance.ActorStateChange(ThisActor, (int)state);
         }
     }
 
