@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731704, g: 0.13414727, b: 0.121078536, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -242,6 +242,22 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 609902197}
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!1 &325246549 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1911283267415512, guid: 3ef4055c8c6169041953c121d9f17467,
+    type: 2}
+  m_PrefabInternal: {fileID: 377788045}
+--- !u!114 &325246554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 325246549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 543aa7604cd405a4ea76e2f691d9ea0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &377788045
 Prefab:
   m_ObjectHideFlags: 0
@@ -375,7 +391,7 @@ MonoBehaviour:
   CanPause: 1
   Maze: {fileID: 0}
   SessionID: 0
-  PlayersVRType: 0
+  PlayersVRType: 1
   lvlID: 0
   AnalyticsEnabled: 1
 --- !u!4 &601769529
@@ -651,7 +667,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1410658077 stripped
 MonoBehaviour:
@@ -659,6 +675,22 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 609902197}
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!1 &1647313842 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1658113145236434, guid: 3ef4055c8c6169041953c121d9f17467,
+    type: 2}
+  m_PrefabInternal: {fileID: 377788045}
+--- !u!114 &1647313847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1647313842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10fb48a6c5d4f8b49a69216964737d17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1918337429
 Prefab:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.VR;
 
 public class KeyBindingScript : MonoBehaviour {
 
@@ -38,10 +39,10 @@ public class KeyBindingScript : MonoBehaviour {
         c_chalk.text = controller["C_Draw"].ToString();
         c_ofuda.text = controller["C_Throw"].ToString();
 
-        vr.Add("Run", "Trigger1");
-        vr.Add("Jump", "Trigger2");
-        vr.Add("Draw", "Pad1");
-        vr.Add("Throw", "Pad2");
+        vr.Add("Run", "Pad1");
+        vr.Add("Jump", "Pad2");
+        vr.Add("Draw", "Trigger2");
+        vr.Add("Throw", "Trigger1");
 
         vr_run.text = vr["Run"];
         vr_jump.text = vr["Jump"];
@@ -107,6 +108,8 @@ public class KeyBindingScript : MonoBehaviour {
 
     public static bool JumpPressedVR()
     {
+        if (!VRDevice.isPresent)
+            return false;
         if (vr["Jump"] == "Trigger1")
             return LeftController.triggerPressed;
         else if (vr["Jump"] == "Trigger2")
@@ -121,6 +124,8 @@ public class KeyBindingScript : MonoBehaviour {
 
     public static bool RunPressedVR()
     {
+        if (!VRDevice.isPresent)
+            return false;
         if (vr["Run"] == "Trigger1")
             return LeftController.triggerPressed;
         else if (vr["Run"] == "Trigger2")
@@ -135,6 +140,8 @@ public class KeyBindingScript : MonoBehaviour {
 
     public static bool DrawPressedVR()
     {
+        if (!VRDevice.isPresent)
+            return false;
         if (vr["Draw"] == "Trigger1")
             return LeftController.triggerPressed;
         else if (vr["Draw"] == "Trigger2")
@@ -149,6 +156,8 @@ public class KeyBindingScript : MonoBehaviour {
 
     public static bool ThrowPressedVR()
     {
+        if (!VRDevice.isPresent)
+            return false;
         if (vr["Throw"] == "Trigger1")
             return LeftController.triggerPressed;
         else if (vr["Throw"] == "Trigger2")
