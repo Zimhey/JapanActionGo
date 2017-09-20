@@ -335,10 +335,10 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4400994132876996}
+  - component: {fileID: 114631532898733810}
   - component: {fileID: 54643054224203460}
   - component: {fileID: 114733998702376110}
   - component: {fileID: 195182205998125912}
-  - component: {fileID: 114631532898733810}
   - component: {fileID: 143879539404174848}
   - component: {fileID: 136622460490851784}
   m_Layer: 0
@@ -1575,6 +1575,7 @@ MonoBehaviour:
   - {fileID: 1150202406731512, guid: 84908a3528f904f499fee595f06e5ab2, type: 2}
   Stride: 3
   Radius: 0.5
+  FootprintLifetime: 30
   PlaceFootprintOnLanding: 0
 --- !u!114 &114733998702376110
 MonoBehaviour:
@@ -1595,6 +1596,7 @@ MonoBehaviour:
   PlayerMask:
     serializedVersion: 2
     m_Bits: 512
+  KillDistance: 3
 --- !u!136 &136622460490851784
 CapsuleCollider:
   m_ObjectHideFlags: 1

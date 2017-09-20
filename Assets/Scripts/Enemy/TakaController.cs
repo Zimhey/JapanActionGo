@@ -41,6 +41,8 @@ public class TakaController : YokaiController
     //layermask to raycast against
     public LayerMask LevelMask;
     public LayerMask PlayerMask;
+    public int TauntDistance;
+    public int KillDistance;
 
     //taka physics body
     private Rigidbody rb;
@@ -64,6 +66,7 @@ public class TakaController : YokaiController
     private MazeNode root;
     private MazeNode previous;
     private MazeNode previous2;
+    private MazeNode homeNode;
     //countdown until no longer stunned
     private int stunTimer;
     private Camera cam;
@@ -90,9 +93,10 @@ public class TakaController : YokaiController
         //intialize variables
         rb = GetComponent<Rigidbody>();
         home = gameObject.transform.position;
+        distanceToFloor = home.y + 0.1F;
         startingRotation = gameObject.transform.rotation;
         //print("OriHome" + home);
-        state = TakaState.Idle;
+        State = TakaState.Idle;
         animState = TakaAnim.Idle;
         awake = false;
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
@@ -104,6 +108,14 @@ public class TakaController : YokaiController
         agent = GetComponent<NavMeshAgent>();
         agent.updatePosition = false;
         agent.updateRotation = true;
+
+        int column = (int)((home.x - 8) / 6);
+        int floor = (int)(home.y / 30);
+        int row = (int)((home.z - 8) / 6);
+
+        foreach (MazeNode n in MazeGenerator.nodesInSection(root))
+            if (n.Col == column && n.Row == row)
+                homeNode = n;
     }
 
     void LateUpdate()
@@ -111,7 +123,7 @@ public class TakaController : YokaiController
         //manage state machine each update, call functions based on state
         if (state != TakaState.Idle)
         {
-            print("TakaState " + state);
+            //print("TakaState " + state);
         }
         switch (state)
         {
@@ -176,7 +188,7 @@ public class TakaController : YokaiController
         
         if (FleeInu(LevelMask))
         {
-            state = TakaState.Flee;
+            State = TakaState.Flee;
         }
 
         posTimer--;
@@ -205,6 +217,14 @@ public class TakaController : YokaiController
                 }
             }
         }
+
+        if(distanceToFloor < 0.0F)
+        {
+            distanceToFloor = 0.0F;
+        }
+
+        //print("Taka is grounded " + gameObject.GetComponent<CharacterController>().isGrounded);
+        //gameObject.transform.position = new Vector3(gameObject.transform.position.x, distanceToFloor, gameObject.transform.position.z);
         MoveYokai();
     }
 
@@ -215,17 +235,17 @@ public class TakaController : YokaiController
         if (seen)
         {
             awake = true;
-            state = TakaState.Chase;
+            State = TakaState.Chase;
             return;
         }
         GameObject foundFootprint = SeeFootprint(LevelMask);
         if (foundFootprint != null)
         {
-            state = TakaState.Follow;
+            State = TakaState.Follow;
         }
         else if (root != null)//awake == true && 
         {
-            state = TakaState.Patrol;
+            State = TakaState.Patrol;
         }
     }
 
@@ -236,7 +256,7 @@ public class TakaController : YokaiController
         if (seen)
         {
             awake = true;
-            state = TakaState.Chase;
+            State = TakaState.Chase;
             return;
         }
 
@@ -244,7 +264,7 @@ public class TakaController : YokaiController
 
         if (foundFootprint != null)
         {
-            state = TakaState.Follow;
+            State = TakaState.Follow;
             return;
         }
 
@@ -256,7 +276,7 @@ public class TakaController : YokaiController
             if (currentNode == null)
             {
                 MazeNode closest = null;
-                closest = setClosest(closest, nodes, rb);
+                closest = setClosest(closest, homeNode, nodes, rb);
                 currentNode = closest;
             }
             
@@ -294,11 +314,11 @@ public class TakaController : YokaiController
             GameObject foundFootprint = SeeFootprint(LevelMask);
             if (foundFootprint != null)
             {
-                state = TakaState.Follow;
+                State = TakaState.Follow;
             }
             else
             {
-                state = TakaState.Idle;
+                State = TakaState.Idle;
             }
         }
         
@@ -314,83 +334,65 @@ public class TakaController : YokaiController
             {
                 if (rb.transform.position.z < dest.z + 5 && rb.transform.position.z > dest.z - 5)
                 {
-                    state = TakaState.Taunt;
+                    State = TakaState.Taunt;
                     agent.SetDestination(rb.transform.position);
                     gameObject.transform.rotation = startingRotation;
                 }
             }
         }
-
-        Vector3 enemyDirection = transform.TransformDirection(Vector3.forward);
-        Vector3 rayDirection = PlayerObject.transform.localPosition - (transform.localPosition - new Vector3(0, distanceToFloor, 0));
-        float angleDot = Vector3.Dot(rayDirection, enemyDirection);
-        System.Boolean playerInFrontOfEnemy = angleDot > 0.0;
-        System.Boolean noWallfound = NoWall(PlayerObject, LevelMask);
-
-        if (playerInFrontOfEnemy)
-        {
-            if (noWallfound)
-            {
-                if (playerLookingUp())
-                {
-                    actorID = GetComponent<Actor>();
-                    GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
-                    GameManager.Instance.GameOver();
-                    PlayerObject.SetActive(false);
-                    print("GameOver");
-                }
-            }
-        }
+        
     }
 
-    void taunt()
+    void taunt() //getting shoved into ground
     {
-        int maxDistance = 7;
-        int maxDistanceSquared = maxDistance * maxDistance;
         Vector3 rayDirection = PlayerObject.transform.localPosition - (transform.localPosition - new Vector3(0,distanceToFloor,0));
-        System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < maxDistanceSquared;
+        System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < TauntDistance;
         if (!playerCloseToEnemy)
         {
             seen = false;
             seen = SeePlayer(PlayerObject, LevelMask);
             if (seen)
             {
-                state = TakaState.Chase;
+                State = TakaState.Chase;
                 return;
             }
             GameObject foundFootprint = SeeFootprint(LevelMask);
             if (foundFootprint != null)
             {
-                state = TakaState.Follow;
+                State = TakaState.Follow;
                 return;
             }
             else if(StartingNode != null)
             {
-                state = TakaState.Patrol;
+                State = TakaState.Patrol;
                 return;
             }
             else 
             {
-                state = TakaState.Idle;
+                State = TakaState.Idle;
                 return;
             }
         }
 
         //play taunt sounds
         Vector3 enemyDirection = transform.TransformDirection(Vector3.forward);
-        float angleDot = Vector3.Dot(rayDirection, enemyDirection);
+        rayDirection.Normalize();
+        enemyDirection.Normalize();
+        float angleDot = Vector3.Dot(enemyDirection, rayDirection);
         System.Boolean playerInFrontOfEnemy = angleDot > 0.0;
         System.Boolean noWallfound = NoWall(PlayerObject, LevelMask);
+        MeshRenderer mr = gameObject.GetComponentInChildren<MeshRenderer>();
 
-        if (gameObject.transform.localScale.y < 10)
+        if (mr.transform.localScale.y < 10)
         {
-            gameObject.transform.localScale += new Vector3(0, 0.02F, 0);
-            gameObject.transform.position += new Vector3(0, 0.01F, 0);
+            mr.transform.localScale += new Vector3(0, 0.02F, 0);
+            mr.transform.position += new Vector3(0, 0.01F, 0);
             distanceToFloor += 0.01F;
         }
-        else if (gameObject.transform.localScale.y >= 10)
+        else if (mr.transform.localScale.y >= 10)
         {
-            state = TakaState.Flee;
+            //agent.height = 0.6F;
+            State = TakaState.Flee;
             return;
         }
         if (playerInFrontOfEnemy)
@@ -413,17 +415,20 @@ public class TakaController : YokaiController
     {
         agent.ResetPath();
         agent.SetDestination(home);
-        if (gameObject.transform.localScale.y > 5)
+        MeshRenderer mr = gameObject.GetComponentInChildren<MeshRenderer>();
+
+        if (mr.transform.localScale.y > 5)
         {
-            gameObject.transform.localScale -= new Vector3(0, 0.01F, 0);
-            gameObject.transform.position -= new Vector3(0, 0.005F, 0);
-            distanceToFloor -= 0.005F;
+            mr.transform.localScale -= new Vector3(0, 0.02F, 0);
+            mr.transform.position -= new Vector3(0, 0.01F, 0);
+            distanceToFloor -= 0.01F;
         }
+        //gameObject.transform.position.Set(gameObject.transform.position.x, distanceToFloor, gameObject.transform.position.z);
         if (rb.transform.position.x < home.x + 2 && rb.transform.position.x > home.x - 2)
         {
             if (rb.transform.position.z < home.z + 2 && rb.transform.position.z > home.z - 2)
             {
-                state = TakaState.Idle;
+                State = TakaState.Idle;
                 gameObject.transform.rotation = startingRotation;
             }
         }
@@ -441,7 +446,7 @@ public class TakaController : YokaiController
         seen = SeePlayer(PlayerObject, LevelMask);
         if (seen)
         {
-            state = TakaState.Chase;
+            State = TakaState.Chase;
             nextFootprint = null;
             return;
         }
@@ -450,7 +455,7 @@ public class TakaController : YokaiController
             GameObject foundFootprint = SeeFootprint(LevelMask);
             if (foundFootprint == null)
             {
-                state = TakaState.Idle;
+                State = TakaState.Idle;
             }
             if (foundFootprint != null)
             {
@@ -482,35 +487,37 @@ public class TakaController : YokaiController
             GameObject foundFootprint = SeeFootprint(LevelMask);
             if (seen)
             {
-                state = TakaState.Chase;
+                State = TakaState.Chase;
             }
             else if (foundFootprint != null && awake == true)
             {
-                state = TakaState.Follow;
+                State = TakaState.Follow;
             }
             else
             {
-                state = TakaState.Idle;
+                State = TakaState.Idle;
             }
         }
     }
 
     void Stun()
     {
-        state = TakaState.Stun;
+        State = TakaState.Stun;
         stunTimer = 120;
         agent.SetDestination(rb.transform.position);
     }
 
     void SafeZoneCollision()
     {
-        state = TakaState.Flee;
+        State = TakaState.Flee;
     }
 
     bool playerLookingUp()
     {
         Vector3 dir = cam.transform.rotation * Vector3.up;
         Vector3 enemyDirection = PlayerObject.transform.TransformDirection(Vector3.forward);
+        dir.Normalize();
+        enemyDirection.Normalize();
         float angleDot = Vector3.Dot(dir, enemyDirection);
         System.Boolean playerlookup = angleDot < -0.5;
         if (playerlookup)
@@ -525,8 +532,7 @@ public class TakaController : YokaiController
 
     void animIdle()
     {
-        UnityEngine.AI.NavMeshAgent agent0 = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        if (agent0.velocity.magnitude < 0.5)
+        if (agent.velocity.magnitude < 0.5)
         {
             //anim.SetInteger("State", 0);
         }
@@ -536,8 +542,7 @@ public class TakaController : YokaiController
 
     void animWalk()
     {
-        UnityEngine.AI.NavMeshAgent agent0 = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        if (agent0.velocity.magnitude > 0.5)
+        if (agent.velocity.magnitude > 0.5)
         {
             //anim.SetInteger("State", 1);
         }
@@ -547,8 +552,7 @@ public class TakaController : YokaiController
 
     void animRun()
     {
-        UnityEngine.AI.NavMeshAgent agent0 = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        if (agent0.velocity.magnitude > 5.5)
+        if (agent.velocity.magnitude > 5.5)
         {
             //anim.SetInteger("State", 2);
         }
@@ -577,35 +581,5 @@ public class TakaController : YokaiController
     {
         // if looking around
         //anim.SetInteger("State", 6);
-    }
-
-    void OnCollisionEnter(Collision col)
-    {
-        if (col.gameObject.CompareTag("Trap"))
-        {
-            dead();
-        }
-        if (col.gameObject == PlayerObject)
-        {
-            actorID = GetComponent<Actor>();
-            GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
-            GameManager.Instance.GameOver();
-            PlayerObject.SetActive(false);
-            print("GameOver");
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Trap"))
-        {
-            dead();
-        }
-        if (other.gameObject == PlayerObject)
-        {
-            actorID = GetComponent<Actor>();
-            GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
-            GameManager.Instance.GameOver();
-        }
     }
 }

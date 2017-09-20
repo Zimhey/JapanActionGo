@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VR;
 
 public class PlayerActions : MonoBehaviour
 {
@@ -68,10 +69,19 @@ public class PlayerActions : MonoBehaviour
     {
         //bool attemptDraw = UsingVR ? drawingController.triggerPressed : (Input.GetKey(KeyBindingScript.buttons["Draw"]) || Input.GetKey(KeyBindingScript.controller["Draw"]) || Input.GetKey(KeyBindingScript.vr["Draw"]));
         //bool attemptThrow = UsingVR ? throwingController.triggerPressed : (Input.GetKeyDown(KeyBindingScript.buttons["Throw"]) || Input.GetKey(KeyBindingScript.controller["Throw"]) || Input.GetKey(KeyBindingScript.vr["Throw"]));
+        bool attemptDraw;
+        bool attemptThrow;
+        if (!VRDevice.isPresent) {
+            attemptDraw = (Input.GetKey(KeyBindingScript.buttons["Draw"]) || Input.GetKey(KeyBindingScript.controller["C_Draw"]));
+            attemptThrow = (Input.GetKeyDown(KeyBindingScript.buttons["Throw"]) || Input.GetKey(KeyBindingScript.controller["C_Throw"]));
+        }
 
-        bool attemptDraw = (KeyBindingScript.DrawPressedVR() || Input.GetKey(KeyBindingScript.buttons["Draw"]) || Input.GetKey(KeyBindingScript.controller["C_Draw"]));
-        bool attemptThrow = (KeyBindingScript.ThrowPressedVR() || Input.GetKeyDown(KeyBindingScript.buttons["Throw"]) || Input.GetKey(KeyBindingScript.controller["C_Throw"]));
-        
+        else {
+            print("VR Present");
+            attemptDraw = KeyBindingScript.DrawPressedVR();
+            attemptThrow = KeyBindingScript.ThrowPressedVR();
+        }
+
         // Use Lever
         if (Input.GetButtonDown("Grab_Items"))
             Use();
@@ -149,7 +159,7 @@ public class PlayerActions : MonoBehaviour
             }
 
             //
-            Vector3 offset = rayHit.normal * 0.001f;
+            Vector3 offset = rayHit.normal * 0.002f;
             Vector3 position = (Vector3)(currentMark.transform.worldToLocalMatrix * (rayHit.point + offset)) - currentMark.transform.position;
             
             // Add point to the line render

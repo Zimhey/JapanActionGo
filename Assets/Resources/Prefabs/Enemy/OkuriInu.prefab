@@ -1399,7 +1399,7 @@ Transform:
   m_GameObject: {fileID: 1024787956560636}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4475548957220548}
   - {fileID: 4244691940082776}
@@ -2217,6 +2217,7 @@ MonoBehaviour:
   - {fileID: 1885683017670046, guid: a085f0280c210f84c8690f24658c7df8, type: 2}
   Stride: 3
   Radius: 0.5
+  FootprintLifetime: 30
   PlaceFootprintOnLanding: 0
 --- !u!114 &114694237428642688
 MonoBehaviour:
@@ -2237,6 +2238,11 @@ MonoBehaviour:
   PlayerMask:
     serializedVersion: 2
     m_Bits: 512
+  StalkDistance: 400
+  StartCorneredDistance: 20
+  StayCorneredDistance: 25
+  CorneredChaseDistance: 5
+  KillDistance: 2
 --- !u!135 &135422344132124054
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -2247,8 +2253,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.4
-  m_Center: {x: 0, y: 0.3, z: 0}
+  m_Radius: 0.9
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!137 &137241424994038636
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
@@ -2705,12 +2711,12 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 0.5
-  m_Radius: 0.6
+  m_Radius: 1
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.3, z: 0}
+  m_Center: {x: 0, y: 0.6, z: 0}
 --- !u!195 &195698315266900506
 NavMeshAgent:
   m_ObjectHideFlags: 1
@@ -2729,6 +2735,6 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1
-  m_BaseOffset: 0.5
+  m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4

@@ -37,7 +37,7 @@ public class VRPlayerController : MonoBehaviour
     void Update()
     {
         if(!jumpPushed)
-            jumpPushed = CrossPlatformInputManager.GetButtonDown("Jump");
+            jumpPushed = KeyBindingScript.JumpPressedVR();
 
         if(!wasGrounded && controller.isGrounded)
         {
@@ -139,7 +139,7 @@ public class VRPlayerController : MonoBehaviour
         if(move.sqrMagnitude > 1)
             move.Normalize();
 
-        IsWalking = true; // TODO VR Button
+        IsWalking = !KeyBindingScript.RunPressedVR(); // TODO VR Button
 
         return move;
     }

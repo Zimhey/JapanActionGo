@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 65678955405615316}
   - component: {fileID: 23100157755296274}
   - component: {fileID: 114657019784303412}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Mesh
   m_TagString: Pressure Plate
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 33967947870749454}
   - component: {fileID: 65395297694898572}
   - component: {fileID: 23903406127395170}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -60,7 +60,7 @@ GameObject:
   - component: {fileID: 65448293263245782}
   - component: {fileID: 23594016487932090}
   - component: {fileID: 114063686462817750}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Mesh
   m_TagString: Pressure Plate
   m_Icon: {fileID: 0}
@@ -234,7 +234,7 @@ GameObject:
   - component: {fileID: 33193131308022356}
   - component: {fileID: 65757199604418258}
   - component: {fileID: 23580734042814970}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -251,7 +251,7 @@ GameObject:
   - component: {fileID: 4232013613939872}
   m_Layer: 0
   m_Name: BoxCrushingTrapPrefab
-  m_TagString: Untagged
+  m_TagString: Trap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -268,7 +268,7 @@ GameObject:
   - component: {fileID: 65823140299705630}
   - component: {fileID: 23233059787521242}
   - component: {fileID: 114272075391904342}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Mesh
   m_TagString: Pressure Plate
   m_Icon: {fileID: 0}
@@ -287,7 +287,7 @@ GameObject:
   - component: {fileID: 65758532089822776}
   - component: {fileID: 23111183533564184}
   - component: {fileID: 114278901412794148}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Mesh
   m_TagString: Pressure Plate
   m_Icon: {fileID: 0}
@@ -329,7 +329,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1777447649936872}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 26, y: 0, z: 20}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4273241950106936}
@@ -915,6 +915,7 @@ MonoBehaviour:
   ResetAnimTime: 2.5
   CanReset: 1
   ResetRequested: 0
+  CanLog: 0
   actor: {fileID: 0}
   ArmedPosition: {x: 0, y: 2, z: 0}
   ArmedRotation: {x: 0, y: 0, z: 0}

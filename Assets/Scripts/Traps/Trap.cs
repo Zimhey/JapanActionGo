@@ -25,6 +25,8 @@ public class Trap : MonoBehaviour
 
     protected float activationTime;
 
+    public bool CanLog; 
+
     public Actor actor;
 
     public Actor ThisActor
@@ -32,7 +34,7 @@ public class Trap : MonoBehaviour
         get
         {
             if (actor == null)
-              actor = GetComponent<Actor>();
+              actor = GetComponentInParent<Actor>();
             return actor;
         }
     }
@@ -51,7 +53,8 @@ public class Trap : MonoBehaviour
         set
         {
             state = value;
-            GameManager.Instance.ActorStateChange(ThisActor, (int)state);
+            if (CanLog) 
+                GameManager.Instance.ActorStateChange(ThisActor, (int)state);
         }
     }
 
@@ -144,7 +147,7 @@ public class Trap : MonoBehaviour
     {
         if (collider.gameObject != null && State != TrapState.Resetting)
         {
-            GameManager.Instance.ActorKilled(collider.gameObject.GetComponent<Actor>(), GetComponentInParent<Actor>());
+            GameManager.Instance.ActorKilled(collider.gameObject.GetComponent<Actor>(), ThisActor);
             print("Killing " + collider.gameObject);
             collider.gameObject.SendMessage("Die");
         }

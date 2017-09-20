@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 65348559552188924}
   - component: {fileID: 23477465289790570}
   - component: {fileID: 114126179190578806}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Mesh
   m_TagString: Pressure Plate
   m_Icon: {fileID: 0}
@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 65107978944270424}
   - component: {fileID: 23435025194544028}
   - component: {fileID: 114500708313611570}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Mesh
   m_TagString: Pressure Plate
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   - component: {fileID: 65310134629965918}
   - component: {fileID: 23552405080629072}
   - component: {fileID: 114176988456468408}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Mesh
   m_TagString: Pressure Plate
   m_Icon: {fileID: 0}
@@ -139,7 +139,7 @@ GameObject:
   - component: {fileID: 4183272616436930}
   m_Layer: 0
   m_Name: SpikeTrapPrefab
-  m_TagString: Untagged
+  m_TagString: Trap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -219,7 +219,7 @@ GameObject:
   - component: {fileID: 65468007674739746}
   - component: {fileID: 23625875674486626}
   - component: {fileID: 114422051236527006}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Mesh
   m_TagString: Pressure Plate
   m_Icon: {fileID: 0}
@@ -310,7 +310,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1469468210264814}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 14, y: 0, z: 8}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4385980498786714}
@@ -855,6 +855,7 @@ MonoBehaviour:
   ResetAnimTime: 1.5
   CanReset: 1
   ResetRequested: 0
+  CanLog: 0
   actor: {fileID: 0}
   ArmedPosition: {x: 0, y: -3.4, z: 0}
   ArmedRotation: {x: 0, y: 0, z: 0}

@@ -40,7 +40,6 @@ GameObject:
   - component: {fileID: 114127113183658014}
   - component: {fileID: 114006955438514742}
   - component: {fileID: 114541379980234844}
-  - component: {fileID: 135712837291773390}
   m_Layer: 0
   m_Name: Footprint_R2
   m_TagString: Footprint
@@ -150,6 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35d071ceb0b934a4787e3cd421b1f863, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Lifetime: 0
 --- !u!114 &114541379980234844
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -163,15 +163,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PreviousFootprint: {fileID: 0}
   NextFootprint: {fileID: 0}
---- !u!135 &135712837291773390
-SphereCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1667974125281640}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}

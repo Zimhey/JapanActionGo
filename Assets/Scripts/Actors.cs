@@ -58,7 +58,7 @@ public class Actors : MonoBehaviour {
             prefabs.Add(ActorType.Taka_Nyudo, Resources.Load("Prefabs/Enemy/TakaNyudo") as GameObject);
             prefabs.Add(ActorType.Okuri_Inu, Resources.Load("Prefabs/Enemy/OkuriInu") as GameObject);
             prefabs.Add(ActorType.Spike_Trap, Resources.Load("Prefabs/Traps/SpikeTrapPrefab") as GameObject);
-            prefabs.Add(ActorType.Crush_Trap, Resources.Load("Prefabs/Traps/CrushingTrapPrefab") as GameObject);
+            prefabs.Add(ActorType.Crush_Trap, Resources.Load("Prefabs/Traps/BoxCrushingTrapPrefab") as GameObject);
             //prefabs.Add(ActorType.Pit_Trap, Resources.Load("Prefabs/ChalkMark") as GameObject);
             //prefabs.Add(ActorType.Dart_Trap, Resources.Load("Prefabs/ChalkMark") as GameObject);
             //prefabs.Add(ActorType.Dart_Projectile, Resources.Load("Prefabs/ChalkMark") as GameObject);

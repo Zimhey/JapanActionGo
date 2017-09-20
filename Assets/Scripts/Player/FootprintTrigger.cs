@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FootprintTrigger : MonoBehaviour {
-    private void OnTriggerEnter(Collider other)
+    /*private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Oni")){
             Destroy(gameObject);
@@ -16,5 +16,5 @@ public class FootprintTrigger : MonoBehaviour {
         {
             Destroy(gameObject);
         }
-    }
+    }*/
 }

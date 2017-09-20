@@ -4,20 +4,34 @@ using UnityEngine;
 
 public class FootprintDecay : MonoBehaviour {
 
-    private int timer;
+    public float Lifetime;
+
+    private float timeAlive;
+
+    private Material mat;
 
 	// Use this for initialization
 	void Start () {
-        timer = 3000;
-	}
+        mat = gameObject.GetComponentInChildren<Renderer>().material;
+        timeAlive = 0;
+    }
 	
 	// Update is called once per frame
-	void FixedUpdate () {
-        timer--;
+	void Update () {
+        timeAlive += Time.deltaTime;
 
-        if(timer <= 0)
+        float complete = timeAlive / Lifetime;
+        mat.SetFloat("_Trans", 1 - complete);
+
+        if (timeAlive > Lifetime)
         {
             Destroy(gameObject);
         }
 	}
+
+    public void SetLifeTime(float lifeTime)
+    {
+        Lifetime = lifeTime;
+    }
+
 }

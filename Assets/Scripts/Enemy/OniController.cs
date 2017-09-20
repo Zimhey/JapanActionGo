@@ -40,6 +40,7 @@ public class OniController : YokaiController
     //layermask to raycast against
     public LayerMask LevelMask;
     public LayerMask PlayerMask;
+    public int KillDistance;
 
     //oni physics body
     private Rigidbody rb;
@@ -61,6 +62,7 @@ public class OniController : YokaiController
     private MazeNode root;
     private MazeNode previous;
     private MazeNode previous2;
+    private MazeNode homeNode;
     //countdown until no longer stunned
     private int stunTimer;
     private Vector3 oldPosition;
@@ -81,25 +83,32 @@ public class OniController : YokaiController
 
             actorID = GetComponent<Actor>();
             GameManager.Instance.ActorStateChange(actorID, (int) state);
-            print(state);
+            print("OniState " + state);
         }
     }
 
     void Start()
     {
         //intialize variables
+        anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody>();
         home = gameObject.transform.position;
         startingRotation = gameObject.transform.rotation;
-        state = OniState.Idle;
+        State = OniState.Idle;
         animState = OniAnim.Idle;
         awake = false;
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
-        anim = GetComponentInChildren<Animator>();
         oldPosition = home;
         posTimer = 60;
         root = MazeGenerator.getSectionBasedOnLocation(home);
         currentNode = StartingNode;
+        int column = (int)((home.x - 8) / 6);
+        int floor = (int)(home.y / 30);
+        int row = (int)((home.z - 8) / 6);
+
+        foreach (MazeNode n in MazeGenerator.nodesInSection(root))
+            if (n.Col == column && n.Row == row)
+                homeNode = n;
 
         agent = GetComponent<NavMeshAgent>();
         agent.updatePosition = false;
@@ -109,8 +118,8 @@ public class OniController : YokaiController
     void LateUpdate()
     {
         //manage state machine each update, call functions based on state
-        print("Onistate " + state);
-        //state = OniState.Patrol;
+        //print("Onistate " + state);
+        //State = OniState.Patrol;
         
         if (nextFootprint != null)
         {
@@ -177,7 +186,7 @@ public class OniController : YokaiController
         
         if(FleeInu(LevelMask))
         {
-            state = OniState.Flee;
+            State = OniState.Flee;
         }
 
         posTimer--;
@@ -204,7 +213,7 @@ public class OniController : YokaiController
                 currentNode = null;
                 if (state != OniState.Idle)
                 {
-                    state = OniState.Idle;
+                    State = OniState.Idle;
                 }
             }
         }
@@ -219,17 +228,17 @@ public class OniController : YokaiController
         if (seen)
         {
             awake = true;
-            state = OniState.Chase;
+            State = OniState.Chase;
             return;
         }
         GameObject foundFootprint = SeeFootprint(LevelMask);
         if (foundFootprint != null)
         {
-            state = OniState.Follow;
+            State = OniState.Follow;
         }
         else if (root != null)//awake == true && 
         {
-            state = OniState.Patrol;
+            State = OniState.Patrol;
         }
     }
     
@@ -240,15 +249,17 @@ public class OniController : YokaiController
         if (seen)
         {
             awake = true;
-            state = OniState.Chase;
+            State = OniState.Chase;
             return;
         }
+
         GameObject foundFootprint = SeeFootprint(LevelMask);
         if (foundFootprint != null)
         {
-            state = OniState.Follow;
+            State = OniState.Follow;
             return;
         }
+
         if (root != null)
         {
             //print("patrolling");
@@ -259,7 +270,7 @@ public class OniController : YokaiController
             if (currentNode == null)
             {
                 MazeNode closest = null;
-                closest = setClosest(closest, nodes, rb);
+                closest = setClosest(closest, homeNode, nodes, rb);
                 currentNode = closest;
             }
 
@@ -280,6 +291,7 @@ public class OniController : YokaiController
 
             currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
             agent.SetDestination(currentNodePosition);
+            //print("Dest" + currentNodePosition);
         }
     }
 
@@ -300,14 +312,25 @@ public class OniController : YokaiController
             GameObject foundFootprint = SeeFootprint(LevelMask);
             if (foundFootprint != null)
             {
-                state = OniState.Follow;
+                State = OniState.Follow;
             }
             else
             {
-                state = OniState.Idle;
+                State = OniState.Idle;
             }
         }
-        
+
+        Vector3 rayDirection = PlayerObject.transform.localPosition - transform.localPosition;
+        System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < KillDistance;
+        if (playerCloseToEnemy)
+        {
+            actorID = GetComponent<Actor>();
+            GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
+            State = OniState.GameOver;
+            GameManager.Instance.GameOver();
+            print("GameOver");
+        }
+
         agent.SetDestination(PlayerObject.transform.position);
     }
 
@@ -319,7 +342,7 @@ public class OniController : YokaiController
         {
             if (rb.transform.position.z < home.z + 2 && rb.transform.position.z > home.z - 2)
             {
-                state = OniState.Idle;
+                State = OniState.Idle;
                 gameObject.transform.rotation = startingRotation;
             }
         }
@@ -338,7 +361,7 @@ public class OniController : YokaiController
         seen = SeePlayer(PlayerObject, LevelMask);
         if (seen)
         {
-            state = OniState.Chase;
+            State = OniState.Chase;
             nextFootprint = null;
             return;
         }
@@ -347,7 +370,7 @@ public class OniController : YokaiController
             GameObject foundFootprint = SeeFootprint(LevelMask);
             if (foundFootprint == null)
             {
-                state = OniState.Idle;
+                State = OniState.Idle;
             }
             if (foundFootprint != null)
             {
@@ -379,22 +402,22 @@ public class OniController : YokaiController
             GameObject foundFootprint = SeeFootprint(LevelMask);
             if (seen)
             {
-                state = OniState.Chase;
+                State = OniState.Chase;
             }
             else if (foundFootprint != null && awake == true)
             {
-                state = OniState.Follow;
+                State = OniState.Follow;
             }
             else
             {
-                state = OniState.Idle;
+                State = OniState.Idle;
             }
         }
     }
 
     void Stun()
     {
-        state = OniState.Stun;
+        State = OniState.Stun;
         animState = OniAnim.Stunned;
         stunTimer = 300;
         agent.SetDestination(rb.position);
@@ -407,13 +430,12 @@ public class OniController : YokaiController
 
     void SafeZoneCollision()
     {
-        state = OniState.Flee;
+        State = OniState.Flee;
     }
 
     void animIdle()
     {
-        UnityEngine.AI.NavMeshAgent agent0 = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        if (agent0.velocity.magnitude < 0.5)
+        if (agent.velocity.magnitude < 0.5)
             anim.SetInteger("State", 0);
         else
             animState = OniAnim.Walk;
@@ -421,8 +443,7 @@ public class OniController : YokaiController
 
     void animWalk()
     {
-        UnityEngine.AI.NavMeshAgent agent0 = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        if (agent0.velocity.magnitude > 0.5)
+        if (agent.velocity.magnitude > 0.5)
             anim.SetInteger("State", 1);
         else
             animState = OniAnim.Idle;
@@ -430,8 +451,7 @@ public class OniController : YokaiController
 
     void animRun()
     {
-        UnityEngine.AI.NavMeshAgent agent0 = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        if (agent0.velocity.magnitude > 5.5)
+        if (agent.velocity.magnitude > 5.5)
             anim.SetInteger("State", 2);
         else
             animState = OniAnim.Walk;
@@ -452,39 +472,6 @@ public class OniController : YokaiController
     {
         // if looking around
         anim.SetInteger("State", 5);
-    }
-
-    void OnCollisionEnter(Collision col)
-    {
-        if (col.gameObject.CompareTag("Trap"))
-        {
-            dead();
-        }
-        if (col.gameObject == PlayerObject)
-        {
-            print("gameover1");
-            actorID = GetComponent<Actor>();
-            GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
-            state = OniState.GameOver;
-            GameManager.Instance.GameOver();
-            print("GameOver2");
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Trap"))
-        {
-            dead();
-        }
-        if (other.gameObject == PlayerObject)
-        {
-            actorID = GetComponent<Actor>();
-            GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
-            state = OniState.GameOver;
-            GameManager.Instance.GameOver();
-            print("GameOver");
-        }
     }
 }
 
