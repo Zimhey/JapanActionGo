@@ -1399,7 +1399,7 @@ Transform:
   m_GameObject: {fileID: 1024787956560636}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4475548957220548}
   - {fileID: 4244691940082776}
@@ -2238,6 +2238,11 @@ MonoBehaviour:
   PlayerMask:
     serializedVersion: 2
     m_Bits: 512
+  StalkDistance: 100
+  StartCorneredDistance: 10
+  StayCorneredDistance: 25
+  CorneredChaseDistance: 5
+  KillDistance: 2
 --- !u!135 &135422344132124054
 SphereCollider:
   m_ObjectHideFlags: 1

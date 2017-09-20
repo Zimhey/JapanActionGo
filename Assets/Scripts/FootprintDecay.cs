@@ -25,7 +25,6 @@ public class FootprintDecay : MonoBehaviour {
 
         if (timeAlive > Lifetime)
         {
-            print("destroyed footprint");
             Destroy(gameObject);
         }
 	}

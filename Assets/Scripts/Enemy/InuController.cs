@@ -25,8 +25,8 @@ public enum InuAnim
 {
     Idle, // inu doing nothing
     Walk, // inu walking around patrolling
-    Creep, //inu stalking player
     Run, // inu killing player
+    Creep, //inu stalking player
     Attack, // inu attacking player
     Stunned, // inu stunned by player
     Sit // inu sitting down
@@ -43,6 +43,11 @@ public class InuController : YokaiController
     //layermask to raycast against
     public LayerMask LevelMask;
     public LayerMask PlayerMask;
+    public int StalkDistance;
+    public int StartCorneredDistance;
+    public int StayCorneredDistance;
+    public int CorneredChaseDistance;
+    public int KillDistance;
 
     //inu physics body
     private Rigidbody rb;
@@ -66,7 +71,23 @@ public class InuController : YokaiController
 
             actorID = GetComponent<Actor>();
             GameManager.Instance.ActorStateChange(actorID, (int)state);
-            print("State" + state);
+            //print("InuState " + state);
+        }
+    }
+
+    public InuAnim AnimState
+    {
+        set
+        {
+            animState = value;
+
+            anim.SetInteger("State", (int) animState);
+
+            //print("InuAnimState " + animState);
+        }
+        get
+        {
+            return animState;
         }
     }
 
@@ -99,14 +120,14 @@ public class InuController : YokaiController
     void Start()
     {
         //intialize variables
+        anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody>();
         home = gameObject.transform.position;
         startingRotation = gameObject.transform.rotation;
-        state = InuState.Idle;
-        animState = InuAnim.Idle;
+        State = InuState.Idle;
+        AnimState = InuAnim.Idle;
         awake = false;
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
-        anim = GetComponentInChildren<Animator>();
         beenTooClose = false;
         oldPosition = home;
         posTimer = 60;
@@ -252,17 +273,17 @@ public class InuController : YokaiController
             if (seen)
             {
                 awake = true;
-                state = InuState.Chase;
+                State = InuState.Chase;
                 return;
             }
             GameObject foundFootprint = SeeFootprint(LevelMask);
             if (foundFootprint != null)
             {
-                state = InuState.Follow;
+                State = InuState.Follow;
             }
             else if (root != null)//awake == true && 
             {
-                state = InuState.Patrol;
+                State = InuState.Patrol;
             }
         }
     }
@@ -274,7 +295,7 @@ public class InuController : YokaiController
         if (seen)
         {
             awake = true;
-            state = InuState.Chase;
+            State = InuState.Chase;
             return;
         }
 
@@ -282,7 +303,7 @@ public class InuController : YokaiController
 
         if (foundFootprint != null)
         {
-            state = InuState.Follow;
+            State = InuState.Follow;
             return;
         }
 
@@ -338,37 +359,32 @@ public class InuController : YokaiController
             GameObject foundFootprint = SeeFootprint(LevelMask);
             if (foundFootprint != null)
             {
-                state = InuState.Follow;
+                State = InuState.Follow;
             }
             else
             {
-                state = InuState.Idle;
+                State = InuState.Idle;
             }
         }
         
         Vector3 dest = PlayerObject.transform.position;
         agent.SetDestination(dest);
 
-        if (rb.transform.position.x < dest.x + 3 && rb.transform.position.x > dest.x - 3)
+        if (rb.transform.position.x < dest.x + 5 && rb.transform.position.x > dest.x - 5)
         {
-            if (rb.transform.position.y < dest.y + 3 && rb.transform.position.y > dest.y - 3)
+            if (rb.transform.position.z < dest.z + 5 && rb.transform.position.z > dest.z - 5)
             {
-                if (rb.transform.position.z < dest.z + 3 && rb.transform.position.z > dest.z - 3)
-                {
-                    state = InuState.Stalk;
-                    agent.SetDestination(rb.transform.position);
-                }
+                State = InuState.Stalk;
+                agent.SetDestination(rb.transform.position);
             }
         }
     }
 
     void stalk()
     {
-        animState = InuAnim.Creep;
-        int maxDistance = 10;
-        int maxDistanceSquared = maxDistance * maxDistance;
+        AnimState = InuAnim.Creep;
         Vector3 rayDirection = PlayerObject.transform.localPosition - transform.localPosition;
-        System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < maxDistanceSquared;
+        System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < StalkDistance;
         if (!playerCloseToEnemy)
         {
             beenTooClose = false;
@@ -376,32 +392,31 @@ public class InuController : YokaiController
             seen = SeePlayer(PlayerObject, LevelMask);
             if (seen)
             {
-                state = InuState.Chase;
+                State = InuState.Chase;
                 return;
             }
             GameObject foundFootprint = SeeFootprint(LevelMask);
             if (foundFootprint != null)
             {
-                state = InuState.Follow;
+                State = InuState.Follow;
                 return;
             }
             else if (StartingNode != null)
             {
-                state = InuState.Patrol;
+                State = InuState.Patrol;
                 return;
             }
             else
             {
-                state = InuState.Idle;
+                State = InuState.Idle;
                 return;
             }
         }
-        System.Boolean playerTooCloseToEnemy = rayDirection.sqrMagnitude < maxDistance;
+        System.Boolean playerTooCloseToEnemy = rayDirection.sqrMagnitude < StartCorneredDistance;
         if (playerTooCloseToEnemy && beenTooClose == false)
         {
             //signify the player is too close to the inu
             beenTooClose = true;
-            print("too close");
             //get the distance from inu to player
             Vector3 newdir = transform.localPosition - PlayerObject.transform.localPosition;
             newdir.y = 0;
@@ -425,18 +440,13 @@ public class InuController : YokaiController
 
             if (Physics.Raycast(ray, out rayHit, wallDistance, LevelMask))
             {
-                state = InuState.Cornered;
-                print(rayHit.transform.position);
-                //print("ray length" + newdir.magnitude);
-                //print("ray hit wall");
-                //print(rayHit.collider.gameObject.name);
+                State = InuState.Cornered;
                 return;
             }
             else
             {
                 agent.ResetPath();
                 agent.SetDestination(goal);
-                print("trying to back up to " + goal);
                 retreating = true;
                 return;
             }
@@ -463,6 +473,7 @@ public class InuController : YokaiController
             }
             else
             {
+                print("stalking towards player");
                 agent.SetDestination(dest);
             }
         }
@@ -479,11 +490,9 @@ public class InuController : YokaiController
 
     void cornered()
     {
-        print("inu is cornered");
-        int maxDistance = 5;
-        int maxDistanceSquared = maxDistance * maxDistance;
+        //print("inu is cornered");
         Vector3 rayDirection = PlayerObject.transform.localPosition - transform.localPosition;
-        System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < maxDistanceSquared;
+        System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < StayCorneredDistance;
 
         if (!playerCloseToEnemy)
         {
@@ -492,30 +501,30 @@ public class InuController : YokaiController
             seen = SeePlayer(PlayerObject, LevelMask);
             if (seen)
             {
-                state = InuState.Chase;
+                State = InuState.Chase;
                 return;
             }
             GameObject foundFootprint = SeeFootprint(LevelMask);
             if (foundFootprint != null)
             {
-                state = InuState.Follow;
+                State = InuState.Follow;
                 return;
             }
             else if (StartingNode != null)
             {
-                state = InuState.Patrol;
+                State = InuState.Patrol;
                 return;
             }
             else
             {
-                state = InuState.Idle;
+                State = InuState.Idle;
                 return;
             }
         }
 
         //play growl
 
-        System.Boolean playerTooCloseToEnemy = rayDirection.sqrMagnitude < maxDistance;
+        System.Boolean playerTooCloseToEnemy = rayDirection.sqrMagnitude < CorneredChaseDistance;
         if (playerTooCloseToEnemy && beenTooClose == true)
         {
             print("trying to kill player");
@@ -523,6 +532,16 @@ public class InuController : YokaiController
             agent.ResetPath();
             agent.SetDestination(goal);
         }
+
+        System.Boolean playerKillDistance = rayDirection.sqrMagnitude < KillDistance;
+        if (playerKillDistance && beenTooClose == true)
+        {
+            actorID = GetComponent<Actor>();
+            GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
+            GameManager.Instance.GameOver();
+        }
+
+
     }
 
     void flee()
@@ -531,13 +550,10 @@ public class InuController : YokaiController
         agent.SetDestination(home);
         if (rb.transform.position.x < home.x + 2 && rb.transform.position.x > home.x - 2)
         {
-            if (rb.transform.position.y < home.y + 1 && rb.transform.position.y > home.y - 1)
+            if (rb.transform.position.z < home.z + 2 && rb.transform.position.z > home.z - 2)
             {
-                if (rb.transform.position.z < home.z + 2 && rb.transform.position.z > home.z - 2)
-                {
-                    state = InuState.Idle;
-                    gameObject.transform.rotation = startingRotation;
-                }
+                State = InuState.Idle;
+                gameObject.transform.rotation = startingRotation;
             }
         }
     }
@@ -554,7 +570,7 @@ public class InuController : YokaiController
         seen = SeePlayer(PlayerObject, LevelMask);
         if (seen)
         {
-            state = InuState.Chase;
+            State = InuState.Chase;
             nextFootprint = null;
             return;
         }
@@ -563,7 +579,7 @@ public class InuController : YokaiController
             GameObject foundFootprint = SeeFootprint(LevelMask);
             if (foundFootprint == null)
             {
-                state = InuState.Idle;
+                State = InuState.Idle;
             }
             if (foundFootprint != null)
             {
@@ -595,29 +611,29 @@ public class InuController : YokaiController
             GameObject foundFootprint = SeeFootprint(LevelMask);
             if (seen)
             {
-                state = InuState.Chase;
+                State = InuState.Chase;
             }
             else if (foundFootprint != null && awake == true)
             {
-                state = InuState.Follow;
+                State = InuState.Follow;
             }
             else
             {
-                state = InuState.Idle;
+                State = InuState.Idle;
             }
         }
     }
 
     void Stun()
     {
-        state = InuState.Stun;
+        State = InuState.Stun;
         stunTimer = 480;
         agent.SetDestination(rb.transform.position);
     }
 
     void SafeZoneCollision()
     {
-        state = InuState.Flee;
+        State = InuState.Flee;
     }
 
     bool hasPlayerTripped()
@@ -627,118 +643,78 @@ public class InuController : YokaiController
 
     void animIdle()
     {
-        NavMeshAgent agent0 = GetComponent<NavMeshAgent>();
-        if (agent0.velocity.magnitude < 0.5)
+        if (agent.velocity.magnitude < 0.5)
         {
-            anim.SetInteger("State", 0);
         }
         else
         {
-            animState = InuAnim.Walk;
+            AnimState = InuAnim.Walk;
         }
     }
 
     void animWalk()
     {
-        NavMeshAgent agent0 = GetComponent<NavMeshAgent>();
-        if (agent0.velocity.magnitude > 0.5)
+        if (agent.velocity.magnitude > 0.5)
         {
-            anim.SetInteger("State", 1);
         }
-        if (agent0.velocity.magnitude > 2.5)
+        if (agent.velocity.magnitude > 2.5)
         {
-            animState = InuAnim.Run;
+            AnimState = InuAnim.Run;
         }
         else
         {
-            animState = InuAnim.Idle;
+            AnimState = InuAnim.Idle;
         }
     }
 
     void animRun()
     {
-        NavMeshAgent agent0 = GetComponent<NavMeshAgent>();
-        if (agent0.velocity.magnitude > 2.5)
+        if (agent.velocity.magnitude > 2.5)
         {
-            anim.SetInteger("State", 2);
         }
         else
         {
-            animState = InuAnim.Walk;
+            AnimState = InuAnim.Walk;
         }
     }
     
     void animCreep()
     {
-        if (anim.GetInteger("State") == 2)
-        {
-            //anim.SetInteger("State", 1);
-        }
-        // if stalking player
-        NavMeshAgent agent0 = GetComponent<NavMeshAgent>();
-
         if(state != InuState.Stalk)
         {
             if(state != InuState.Cornered)
             {
-                animState = InuAnim.Idle;
+                AnimState = InuAnim.Idle;
             }
         }
 
-        if (agent0.velocity.magnitude > 0.5)
+        if (agent.velocity.magnitude > 0.5)
         {
-            anim.SetInteger("State", 3);
         }
         else
         {
-            animState = InuAnim.Sit;
+            AnimState = InuAnim.Sit;
         }
     }
 
     void animAttack()
     {
         // if attacking player
-        anim.SetInteger("State", 4);
     }
 
     void animStunned()
     {
-        anim.SetInteger("State", 5);
     }
 
     void animSit()
     {
         // if stalking player but player is not moving
-        //print("did something p1");
-        NavMeshAgent agent0 = GetComponent<NavMeshAgent>();
-       // print("vmag" + agent0.velocity.magnitude);
-        if (agent0.velocity.magnitude < 0.5)
+        if (agent.velocity.magnitude < 0.5)
         {
-            anim.SetInteger("State", 6);
-            //print("did the thing");
         }
         else
         {
-            animState = InuAnim.Creep;
-            //print("thing didn't happen");
-        }
-        //print("did something p2");
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Trap"))
-        {
-            //dead();
-        }
-        if (state == InuState.Cornered)
-        {
-            if (other.gameObject == PlayerObject)
-            {
-                actorID = GetComponent<Actor>();
-                GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
-                GameManager.Instance.GameOver();
-            }
+            AnimState = InuAnim.Creep;
         }
     }
 }

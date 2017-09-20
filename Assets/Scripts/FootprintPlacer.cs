@@ -101,7 +101,7 @@ public class FootprintPlacer : MonoBehaviour {
             currentFootprint.transform.rotation = transform.rotation;
             currentFootprint.transform.parent = footPrintParent.transform;
             currentFootprint.GetComponent<FootprintDecay>().SetLifeTime(FootprintLifetime);
-            print("pos " + currentFootprint.transform.position);
+            //print("pos " + currentFootprint.transform.position);
 
             if (rayHit.collider.gameObject.layer == dynamicObjectLayer)
             {
