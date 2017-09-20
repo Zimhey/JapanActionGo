@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.VR;
 
 public class KeyBindingScript : MonoBehaviour {
 
@@ -107,6 +108,8 @@ public class KeyBindingScript : MonoBehaviour {
 
     public static bool JumpPressedVR()
     {
+        if (!VRDevice.isPresent)
+            return false;
         if (vr["Jump"] == "Trigger1")
             return LeftController.triggerPressed;
         else if (vr["Jump"] == "Trigger2")
@@ -121,6 +124,8 @@ public class KeyBindingScript : MonoBehaviour {
 
     public static bool RunPressedVR()
     {
+        if (!VRDevice.isPresent)
+            return false;
         if (vr["Run"] == "Trigger1")
             return LeftController.triggerPressed;
         else if (vr["Run"] == "Trigger2")
@@ -135,6 +140,8 @@ public class KeyBindingScript : MonoBehaviour {
 
     public static bool DrawPressedVR()
     {
+        if (!VRDevice.isPresent)
+            return false;
         if (vr["Draw"] == "Trigger1")
             return LeftController.triggerPressed;
         else if (vr["Draw"] == "Trigger2")
@@ -149,6 +156,8 @@ public class KeyBindingScript : MonoBehaviour {
 
     public static bool ThrowPressedVR()
     {
+        if (!VRDevice.isPresent)
+            return false;
         if (vr["Throw"] == "Trigger1")
             return LeftController.triggerPressed;
         else if (vr["Throw"] == "Trigger2")
