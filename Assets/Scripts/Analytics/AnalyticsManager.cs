@@ -178,6 +178,16 @@ public class AnalyticsManager : MonoBehaviour
         return o;
     }
 
+    public static List<object> ReturnQueryAsList(string query)
+    {
+
+    } 
+
+    public static int ReturnQueryAsInt(string query)
+    {
+        return int.Parse(ReturnQuery(query).ToString());
+    }
+
     public static int ReturnSecondQueryAsString(string query1, string query2)
     {
         object o = ReturnSecondQuery(query1, query2);
