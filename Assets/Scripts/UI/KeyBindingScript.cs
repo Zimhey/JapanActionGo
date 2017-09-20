@@ -38,10 +38,10 @@ public class KeyBindingScript : MonoBehaviour {
         c_chalk.text = controller["C_Draw"].ToString();
         c_ofuda.text = controller["C_Throw"].ToString();
 
-        vr.Add("Run", "Trigger1");
-        vr.Add("Jump", "Trigger2");
-        vr.Add("Draw", "Pad1");
-        vr.Add("Throw", "Pad2");
+        vr.Add("Run", "Pad1");
+        vr.Add("Jump", "Pad2");
+        vr.Add("Draw", "Trigger2");
+        vr.Add("Throw", "Trigger1");
 
         vr_run.text = vr["Run"];
         vr_jump.text = vr["Jump"];

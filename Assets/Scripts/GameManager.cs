@@ -173,7 +173,7 @@ public class GameManager : MonoBehaviour {
                 PlayerTypeLoc = "Prefabs/Player/FPS_Player";
                 break;
             case VirtualRealityType.SteamVR:
-                PlayerTypeLoc = "Prefabs/Player/Steam_VR_Player";
+                PlayerTypeLoc = "Prefabs/Player/SteamVR_Player";
                 break;
         }
     }

@@ -128,7 +128,7 @@ public class InuController : YokaiController
 
     void LateUpdate()
     {
-        print("State" + state);
+        //print("State" + state);
         if (PlayerObject != null)
         {
             PlayerObject = GameObject.FindGameObjectWithTag("Player");
