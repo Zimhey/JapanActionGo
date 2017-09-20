@@ -19,12 +19,14 @@ public class YokaiController : MonoBehaviour {
     public bool NoWall(GameObject playerObject,  LayerMask levelMask)
     {
         float maxDistance = 25;
+        Vector3 rayOrigin = playerObject.transform.position + new Vector3(0, 1.5F, 0);
         Vector3 rayDirection = playerObject.transform.position - transform.position;
         maxDistance = rayDirection.magnitude;
         //rayDirection = Vector3.MoveTowards
         rayDirection.Normalize();
-        Ray ray = new Ray(gameObject.transform.position, -rayDirection);
-        Debug.DrawRay(gameObject.transform.position, -rayDirection, Color.green, 20.0F);
+        rayDirection.Scale(new Vector3(maxDistance, 1, maxDistance));
+        Ray ray = new Ray(rayOrigin, -rayDirection);
+        Debug.DrawRay(rayOrigin, -rayDirection, Color.green, 5.0F);
         RaycastHit rayHit;
         
         if (Physics.Raycast(ray, out rayHit, maxDistance, levelMask))
@@ -157,20 +159,16 @@ public class YokaiController : MonoBehaviour {
         int maxDistance = 25;
         int maxDistanceSquared = maxDistance * maxDistance;
         Vector3 rayDirection = desiredObject.transform.localPosition - transform.localPosition;
-        //print(rayDirection);
         Vector3 observerDirection = transform.TransformDirection(Vector3.forward);
         System.Boolean objectCloseToObserver = rayDirection.sqrMagnitude < maxDistanceSquared;
-        //print(observerDirection);
         rayDirection.Normalize();
         observerDirection.Normalize();
         float angleDot = Vector3.Dot(observerDirection, rayDirection);
-        //print(angleDot);
-
-        //float crossangle = Vector3.Angle(enemyDirection, rayDirection);
+        
         System.Boolean objectInFrontOfObserver = angleDot > 0.0;
-        //print("object in front " + objectInFrontOfObserver);
+        //print("in front " + objectInFrontOfObserver);
         System.Boolean noWallfound = NoWall(desiredObject, levelMask);
-        //print("no wall between " + noWallfound);
+        //print("no wall " + noWallfound);
         if (objectInFrontOfObserver)
         {
             System.Boolean seenPlayer = objectInFrontOfObserver && objectCloseToObserver && noWallfound;

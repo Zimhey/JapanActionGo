@@ -61,14 +61,22 @@ public class FootprintPlacer : MonoBehaviour {
 
     private void Update()
     {
-        if (!wasGrounded && controller.isGrounded && PlaceFootprintOnLanding) // just landed
+        //print("trying to place footprint");
+        if (!wasGrounded && controller.isGrounded && PlaceFootprintOnLanding)
+        { // just landed
+            //print("first case placement");
             PlaceFootprint();
-        else if(controller.isGrounded)
+        }
+        else if (controller.isGrounded)
         {
+            //print("trying to place footprint on ground");
             distanceTraveled += Vector3.Distance(lastLocation, transform.position);
             lastLocation = transform.position;
             if (distanceTraveled > Stride)
+            {
+                //print("second case placement");
                 PlaceFootprint();
+            }
         }
 
         wasGrounded = controller.isGrounded;
@@ -79,7 +87,7 @@ public class FootprintPlacer : MonoBehaviour {
         Vector3 footPosition = transform.position + (rightFootLast? transform.right* Radius / 2f : -transform.right * Radius / 2f);
         Ray ray = new Ray(footPosition, Vector3.down);
         RaycastHit rayHit;
-
+        //print("placing footprint");
         if(Physics.Raycast(ray, out rayHit, controller.height, mask))
         {
             Vector3 position = rayHit.point + rayHit.normal * 0.001f;
@@ -93,6 +101,7 @@ public class FootprintPlacer : MonoBehaviour {
             currentFootprint.transform.rotation = transform.rotation;
             currentFootprint.transform.parent = footPrintParent.transform;
             currentFootprint.GetComponent<FootprintDecay>().SetLifeTime(FootprintLifetime);
+            //print("pos " + currentFootprint.transform.position);
 
             if (rayHit.collider.gameObject.layer == dynamicObjectLayer)
             {

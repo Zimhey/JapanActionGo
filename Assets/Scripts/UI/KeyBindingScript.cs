@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.VR;
 
 public class KeyBindingScript : MonoBehaviour {
 
@@ -9,8 +10,8 @@ public class KeyBindingScript : MonoBehaviour {
     public static Dictionary<string, KeyCode> controller = new Dictionary<string, KeyCode>();
     public static Dictionary<string, string> vr = new Dictionary<string, string>();
 
-    public static SteamVR_TrackedController controller1 = new SteamVR_TrackedController();
-    public static SteamVR_TrackedController controller2 = new SteamVR_TrackedController();
+    public static SteamVR_TrackedController LeftController;
+    public static SteamVR_TrackedController RightController;
 
     public Text run, jump, chalk, ofuda, c_run, c_jump, c_chalk, c_ofuda, vr_run, vr_jump, vr_chalk, vr_ofuda;
 
@@ -38,10 +39,10 @@ public class KeyBindingScript : MonoBehaviour {
         c_chalk.text = controller["C_Draw"].ToString();
         c_ofuda.text = controller["C_Throw"].ToString();
 
-        vr.Add("Run", "Trigger1");
-        vr.Add("Jump", "Trigger2");
-        vr.Add("Draw", "Pad1");
-        vr.Add("Throw", "Pad2");
+        vr.Add("Run", "Pad1");
+        vr.Add("Jump", "Pad2");
+        vr.Add("Draw", "Trigger2");
+        vr.Add("Throw", "Trigger1");
 
         vr_run.text = vr["Run"];
         vr_jump.text = vr["Jump"];
@@ -61,9 +62,12 @@ public class KeyBindingScript : MonoBehaviour {
             Event e = Event.current;
             if(e.isKey && !currentKey.name.Contains("C_"))
             {
-                buttons[currentKey.name] = e.keyCode;
-                currentKey.transform.GetChild(0).GetComponent<Text>().text = e.keyCode.ToString();
-                currentKey = null;
+                if (!e.keyCode.ToString().Contains("JoyStickButton"))
+                {
+                    buttons[currentKey.name] = e.keyCode;
+                    currentKey.transform.GetChild(0).GetComponent<Text>().text = e.keyCode.ToString();
+                    currentKey = null;
+                }
             }
             else if(e.isKey)
             {
@@ -74,22 +78,22 @@ public class KeyBindingScript : MonoBehaviour {
                     currentKey = null;
                 }
             }
-            else if(controller1.triggerPressed)
+            else if(LeftController.triggerPressed)
             {
                 vr[currentKey.name] = "Trigger1";
                 currentKey.transform.GetChild(0).GetComponent<Text>().text = "Trigger1";
             }
-            else if (controller2.triggerPressed)
+            else if (RightController.triggerPressed)
             {
                 vr[currentKey.name] = "Trigger2";
                 currentKey.transform.GetChild(0).GetComponent<Text>().text = "Trigger2";
             }
-            else if (controller1.padPressed)
+            else if (LeftController.padPressed)
             {
                 vr[currentKey.name] = "Pad1";
                 currentKey.transform.GetChild(0).GetComponent<Text>().text = "Pad1";
             }
-            else if (controller1.padPressed)
+            else if (RightController.padPressed)
             {
                 vr[currentKey.name] = "Pad2";
                 currentKey.transform.GetChild(0).GetComponent<Text>().text = "Pad2";
@@ -104,56 +108,64 @@ public class KeyBindingScript : MonoBehaviour {
 
     public static bool JumpPressedVR()
     {
+        if (!VRDevice.isPresent)
+            return false;
         if (vr["Jump"] == "Trigger1")
-            return controller1.triggerPressed;
+            return LeftController.triggerPressed;
         else if (vr["Jump"] == "Trigger2")
-            return controller2.triggerPressed;
+            return RightController.triggerPressed;
         else if (vr["Jump"] == "Pad1")
-            return controller1.padPressed;
+            return LeftController.padPressed;
         else if (vr["Jump"] == "Pad2")
-            return controller2.padPressed;
+            return RightController.padPressed;
         else
             return false;
     }
 
     public static bool RunPressedVR()
     {
+        if (!VRDevice.isPresent)
+            return false;
         if (vr["Run"] == "Trigger1")
-            return controller1.triggerPressed;
+            return LeftController.triggerPressed;
         else if (vr["Run"] == "Trigger2")
-            return controller2.triggerPressed;
+            return RightController.triggerPressed;
         else if (vr["Run"] == "Pad1")
-            return controller1.padPressed;
+            return LeftController.padPressed;
         else if (vr["Run"] == "Pad2")
-            return controller2.padPressed;
+            return RightController.padPressed;
         else
             return false;
     }
 
     public static bool DrawPressedVR()
     {
+        if (!VRDevice.isPresent)
+            return false;
         if (vr["Draw"] == "Trigger1")
-            return controller1.triggerPressed;
+            return LeftController.triggerPressed;
         else if (vr["Draw"] == "Trigger2")
-            return controller2.triggerPressed;
+            return RightController.triggerPressed;
         else if (vr["Draw"] == "Pad1")
-            return controller1.padPressed;
+            return LeftController.padPressed;
         else if (vr["Draw"] == "Pad2")
-            return controller2.padPressed;
+            return RightController.padPressed;
         else
             return false;
     }
 
     public static bool ThrowPressedVR()
     {
+        if (!VRDevice.isPresent)
+            return false;
         if (vr["Throw"] == "Trigger1")
-            return controller1.triggerPressed;
+            return LeftController.triggerPressed;
         else if (vr["Throw"] == "Trigger2")
-            return controller2.triggerPressed;
+            return RightController.triggerPressed;
         else if (vr["Throw"] == "Pad1")
-            return controller1.padPressed;
+            return LeftController.padPressed;
         else if (vr["Throw"] == "Pad2")
-            return controller2.padPressed;
+            return RightController.padPressed;
         else
             return false;
     }
