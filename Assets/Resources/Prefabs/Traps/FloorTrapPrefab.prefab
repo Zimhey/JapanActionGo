@@ -190,7 +190,7 @@ GameObject:
   - component: {fileID: 65401096892493564}
   - component: {fileID: 23646911492408786}
   - component: {fileID: 114831164389279150}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: PressurePlate
   m_TagString: Pressure Plate
   m_Icon: {fileID: 0}
@@ -438,7 +438,7 @@ GameObject:
   - component: {fileID: 65146027712321884}
   - component: {fileID: 23687988738609508}
   - component: {fileID: 114659184261120348}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: PressurePlate
   m_TagString: Pressure Plate
   m_Icon: {fileID: 0}
@@ -457,7 +457,7 @@ GameObject:
   - component: {fileID: 65818823448259628}
   - component: {fileID: 23399037632901210}
   - component: {fileID: 114051528512139044}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: PressurePlate
   m_TagString: Pressure Plate
   m_Icon: {fileID: 0}
@@ -494,7 +494,7 @@ GameObject:
   - component: {fileID: 65740054253203818}
   - component: {fileID: 23771526161281678}
   - component: {fileID: 114766014291913980}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: PressurePlate
   m_TagString: Pressure Plate
   m_Icon: {fileID: 0}
@@ -752,8 +752,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1282173632614408}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20, y: 0, z: 14}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4533176598761696}
