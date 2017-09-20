@@ -168,12 +168,23 @@ public class GameManager : MonoBehaviour {
             Destroy(gameObject);
             return;
         }
+
+        if (VRDevice.isPresent)
+            PlayersVRType = VirtualRealityType.SteamVR;
+        else
+        {
+            PlayersVRType = VirtualRealityType.None;
+            print("None");
+        }
+
         switch (PlayersVRType) {
             case VirtualRealityType.None:
                 PlayerTypeLoc = "Prefabs/Player/FPS_Player";
+                print("No VR");
                 break;
             case VirtualRealityType.SteamVR:
                 PlayerTypeLoc = "Prefabs/Player/SteamVR_Player";
+                print("Yes VR");
                 break;
         }
     }
@@ -181,10 +192,6 @@ public class GameManager : MonoBehaviour {
     void Start()
     {
         difficulty = Difficulty.Medium;
-        if (VRDevice.isPresent)
-            PlayersVRType = VirtualRealityType.SteamVR;
-        else
-            PlayersVRType = VirtualRealityType.None;
 
         if (DebugPlay)
         {

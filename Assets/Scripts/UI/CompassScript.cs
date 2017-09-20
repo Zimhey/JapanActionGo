@@ -22,6 +22,7 @@ public class CompassScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         player = GameObject.FindGameObjectWithTag("Player");
         cam = player.GetComponentInChildren<Camera>();
         Quaternion dir = cam.transform.rotation;
@@ -39,5 +40,6 @@ public class CompassScript : MonoBehaviour
         {
             compassLabel.text = string.Format("{0:00}:{1:00}", "Orientation", " ");
         }
+        */
     }
 }
