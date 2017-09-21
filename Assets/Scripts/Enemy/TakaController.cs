@@ -199,7 +199,7 @@ public class TakaController : YokaiController
             {
                 oldPosition = newPosition;
             }
-            newPosition = rb.transform.position;
+            newPosition = transform.position;
         }
 
         if (newPosition != null)
@@ -282,9 +282,9 @@ public class TakaController : YokaiController
             
             currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
 
-            if (rb.transform.position.x < currentNodePosition.x + 2 && rb.transform.position.x > currentNodePosition.x - 2)
+            if (transform.position.x < currentNodePosition.x + 2 && transform.position.x > currentNodePosition.x - 2)
             {
-                if (rb.transform.position.z < currentNodePosition.z + 2 && rb.transform.position.z > currentNodePosition.z - 2)
+                if (transform.position.z < currentNodePosition.z + 2 && transform.position.z > currentNodePosition.z - 2)
                 {
                     MazeNode closest = null;
                     closest = updateClosest(closest, nodes, currentNode, previous, previous2, rb);
@@ -328,12 +328,12 @@ public class TakaController : YokaiController
         //agent.destination = dest;
         //print(dest);
 
-        if (rb.transform.position.x < dest.x + 5 && rb.transform.position.x > dest.x - 5)
+        if (transform.position.x < dest.x + 5 && transform.position.x > dest.x - 5)
         {
-            if (rb.transform.position.z < dest.z + 5 && rb.transform.position.z > dest.z - 5)
+            if (transform.position.z < dest.z + 5 && transform.position.z > dest.z - 5)
             {
                 State = TakaState.Taunt;
-                agent.SetDestination(rb.transform.position);
+                agent.SetDestination(transform.position);
                 gameObject.transform.rotation = startingRotation;
             }
         }
@@ -433,9 +433,9 @@ public class TakaController : YokaiController
             distanceToFloor -= 0.01F;
         }
         //gameObject.transform.position.Set(gameObject.transform.position.x, distanceToFloor, gameObject.transform.position.z);
-        if (rb.transform.position.x < home.x + 2 && rb.transform.position.x > home.x - 2)
+        if (transform.position.x < home.x + 2 && transform.position.x > home.x - 2)
         {
-            if (rb.transform.position.z < home.z + 2 && rb.transform.position.z > home.z - 2)
+            if (transform.position.z < home.z + 2 && transform.position.z > home.z - 2)
             {
                 State = TakaState.Idle;
                 gameObject.transform.rotation = startingRotation;
@@ -476,9 +476,9 @@ public class TakaController : YokaiController
         }
         else
         {
-            if (rb.transform.position.x < nextFootprint.transform.position.x + 1 && rb.transform.position.x > nextFootprint.transform.position.x - 1)
+            if (transform.position.x < nextFootprint.transform.position.x + 1 && transform.position.x > nextFootprint.transform.position.x - 1)
             {
-                if (rb.transform.position.z < nextFootprint.transform.position.z + 1 && rb.transform.position.z > nextFootprint.transform.position.z - 1)
+                if (transform.position.z < nextFootprint.transform.position.z + 1 && transform.position.z > nextFootprint.transform.position.z - 1)
                 {
                     nextFootprint = nextFootprint.GetComponent<FootprintList>().getNext();
                 }
@@ -515,7 +515,7 @@ public class TakaController : YokaiController
     {
         State = TakaState.Stun;
         stunTimer = 120;
-        agent.SetDestination(rb.transform.position);
+        agent.SetDestination(transform.position);
     }
 
     void SafeZoneCollision()

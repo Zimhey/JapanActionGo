@@ -49,12 +49,10 @@ public class YokaiController : MonoBehaviour {
     {
         CharacterController controller = GetComponent<CharacterController>(); // TODO make this and other components fields
         NavMeshAgent agent = GetComponent<NavMeshAgent>();
-
         agent.nextPosition = transform.position;
         Vector3 velocity = agent.desiredVelocity + Physics.gravity;
         agent.velocity = velocity;
         controller.Move(velocity * Time.deltaTime * 1);
-
     }
 
     public GameObject SeeFootprint(LayerMask levelMask, Vector3 home)
@@ -174,7 +172,7 @@ public class YokaiController : MonoBehaviour {
         rayDirection.Normalize();
         observerDirection.Normalize();
         float angleDot = Vector3.Dot(observerDirection, rayDirection);
-        print("see angle " + angleDot);
+        //print("see angle " + angleDot);
         
         System.Boolean objectInFrontOfObserver = angleDot > 0.0;
         //print("in front " + objectInFrontOfObserver);
@@ -205,9 +203,9 @@ public class YokaiController : MonoBehaviour {
                 {
                     closest = nodes[iter];
                 }
-                Vector3 closestPosition = new Vector3(closest.Col * 6 + 8, closest.Floor * 30, closest.Row * 6 + 8) - rb.transform.position;
+                Vector3 closestPosition = new Vector3(closest.Col * 6 + 8, closest.Floor * 30, closest.Row * 6 + 8) - transform.position;
                 float closestMag = closestPosition.magnitude;
-                Vector3 iterPosition = new Vector3(nodes[iter].Col * 6 + 8, nodes[iter].Floor * 30, nodes[iter].Row * 6 + 8) - rb.transform.position;
+                Vector3 iterPosition = new Vector3(nodes[iter].Col * 6 + 8, nodes[iter].Floor * 30, nodes[iter].Row * 6 + 8) - transform.position;
                 float iterMag = iterPosition.magnitude;
                 if (iterMag < closestMag)
                     closest = nodes[iter];
@@ -232,7 +230,7 @@ public class YokaiController : MonoBehaviour {
                     {
                         closest = nodes[iter];
                     }
-                    Vector3 closestPosition = new Vector3(closest.Col * 6 + 8, closest.Floor * 30, closest.Row * 6 + 8) - rb.transform.position;
+                    Vector3 closestPosition = new Vector3(closest.Col * 6 + 8, closest.Floor * 30, closest.Row * 6 + 8) - transform.position;
                     float closestMag = closestPosition.magnitude;
                     Vector3 iterPosition = new Vector3(nodes[iter].Col * 6 + 8, nodes[iter].Floor * 30, nodes[iter].Row * 6 + 8) - rb.transform.position;
                     float iterMag = iterPosition.magnitude;

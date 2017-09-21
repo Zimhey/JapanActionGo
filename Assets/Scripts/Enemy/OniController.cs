@@ -198,7 +198,7 @@ public class OniController : YokaiController
                 oldPosition = newPosition;
                 //print("oldpos" + oldPosition);
             }
-            newPosition = rb.transform.position;
+            newPosition = transform.position;
             //print("newpos" + newPosition);
         }
         if(newPosition != null)
@@ -276,9 +276,9 @@ public class OniController : YokaiController
 
             currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
 
-            if (rb.transform.position.x < currentNodePosition.x + 2 && rb.transform.position.x > currentNodePosition.x - 2)
+            if (transform.position.x < currentNodePosition.x + 2 && transform.position.x > currentNodePosition.x - 2)
             {
-                if (rb.transform.position.z < currentNodePosition.z + 2 && rb.transform.position.z > currentNodePosition.z - 2)
+                if (transform.position.z < currentNodePosition.z + 2 && transform.position.z > currentNodePosition.z - 2)
                 {
                     MazeNode closest = null;
                     closest = updateClosest(closest, nodes, currentNode, previous, previous2, rb);
@@ -339,9 +339,9 @@ public class OniController : YokaiController
     {
         agent.ResetPath();
         agent.SetDestination(home);
-        if (rb.transform.position.x < home.x + 2 && rb.transform.position.x > home.x - 2)
+        if (transform.position.x < home.x + 2 && transform.position.x > home.x - 2)
         {
-            if (rb.transform.position.z < home.z + 2 && rb.transform.position.z > home.z - 2)
+            if (transform.position.z < home.z + 2 && transform.position.z > home.z - 2)
             {
                 State = OniState.Idle;
                 gameObject.transform.rotation = startingRotation;
@@ -381,9 +381,9 @@ public class OniController : YokaiController
         }
         else
         {
-            if (rb.transform.position.x < nextFootprint.transform.position.x + 2 && rb.transform.position.x > nextFootprint.transform.position.x - 2)
+            if (transform.position.x < nextFootprint.transform.position.x + 2 && transform.position.x > nextFootprint.transform.position.x - 2)
             {
-                if (rb.transform.position.z < nextFootprint.transform.position.z + 2 && rb.transform.position.z > nextFootprint.transform.position.z - 2)
+                if (transform.position.z < nextFootprint.transform.position.z + 2 && transform.position.z > nextFootprint.transform.position.z - 2)
                 {
                     nextFootprint = nextFootprint.GetComponent<FootprintList>().getNext();
                 }
