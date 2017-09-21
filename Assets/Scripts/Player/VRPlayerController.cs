@@ -36,9 +36,13 @@ public class VRPlayerController : MonoBehaviour
 
     void Update()
     {
-        if(!jumpPushed)
-            jumpPushed = KeyBindingScript.JumpPressedVR();
-
+        if (!jumpPushed)
+        {
+            if (KeyBindingScript.LeftController != null && KeyBindingScript.RightController != null)
+                jumpPushed = KeyBindingScript.JumpPressedVR();
+            else
+                jumpPushed = false;
+        }
         if(!wasGrounded && controller.isGrounded)
         {
             yVelocity = 0f;
@@ -139,7 +143,10 @@ public class VRPlayerController : MonoBehaviour
         if(move.sqrMagnitude > 1)
             move.Normalize();
 
-        IsWalking = !KeyBindingScript.RunPressedVR(); // TODO VR Button
+        if (KeyBindingScript.LeftController != null && KeyBindingScript.RightController != null)
+            IsWalking = !KeyBindingScript.RunPressedVR(); // TODO VR Button
+        else
+            IsWalking = true;
 
         return move;
     }

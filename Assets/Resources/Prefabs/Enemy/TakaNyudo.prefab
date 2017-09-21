@@ -27,7 +27,7 @@ GameObject:
   - component: {fileID: 54316090242173410}
   m_Layer: 0
   m_Name: TakaNyudo
-  m_TagString: Untagged
+  m_TagString: Taka
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 23042525069785320}
   m_Layer: 0
   m_Name: TakaNyudoMesh
-  m_TagString: Taka
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
