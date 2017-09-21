@@ -78,7 +78,7 @@ public class PlayerActions : MonoBehaviour
         }
 
         else {
-            print("VR Present");
+            //print("VR Present");
             attemptDraw = KeyBindingScript.DrawPressedVR();
             attemptThrow = KeyBindingScript.ThrowPressedVR();
         }

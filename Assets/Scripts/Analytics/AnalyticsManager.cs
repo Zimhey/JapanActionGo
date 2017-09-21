@@ -155,6 +155,47 @@ public class AnalyticsManager : MonoBehaviour
         return o;
     }
 
+    public static int ReturnQuery(string query)
+    {
+        SqliteConnection con;
+        SqliteCommand cmd;
+        object o = null;
+
+        if (!initialized)
+            init();
+
+        using (con = new SqliteConnection(ConnectionStr))
+        {
+            using (cmd = new SqliteCommand(query, con))
+            {
+                SqliteDataReader reader = cmd.ExecuteReader();
+                o = reader.GetValue(0); // This is ugly, why isn't Convert available?
+                reader.Close();
+            }
+            con.Close();
+        }
+
+        return int.Parse(o.ToString());
+    }
+
+    public static List<object> ReturnQueryAsList(string query)
+    {
+        return new List<object>();
+    } 
+
+    public static int ReturnQueryAsInt(string query)
+    {
+        return int.Parse(ReturnQuery(query).ToString());
+    }
+
+    public static string ReturnSecondQueryAsString(string query1, string query2)
+    {
+        object o = ReturnSecondQuery(query1, query2);
+        if (o != null)
+            return o.ToString();
+        return "null";
+    }
+
     public static int ReturnSecondQueryAsInt(string query1, string query2)
     {
         object o = ReturnSecondQuery(query1, query2);
