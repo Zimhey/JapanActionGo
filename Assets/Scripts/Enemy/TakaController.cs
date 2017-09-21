@@ -342,7 +342,7 @@ public class TakaController : YokaiController
 
     void taunt() //getting shoved into ground
     {
-        Vector3 rayDirection = PlayerObject.transform.localPosition - (transform.localPosition - new Vector3(0,distanceToFloor,0));
+        Vector3 rayDirection = PlayerObject.transform.localPosition - transform.localPosition;
         rayDirection.y = 0;
         System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < TauntDistance;
         if (!playerCloseToEnemy)
@@ -373,13 +373,13 @@ public class TakaController : YokaiController
         }
 
         //play taunt sounds
-        Vector3 enemyDirection = transform.TransformDirection(Vector3.forward);
+        /*Vector3 enemyDirection = transform.TransformDirection(Vector3.forward);
         rayDirection.Normalize();
         enemyDirection.Normalize();
         float angleDot = Vector3.Dot(enemyDirection, rayDirection);
         print("player in front " + angleDot);
         System.Boolean playerInFrontOfEnemy = angleDot > 0.0;
-        System.Boolean noWallfound = NoWall(PlayerObject, LevelMask, home);
+        System.Boolean noWallfound = NoWall(PlayerObject, LevelMask, home);*/
         MeshRenderer mr = gameObject.GetComponentInChildren<MeshRenderer>();
         //print("mr size " + mr.transform.localScale.y);
         if (mr.transform.localScale.y < 8)
@@ -394,7 +394,7 @@ public class TakaController : YokaiController
             State = TakaState.Flee;
             return;
         }
-        print("in taunt");
+        /*print("in taunt");
         if (playerInFrontOfEnemy)
         {
             print("taunt in front");
@@ -410,6 +410,14 @@ public class TakaController : YokaiController
                     print("GameOver");
                 }
             }
+        }*/
+        if (playerLookingUp())
+        {
+            actorID = GetComponent<Actor>();
+            GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
+            GameManager.Instance.GameOver();
+            PlayerObject.SetActive(false);
+            print("GameOver");
         }
     }
 

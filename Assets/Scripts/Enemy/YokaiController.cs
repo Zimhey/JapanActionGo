@@ -174,6 +174,7 @@ public class YokaiController : MonoBehaviour {
         rayDirection.Normalize();
         observerDirection.Normalize();
         float angleDot = Vector3.Dot(observerDirection, rayDirection);
+        print("see angle " + angleDot);
         
         System.Boolean objectInFrontOfObserver = angleDot > 0.0;
         //print("in front " + objectInFrontOfObserver);
