@@ -99,6 +99,7 @@ public class PlayerActions : MonoBehaviour
         else
             thrown = false;
 
+        /*
         if (Input.GetButtonDown("Use_Compass") && Compass != null)
             Compass.SetActive(true);
         if (Input.GetButtonUp("Use_Compass") && Compass != null)
@@ -121,7 +122,7 @@ public class PlayerActions : MonoBehaviour
         }
         else
             Mirror.SetActive(false);
-
+        */
     }
 
     public void Use()
