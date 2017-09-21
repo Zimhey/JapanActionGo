@@ -79,8 +79,16 @@ public class PlayerActions : MonoBehaviour
 
         else {
             //print("VR Present");
-            attemptDraw = KeyBindingScript.DrawPressedVR();
-            attemptThrow = KeyBindingScript.ThrowPressedVR();
+            if (KeyBindingScript.LeftController != null && KeyBindingScript.RightController != null)
+            {
+                attemptDraw = KeyBindingScript.DrawPressedVR();
+                attemptThrow = KeyBindingScript.ThrowPressedVR();
+            }
+            else
+            {
+                attemptDraw = false;
+                attemptThrow = false;
+            }
         }
 
         // Use Lever
