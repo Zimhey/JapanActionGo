@@ -2217,7 +2217,7 @@ MonoBehaviour:
   - {fileID: 1885683017670046, guid: a085f0280c210f84c8690f24658c7df8, type: 2}
   Stride: 3
   Radius: 0.5
-  FootprintLifetime: 30
+  FootprintLifetime: 120
   PlaceFootprintOnLanding: 0
 --- !u!114 &114694237428642688
 MonoBehaviour:
@@ -2241,8 +2241,8 @@ MonoBehaviour:
   StalkDistance: 100
   StartCorneredDistance: 10
   StayCorneredDistance: 15
-  CorneredChaseDistance: 6
-  KillDistance: 4
+  CorneredChaseDistance: 5
+  KillDistance: 3
 --- !u!135 &135422344132124054
 SphereCollider:
   m_ObjectHideFlags: 1

@@ -1573,9 +1573,9 @@ MonoBehaviour:
   - {fileID: 1150202406731512, guid: 84908a3528f904f499fee595f06e5ab2, type: 2}
   RightPrefabs:
   - {fileID: 1150202406731512, guid: 84908a3528f904f499fee595f06e5ab2, type: 2}
-  Stride: 3
+  Stride: 6
   Radius: 0.5
-  FootprintLifetime: 30
+  FootprintLifetime: 120
   PlaceFootprintOnLanding: 0
 --- !u!114 &114733998702376110
 MonoBehaviour:
@@ -1596,7 +1596,7 @@ MonoBehaviour:
   PlayerMask:
     serializedVersion: 2
     m_Bits: 512
-  KillDistance: 3
+  KillDistance: 4
 --- !u!136 &136622460490851784
 CapsuleCollider:
   m_ObjectHideFlags: 1
