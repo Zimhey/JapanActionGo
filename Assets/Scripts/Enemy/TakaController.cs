@@ -377,6 +377,7 @@ public class TakaController : YokaiController
         rayDirection.Normalize();
         enemyDirection.Normalize();
         float angleDot = Vector3.Dot(enemyDirection, rayDirection);
+        print("player in front " + angleDot);
         System.Boolean playerInFrontOfEnemy = angleDot > 0.0;
         System.Boolean noWallfound = NoWall(PlayerObject, LevelMask, home);
         MeshRenderer mr = gameObject.GetComponentInChildren<MeshRenderer>();
@@ -393,10 +394,13 @@ public class TakaController : YokaiController
             State = TakaState.Flee;
             return;
         }
+        print("in taunt");
         if (playerInFrontOfEnemy)
         {
+            print("taunt in front");
             if (noWallfound)
             {
+                print("taunt no wall");
                 if (playerLookingUp())
                 {
                     actorID = GetComponent<Actor>();
@@ -519,7 +523,7 @@ public class TakaController : YokaiController
         enemyDirection.Normalize();
         float angleDot = Vector3.Dot(dir, enemyDirection);
         print("player looking " + angleDot);
-        System.Boolean playerlookup = angleDot < -0.5;
+        System.Boolean playerlookup = angleDot < -0.3;
         if (playerlookup)
         {
             return true;
