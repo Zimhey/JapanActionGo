@@ -123,7 +123,7 @@ public class TakaController : YokaiController
         //manage state machine each update, call functions based on state
         if (state != TakaState.Idle)
         {
-            //print("TakaState " + state);
+            print("TakaState " + state);
         }
         switch (state)
         {
@@ -330,14 +330,11 @@ public class TakaController : YokaiController
 
         if (rb.transform.position.x < dest.x + 5 && rb.transform.position.x > dest.x - 5)
         {
-            if (rb.transform.position.y < dest.y + 5 && rb.transform.position.y > dest.y - 5)
+            if (rb.transform.position.z < dest.z + 5 && rb.transform.position.z > dest.z - 5)
             {
-                if (rb.transform.position.z < dest.z + 5 && rb.transform.position.z > dest.z - 5)
-                {
-                    State = TakaState.Taunt;
-                    agent.SetDestination(rb.transform.position);
-                    gameObject.transform.rotation = startingRotation;
-                }
+                State = TakaState.Taunt;
+                agent.SetDestination(rb.transform.position);
+                gameObject.transform.rotation = startingRotation;
             }
         }
         
@@ -346,6 +343,7 @@ public class TakaController : YokaiController
     void taunt() //getting shoved into ground
     {
         Vector3 rayDirection = PlayerObject.transform.localPosition - (transform.localPosition - new Vector3(0,distanceToFloor,0));
+        rayDirection.y = 0;
         System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < TauntDistance;
         if (!playerCloseToEnemy)
         {
@@ -382,14 +380,14 @@ public class TakaController : YokaiController
         System.Boolean playerInFrontOfEnemy = angleDot > 0.0;
         System.Boolean noWallfound = NoWall(PlayerObject, LevelMask, home);
         MeshRenderer mr = gameObject.GetComponentInChildren<MeshRenderer>();
-
-        if (mr.transform.localScale.y < 10)
+        //print("mr size " + mr.transform.localScale.y);
+        if (mr.transform.localScale.y < 8)
         {
             mr.transform.localScale += new Vector3(0, 0.02F, 0);
             mr.transform.position += new Vector3(0, 0.01F, 0);
             distanceToFloor += 0.01F;
         }
-        else if (mr.transform.localScale.y >= 10)
+        else if (mr.transform.localScale.y >= 8)
         {
             //agent.height = 0.6F;
             State = TakaState.Flee;
@@ -414,7 +412,6 @@ public class TakaController : YokaiController
     void flee()
     {
         agent.ResetPath();
-        agent.SetDestination(home);
         MeshRenderer mr = gameObject.GetComponentInChildren<MeshRenderer>();
 
         if (mr.transform.localScale.y > 5)
@@ -432,6 +429,8 @@ public class TakaController : YokaiController
                 gameObject.transform.rotation = startingRotation;
             }
         }
+
+        agent.SetDestination(home);
     }
 
     void dead()
@@ -519,6 +518,7 @@ public class TakaController : YokaiController
         dir.Normalize();
         enemyDirection.Normalize();
         float angleDot = Vector3.Dot(dir, enemyDirection);
+        print("player looking " + angleDot);
         System.Boolean playerlookup = angleDot < -0.5;
         if (playerlookup)
         {

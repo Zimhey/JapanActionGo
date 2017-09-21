@@ -2139,8 +2139,8 @@ MonoBehaviour:
   UsingVR: 1
   DrawingHand: {fileID: 1911283267415512}
   ThrowingHand: {fileID: 1658113145236434}
-  Compass: {fileID: 0}
-  Mirror: {fileID: 0}
+  Compass: {fileID: 1936561465849210}
+  Mirror: {fileID: 1807423240166048}
 --- !u!114 &114975952470554118
 MonoBehaviour:
   m_ObjectHideFlags: 1

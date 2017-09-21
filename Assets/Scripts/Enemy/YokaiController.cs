@@ -26,7 +26,7 @@ public class YokaiController : MonoBehaviour {
         }
         if (gameObject.CompareTag("Taka"))
         {
-            rayOrigin = new Vector3(rayOrigin.x, home.y + 2.5F, rayOrigin.z);
+            rayOrigin = new Vector3(rayOrigin.x, home.y + 4.5F, rayOrigin.z);
         }
         Vector3 rayDirection = desiredObject.transform.position - gameObject.transform.position;
         rayDirection.y = 0;
@@ -35,7 +35,7 @@ public class YokaiController : MonoBehaviour {
         rayDirection.Normalize();
         rayDirection.Scale(new Vector3(maxDistance, 1, maxDistance));
         Ray ray = new Ray(rayOrigin, rayDirection);
-        //Debug.DrawRay(rayOrigin, rayDirection, Color.green, 5.0F);
+        Debug.DrawRay(rayOrigin, rayDirection, Color.green, 5.0F);
         RaycastHit rayHit;
         
         if (Physics.Raycast(ray, out rayHit, maxDistance, levelMask))
