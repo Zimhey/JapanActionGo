@@ -232,7 +232,7 @@ public class YokaiController : MonoBehaviour {
                     }
                     Vector3 closestPosition = new Vector3(closest.Col * 6 + 8, closest.Floor * 30, closest.Row * 6 + 8) - transform.position;
                     float closestMag = closestPosition.magnitude;
-                    Vector3 iterPosition = new Vector3(nodes[iter].Col * 6 + 8, nodes[iter].Floor * 30, nodes[iter].Row * 6 + 8) - rb.transform.position;
+                    Vector3 iterPosition = new Vector3(nodes[iter].Col * 6 + 8, nodes[iter].Floor * 30, nodes[iter].Row * 6 + 8) - transform.position;
                     float iterMag = iterPosition.magnitude;
                     if (iterMag < closestMag)
                     {

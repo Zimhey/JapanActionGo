@@ -123,7 +123,7 @@ public class TakaController : YokaiController
         //manage state machine each update, call functions based on state
         if (state != TakaState.Idle)
         {
-            print("TakaState " + state);
+            //print("TakaState " + state);
         }
         switch (state)
         {
