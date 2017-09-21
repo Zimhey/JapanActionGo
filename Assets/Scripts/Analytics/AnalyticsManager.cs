@@ -175,12 +175,12 @@ public class AnalyticsManager : MonoBehaviour
             con.Close();
         }
 
-        return o;
+        return int.Parse(o.ToString());
     }
 
     public static List<object> ReturnQueryAsList(string query)
     {
-
+        return new List<object>();
     } 
 
     public static int ReturnQueryAsInt(string query)
@@ -188,7 +188,7 @@ public class AnalyticsManager : MonoBehaviour
         return int.Parse(ReturnQuery(query).ToString());
     }
 
-    public static int ReturnSecondQueryAsString(string query1, string query2)
+    public static string ReturnSecondQueryAsString(string query1, string query2)
     {
         object o = ReturnSecondQuery(query1, query2);
         if (o != null)

@@ -174,17 +174,14 @@ public class GameManager : MonoBehaviour {
         else
         {
             PlayersVRType = VirtualRealityType.None;
-            print("None");
         }
 
         switch (PlayersVRType) {
             case VirtualRealityType.None:
                 PlayerTypeLoc = "Prefabs/Player/FPS_Player";
-                print("No VR");
                 break;
             case VirtualRealityType.SteamVR:
                 PlayerTypeLoc = "Prefabs/Player/SteamVR_Player";
-                print("Yes VR");
                 break;
         }
     }
