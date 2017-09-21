@@ -149,7 +149,7 @@ public class InuController : YokaiController
 
     void LateUpdate()
     {
-        //print("InuState" + state);
+        print("InuState" + state);
         if (PlayerObject != null)
         {
             PlayerObject = GameObject.FindGameObjectWithTag("Player");
@@ -295,7 +295,7 @@ public class InuController : YokaiController
         if (seen)
         {
             awake = true;
-            print("patrol to chase");
+            //print("patrol to chase");
             State = InuState.Chase;
             return;
         }
@@ -304,7 +304,7 @@ public class InuController : YokaiController
 
         if (foundFootprint != null)
         {
-            print("patrol to follow");
+            //print("patrol to follow");
             State = InuState.Follow;
             return;
         }
@@ -361,12 +361,12 @@ public class InuController : YokaiController
             GameObject foundFootprint = SeeFootprint(LevelMask);
             if (foundFootprint != null)
             {
-                print("chase to follow");
+                //print("chase to follow");
                 State = InuState.Follow;
             }
             else
             {
-                print("chase to idle");
+                //print("chase to idle");
                 State = InuState.Idle;
             }
         }
@@ -378,7 +378,7 @@ public class InuController : YokaiController
         {
             if (rb.transform.position.z < dest.z + 5 && rb.transform.position.z > dest.z - 5)
             {
-                print("chase to stalk");
+                //print("chase to stalk");
                 State = InuState.Stalk;
                 agent.SetDestination(rb.transform.position);
             }
@@ -393,45 +393,45 @@ public class InuController : YokaiController
         System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < StartCorneredDistance*StartCorneredDistance;
         if (!playerCloseToEnemy)
         {
-            print("raydirection" + rayDirection.sqrMagnitude);
+            //print("raydirection" + rayDirection.sqrMagnitude);
             beenTooClose = false;
             seen = false;
             seen = SeePlayer(PlayerObject, LevelMask);
             if (seen)
             {
-                print("stalk to chase");
+                //print("stalk to chase");
                 State = InuState.Chase;
                 return;
             }
             GameObject foundFootprint = SeeFootprint(LevelMask);
             if (foundFootprint != null)
             {
-                print("stalk to follow");
+                //print("stalk to follow");
                 State = InuState.Follow;
                 return;
             }
             else if (StartingNode != null)
             {
-                print("stalk to patrol");
+                //print("stalk to patrol");
                 State = InuState.Patrol;
                 return;
             }
             else
             {
-                print("stalk to idle");
+                //print("stalk to idle");
                 State = InuState.Idle;
                 return;
             }
         }
         System.Boolean playerTooCloseToEnemy = rayDirection.sqrMagnitude < StartCorneredDistance;
-        if (playerTooCloseToEnemy && beenTooClose == false)
+        if (playerTooCloseToEnemy && retreating == false)
         {
             //signify the player is too close to the inu
+            print("too close");
             beenTooClose = true;
             //get the distance from inu to player
             Vector3 newdir = transform.localPosition - PlayerObject.transform.localPosition;
             newdir.y = 0;
-            Vector3 newdir2 = newdir;
             //normalize to get direction only
             newdir.Normalize();
             //create a scalar
@@ -444,14 +444,13 @@ public class InuController : YokaiController
             //get distance to check
             float wallDistance = newdir.magnitude;
             //rayDirection = Vector3.MoveTowards
-            newdir2.Normalize();
             Ray ray = new Ray(PlayerObject.transform.position, newdir);
-            Debug.DrawRay(PlayerObject.transform.position, newdir, Color.green, 20.0F);
+            Debug.DrawRay(PlayerObject.transform.position, newdir, Color.green, 3.0F);
             RaycastHit rayHit;
 
             if (Physics.Raycast(ray, out rayHit, wallDistance, LevelMask))
             {
-                print("stalk to cornered");
+                //print("stalk to cornered");
                 State = InuState.Cornered;
                 return;
             }
@@ -489,6 +488,25 @@ public class InuController : YokaiController
                 agent.SetDestination(dest);
             }
         }
+        else
+        {
+            Vector3 newdir = transform.localPosition - PlayerObject.transform.localPosition;
+            newdir.y = 0;
+            newdir.Normalize();
+            float scalar = (float)Math.Sqrt(15);
+            newdir.Scale(new Vector3(scalar, 1, scalar));
+            Vector3 goal = PlayerObject.transform.localPosition + newdir;
+            float wallDistance = newdir.magnitude;
+            Ray ray = new Ray(PlayerObject.transform.position, newdir);
+            //Debug.DrawRay(PlayerObject.transform.position, newdir, Color.green, 3.0F);
+            RaycastHit rayHit;
+
+            if (Physics.Raycast(ray, out rayHit, wallDistance, LevelMask))
+            {
+                State = InuState.Cornered;
+                return;
+            }
+        }
 
         if (hasPlayerTripped())
         {
@@ -504,6 +522,7 @@ public class InuController : YokaiController
     {
         //print("inu is cornered");
         Vector3 rayDirection = PlayerObject.transform.localPosition - transform.localPosition;
+        rayDirection.y = 0;
         System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < StayCorneredDistance;
 
         if (!playerCloseToEnemy)
@@ -546,6 +565,7 @@ public class InuController : YokaiController
         }
 
         System.Boolean playerKillDistance = rayDirection.sqrMagnitude < KillDistance;
+        print("cornered dist " + rayDirection.sqrMagnitude);
         if (playerKillDistance && beenTooClose == true)
         {
             actorID = GetComponent<Actor>();

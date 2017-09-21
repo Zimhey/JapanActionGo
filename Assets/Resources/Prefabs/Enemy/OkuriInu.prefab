@@ -2238,11 +2238,11 @@ MonoBehaviour:
   PlayerMask:
     serializedVersion: 2
     m_Bits: 512
-  StalkDistance: 400
-  StartCorneredDistance: 20
-  StayCorneredDistance: 25
-  CorneredChaseDistance: 5
-  KillDistance: 2
+  StalkDistance: 100
+  StartCorneredDistance: 10
+  StayCorneredDistance: 15
+  CorneredChaseDistance: 6
+  KillDistance: 4
 --- !u!135 &135422344132124054
 SphereCollider:
   m_ObjectHideFlags: 1
