@@ -26,11 +26,11 @@ public class ActorGenerator : MonoBehaviour {
                 Oni = 1;
                 Ofuda = 3;
                 Chalk = 3;
-                SpikeTrap = 1;
+                SpikeTrap = 0;
                 Inu = 1;
                 PitTrap = 1;
-                CrushingTrap = 1;
-                Nyudo = 1;
+                CrushingTrap = 0;
+                Nyudo = 0;
                 break;
             case 1:
                 Oni = 3;

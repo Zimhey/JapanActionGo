@@ -149,7 +149,7 @@ public class InuController : YokaiController
 
     void LateUpdate()
     {
-        print("InuState" + state);
+        //print("InuState" + state);
         if (PlayerObject != null)
         {
             PlayerObject = GameObject.FindGameObjectWithTag("Player");
@@ -269,14 +269,14 @@ public class InuController : YokaiController
         if (PlayerObject != null)
         {
             seen = false;
-            seen = SeePlayer(PlayerObject, LevelMask);
+            seen = SeeObject(PlayerObject, LevelMask, home);
             if (seen)
             {
                 awake = true;
                 State = InuState.Chase;
                 return;
             }
-            GameObject foundFootprint = SeeFootprint(LevelMask);
+            GameObject foundFootprint = SeeFootprint(LevelMask, home);
             if (foundFootprint != null)
             {
                 State = InuState.Follow;
@@ -291,7 +291,7 @@ public class InuController : YokaiController
     void patrol()
     {
         seen = false;
-        seen = SeePlayer(PlayerObject, LevelMask);
+        seen = SeeObject(PlayerObject, LevelMask, home);
         if (seen)
         {
             awake = true;
@@ -300,7 +300,7 @@ public class InuController : YokaiController
             return;
         }
 
-        GameObject foundFootprint = SeeFootprint(LevelMask);
+        GameObject foundFootprint = SeeFootprint(LevelMask, home);
 
         if (foundFootprint != null)
         {
@@ -355,10 +355,10 @@ public class InuController : YokaiController
     {
         //agent.ResetPath();
         seen = false;
-        seen = SeePlayer(PlayerObject, LevelMask);
+        seen = SeeObject(PlayerObject, LevelMask, home);
         if (!seen)
         {
-            GameObject foundFootprint = SeeFootprint(LevelMask);
+            GameObject foundFootprint = SeeFootprint(LevelMask, home);
             if (foundFootprint != null)
             {
                 //print("chase to follow");
@@ -390,20 +390,20 @@ public class InuController : YokaiController
         AnimState = InuAnim.Creep;
         Vector3 rayDirection = PlayerObject.transform.localPosition - transform.localPosition;
         rayDirection.y = 0;
-        System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < StartCorneredDistance*StartCorneredDistance;
+        System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < StalkDistance;
         if (!playerCloseToEnemy)
         {
             //print("raydirection" + rayDirection.sqrMagnitude);
             beenTooClose = false;
             seen = false;
-            seen = SeePlayer(PlayerObject, LevelMask);
+            seen = SeeObject(PlayerObject, LevelMask, home);
             if (seen)
             {
                 //print("stalk to chase");
                 State = InuState.Chase;
                 return;
             }
-            GameObject foundFootprint = SeeFootprint(LevelMask);
+            GameObject foundFootprint = SeeFootprint(LevelMask, home);
             if (foundFootprint != null)
             {
                 //print("stalk to follow");
@@ -427,7 +427,7 @@ public class InuController : YokaiController
         if (playerTooCloseToEnemy && retreating == false)
         {
             //signify the player is too close to the inu
-            print("too close");
+            //print("too close");
             beenTooClose = true;
             //get the distance from inu to player
             Vector3 newdir = transform.localPosition - PlayerObject.transform.localPosition;
@@ -445,7 +445,7 @@ public class InuController : YokaiController
             float wallDistance = newdir.magnitude;
             //rayDirection = Vector3.MoveTowards
             Ray ray = new Ray(PlayerObject.transform.position, newdir);
-            Debug.DrawRay(PlayerObject.transform.position, newdir, Color.green, 3.0F);
+            //Debug.DrawRay(PlayerObject.transform.position, newdir, Color.green, 3.0F);
             RaycastHit rayHit;
 
             if (Physics.Raycast(ray, out rayHit, wallDistance, LevelMask))
@@ -484,7 +484,7 @@ public class InuController : YokaiController
             }
             else
             {
-                print("stalking towards player");
+                //print("stalking towards player");
                 agent.SetDestination(dest);
             }
         }
@@ -529,13 +529,13 @@ public class InuController : YokaiController
         {
             beenTooClose = false;
             seen = false;
-            seen = SeePlayer(PlayerObject, LevelMask);
+            seen = SeeObject(PlayerObject, LevelMask, home);
             if (seen)
             {
                 State = InuState.Chase;
                 return;
             }
-            GameObject foundFootprint = SeeFootprint(LevelMask);
+            GameObject foundFootprint = SeeFootprint(LevelMask, home);
             if (foundFootprint != null)
             {
                 State = InuState.Follow;
@@ -558,14 +558,14 @@ public class InuController : YokaiController
         System.Boolean playerTooCloseToEnemy = rayDirection.sqrMagnitude < CorneredChaseDistance;
         if (playerTooCloseToEnemy && beenTooClose == true)
         {
-            print("trying to kill player");
+            //print("trying to kill player");
             Vector3 goal = PlayerObject.transform.position;
             agent.ResetPath();
             agent.SetDestination(goal);
         }
 
         System.Boolean playerKillDistance = rayDirection.sqrMagnitude < KillDistance;
-        print("cornered dist " + rayDirection.sqrMagnitude);
+        //print("cornered dist " + rayDirection.sqrMagnitude);
         if (playerKillDistance && beenTooClose == true)
         {
             actorID = GetComponent<Actor>();
@@ -599,7 +599,7 @@ public class InuController : YokaiController
     {
         agent.ResetPath();
         seen = false;
-        seen = SeePlayer(PlayerObject, LevelMask);
+        seen = SeeObject(PlayerObject, LevelMask, home);
         if (seen)
         {
             State = InuState.Chase;
@@ -608,7 +608,7 @@ public class InuController : YokaiController
         }
         if (nextFootprint == null)
         {
-            GameObject foundFootprint = SeeFootprint(LevelMask);
+            GameObject foundFootprint = SeeFootprint(LevelMask, home);
             if (foundFootprint == null)
             {
                 State = InuState.Idle;
@@ -639,8 +639,8 @@ public class InuController : YokaiController
         if (stunTimer <= 0)
         {
             seen = false;
-            seen = SeePlayer(PlayerObject, LevelMask);
-            GameObject foundFootprint = SeeFootprint(LevelMask);
+            seen = SeeObject(PlayerObject, LevelMask, home);
+            GameObject foundFootprint = SeeFootprint(LevelMask, home);
             if (seen)
             {
                 State = InuState.Chase;

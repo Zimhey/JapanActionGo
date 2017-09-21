@@ -11,29 +11,37 @@ public class YokaiController : MonoBehaviour {
         Destroy(gameObject);
     }
 
-    public bool SeePlayer(GameObject playerObject, LayerMask levelMask)
-    {
-        return SeeObject(playerObject, levelMask);
-    }
-
-    public bool NoWall(GameObject playerObject,  LayerMask levelMask)
+    public bool NoWall(GameObject desiredObject,  LayerMask levelMask, Vector3 home)
     {
         float maxDistance = 25;
-        Vector3 rayOrigin = playerObject.transform.position + new Vector3(0, 1.5F, 0);
-        Vector3 rayDirection = playerObject.transform.position - transform.position;
+        Vector3 rayOrigin = gameObject.transform.position;
+        //print("ray origin " + rayOrigin);
+        if (gameObject.CompareTag("Oni"))
+        {
+            rayOrigin = new Vector3(rayOrigin.x, home.y + 2.5F, rayOrigin.z);
+        }
+        if (gameObject.CompareTag("Inu"))
+        {
+            rayOrigin = new Vector3(rayOrigin.x, home.y + 1.5F, rayOrigin.z);
+        }
+        if (gameObject.CompareTag("Taka"))
+        {
+            rayOrigin = new Vector3(rayOrigin.x, home.y + 2.5F, rayOrigin.z);
+        }
+        Vector3 rayDirection = desiredObject.transform.position - gameObject.transform.position;
+        rayDirection.y = 0;
         maxDistance = rayDirection.magnitude;
         //rayDirection = Vector3.MoveTowards
         rayDirection.Normalize();
         rayDirection.Scale(new Vector3(maxDistance, 1, maxDistance));
-        Ray ray = new Ray(rayOrigin, -rayDirection);
-        //Debug.DrawRay(rayOrigin, -rayDirection, Color.green, 5.0F);
+        Ray ray = new Ray(rayOrigin, rayDirection);
+        //Debug.DrawRay(rayOrigin, rayDirection, Color.green, 5.0F);
         RaycastHit rayHit;
         
         if (Physics.Raycast(ray, out rayHit, maxDistance, levelMask))
         {
             return false;
         }
-        //print("player found");
         return true;
     }
 
@@ -49,7 +57,7 @@ public class YokaiController : MonoBehaviour {
 
     }
 
-    public GameObject SeeFootprint(LayerMask levelMask)
+    public GameObject SeeFootprint(LayerMask levelMask, Vector3 home)
     {
         GameObject[] footprints;
         List<GameObject> close = new List<GameObject>();
@@ -60,6 +68,7 @@ public class YokaiController : MonoBehaviour {
             if (footprints[iter] != null)
             {
                 Vector3 distanceToFootprint = footprints[iter].transform.position - transform.position;
+                distanceToFootprint.y = 0;
                 float mag = distanceToFootprint.magnitude;
                 if (mag < 25)
                 {
@@ -86,7 +95,7 @@ public class YokaiController : MonoBehaviour {
         {
             if (valid[iter3] != null)
             {
-                System.Boolean noWallfound = NoWall(valid[iter3], levelMask);
+                System.Boolean noWallfound = NoWall(valid[iter3], levelMask, home);
                 if (noWallfound)
                 {
                     //print("found footprint at" + valid[iter3].transform.position);
@@ -98,7 +107,7 @@ public class YokaiController : MonoBehaviour {
         return null;
     }
 
-    public bool FleeInu(LayerMask levelMask)
+    public bool FleeInu(LayerMask levelMask, Vector3 home)
     {
         GameObject[] inus;
         List<GameObject> close = new List<GameObject>();
@@ -135,7 +144,7 @@ public class YokaiController : MonoBehaviour {
         {
             if (valid[iter3] != null)
             {
-                System.Boolean noWallfound = NoWall(valid[iter3], levelMask);
+                System.Boolean noWallfound = NoWall(valid[iter3], levelMask, home);
                 if (noWallfound)
                 {
                     return true;
@@ -154,7 +163,7 @@ public class YokaiController : MonoBehaviour {
         transform.rotation = Quaternion.LookRotation(newDir);
     }
 
-    public bool SeeObject(GameObject desiredObject, LayerMask levelMask)
+    public bool SeeObject(GameObject desiredObject, LayerMask levelMask, Vector3 home)
     {
         int maxDistance = 25;
         int maxDistanceSquared = maxDistance * maxDistance;
@@ -168,7 +177,7 @@ public class YokaiController : MonoBehaviour {
         
         System.Boolean objectInFrontOfObserver = angleDot > 0.0;
         //print("in front " + objectInFrontOfObserver);
-        System.Boolean noWallfound = NoWall(desiredObject, levelMask);
+        System.Boolean noWallfound = NoWall(desiredObject, levelMask, home);
         //print("no wall " + noWallfound);
         if (objectInFrontOfObserver)
         {

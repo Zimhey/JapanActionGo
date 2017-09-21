@@ -566,7 +566,7 @@ MonoBehaviour:
   DrawingHand: {fileID: 0}
   ThrowingHand: {fileID: 0}
   Compass: {fileID: 1489028775015910}
-  Mirror: {fileID: 0}
+  Mirror: {fileID: 1689271818757912, guid: 061d5d1d243a26c4ca744e43bea0b999, type: 2}
 --- !u!114 &114683835348176892
 MonoBehaviour:
   m_ObjectHideFlags: 1

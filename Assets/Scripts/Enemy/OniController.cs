@@ -83,7 +83,7 @@ public class OniController : YokaiController
 
             actorID = GetComponent<Actor>();
             GameManager.Instance.ActorStateChange(actorID, (int) state);
-            print("OniState " + state);
+            //print("OniState " + state);
         }
     }
 
@@ -123,7 +123,7 @@ public class OniController : YokaiController
         
         if (nextFootprint != null)
         {
-            print(nextFootprint.transform.position);
+            //print(nextFootprint.transform.position);
         }
 
         switch (state)
@@ -184,7 +184,7 @@ public class OniController : YokaiController
             TurnTowardsPlayer(PlayerObject);
         }
         
-        if(FleeInu(LevelMask))
+        if(FleeInu(LevelMask, home))
         {
             State = OniState.Flee;
         }
@@ -224,14 +224,14 @@ public class OniController : YokaiController
     void idle()
     {
         seen = false;
-        seen = SeePlayer(PlayerObject, LevelMask);
+        seen = SeeObject(PlayerObject, LevelMask, home);
         if (seen)
         {
             awake = true;
             State = OniState.Chase;
             return;
         }
-        GameObject foundFootprint = SeeFootprint(LevelMask);
+        GameObject foundFootprint = SeeFootprint(LevelMask, home);
         if (foundFootprint != null)
         {
             State = OniState.Follow;
@@ -245,7 +245,7 @@ public class OniController : YokaiController
     void patrol()
     {
         seen = false;
-        seen = SeePlayer(PlayerObject, LevelMask);
+        seen = SeeObject(PlayerObject, LevelMask, home);
         if (seen)
         {
             awake = true;
@@ -253,7 +253,7 @@ public class OniController : YokaiController
             return;
         }
 
-        GameObject foundFootprint = SeeFootprint(LevelMask);
+        GameObject foundFootprint = SeeFootprint(LevelMask, home);
         if (foundFootprint != null)
         {
             State = OniState.Follow;
@@ -306,10 +306,10 @@ public class OniController : YokaiController
     {
         agent.ResetPath();
         seen = false;
-        seen = SeePlayer(PlayerObject, LevelMask);
+        seen = SeeObject(PlayerObject, LevelMask, home);
         if (!seen)
         {
-            GameObject foundFootprint = SeeFootprint(LevelMask);
+            GameObject foundFootprint = SeeFootprint(LevelMask, home);
             if (foundFootprint != null)
             {
                 State = OniState.Follow;
@@ -359,7 +359,7 @@ public class OniController : YokaiController
     {
         agent.ResetPath();
         seen = false;
-        seen = SeePlayer(PlayerObject, LevelMask);
+        seen = SeeObject(PlayerObject, LevelMask, home);
         if (seen)
         {
             State = OniState.Chase;
@@ -368,7 +368,7 @@ public class OniController : YokaiController
         }
         if (nextFootprint == null)
         {
-            GameObject foundFootprint = SeeFootprint(LevelMask);
+            GameObject foundFootprint = SeeFootprint(LevelMask, home);
             if (foundFootprint == null)
             {
                 State = OniState.Idle;
@@ -399,8 +399,8 @@ public class OniController : YokaiController
         {
             animState = OniAnim.Idle;
             seen = false;
-            seen = SeePlayer(PlayerObject, LevelMask);
-            GameObject foundFootprint = SeeFootprint(LevelMask);
+            seen = SeeObject(PlayerObject, LevelMask, home);
+            GameObject foundFootprint = SeeFootprint(LevelMask, home);
             if (seen)
             {
                 State = OniState.Chase;

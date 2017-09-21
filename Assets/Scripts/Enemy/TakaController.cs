@@ -186,7 +186,7 @@ public class TakaController : YokaiController
             TurnTowardsPlayer(PlayerObject);
         }
         
-        if (FleeInu(LevelMask))
+        if (FleeInu(LevelMask, home))
         {
             State = TakaState.Flee;
         }
@@ -231,14 +231,14 @@ public class TakaController : YokaiController
     void idle()
     {
         seen = false;
-        seen = SeePlayer(PlayerObject, LevelMask);
+        seen = SeeObject(PlayerObject, LevelMask, home);
         if (seen)
         {
             awake = true;
             State = TakaState.Chase;
             return;
         }
-        GameObject foundFootprint = SeeFootprint(LevelMask);
+        GameObject foundFootprint = SeeFootprint(LevelMask, home);
         if (foundFootprint != null)
         {
             State = TakaState.Follow;
@@ -252,7 +252,7 @@ public class TakaController : YokaiController
     void patrol()
     {
         seen = false;
-        seen = SeePlayer(PlayerObject, LevelMask);
+        seen = SeeObject(PlayerObject, LevelMask, home);
         if (seen)
         {
             awake = true;
@@ -260,7 +260,7 @@ public class TakaController : YokaiController
             return;
         }
 
-        GameObject foundFootprint = SeeFootprint(LevelMask);
+        GameObject foundFootprint = SeeFootprint(LevelMask, home);
 
         if (foundFootprint != null)
         {
@@ -308,10 +308,10 @@ public class TakaController : YokaiController
     {
         agent.ResetPath();
         seen = false;
-        seen = SeePlayer(PlayerObject, LevelMask);
+        seen = SeeObject(PlayerObject, LevelMask, home);
         if (!seen)
         {
-            GameObject foundFootprint = SeeFootprint(LevelMask);
+            GameObject foundFootprint = SeeFootprint(LevelMask, home);
             if (foundFootprint != null)
             {
                 State = TakaState.Follow;
@@ -350,13 +350,13 @@ public class TakaController : YokaiController
         if (!playerCloseToEnemy)
         {
             seen = false;
-            seen = SeePlayer(PlayerObject, LevelMask);
+            seen = SeeObject(PlayerObject, LevelMask, home);
             if (seen)
             {
                 State = TakaState.Chase;
                 return;
             }
-            GameObject foundFootprint = SeeFootprint(LevelMask);
+            GameObject foundFootprint = SeeFootprint(LevelMask, home);
             if (foundFootprint != null)
             {
                 State = TakaState.Follow;
@@ -380,7 +380,7 @@ public class TakaController : YokaiController
         enemyDirection.Normalize();
         float angleDot = Vector3.Dot(enemyDirection, rayDirection);
         System.Boolean playerInFrontOfEnemy = angleDot > 0.0;
-        System.Boolean noWallfound = NoWall(PlayerObject, LevelMask);
+        System.Boolean noWallfound = NoWall(PlayerObject, LevelMask, home);
         MeshRenderer mr = gameObject.GetComponentInChildren<MeshRenderer>();
 
         if (mr.transform.localScale.y < 10)
@@ -443,7 +443,7 @@ public class TakaController : YokaiController
     {
         agent.ResetPath();
         seen = false;
-        seen = SeePlayer(PlayerObject, LevelMask);
+        seen = SeeObject(PlayerObject, LevelMask, home);
         if (seen)
         {
             State = TakaState.Chase;
@@ -452,7 +452,7 @@ public class TakaController : YokaiController
         }
         if (nextFootprint == null)
         {
-            GameObject foundFootprint = SeeFootprint(LevelMask);
+            GameObject foundFootprint = SeeFootprint(LevelMask, home);
             if (foundFootprint == null)
             {
                 State = TakaState.Idle;
@@ -483,8 +483,8 @@ public class TakaController : YokaiController
         if (stunTimer <= 0)
         {
             seen = false;
-            seen = SeePlayer(PlayerObject, LevelMask);
-            GameObject foundFootprint = SeeFootprint(LevelMask);
+            seen = SeeObject(PlayerObject, LevelMask, home);
+            GameObject foundFootprint = SeeFootprint(LevelMask, home);
             if (seen)
             {
                 State = TakaState.Chase;
