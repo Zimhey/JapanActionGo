@@ -37,6 +37,7 @@ public class PlayerActions : MonoBehaviour
 	private SteamVR_TrackedController throwingController;
 
     public GameObject Compass;
+    public GameObject Mirror;
 
     private Camera cam;
 
@@ -102,6 +103,25 @@ public class PlayerActions : MonoBehaviour
             Compass.SetActive(true);
         if (Input.GetButtonUp("Use_Compass") && Compass != null)
             Compass.SetActive(false);
+
+        if(Input.GetKey(KeyCode.E))
+        {
+            Mirror.SetActive(true);
+            Mirror.transform.localRotation = Quaternion.Euler(-90, -45, 0);
+        }
+        else if (Input.GetKey(KeyCode.Q))
+        {
+            Mirror.SetActive(true);
+            Mirror.transform.localRotation = Quaternion.Euler(-90, 45, 0);
+        }
+        else if (Input.GetKey(KeyCode.R))
+        {
+            Mirror.SetActive(true);
+            Mirror.transform.localRotation = Quaternion.Euler(-90, 0, 0);
+        }
+        else
+            Mirror.SetActive(false);
+
     }
 
     public void Use()
