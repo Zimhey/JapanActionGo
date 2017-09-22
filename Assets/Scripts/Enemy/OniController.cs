@@ -421,7 +421,7 @@ public class OniController : YokaiController
         State = OniState.Stun;
         animState = OniAnim.Stunned;
         stunTimer = 300;
-        agent.SetDestination(rb.position);
+        agent.SetDestination(transform.position);
     }
 
     void gameOver()

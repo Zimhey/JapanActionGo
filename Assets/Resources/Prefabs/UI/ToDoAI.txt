@@ -1,0 +1,12 @@
+Things to Do
+
+Inu only follows once, then sits down, then doesn't follow again
+Same thing with Nyudo, which also doesn't kill you if you leave it and come back
+Oni gets stuck in Idle after moving just a little bit
+
+
+Things I've Checked that Work
+
+Inu chases things away
+Nyudo taunts and kills
+Oni kills when it does move
