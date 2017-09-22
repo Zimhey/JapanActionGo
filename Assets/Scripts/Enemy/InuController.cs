@@ -171,21 +171,21 @@ public class InuController : YokaiController
         {
             if (oldPosition2 != null)
             {
-                Vector3 difference = newPosition - oldPosition;
-                float difMag = difference.magnitude;
-                if (difMag < .25)
+                if (state != InuState.Idle && state != InuState.Stalk && state != InuState.Cornered)
                 {
-                    Vector3 difference2 = oldPosition - oldPosition2;
-                    float difMag2 = difference2.magnitude;
+                    Vector3 difference = newPosition - oldPosition;
+                    float difMag = difference.magnitude;
                     if (difMag < .25)
                     {
-                        print("resetting path");
-                        agent.ResetPath();
-                        previous2 = previous;
-                        previous = currentNode;
-                        currentNode = null;
-                        if (state != InuState.Idle && state != InuState.Stalk && state != InuState.Cornered)
+                        Vector3 difference2 = oldPosition - oldPosition2;
+                        float difMag2 = difference2.magnitude;
+                        if (difMag < .25)
                         {
+                            print("resetting path");
+                            agent.ResetPath();
+                            previous2 = previous;
+                            previous = currentNode;
+                            currentNode = null;
                             State = InuState.Idle;
                         }
                     }
