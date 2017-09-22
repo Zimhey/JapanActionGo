@@ -909,7 +909,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  TriggerDelay: 0.5
+  TriggerDelay: 1
   FireAnimTime: 0.1
   HoldAnimTime: 1
   ResetAnimTime: 2.5
