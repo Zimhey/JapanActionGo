@@ -66,8 +66,10 @@ public class OniController : YokaiController
     //countdown until no longer stunned
     private int stunTimer;
     private Vector3 oldPosition;
+    private Vector3 oldPosition2;
     private Vector3 newPosition;
     private int posTimer;
+    private int posTimer2;
     private GameObject nextFootprint;
     private NavMeshAgent agent;
 
@@ -100,6 +102,7 @@ public class OniController : YokaiController
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
         oldPosition = home;
         posTimer = 60;
+        posTimer2 = 27;
         root = MazeGenerator.getSectionBasedOnLocation(home);
         currentNode = StartingNode;
         int column = (int)((home.x - 8) / 6);
@@ -118,12 +121,38 @@ public class OniController : YokaiController
     void LateUpdate()
     {
         //manage state machine each update, call functions based on state
-        //print("Onistate " + state);
+        print("Onistate " + state);
         //State = OniState.Patrol;
         
         if (nextFootprint != null)
         {
             //print(nextFootprint.transform.position);
+        }
+
+        if (newPosition != null)
+        {
+            if (oldPosition2 != null)
+            {
+                Vector3 difference = newPosition - oldPosition;
+                float difMag = difference.magnitude;
+                if (difMag < .25)
+                {
+                    Vector3 difference2 = oldPosition - oldPosition2;
+                    float difMag2 = difference2.magnitude;
+                    if (difMag < .25)
+                    {
+                        print("resetting path");
+                        agent.ResetPath();
+                        previous2 = previous;
+                        previous = currentNode;
+                        currentNode = null;
+                        if (state != OniState.Idle)
+                        {
+                            State = OniState.Idle;
+                        }
+                    }
+                }
+            }
         }
 
         switch (state)
@@ -201,21 +230,15 @@ public class OniController : YokaiController
             newPosition = transform.position;
             //print("newpos" + newPosition);
         }
-        if(newPosition != null)
+        posTimer2--;
+        if (posTimer2 <= 0)
         {
-            Vector3 difference = newPosition - oldPosition;
-            float difMag = difference.magnitude;
-            if (difMag < .25)
+            posTimer = 77;
+            if (oldPosition != null)
             {
-                agent.ResetPath();
-                previous2 = previous;
-                previous = currentNode;
-                currentNode = null;
-                if (state != OniState.Idle)
-                {
-                    State = OniState.Idle;
-                }
+                oldPosition2 = oldPosition;
             }
+            oldPosition = transform.position;
         }
 
         MoveYokai();
@@ -224,9 +247,11 @@ public class OniController : YokaiController
     void idle()
     {
         seen = false;
+        print("idling");
         seen = SeeObject(PlayerObject, LevelMask, home);
         if (seen)
         {
+            print("idle to chase");
             awake = true;
             State = OniState.Chase;
             return;
@@ -234,12 +259,17 @@ public class OniController : YokaiController
         GameObject foundFootprint = SeeFootprint(LevelMask, home);
         if (foundFootprint != null)
         {
+            print("idle to follow");
             State = OniState.Follow;
+            return;
         }
-        else if (root != null)//awake == true && 
+        if (root != null)//awake == true && 
         {
+            print("idle to patrol");
             State = OniState.Patrol;
+            return;
         }
+        print("noothing to interact with");
     }
     
     void patrol()
