@@ -121,7 +121,7 @@ public class OniController : YokaiController
     void LateUpdate()
     {
         //manage state machine each update, call functions based on state
-        print("Onistate " + state);
+        //print("Onistate " + state);
         //State = OniState.Patrol;
         
         if (nextFootprint != null)
@@ -247,11 +247,11 @@ public class OniController : YokaiController
     void idle()
     {
         seen = false;
-        print("idling");
+        //print("idling");
         seen = SeeObject(PlayerObject, LevelMask, home);
         if (seen)
         {
-            print("idle to chase");
+            //print("idle to chase");
             awake = true;
             State = OniState.Chase;
             return;
@@ -259,17 +259,17 @@ public class OniController : YokaiController
         GameObject foundFootprint = SeeFootprint(LevelMask, home);
         if (foundFootprint != null)
         {
-            print("idle to follow");
+            //print("idle to follow");
             State = OniState.Follow;
             return;
         }
         if (root != null)//awake == true && 
         {
-            print("idle to patrol");
+            //print("idle to patrol");
             State = OniState.Patrol;
             return;
         }
-        print("noothing to interact with");
+        //print("noothing to interact with");
     }
     
     void patrol()
