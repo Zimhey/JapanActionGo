@@ -72,8 +72,10 @@ public class TakaController : YokaiController
     private Camera cam;
     private float distanceToFloor = 2.5F;
     private Vector3 oldPosition;
+    private Vector3 oldPosition2;
     private Vector3 newPosition;
     private int posTimer;
+    private int posTimer2;
     private GameObject nextFootprint;
     private NavMeshAgent agent;
 
@@ -103,6 +105,7 @@ public class TakaController : YokaiController
         cam = PlayerObject.GetComponentInChildren<Camera>();
         oldPosition = home;
         posTimer = 60;
+        posTimer2 = 27;
         root = MazeGenerator.getSectionBasedOnLocation(home);
         currentNode = StartingNode;
         agent = GetComponent<NavMeshAgent>();
@@ -125,6 +128,33 @@ public class TakaController : YokaiController
         {
             //print("TakaState " + state);
         }
+
+        if (newPosition != null)
+        {
+            if (oldPosition2 != null)
+            {
+                Vector3 difference = newPosition - oldPosition;
+                float difMag = difference.magnitude;
+                if (difMag < .25)
+                {
+                    Vector3 difference2 = oldPosition - oldPosition2;
+                    float difMag2 = difference2.magnitude;
+                    if (difMag < .25)
+                    {
+                        print("resetting path");
+                        agent.ResetPath();
+                        previous2 = previous;
+                        previous = currentNode;
+                        currentNode = null;
+                        if (state != TakaState.Idle && state != TakaState.Taunt)
+                        {
+                            State = TakaState.Idle;
+                        }
+                    }
+                }
+            }
+        }
+
         switch (state)
         {
             case TakaState.Idle:
@@ -194,31 +224,27 @@ public class TakaController : YokaiController
         posTimer--;
         if (posTimer <= 0)
         {
-            posTimer = 60;
+            posTimer = 90;
             if (newPosition != null)
             {
                 oldPosition = newPosition;
+                //print("oldpos" + oldPosition);
             }
             newPosition = transform.position;
+            //print("newpos" + newPosition);
         }
-
-        if (newPosition != null)
+        posTimer2--;
+        if (posTimer2 <= 0)
         {
-            Vector3 difference = newPosition - oldPosition;
-            float difMag = difference.magnitude;
-            if (state != TakaState.Taunt)
+            posTimer = 77;
+            if (oldPosition != null)
             {
-                if (difMag < .25)
-                {
-                    agent.ResetPath();
-                    previous2 = previous;
-                    previous = currentNode;
-                    currentNode = null;
-                }
+                oldPosition2 = oldPosition;
             }
+            oldPosition = transform.position;
         }
 
-        if(distanceToFloor < 0.0F)
+        if (distanceToFloor < 0.0F)
         {
             distanceToFloor = 0.0F;
         }
@@ -530,7 +556,7 @@ public class TakaController : YokaiController
         dir.Normalize();
         enemyDirection.Normalize();
         float angleDot = Vector3.Dot(dir, enemyDirection);
-        print("player looking " + angleDot);
+        //print("player looking " + angleDot);
         System.Boolean playerlookup = angleDot < -0.3;
         if (playerlookup)
         {

@@ -107,8 +107,10 @@ public class InuController : YokaiController
     private System.Boolean beenTooClose;
     //private float distanceToFloor = 0.8F;
     private Vector3 oldPosition;
+    private Vector3 oldPosition2;
     private Vector3 newPosition;
     private int posTimer;
+    private int posTimer2;
     private GameObject nextFootprint;
     private NavMeshAgent agent;
 
@@ -131,6 +133,7 @@ public class InuController : YokaiController
         beenTooClose = false;
         oldPosition = home;
         posTimer = 60;
+        posTimer2 = 27;
         root = MazeGenerator.getSectionBasedOnLocation(home);
         currentNode = StartingNode;
         agent = GetComponent<NavMeshAgent>();
@@ -161,8 +164,34 @@ public class InuController : YokaiController
         {
             //print("InuState " + state);
         }
-       //print("AnimState " + animState);
+        //print("AnimState " + animState);
         //print("AnimStateInt " + anim.GetInteger(" State"));
+
+        if (newPosition != null)
+        {
+            if (oldPosition2 != null)
+            {
+                Vector3 difference = newPosition - oldPosition;
+                float difMag = difference.magnitude;
+                if (difMag < .25)
+                {
+                    Vector3 difference2 = oldPosition - oldPosition2;
+                    float difMag2 = difference2.magnitude;
+                    if (difMag < .25)
+                    {
+                        print("resetting path");
+                        agent.ResetPath();
+                        previous2 = previous;
+                        previous = currentNode;
+                        currentNode = null;
+                        if (state != InuState.Idle && state != InuState.Stalk && state != InuState.Cornered)
+                        {
+                            State = InuState.Idle;
+                        }
+                    }
+                }
+            }
+        }
 
         switch (state)
         {
@@ -240,28 +269,26 @@ public class InuController : YokaiController
         posTimer--;
         if (posTimer <= 0)
         {
-            posTimer = 60;
+            posTimer = 90;
             if (newPosition != null)
             {
                 oldPosition = newPosition;
+                //print("oldpos" + oldPosition);
             }
             newPosition = transform.position;
+            //print("newpos" + newPosition);
         }
-        if (newPosition != null)
+        posTimer2--;
+        if (posTimer2 <= 0)
         {
-            Vector3 difference = newPosition - oldPosition;
-            float difMag = difference.magnitude;
-            if (state != InuState.Stalk)
+            posTimer = 77;
+            if (oldPosition != null)
             {
-                if (difMag < .25)
-                {
-                    agent.ResetPath();
-                    previous2 = previous;
-                    previous = currentNode;
-                    currentNode = null;
-                }
+                oldPosition2 = oldPosition;
             }
+            oldPosition = transform.position;
         }
+
         //print(rb.transform.position.y);
         MoveYokai();
         //print(rb.transform.position.y);
