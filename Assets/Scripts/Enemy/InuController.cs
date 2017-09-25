@@ -372,9 +372,11 @@ public class InuController : YokaiController
             }
 
             //print(rb.transform.position.y);
-
-            currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
-            agent.SetDestination(currentNodePosition);
+            if (currentNode != null)
+            {
+                currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
+                agent.SetDestination(currentNodePosition);
+            }
 
             //print(rb.transform.position.y);
         }
