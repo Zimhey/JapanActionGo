@@ -456,60 +456,264 @@ public class InuController : YokaiController
             }
         }
         System.Boolean playerTooCloseToEnemy = rayDirection.sqrMagnitude < StartCorneredDistance;
-        if (playerTooCloseToEnemy && retreating == false)
+        if (playerTooCloseToEnemy)// && retreating == false)
         {
             //signify the player is too close to the inu
-            //print("too close");
+            print("too close");
             beenTooClose = true;
             //get the distance from player to inu
             Vector3 newdir = transform.localPosition - PlayerObject.transform.localPosition;
-            newdir.y = 0;
-            //normalize to get direction only
-            newdir.Normalize();
-            //create a scalar
-            float scalar = (float)Math.Sqrt(15);
-            //scale direction vector to set distace to go
-            newdir.Scale(new Vector3(scalar, 1, scalar));
-            //set inu to go from current direction to scalar distance in normalized direction
             MazeNode destinationNode = null;
+            MazeNode secondDestNode = null;
+            MazeNode tertDestNode = null;
             Vector3 currentLocation = new Vector3(transform.position.x, home.y + 1.5F, transform.position.z);
-            //MazeNode fromNode = MazeGenerator.getNodeBasedOnLocation(currentLocation);
+            MazeNode fromNode = MazeGenerator.getNodeBasedOnLocation(currentLocation);
+            print("current location " + new Vector3(transform.position.x, home.y + 1.5F, transform.position.z));
+            print("from node " + new Vector3(fromNode.Col * 6 + 8, fromNode.Floor * 30, fromNode.Row * 6 + 8));
+            MazeNode playerNode = MazeGenerator.getNodeBasedOnLocation(PlayerObject.transform.position);
+
             if (Math.Abs(newdir.x) > Math.Abs(newdir.z))
             {
                 if(newdir.x > 0)
                 {
-                    //destinationNode = MazeGenerator.getNodeBasedOnLocation(new Vector3(fromNode.Col * 6 + 8, fromNode.Floor * 30, fromNode.Row * 6 + 8));
+                    destinationNode = MazeGenerator.getNodeBasedOnLocation(new Vector3((fromNode.Col + 1)  * 6 + 8, fromNode.Floor * 30, fromNode.Row * 6 + 8));
+
+                    if (newdir.z > 0)
+                    {
+                        secondDestNode = MazeGenerator.getNodeBasedOnLocation(new Vector3(fromNode.Col * 6 + 8, fromNode.Floor * 30, (fromNode.Row + 1) * 6 + 8));
+                    }
+
+                    if (newdir.z < 0)
+                    {
+                        secondDestNode = MazeGenerator.getNodeBasedOnLocation(new Vector3(fromNode.Col * 6 + 8, fromNode.Floor * 30, (fromNode.Row - 1) * 6 + 8));
+                    }
+                }
+
+                if(newdir.x < 0)
+                {
+                    destinationNode = MazeGenerator.getNodeBasedOnLocation(new Vector3((fromNode.Col - 1) * 6 + 8, fromNode.Floor * 30, fromNode.Row * 6 + 8));
+
+                    if (newdir.z > 0)
+                    {
+                        secondDestNode = MazeGenerator.getNodeBasedOnLocation(new Vector3(fromNode.Col * 6 + 8, fromNode.Floor * 30, (fromNode.Row + 1) * 6 + 8));
+                    }
+
+                    if (newdir.z < 0)
+                    {
+                        secondDestNode = MazeGenerator.getNodeBasedOnLocation(new Vector3(fromNode.Col * 6 + 8, fromNode.Floor * 30, (fromNode.Row - 1) * 6 + 8));
+                    }
                 }
             }
+
             if (Math.Abs(newdir.x) == Math.Abs(newdir.z))
             {
+                int rand = UnityEngine.Random.Range(0, 1);
 
+                if (rand == 0)
+                {
+                    if (newdir.x > 0)
+                    {
+                        destinationNode = MazeGenerator.getNodeBasedOnLocation(new Vector3((fromNode.Col + 1) * 6 + 8, fromNode.Floor * 30, fromNode.Row * 6 + 8));
+
+                        if (newdir.z > 0)
+                        {
+                            secondDestNode = MazeGenerator.getNodeBasedOnLocation(new Vector3(fromNode.Col * 6 + 8, fromNode.Floor * 30, (fromNode.Row + 1) * 6 + 8));
+                        }
+
+                        if (newdir.z < 0)
+                        {
+                            secondDestNode = MazeGenerator.getNodeBasedOnLocation(new Vector3(fromNode.Col * 6 + 8, fromNode.Floor * 30, (fromNode.Row - 1) * 6 + 8));
+                        }
+                    }
+
+                    if (newdir.x < 0)
+                    {
+                        destinationNode = MazeGenerator.getNodeBasedOnLocation(new Vector3((fromNode.Col - 1) * 6 + 8, fromNode.Floor * 30, fromNode.Row * 6 + 8));
+
+                        if (newdir.z > 0)
+                        {
+                            secondDestNode = MazeGenerator.getNodeBasedOnLocation(new Vector3(fromNode.Col * 6 + 8, fromNode.Floor * 30, (fromNode.Row + 1) * 6 + 8));
+                        }
+
+                        if (newdir.z < 0)
+                        {
+                            secondDestNode = MazeGenerator.getNodeBasedOnLocation(new Vector3(fromNode.Col * 6 + 8, fromNode.Floor * 30, (fromNode.Row - 1) * 6 + 8));
+                        }
+                    }
+                }
+
+                if (rand == 1)
+                {
+                    if (newdir.z > 0)
+                    {
+                        destinationNode = MazeGenerator.getNodeBasedOnLocation(new Vector3(fromNode.Col * 6 + 8, fromNode.Floor * 30, (fromNode.Row + 1) * 6 + 8));
+
+                        if (newdir.x > 0)
+                        {
+                            secondDestNode = MazeGenerator.getNodeBasedOnLocation(new Vector3((fromNode.Col + 1) * 6 + 8, fromNode.Floor * 30, fromNode.Row * 6 + 8));
+                        }
+
+                        if (newdir.x < 0)
+                        {
+                            secondDestNode = MazeGenerator.getNodeBasedOnLocation(new Vector3((fromNode.Col - 1) * 6 + 8, fromNode.Floor * 30, fromNode.Row * 6 + 8));
+                        }
+                    }
+
+                    if (newdir.z < 0)
+                    {
+                        destinationNode = MazeGenerator.getNodeBasedOnLocation(new Vector3(fromNode.Col * 6 + 8, fromNode.Floor * 30, (fromNode.Row - 1) * 6 + 8));
+
+
+                        if (newdir.x > 0)
+                        {
+                            secondDestNode = MazeGenerator.getNodeBasedOnLocation(new Vector3((fromNode.Col + 1) * 6 + 8, fromNode.Floor * 30, fromNode.Row * 6 + 8));
+                        }
+
+                        if (newdir.x < 0)
+                        {
+                            secondDestNode = MazeGenerator.getNodeBasedOnLocation(new Vector3((fromNode.Col - 1) * 6 + 8, fromNode.Floor * 30, fromNode.Row * 6 + 8));
+                        }
+                    }
+                }
             }
             if (Math.Abs(newdir.x) < Math.Abs(newdir.z))
             {
 
-            }
-            Vector3 goal = PlayerObject.transform.localPosition + newdir;
-            //get distance to check
-            float wallDistance = newdir.magnitude;
-            //rayDirection = Vector3.MoveTowards
-            Ray ray = new Ray(PlayerObject.transform.position, newdir);
-            //Debug.DrawRay(PlayerObject.transform.position, newdir, Color.green, 3.0F);
-            RaycastHit rayHit;
+                if (newdir.z > 0)
+                {
+                    destinationNode = MazeGenerator.getNodeBasedOnLocation(new Vector3(fromNode.Col * 6 + 8, fromNode.Floor * 30, (fromNode.Row + 1) * 6 + 8));
 
-            if (Physics.Raycast(ray, out rayHit, wallDistance, LevelMask))
+                    if (newdir.x > 0)
+                    {
+                        secondDestNode = MazeGenerator.getNodeBasedOnLocation(new Vector3((fromNode.Col + 1) * 6 + 8, fromNode.Floor * 30, fromNode.Row * 6 + 8));
+                    }
+
+                    if (newdir.x < 0)
+                    {
+                        secondDestNode = MazeGenerator.getNodeBasedOnLocation(new Vector3((fromNode.Col - 1) * 6 + 8, fromNode.Floor * 30, fromNode.Row * 6 + 8));
+                    }
+                }
+
+                if (newdir.z < 0)
+                {
+                    destinationNode = MazeGenerator.getNodeBasedOnLocation(new Vector3(fromNode.Col * 6 + 8, fromNode.Floor * 30, (fromNode.Row - 1) * 6 + 8));
+
+                    if (newdir.x > 0)
+                    {
+                        secondDestNode = MazeGenerator.getNodeBasedOnLocation(new Vector3((fromNode.Col + 1) * 6 + 8, fromNode.Floor * 30, fromNode.Row * 6 + 8));
+                    }
+
+                    if (newdir.x < 0)
+                    {
+                        secondDestNode = MazeGenerator.getNodeBasedOnLocation(new Vector3((fromNode.Col - 1) * 6 + 8, fromNode.Floor * 30, fromNode.Row * 6 + 8));
+                    }
+                }
+            }
+
+            List<MazeNode> adjacent = fromNode.GetAdjacentNodes();
+            for(int iter = 0; iter < adjacent.Count; iter++)
             {
-                //print("stalk to cornered");
-                State = InuState.Cornered;
-                return;
+                if(adjacent[iter] != destinationNode && adjacent[iter] != secondDestNode && adjacent[iter] != playerNode)
+                {
+                    tertDestNode = adjacent[iter];
+                }
+            }
+
+            if(adjacent.Contains(destinationNode) == false)
+            {
+                if (destinationNode != null)
+                {
+                    print("primary not adjacent " + new Vector3(destinationNode.Col * 6 + 8, fromNode.Floor * 30, destinationNode.Row * 6 + 8));
+                    destinationNode = null;
+                }
+                else
+                {
+                    print("no primary dest found");
+                }
+            }
+            if (adjacent.Contains(secondDestNode) == false)
+            {
+                if (secondDestNode != null)
+                {
+                    print("secondary not adjacent " + new Vector3(secondDestNode.Col * 6 + 8, fromNode.Floor * 30, secondDestNode.Row * 6 + 8));
+                    secondDestNode = null;
+                }
+                else
+                {
+                    print("no secondary dest found");
+                }
+            }
+
+
+
+            if(destinationNode == null)
+            {
+                print("primary not valid");
+                if(secondDestNode == null)
+                {
+                    print("secondary not valid");
+                    if(tertDestNode == null)
+                    {
+                        print("tertiary not valid");
+                        newdir.y = 0;
+                        //normalize to get direction only
+                        newdir.Normalize();
+                        //create a scalar
+                        float scalar = (float)Math.Sqrt(15);
+                        //scale direction vector to set distace to go
+                        newdir.Scale(new Vector3(scalar, 1, scalar));
+                        //set inu to go from current direction to scalar distance in normalized direction
+
+                        Vector3 goal = PlayerObject.transform.localPosition + newdir;
+                        //get distance to check
+                        float wallDistance = newdir.magnitude;
+                        //rayDirection = Vector3.MoveTowards
+                        Ray ray = new Ray(PlayerObject.transform.position, newdir);
+                        //Debug.DrawRay(PlayerObject.transform.position, newdir, Color.green, 3.0F);
+                        RaycastHit rayHit;
+
+                        if (Physics.Raycast(ray, out rayHit, wallDistance, LevelMask))
+                        {
+                            //print("stalk to cornered");
+                            State = InuState.Cornered;
+                            return;
+                        }
+                        else
+                        {
+                            agent.ResetPath();
+                            agent.SetDestination(goal);
+                            retreating = true;
+                            return;
+                        }
+                    }
+
+                    else
+                    {
+                        print("trying to go to tert " + new Vector3(tertDestNode.Col * 6 + 8, fromNode.Floor * 30, tertDestNode.Row * 6 + 8));
+                        agent.ResetPath();
+                        agent.SetDestination(new Vector3(tertDestNode.Col * 6 + 8, fromNode.Floor * 30, tertDestNode.Row * 6 + 8));
+                        retreating = true;
+                        return;
+                    }
+                }
+                else
+                {
+                    print("trying to go to second " + new Vector3(secondDestNode.Col * 6 + 8, fromNode.Floor * 30, secondDestNode.Row * 6 + 8));
+                    agent.ResetPath();
+                    agent.SetDestination(new Vector3(secondDestNode.Col * 6 + 8, fromNode.Floor * 30, secondDestNode.Row * 6 + 8));
+                    retreating = true;
+                    return;
+                }
             }
             else
             {
+                print("trying to go to primary " + new Vector3(destinationNode.Col * 6 + 8, fromNode.Floor * 30, destinationNode.Row * 6 + 8));
                 agent.ResetPath();
-                agent.SetDestination(goal);
+                agent.SetDestination(new Vector3(destinationNode.Col * 6 + 8, fromNode.Floor * 30, destinationNode.Row * 6 + 8));
                 retreating = true;
                 return;
             }
+
         }
 
         if(!playerTooCloseToEnemy && beenTooClose == true)
@@ -533,27 +737,8 @@ public class InuController : YokaiController
             }
             else
             {
-                //print("stalking towards player");
+                print("stalking towards player");
                 agent.SetDestination(dest);
-            }
-        }
-        else
-        {
-            Vector3 newdir = transform.localPosition - PlayerObject.transform.localPosition;
-            newdir.y = 0;
-            newdir.Normalize();
-            float scalar = (float)Math.Sqrt(15);
-            newdir.Scale(new Vector3(scalar, 1, scalar));
-            Vector3 goal = PlayerObject.transform.localPosition + newdir;
-            float wallDistance = newdir.magnitude;
-            Ray ray = new Ray(PlayerObject.transform.position, newdir);
-            //Debug.DrawRay(PlayerObject.transform.position, newdir, Color.green, 3.0F);
-            RaycastHit rayHit;
-
-            if (Physics.Raycast(ray, out rayHit, wallDistance, LevelMask))
-            {
-                State = InuState.Cornered;
-                return;
             }
         }
 

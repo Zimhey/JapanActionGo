@@ -1009,14 +1009,20 @@ public class MazeGenerator : MonoBehaviour
     {
         int checkCol = (int) (((loc.x - 8) + 3) / 6);
         int checkRow = (int) (((loc.z - 8) + 3) / 6);
+        print("col " + checkCol);
+        print("row " + checkRow);
         MazeNode root = getSectionBasedOnLocation(loc);
         if (root == null)
+        {
+            print("no root");
             return null;
+        }
         foreach(MazeNode n in nodesInSection(root))
         {
             if (n.Col == checkCol && n.Row == checkRow)
                 return n;
         }
+        print("no match");
         return null;
     }
 }
