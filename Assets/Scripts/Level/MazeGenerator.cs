@@ -1008,7 +1008,7 @@ public class MazeGenerator : MonoBehaviour
     public static MazeNode getNodeBasedOnLocation(Vector3 loc)
     {
         int checkCol = (int) ((loc.x - 8) / 6);
-        int checkRow = (int) ((loc.x - 8) / 6);
+        int checkRow = (int) ((loc.z - 8) / 6);
         MazeNode root = getSectionBasedOnLocation(loc);
         if (root == null)
             return null;
