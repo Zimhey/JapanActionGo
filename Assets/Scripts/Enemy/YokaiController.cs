@@ -34,8 +34,11 @@ public class YokaiController : MonoBehaviour {
         {
             if (desiredObject.CompareTag("Player"))
             {
-                Transform playerTransform = desiredObject.transform.GetChild(0);
-                rayDirection = playerTransform.localPosition - transform.localPosition;
+                if (desiredObject.transform.childCount != 0)
+                {
+                    Transform playerTransform = desiredObject.transform.GetChild(0);
+                    rayDirection = playerTransform.localPosition - transform.localPosition;
+                }
             }
         }
         rayDirection.y = 0;
@@ -166,7 +169,10 @@ public class YokaiController : MonoBehaviour {
         Transform playerTransform = playerObject.transform;
         if (VRDevice.isPresent)
         {
-            playerTransform = playerObject.transform.GetChild(0);
+            if (playerObject.transform.childCount != 0)
+            {
+                playerTransform = playerObject.transform.GetChild(0);
+            }
         }
         float turnspeed = 1.0F;
         Vector3 targetDir = playerTransform.position - transform.position;
@@ -184,8 +190,11 @@ public class YokaiController : MonoBehaviour {
         {
             if (desiredObject.CompareTag("Player"))
             {
-                Transform playerTransform = desiredObject.transform.GetChild(0);
-                rayDirection = playerTransform.localPosition - transform.localPosition;
+                if (desiredObject.transform.childCount != 0)
+                {
+                    Transform playerTransform = desiredObject.transform.GetChild(0);
+                    rayDirection = playerTransform.localPosition - transform.localPosition;
+                }
             }
         }
         rayDirection.y = 0;

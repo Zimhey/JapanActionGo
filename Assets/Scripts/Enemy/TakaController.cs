@@ -131,7 +131,14 @@ public class TakaController : YokaiController
     {
         if (VRDevice.isPresent)
         {
-            playerTransform = PlayerObject.transform.GetChild(0);
+            if (PlayerObject.transform.childCount != 0)
+            {
+                playerTransform = PlayerObject.transform.GetChild(0);
+            }
+            else
+            {
+                print("player has no children");
+            }
         }
         else
         {
