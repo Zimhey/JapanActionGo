@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 using System;
 using UnityEngine.AI;
-using UnityEngine.VR;
 
 //state machine for inu AI
 public enum InuState
@@ -131,10 +130,6 @@ public class InuController : YokaiController
         AnimState = InuAnim.Idle;
         awake = false;
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
-        if (VRDevice.isPresent)
-        {
-            PlayerObject = PlayerObject.transform.GetChild(0).gameObject;
-        }
         beenTooClose = false;
         oldPosition = home;
         posTimer = 60;
