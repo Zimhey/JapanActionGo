@@ -983,9 +983,11 @@ public class MazeGenerator : MonoBehaviour
     
     public static MazeNode getSectionBasedOnLocation(Vector3 location)
     {
-        int column = (int) ((location.x - 8) / 6);
+        int column = (int) (((location.x - 8) + 3) / 6);
         int floor = (int) (location.y / 30);
-        int row = (int)((location.z - 8) / 6);
+        int row = (int)(((location.z - 8) + 3) / 6);
+
+        //print("column: " + column + " row: " + row);
 
         if (floor == -4)
             return tutorialSections[0];
@@ -1009,20 +1011,25 @@ public class MazeGenerator : MonoBehaviour
     {
         int checkCol = (int) (((loc.x - 8) + 3) / 6);
         int checkRow = (int) (((loc.z - 8) + 3) / 6);
-        print("col " + checkCol);
-        print("row " + checkRow);
+        //print("col " + checkCol);
+        //print("row " + checkRow);
         MazeNode root = getSectionBasedOnLocation(loc);
         if (root == null)
         {
-            print("no root");
+            //print("no root");
             return null;
         }
         foreach(MazeNode n in nodesInSection(root))
         {
+            if (n.Col == 9 && checkCol == 9)
+            {
+                //print(n.Col + " " + n.Row);
+                //print(root.Col + " " + root.Row);
+            }
             if (n.Col == checkCol && n.Row == checkRow)
                 return n;
         }
-        print("no match");
+        //print("no match");
         return null;
     }
 }
