@@ -80,6 +80,8 @@ public class TakaController : YokaiController
     private GameObject nextFootprint;
     private NavMeshAgent agent;
 
+    private Transform playerTransform;
+
     public TakaState State
     {
         set
@@ -127,6 +129,15 @@ public class TakaController : YokaiController
 
     void LateUpdate()
     {
+        if (VRDevice.isPresent)
+        {
+            playerTransform = PlayerObject.transform.GetChild(0);
+        }
+        else
+        {
+            playerTransform = PlayerObject.transform;
+        }
+
         //manage state machine each update, call functions based on state
         if (state != TakaState.Idle)
         {
@@ -375,7 +386,7 @@ public class TakaController : YokaiController
 
     void taunt() //getting shoved into ground
     {
-        Vector3 rayDirection = PlayerObject.transform.localPosition - transform.localPosition;
+        Vector3 rayDirection = playerTransform.localPosition - transform.localPosition;
         rayDirection.y = 0;
         System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < TauntDistance;
         if (!playerCloseToEnemy)

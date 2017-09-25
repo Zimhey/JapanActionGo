@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.VR;
 
 public class YokaiController : MonoBehaviour {
 
@@ -29,6 +30,14 @@ public class YokaiController : MonoBehaviour {
             rayOrigin = new Vector3(rayOrigin.x, home.y + 4.5F, rayOrigin.z);
         }
         Vector3 rayDirection = desiredObject.transform.position - gameObject.transform.position;
+        if (VRDevice.isPresent)
+        {
+            if (desiredObject.CompareTag("Player"))
+            {
+                Transform playerTransform = desiredObject.transform.GetChild(0);
+                rayDirection = playerTransform.localPosition - transform.localPosition;
+            }
+        }
         rayDirection.y = 0;
         maxDistance = rayDirection.magnitude;
         //rayDirection = Vector3.MoveTowards
@@ -154,8 +163,13 @@ public class YokaiController : MonoBehaviour {
 
     public void TurnTowardsPlayer(GameObject playerObject)
     {
+        Transform playerTransform = playerObject.transform;
+        if (VRDevice.isPresent)
+        {
+            playerTransform = playerObject.transform.GetChild(0);
+        }
         float turnspeed = 1.0F;
-        Vector3 targetDir = playerObject.transform.position - transform.position;
+        Vector3 targetDir = playerTransform.position - transform.position;
         float step = turnspeed * Time.deltaTime;
         Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, step, 0.0F);
         transform.rotation = Quaternion.LookRotation(newDir);
@@ -166,6 +180,14 @@ public class YokaiController : MonoBehaviour {
         int maxDistance = 25;
         int maxDistanceSquared = maxDistance * maxDistance;
         Vector3 rayDirection = desiredObject.transform.localPosition - transform.localPosition;
+        if (VRDevice.isPresent)
+        {
+            if (desiredObject.CompareTag("Player"))
+            {
+                Transform playerTransform = desiredObject.transform.GetChild(0);
+                rayDirection = playerTransform.localPosition - transform.localPosition;
+            }
+        }
         rayDirection.y = 0;
         Vector3 observerDirection = transform.TransformDirection(Vector3.forward);
         System.Boolean objectCloseToObserver = rayDirection.sqrMagnitude < maxDistanceSquared;

@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 using System;
 using UnityEngine.AI;
+using UnityEngine.VR;
 
 //state machine for inu AI
 public enum InuState
@@ -119,6 +120,8 @@ public class InuController : YokaiController
     private Vector3 newSitPosition;
     private int sitTimer;
 
+    private Transform playerTransform;
+
     void Start()
     {
         //intialize variables
@@ -152,6 +155,15 @@ public class InuController : YokaiController
 
     void LateUpdate()
     {
+        if (VRDevice.isPresent)
+        {
+            playerTransform = PlayerObject.transform.GetChild(0);
+        }
+        else
+        {
+            playerTransform = PlayerObject.transform;
+        }
+
         //print(rb.transform.position.y);
         //print("InuState" + state);
         if (PlayerObject != null)
@@ -403,7 +415,7 @@ public class InuController : YokaiController
             }
         }
         
-        Vector3 dest = PlayerObject.transform.position;
+        Vector3 dest = playerTransform.position;
         agent.SetDestination(dest);
 
         if (transform.position.x < dest.x + 5 && transform.position.x > dest.x - 5)
@@ -420,7 +432,7 @@ public class InuController : YokaiController
     void stalk()
     {
         AnimState = InuAnim.Creep;
-        Vector3 rayDirection = PlayerObject.transform.localPosition - transform.localPosition;
+        Vector3 rayDirection = playerTransform.localPosition - transform.localPosition;
         rayDirection.y = 0;
         System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < StalkDistance;
         if (!playerCloseToEnemy)
@@ -462,7 +474,7 @@ public class InuController : YokaiController
             print("too close");
             beenTooClose = true;
             //get the distance from player to inu
-            Vector3 newdir = transform.localPosition - PlayerObject.transform.localPosition;
+            Vector3 newdir = transform.localPosition - playerTransform.localPosition;
             MazeNode destinationNode = null;
             MazeNode secondDestNode = null;
             MazeNode tertDestNode = null;
@@ -470,7 +482,7 @@ public class InuController : YokaiController
             MazeNode fromNode = MazeGenerator.getNodeBasedOnLocation(currentLocation);
             print("current location " + new Vector3(transform.position.x, home.y + 1.5F, transform.position.z));
             print("from node " + new Vector3(fromNode.Col * 6 + 8, fromNode.Floor * 30, fromNode.Row * 6 + 8));
-            MazeNode playerNode = MazeGenerator.getNodeBasedOnLocation(PlayerObject.transform.position);
+            MazeNode playerNode = MazeGenerator.getNodeBasedOnLocation(playerTransform.position);
 
             if (Math.Abs(newdir.x) > Math.Abs(newdir.z))
             {
@@ -616,7 +628,7 @@ public class InuController : YokaiController
                 if(adjacent[iter] != destinationNode && adjacent[iter] != secondDestNode && adjacent[iter] != playerNode)
                 {
                     tertDestNode = adjacent[iter];
-                    Vector3 inuToPlayer = PlayerObject.transform.localPosition - transform.localPosition;
+                    Vector3 inuToPlayer = playerTransform.localPosition - transform.localPosition;
                     Vector3 inuToTert = new Vector3(tertDestNode.Col * 6 + 8, tertDestNode.Floor * 30, tertDestNode.Row * 6 + 8) - transform.localPosition;
                     if(inuToPlayer.x > 0 && inuToTert.x > 0)
                     {
@@ -690,12 +702,12 @@ public class InuController : YokaiController
                         newdir.Scale(new Vector3(scalar, 1, scalar));
                         //set inu to go from current direction to scalar distance in normalized direction
 
-                        Vector3 goal = PlayerObject.transform.localPosition + newdir;
+                        Vector3 goal = playerTransform.localPosition + newdir;
                         //get distance to check
                         float wallDistance = newdir.magnitude;
                         //rayDirection = Vector3.MoveTowards
-                        Ray ray = new Ray(PlayerObject.transform.position, newdir);
-                        //Debug.DrawRay(PlayerObject.transform.position, newdir, Color.green, 3.0F);
+                        Ray ray = new Ray(playerTransform.position, newdir);
+                        //Debug.DrawRay(playerTransform.position, newdir, Color.green, 3.0F);
                         RaycastHit rayHit;
 
                         if (Physics.Raycast(ray, out rayHit, wallDistance, LevelMask))
@@ -751,7 +763,7 @@ public class InuController : YokaiController
         if (retreating != true)
         {
             agent.ResetPath();
-            Vector3 dest = PlayerObject.transform.position;
+            Vector3 dest = playerTransform.position;
 
             if (transform.position.x < dest.x + 3 && transform.position.x > dest.x - 3)
             {
@@ -781,7 +793,7 @@ public class InuController : YokaiController
     void cornered()
     {
         //print("inu is cornered");
-        Vector3 rayDirection = PlayerObject.transform.localPosition - transform.localPosition;
+        Vector3 rayDirection = playerTransform.localPosition - transform.localPosition;
         rayDirection.y = 0;
         System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < StayCorneredDistance;
 
@@ -819,7 +831,7 @@ public class InuController : YokaiController
         if (playerTooCloseToEnemy && beenTooClose == true)
         {
             //print("trying to kill player");
-            Vector3 goal = PlayerObject.transform.position;
+            Vector3 goal = playerTransform.position;
             agent.ResetPath();
             agent.SetDestination(goal);
         }

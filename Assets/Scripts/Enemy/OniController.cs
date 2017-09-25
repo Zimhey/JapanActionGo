@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.VR;
 
 //state machine for oni AI
 public enum OniState
@@ -77,6 +78,8 @@ public class OniController : YokaiController
 
     private OniState state;
 
+    private Transform playerTransform;
+
     public OniState State
     {
         set
@@ -120,10 +123,19 @@ public class OniController : YokaiController
 
     void LateUpdate()
     {
+        if (VRDevice.isPresent)
+        {
+            playerTransform = PlayerObject.transform.GetChild(0);
+        }
+        else
+        {
+            playerTransform = PlayerObject.transform;
+        }
+
         //manage state machine each update, call functions based on state
         //print("Onistate " + state);
         //State = OniState.Patrol;
-        
+
         if (nextFootprint != null)
         {
             //print(nextFootprint.transform.position);
@@ -351,7 +363,7 @@ public class OniController : YokaiController
             }
         }
 
-        Vector3 rayDirection = PlayerObject.transform.localPosition - transform.localPosition;
+        Vector3 rayDirection = playerTransform.localPosition - transform.localPosition;
         rayDirection.y = 0;
         System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < KillDistance;
         if (playerCloseToEnemy)
@@ -363,7 +375,7 @@ public class OniController : YokaiController
             print("GameOver");
         }
 
-        agent.SetDestination(PlayerObject.transform.position);
+        agent.SetDestination(playerTransform.position);
     }
 
     void flee()
