@@ -425,7 +425,7 @@ public class InuController : YokaiController
     void stalk()
     {
         AnimState = InuAnim.Creep;
-        Vector3 rayDirection = PlayerObject.transform.position - transform.position;
+        Vector3 rayDirection = PlayerObject.transform.localPosition - transform.localPosition;
         rayDirection.y = 0;
         System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < StalkDistance;
         if (!playerCloseToEnemy)
@@ -467,7 +467,7 @@ public class InuController : YokaiController
             print("too close");
             beenTooClose = true;
             //get the distance from player to inu
-            Vector3 newdir = transform.position - PlayerObject.transform.position;
+            Vector3 newdir = transform.localPosition - PlayerObject.transform.localPosition;
             MazeNode destinationNode = null;
             MazeNode secondDestNode = null;
             MazeNode tertDestNode = null;
@@ -621,8 +621,8 @@ public class InuController : YokaiController
                 if(adjacent[iter] != destinationNode && adjacent[iter] != secondDestNode && adjacent[iter] != playerNode)
                 {
                     tertDestNode = adjacent[iter];
-                    Vector3 inuToPlayer = PlayerObject.transform.position - transform.position;
-                    Vector3 inuToTert = new Vector3(tertDestNode.Col * 6 + 8, tertDestNode.Floor * 30, tertDestNode.Row * 6 + 8) - transform.position;
+                    Vector3 inuToPlayer = PlayerObject.transform.localPosition - transform.localPosition;
+                    Vector3 inuToTert = new Vector3(tertDestNode.Col * 6 + 8, tertDestNode.Floor * 30, tertDestNode.Row * 6 + 8) - transform.localPosition;
                     if(inuToPlayer.x > 0 && inuToTert.x > 0)
                     {
                         if(inuToPlayer.z > 0 && inuToTert.z > 0)
@@ -695,7 +695,7 @@ public class InuController : YokaiController
                         newdir.Scale(new Vector3(scalar, 1, scalar));
                         //set inu to go from current direction to scalar distance in normalized direction
 
-                        Vector3 goal = PlayerObject.transform.position + newdir;
+                        Vector3 goal = PlayerObject.transform.localPosition + newdir;
                         //get distance to check
                         float wallDistance = newdir.magnitude;
                         //rayDirection = Vector3.MoveTowards
@@ -786,7 +786,7 @@ public class InuController : YokaiController
     void cornered()
     {
         //print("inu is cornered");
-        Vector3 rayDirection = PlayerObject.transform.position - transform.position;
+        Vector3 rayDirection = PlayerObject.transform.localPosition - transform.localPosition;
         rayDirection.y = 0;
         System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < StayCorneredDistance;
 

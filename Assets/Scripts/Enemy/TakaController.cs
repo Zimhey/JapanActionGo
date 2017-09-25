@@ -381,7 +381,7 @@ public class TakaController : YokaiController
 
     void taunt() //getting shoved into ground
     {
-        Vector3 rayDirection = PlayerObject.transform.position - transform.position;
+        Vector3 rayDirection = PlayerObject.transform.localPosition - transform.localPosition;
         rayDirection.y = 0;
         System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < TauntDistance;
         if (!playerCloseToEnemy)
