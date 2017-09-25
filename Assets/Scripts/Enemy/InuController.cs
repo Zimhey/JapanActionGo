@@ -356,27 +356,25 @@ public class InuController : YokaiController
                 }
             }
 
-            currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
-            
-
-            if (transform.position.x < currentNodePosition.x + 2 && transform.position.x > currentNodePosition.x - 2)
+            if (currentNode != null)
             {
-                if (transform.position.z < currentNodePosition.z + 2 && transform.position.z > currentNodePosition.z - 2)
+                currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
+
+                if (transform.position.x < currentNodePosition.x + 2 && transform.position.x > currentNodePosition.x - 2)
                 {
-                    MazeNode closest = null;
-                    closest = updateClosest(closest, nodes, currentNode, previous, previous2, rb);
-                    previous2 = previous;
-                    previous = currentNode;
-                    currentNode = closest;
+                    if (transform.position.z < currentNodePosition.z + 2 && transform.position.z > currentNodePosition.z - 2)
+                    {
+                        MazeNode closest = null;
+                        closest = updateClosest(closest, nodes, currentNode, previous, previous2, rb);
+                        previous2 = previous;
+                        previous = currentNode;
+                        currentNode = closest;
+                    }
                 }
+
+                currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
+                agent.SetDestination(currentNodePosition);
             }
-
-            //print(rb.transform.position.y);
-
-            currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
-            agent.SetDestination(currentNodePosition);
-
-            //print(rb.transform.position.y);
         }
     }
 
@@ -463,7 +461,7 @@ public class InuController : YokaiController
             //signify the player is too close to the inu
             //print("too close");
             beenTooClose = true;
-            //get the distance from inu to player
+            //get the distance from player to inu
             Vector3 newdir = transform.localPosition - PlayerObject.transform.localPosition;
             newdir.y = 0;
             //normalize to get direction only
@@ -473,8 +471,25 @@ public class InuController : YokaiController
             //scale direction vector to set distace to go
             newdir.Scale(new Vector3(scalar, 1, scalar));
             //set inu to go from current direction to scalar distance in normalized direction
-            Vector3 goal = PlayerObject.transform.localPosition + newdir;
+            MazeNode destinationNode = null;
+            Vector3 currentLocation = new Vector3(transform.position.x, home.y + 1.5F, transform.position.z);
+            //MazeNode fromNode = MazeGenerator.getNodeBasedOnLocation(currentLocation);
+            if (Math.Abs(newdir.x) > Math.Abs(newdir.z))
+            {
+                if(newdir.x > 0)
+                {
+                    //destinationNode = MazeGenerator.getNodeBasedOnLocation(new Vector3(fromNode.Col * 6 + 8, fromNode.Floor * 30, fromNode.Row * 6 + 8));
+                }
+            }
+            if (Math.Abs(newdir.x) == Math.Abs(newdir.z))
+            {
 
+            }
+            if (Math.Abs(newdir.x) < Math.Abs(newdir.z))
+            {
+
+            }
+            Vector3 goal = PlayerObject.transform.localPosition + newdir;
             //get distance to check
             float wallDistance = newdir.magnitude;
             //rayDirection = Vector3.MoveTowards

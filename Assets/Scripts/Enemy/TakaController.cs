@@ -305,23 +305,26 @@ public class TakaController : YokaiController
                 closest = setClosest(closest, homeNode, nodes, rb);
                 currentNode = closest;
             }
-            
-            currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
 
-            if (transform.position.x < currentNodePosition.x + 2 && transform.position.x > currentNodePosition.x - 2)
+            if (currentNode != null)
             {
-                if (transform.position.z < currentNodePosition.z + 2 && transform.position.z > currentNodePosition.z - 2)
-                {
-                    MazeNode closest = null;
-                    closest = updateClosest(closest, nodes, currentNode, previous, previous2, rb);
-                    previous2 = previous;
-                    previous = currentNode;
-                    currentNode = closest;
-                }
-            }
-            currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
+                currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
 
-            agent.SetDestination(currentNodePosition);
+                if (transform.position.x < currentNodePosition.x + 2 && transform.position.x > currentNodePosition.x - 2)
+                {
+                    if (transform.position.z < currentNodePosition.z + 2 && transform.position.z > currentNodePosition.z - 2)
+                    {
+                        MazeNode closest = null;
+                        closest = updateClosest(closest, nodes, currentNode, previous, previous2, rb);
+                        previous2 = previous;
+                        previous = currentNode;
+                        currentNode = closest;
+                    }
+                }
+
+                currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
+                agent.SetDestination(currentNodePosition);
+            }
         }
     }
 
