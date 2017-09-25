@@ -1004,4 +1004,19 @@ public class MazeGenerator : MonoBehaviour
                             return DifferentSections[i, j];
         return null;
     }
+
+    public static MazeNode getNodeBasedOnLocation(Vector3 loc)
+    {
+        int checkCol = (int) ((loc.x - 8) / 6);
+        int checkRow = (int) ((loc.x - 8) / 6);
+        MazeNode root = getSectionBasedOnLocation(loc);
+        if (root == null)
+            return null;
+        foreach(MazeNode n in nodesInSection(root))
+        {
+            if (n.Col == checkCol && n.Row == checkRow)
+                return n;
+        }
+        return null;
+    }
 }
