@@ -103,10 +103,16 @@ public class TakaController : YokaiController
         animState = TakaAnim.Idle;
         awake = false;
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
+        if (VRDevice.isPresent)
+        {
+            PlayerObject = PlayerObject.transform.GetChild(0).gameObject;
+        }
         if (!VRDevice.isPresent)
             cam = PlayerObject.GetComponentInChildren<Camera>();
-        else
-            cam = null;
+        else {
+            GameObject temp = PlayerObject.transform.GetChild(1).gameObject;
+            cam = PlayerObject.GetComponentInChildren<Camera>();
+        }
         oldPosition = home;
         posTimer = 60;
         posTimer2 = 27;
