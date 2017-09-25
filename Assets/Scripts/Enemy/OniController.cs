@@ -356,7 +356,7 @@ public class OniController : YokaiController
             }
         }
 
-        Vector3 rayDirection = PlayerObject.transform.localPosition - transform.localPosition;
+        Vector3 rayDirection = PlayerObject.transform.position - transform.position;
         rayDirection.y = 0;
         System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < KillDistance;
         if (playerCloseToEnemy)
