@@ -616,6 +616,32 @@ public class InuController : YokaiController
                 if(adjacent[iter] != destinationNode && adjacent[iter] != secondDestNode && adjacent[iter] != playerNode)
                 {
                     tertDestNode = adjacent[iter];
+                    Vector3 inuToPlayer = PlayerObject.transform.localPosition - transform.localPosition;
+                    Vector3 inuToTert = new Vector3(tertDestNode.Col * 6 + 8, tertDestNode.Floor * 30, tertDestNode.Row * 6 + 8) - transform.localPosition;
+                    if(inuToPlayer.x > 0 && inuToTert.x > 0)
+                    {
+                        if(inuToPlayer.z > 0 && inuToTert.z > 0)
+                        {
+                            tertDestNode = null;
+                        }
+
+                        if (inuToPlayer.z < 0 && inuToTert.z < 0)
+                        {
+                            tertDestNode = null;
+                        }
+                    }
+                    if (inuToPlayer.x < 0 && inuToTert.x < 0)
+                    {
+                        if (inuToPlayer.z > 0 && inuToTert.z > 0)
+                        {
+                            tertDestNode = null;
+                        }
+
+                        if (inuToPlayer.z < 0 && inuToTert.z < 0)
+                        {
+                            tertDestNode = null;
+                        }
+                    }
                 }
             }
 
