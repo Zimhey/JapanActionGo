@@ -99,7 +99,6 @@ public class TakaController : YokaiController
         home = gameObject.transform.position;
         distanceToFloor = home.y + 0.1F;
         startingRotation = gameObject.transform.rotation;
-        //print("OriHome" + home);
         actorID = GetComponent<Actor>();
         State = TakaState.Idle;
         animState = TakaAnim.Idle;
@@ -263,7 +262,6 @@ public class TakaController : YokaiController
             distanceToFloor = 0.0F;
         }
         
-        //gameObject.transform.position = new Vector3(gameObject.transform.position.x, distanceToFloor, gameObject.transform.position.z);
         MoveYokai(controller, agent);
     }
 
@@ -282,7 +280,7 @@ public class TakaController : YokaiController
         {
             State = TakaState.Follow;
         }
-        else if (root != null)//awake == true && 
+        else if (root != null)
         {
             State = TakaState.Patrol;
         }
@@ -315,7 +313,7 @@ public class TakaController : YokaiController
             if (currentNode == null)
             {
                 MazeNode closest = null;
-                closest = setClosest(closest, homeNode, nodes, rb);
+                closest = SetClosest(closest, homeNode, nodes, rb);
                 currentNode = closest;
             }
 
@@ -328,7 +326,7 @@ public class TakaController : YokaiController
                     if (transform.position.z < currentNodePosition.z + 2 && transform.position.z > currentNodePosition.z - 2)
                     {
                         MazeNode closest = null;
-                        closest = updateClosest(closest, nodes, currentNode, previous, previous2, rb);
+                        closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
                         previous2 = previous;
                         previous = currentNode;
                         currentNode = closest;
@@ -367,8 +365,6 @@ public class TakaController : YokaiController
         agent.SetDestination(PlayerObject.transform.position);
 
         Vector3 dest = PlayerObject.transform.position;
-        //agent.destination = dest;
-        //print(dest);
 
         if (transform.position.x < dest.x + 5 && transform.position.x > dest.x - 5)
         {
@@ -382,7 +378,7 @@ public class TakaController : YokaiController
         
     }
 
-    void taunt() //getting shoved into ground
+    void taunt() 
     {
         Vector3 rayDirection = playerTransform.localPosition - transform.localPosition;
         rayDirection.y = 0;
@@ -427,7 +423,6 @@ public class TakaController : YokaiController
         }
         else if (mr.transform.localScale.y >= 8)
         {
-            //agent.height = 0.6F;
             State = TakaState.Flee;
             return;
         }
@@ -455,7 +450,7 @@ public class TakaController : YokaiController
             mr.transform.position -= new Vector3(0, 0.01F, 0);
             distanceToFloor -= 0.01F;
         }
-        //gameObject.transform.position.Set(gameObject.transform.position.x, distanceToFloor, gameObject.transform.position.z);
+
         if (transform.position.x < home.x + 2 && transform.position.x > home.x - 2)
         {
             if (transform.position.z < home.z + 2 && transform.position.z > home.z - 2)
@@ -553,7 +548,6 @@ public class TakaController : YokaiController
         dir.Normalize();
         enemyDirection.Normalize();
         float angleDot = Vector3.Dot(dir, enemyDirection);
-        //print("player looking " + angleDot);
         System.Boolean playerlookup = angleDot < -0.3;
         if (playerlookup)
         {
@@ -569,7 +563,6 @@ public class TakaController : YokaiController
     {
         if (agent.velocity.magnitude < 0.5)
         {
-            //anim.SetInteger("State", 0);
         }
         else
             animState = TakaAnim.Walk;
@@ -579,7 +572,6 @@ public class TakaController : YokaiController
     {
         if (agent.velocity.magnitude > 0.5)
         {
-            //anim.SetInteger("State", 1);
         }
         else
             animState = TakaAnim.Idle;
@@ -589,7 +581,6 @@ public class TakaController : YokaiController
     {
         if (agent.velocity.magnitude > 5.5)
         {
-            //anim.SetInteger("State", 2);
         }
         else
             animState = TakaAnim.Walk;
@@ -597,24 +588,17 @@ public class TakaController : YokaiController
 
     void animAttack()
     {
-        // if attacking player
-        //anim.SetInteger("State", 3);
     }
 
     void animStunned()
     {
-        //anim.SetInteger("State", 4);
     }
 
     void animTaunt()
     {
-        // if looking around
-        //anim.SetInteger("State", 5);
     }
 
     void animGlare()
     {
-        // if looking around
-        //anim.SetInteger("State", 6);
     }
 }
