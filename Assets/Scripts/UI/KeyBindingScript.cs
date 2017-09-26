@@ -32,6 +32,8 @@ public class KeyBindingScript : MonoBehaviour {
         ofuda.text = buttons["Throw"].ToString();
         mirror.text = buttons["Mirror"].ToString();
         compass.text = buttons["Compass"].ToString();
+        print(mirror.text);
+        print(compass.text);
 
         controller.Add("C_Run", KeyCode.Joystick1Button0);
         controller.Add("C_Jump", KeyCode.Joystick1Button1);
@@ -46,6 +48,8 @@ public class KeyBindingScript : MonoBehaviour {
         c_ofuda.text = controller["C_Throw"].ToString();
         c_mirror.text = controller["C_Mirror"].ToString();
         c_compass.text = controller["C_Compass"].ToString();
+        print(c_mirror.text);
+        print(c_compass.text);
 
         vr.Add("Run", "Pad1");
         vr.Add("Jump", "Pad2");
@@ -60,6 +64,8 @@ public class KeyBindingScript : MonoBehaviour {
         vr_ofuda.text = vr["Throw"];
         vr_mirror.text = vr["Mirror"];
         vr_compass.text = vr["Compass"];
+        print(vr_mirror.text);
+        print(vr_compass.text);
     }
 	
 	// Update is called once per frame
@@ -72,7 +78,7 @@ public class KeyBindingScript : MonoBehaviour {
         if(currentKey != null)
         {
             Event e = Event.current;
-            if(e.isKey && !currentKey.name.Contains("C_"))
+            if (e.isKey && !currentKey.name.Contains("C_"))
             {
                 if (!e.keyCode.ToString().Contains("JoyStick1Button"))
                 {
@@ -81,7 +87,7 @@ public class KeyBindingScript : MonoBehaviour {
                     currentKey = null;
                 }
             }
-            else if(e.isKey)
+            else if (e.isKey)
             {
                 if (e.keyCode.ToString().Contains("Joystick1Button"))
                 {
@@ -90,25 +96,28 @@ public class KeyBindingScript : MonoBehaviour {
                     currentKey = null;
                 }
             }
-            else if(LeftController.triggerPressed)
+            else if (VRDevice.isPresent)
             {
-                vr[currentKey.name] = "Trigger1";
-                currentKey.transform.GetChild(0).GetComponent<Text>().text = "Trigger1";
-            }
-            else if (RightController.triggerPressed)
-            {
-                vr[currentKey.name] = "Trigger2";
-                currentKey.transform.GetChild(0).GetComponent<Text>().text = "Trigger2";
-            }
-            else if (LeftController.padPressed)
-            {
-                vr[currentKey.name] = "Pad1";
-                currentKey.transform.GetChild(0).GetComponent<Text>().text = "Pad1";
-            }
-            else if (RightController.padPressed)
-            {
-                vr[currentKey.name] = "Pad2";
-                currentKey.transform.GetChild(0).GetComponent<Text>().text = "Pad2";
+                if (LeftController.triggerPressed)
+                {
+                    vr[currentKey.name] = "Trigger1";
+                    currentKey.transform.GetChild(0).GetComponent<Text>().text = "Trigger1";
+                }
+                else if (RightController.triggerPressed)
+                {
+                    vr[currentKey.name] = "Trigger2";
+                    currentKey.transform.GetChild(0).GetComponent<Text>().text = "Trigger2";
+                }
+                else if (LeftController.padPressed)
+                {
+                    vr[currentKey.name] = "Pad1";
+                    currentKey.transform.GetChild(0).GetComponent<Text>().text = "Pad1";
+                }
+                else if (RightController.padPressed)
+                {
+                    vr[currentKey.name] = "Pad2";
+                    currentKey.transform.GetChild(0).GetComponent<Text>().text = "Pad2";
+                }
             }
         }
     }
