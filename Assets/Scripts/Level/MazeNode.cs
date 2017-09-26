@@ -20,6 +20,8 @@ public class MazeNode
     public MazeNode Backward;
     public MazeNode Above;
     public MazeNode Below;
+    public bool isRoot;
+    public int sectionNumber;
 
     public bool OnExitPath;
     public bool Intersection;

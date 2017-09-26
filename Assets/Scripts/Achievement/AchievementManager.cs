@@ -129,7 +129,7 @@ public class AchievementManager : MonoBehaviour {
         }
         else
         {
-            print("invalid achievement id");
+            //print("invalid achievement id");
         }
         achievements.Add(id, new Achievement(id, achievement));
         counter++;

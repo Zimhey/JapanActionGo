@@ -7,7 +7,7 @@ public class MazeGenerator : MonoBehaviour
 {
     public static int Seed; // TODO FIX THESE STATE VARS
     //public static Difficulty dif = Difficulty.Small;
-    public static MazeNode[,] DifferentSections = new MazeNode[5,8];
+    public static MazeNode[,] DifferentSections = new MazeNode[5, 8];
     public static MazeNode[] tutorialSections = new MazeNode[4];
     public static MazeNode endNode;
 
@@ -101,6 +101,26 @@ public class MazeGenerator : MonoBehaviour
         GenerateMazeHelper(size, sections, loops, floors, difficulty, Seed);
     }
 
+    public static int howManySectionsOnBottomFloor(Difficulty difficulty)
+    {
+        switch(difficulty)
+        {
+            case Difficulty.Small:
+                return 2;
+            case Difficulty.Medium:
+                return 2;
+            case Difficulty.Large:
+                return 2;
+            case Difficulty.Excessive:
+                return 3;
+            case Difficulty.AlreadyLost:
+                return 4;
+            case Difficulty.JustWhy:
+                return 5;
+        }
+        return 0;
+    }
+
     public static void GenerateMazeHelper(int size, int[] sections, int loops, int floors, Difficulty difficulty, int seed)
     {
         MazeNode[,] roots = new MazeNode[5, 8];
@@ -115,6 +135,9 @@ public class MazeGenerator : MonoBehaviour
             foreach (MazeNode r in sectionroots)
             {
                 roots[i, section] = r;
+                foreach (MazeNode n in nodesInSection(r))
+                    n.sectionNumber = section;
+                r.isRoot = true;
                 GenerateLoops(r, loops, size);
                 GenerateLadders(i, section, r, floors, sections[i]);
                 ActorGenerator.GenerateActorsHelper(difficulty, r, seed);

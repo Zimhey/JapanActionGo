@@ -558,6 +558,36 @@ Prefab:
       propertyPath: vr_ofuda
       value: 
       objectReference: {fileID: 1520037626}
+    - target: {fileID: 114237284893492958, guid: 405a7cbcd2870254a822350760158ece,
+        type: 2}
+      propertyPath: mirror
+      value: 
+      objectReference: {fileID: 1520037641}
+    - target: {fileID: 114237284893492958, guid: 405a7cbcd2870254a822350760158ece,
+        type: 2}
+      propertyPath: compass
+      value: 
+      objectReference: {fileID: 1520037635}
+    - target: {fileID: 114237284893492958, guid: 405a7cbcd2870254a822350760158ece,
+        type: 2}
+      propertyPath: c_mirror
+      value: 
+      objectReference: {fileID: 1520037639}
+    - target: {fileID: 114237284893492958, guid: 405a7cbcd2870254a822350760158ece,
+        type: 2}
+      propertyPath: c_compass
+      value: 
+      objectReference: {fileID: 1520037640}
+    - target: {fileID: 114237284893492958, guid: 405a7cbcd2870254a822350760158ece,
+        type: 2}
+      propertyPath: vr_mirror
+      value: 
+      objectReference: {fileID: 1520037638}
+    - target: {fileID: 114237284893492958, guid: 405a7cbcd2870254a822350760158ece,
+        type: 2}
+      propertyPath: vr_compass
+      value: 
+      objectReference: {fileID: 1520037627}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 405a7cbcd2870254a822350760158ece, type: 2}
   m_IsPrefabParent: 0
@@ -691,6 +721,30 @@ MonoBehaviour:
 --- !u!114 &1520037637 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114432933582853982, guid: e6851efdabfcd48408ed7d24aacbba4c,
+    type: 2}
+  m_PrefabInternal: {fileID: 1520037625}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!114 &1520037638 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114734869149045454, guid: e6851efdabfcd48408ed7d24aacbba4c,
+    type: 2}
+  m_PrefabInternal: {fileID: 1520037625}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!114 &1520037639 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114121814418576132, guid: e6851efdabfcd48408ed7d24aacbba4c,
+    type: 2}
+  m_PrefabInternal: {fileID: 1520037625}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!114 &1520037640 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114036210688430116, guid: e6851efdabfcd48408ed7d24aacbba4c,
+    type: 2}
+  m_PrefabInternal: {fileID: 1520037625}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!114 &1520037641 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114448201157481518, guid: e6851efdabfcd48408ed7d24aacbba4c,
     type: 2}
   m_PrefabInternal: {fileID: 1520037625}
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
