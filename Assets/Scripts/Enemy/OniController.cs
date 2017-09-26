@@ -109,7 +109,6 @@ public class OniController : YokaiController
 
         currentNode = StartingNode;
         int column = (int)((home.x - 8) / 6);
-        int floor = (int)(home.y / 30);
         int row = (int)((home.z - 8) / 6);
 
         foreach (MazeNode n in MazeGenerator.nodesInSection(root))
@@ -134,20 +133,17 @@ public class OniController : YokaiController
         }
 
         playerTransform = PlayerObject.transform;
-
-        //manage state machine each update, call functions based on state
-        //print("Onistate " + state);
-        //State = OniState.Patrol;
+        
 
         if (nextFootprint != null)
         {
             //print(nextFootprint.transform.position);
         }
 
-        if (newPosition != null)
+        /*if (newPosition != null)
         {
             if (oldPosition2 != null)
-            {
+            {*/
                 if (state != OniState.Idle)
                 {
                     Vector3 difference = newPosition - oldPosition;
@@ -167,8 +163,8 @@ public class OniController : YokaiController
                         }
                     }
                 }
-            }
-        }
+            /*}
+        }*/
 
         switch (state)
         {
@@ -237,11 +233,11 @@ public class OniController : YokaiController
         if(posTimer <= 0)
         {
             posTimer = 90;
-            if(newPosition != null)
-            {
+            //if(newPosition != null)
+            //{
                 oldPosition = newPosition;
                 //print("oldpos" + oldPosition);
-            }
+            //}
             newPosition = transform.position;
             //print("newpos" + newPosition);
         }
@@ -249,10 +245,10 @@ public class OniController : YokaiController
         if (posTimer2 <= 0)
         {
             posTimer = 77;
-            if (oldPosition != null)
-            {
+            //if (oldPosition != null)
+            //{
                 oldPosition2 = oldPosition;
-            }
+            //}
             oldPosition = transform.position;
         }
 
