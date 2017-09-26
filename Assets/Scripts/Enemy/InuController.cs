@@ -144,7 +144,6 @@ public class InuController : YokaiController
         retreating = false;
 
         int column = (int)((home.x - 8) / 6);
-        int floor = (int)(home.y / 30);
         int row = (int)((home.z - 8) / 6);
 
         foreach (MazeNode n in MazeGenerator.nodesInSection(root))
@@ -162,18 +161,15 @@ public class InuController : YokaiController
         if (controller == null)
         {
             controller = GetComponent<CharacterController>();
+            //print("assigned controller");
         }
 
         playerTransform = PlayerObject.transform;
-        if (PlayerObject != null)
-        {
-            PlayerObject = GameObject.FindGameObjectWithTag("Player");
-        }
 
-        if (newPosition != null)
-        {
-            if (oldPosition2 != null)
-            {
+        //if (newPosition != null)
+        //{
+            //if (oldPosition2 != null)
+            //{
                 if (state != InuState.Idle && state != InuState.Stalk && state != InuState.Cornered)
                 {
                     Vector3 difference = newPosition - oldPosition;
@@ -193,8 +189,8 @@ public class InuController : YokaiController
                         }
                     }
                 }
-            }
-        }
+            //}
+        //}
 
         switch (state)
         {
@@ -271,20 +267,20 @@ public class InuController : YokaiController
         if (posTimer <= 0)
         {
             posTimer = 90;
-            if (newPosition != null)
-            {
+            //if (newPosition != null)
+            //{
                 oldPosition = newPosition;
-            }
+            //}
             newPosition = transform.position;
         }
         posTimer2--;
         if (posTimer2 <= 0)
         {
             posTimer = 77;
-            if (oldPosition != null)
-            {
+            //if (oldPosition != null)
+            //{
                 oldPosition2 = oldPosition;
-            }
+            //}
             oldPosition = transform.position;
         }
         
