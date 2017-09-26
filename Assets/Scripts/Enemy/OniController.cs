@@ -97,6 +97,7 @@ public class OniController : YokaiController
         rb = GetComponent<Rigidbody>();
         home = gameObject.transform.position;
         startingRotation = gameObject.transform.rotation;
+        actorID = GetComponent<Actor>();
         State = OniState.Idle;
         animState = OniAnim.Idle;
         awake = false;
@@ -105,8 +106,6 @@ public class OniController : YokaiController
         posTimer = 60;
         posTimer2 = 27;
         root = MazeGenerator.getSectionBasedOnLocation(home);
-        actorID = GetComponent<Actor>();
-        controller = GetComponent<CharacterController>();
 
         currentNode = StartingNode;
         int column = (int)((home.x - 8) / 6);
@@ -124,6 +123,16 @@ public class OniController : YokaiController
 
     void LateUpdate()
     {
+        if (actorID == null)
+        {
+            actorID = GetComponent<Actor>();
+        }
+
+        if (controller == null)
+        {
+            controller = GetComponent<CharacterController>();
+        }
+
         playerTransform = PlayerObject.transform;
 
         //manage state machine each update, call functions based on state

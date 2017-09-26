@@ -127,6 +127,7 @@ public class InuController : YokaiController
         rb = GetComponent<Rigidbody>();
         home = gameObject.transform.position;
         startingRotation = gameObject.transform.rotation;
+        actorID = GetComponent<Actor>();
         State = InuState.Idle;
         AnimState = InuAnim.Idle;
         awake = false;
@@ -141,8 +142,6 @@ public class InuController : YokaiController
         agent.updatePosition = false;
         agent.updateRotation = true;
         retreating = false;
-        actorID = GetComponent<Actor>();
-        controller = GetComponent<CharacterController>();
 
         int column = (int)((home.x - 8) / 6);
         int floor = (int)(home.y / 30);
@@ -155,6 +154,16 @@ public class InuController : YokaiController
 
     void LateUpdate()
     {
+        if (actorID == null)
+        {
+            actorID = GetComponent<Actor>();
+        }
+
+        if (controller == null)
+        {
+            controller = GetComponent<CharacterController>();
+        }
+
         playerTransform = PlayerObject.transform;
         if (PlayerObject != null)
         {

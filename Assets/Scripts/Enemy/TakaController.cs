@@ -100,6 +100,7 @@ public class TakaController : YokaiController
         distanceToFloor = home.y + 0.1F;
         startingRotation = gameObject.transform.rotation;
         //print("OriHome" + home);
+        actorID = GetComponent<Actor>();
         State = TakaState.Idle;
         animState = TakaAnim.Idle;
         awake = false;
@@ -113,9 +114,6 @@ public class TakaController : YokaiController
         agent = GetComponent<NavMeshAgent>();
         agent.updatePosition = false;
         agent.updateRotation = true;
-        mr = gameObject.GetComponentInChildren<MeshRenderer>();
-        actorID = GetComponent<Actor>();
-        controller = GetComponent<CharacterController>();
 
         int column = (int)((home.x - 8) / 6);
         int floor = (int)(home.y / 30);
@@ -128,6 +126,16 @@ public class TakaController : YokaiController
 
     void LateUpdate()
     {
+        if(actorID == null)
+        {
+            actorID = GetComponent<Actor>();
+        }
+
+        if(controller == null)
+        {
+            controller = GetComponent<CharacterController>();
+        }
+
         playerTransform = PlayerObject.transform;
 
         //manage state machine each update, call functions based on state
@@ -408,6 +416,10 @@ public class TakaController : YokaiController
         }
 
         //play taunt sounds
+        if(mr == null)
+        {
+            mr = gameObject.GetComponentInChildren<MeshRenderer>();
+        }
         if (mr.transform.localScale.y < 8)
         {
             mr.transform.localScale += new Vector3(0, 0.02F, 0);
@@ -434,6 +446,10 @@ public class TakaController : YokaiController
     {
         agent.ResetPath();
 
+        if (mr == null)
+        {
+            mr = gameObject.GetComponentInChildren<MeshRenderer>();
+        }
         if (mr.transform.localScale.y > 5)
         {
             mr.transform.localScale -= new Vector3(0, 0.02F, 0);
