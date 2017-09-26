@@ -32,8 +32,6 @@ public class KeyBindingScript : MonoBehaviour {
         ofuda.text = buttons["Throw"].ToString();
         mirror.text = buttons["Mirror"].ToString();
         compass.text = buttons["Compass"].ToString();
-        print(mirror.text);
-        print(compass.text);
 
         controller.Add("C_Run", KeyCode.Joystick1Button0);
         controller.Add("C_Jump", KeyCode.Joystick1Button1);
@@ -48,8 +46,6 @@ public class KeyBindingScript : MonoBehaviour {
         c_ofuda.text = controller["C_Throw"].ToString();
         c_mirror.text = controller["C_Mirror"].ToString();
         c_compass.text = controller["C_Compass"].ToString();
-        print(c_mirror.text);
-        print(c_compass.text);
 
         vr.Add("Run", "Pad1");
         vr.Add("Jump", "Pad2");
@@ -64,8 +60,6 @@ public class KeyBindingScript : MonoBehaviour {
         vr_ofuda.text = vr["Throw"];
         vr_mirror.text = vr["Mirror"];
         vr_compass.text = vr["Compass"];
-        print(vr_mirror.text);
-        print(vr_compass.text);
     }
 	
 	// Update is called once per frame

@@ -24,7 +24,11 @@ public class Ladder : MonoBehaviour {
     {
         if (collider.gameObject.tag == "Player")
         {
-            if (location.Col == MazeGenerator.GetSize(GameManager.difficulty) - 1 && location.Col == MazeGenerator.GetSize(GameManager.difficulty) - 1 && location.Floor == 0)
+            print("Floor: " + location.Floor);
+            print("SectionNumber: " + location.sectionNumber);
+            print("Is it a root?: " + location.isRoot);
+            print("Number of sections on the bottom floor at this difficulty: " + MazeGenerator.howManySectionsOnBottomFloor(GameManager.difficulty));
+            if (location.Floor == 0 && location.sectionNumber == MazeGenerator.howManySectionsOnBottomFloor(GameManager.difficulty) - 1 && !location.isRoot)
                 GameManager.Instance.Win();
             else
                 GameManager.Instance.EnterSection(this.gameObject, collider.gameObject);
