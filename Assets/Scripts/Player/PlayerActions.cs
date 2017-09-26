@@ -9,6 +9,7 @@ public class PlayerActions : MonoBehaviour
     private int levelLayer;
     private int dynamicObjectLayer;
     private bool compassActive;
+    private bool mirrorActive;
 
     public Inventory PlayerInventory;
 
@@ -55,6 +56,7 @@ public class PlayerActions : MonoBehaviour
         levelLayer = LayerMask.NameToLayer("Level");
         dynamicObjectLayer = LayerMask.NameToLayer("DynamicObject");
         drawingLayerMask =  1 << levelLayer | 1 << dynamicObjectLayer;
+        mirrorActive = false;
 
         compassActive = false;
         if (Compass != null)
@@ -109,10 +111,18 @@ public class PlayerActions : MonoBehaviour
         else
             thrown = false;
 
-        if ((Input.GetKeyDown(KeyBindingScript.buttons["Compass"]) || Input.GetKey(KeyBindingScript.controller["C_Compass"])) && Compass != null)
+        if ((Input.GetKeyDown(KeyBindingScript.buttons["Compass"]) || Input.GetKeyDown(KeyBindingScript.controller["C_Compass"])) && Compass != null)
         {
             compassActive = !compassActive;
             Compass.SetActive(compassActive);
+        }
+
+        if(Input.GetKeyDown(KeyBindingScript.buttons["Mirror"]) || Input.GetKeyDown(KeyBindingScript.controller["C_Mirror"]))
+        {
+            mirrorActive = !mirrorActive;
+            Mirror.SetActive(mirrorActive);
+            if(mirrorActive)
+                Mirror.transform.localRotation = Quaternion.Euler(-90, -45, 0);
         }
 
         /*
