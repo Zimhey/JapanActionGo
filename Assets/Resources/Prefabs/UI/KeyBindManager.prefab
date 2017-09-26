@@ -55,11 +55,17 @@ MonoBehaviour:
   jump: {fileID: 0}
   chalk: {fileID: 0}
   ofuda: {fileID: 0}
+  compass: {fileID: 0}
+  mirror: {fileID: 0}
   c_run: {fileID: 0}
   c_jump: {fileID: 0}
   c_chalk: {fileID: 0}
   c_ofuda: {fileID: 0}
+  c_compass: {fileID: 0}
+  c_mirror: {fileID: 0}
   vr_run: {fileID: 0}
   vr_jump: {fileID: 0}
   vr_chalk: {fileID: 0}
   vr_ofuda: {fileID: 0}
+  vr_compass: {fileID: 0}
+  vr_mirror: {fileID: 0}
