@@ -45,10 +45,8 @@ public class YokaiController : MonoBehaviour {
         return true;
     }
 
-    public void MoveYokai()
+    public void MoveYokai(CharacterController controller, NavMeshAgent agent)
     {
-        CharacterController controller = GetComponent<CharacterController>(); // TODO make this and other components fields
-        NavMeshAgent agent = GetComponent<NavMeshAgent>();
         agent.nextPosition = transform.position;
         Vector3 velocity = agent.desiredVelocity + Physics.gravity;
         agent.velocity = velocity;

@@ -78,14 +78,13 @@ public class OniController : YokaiController
     private OniState state;
 
     private Transform playerTransform;
+    private CharacterController controller;
 
     public OniState State
     {
         set
         {
             state = value;
-
-            actorID = GetComponent<Actor>();
             GameManager.Instance.ActorStateChange(actorID, (int) state);
             //print("OniState " + state);
         }
@@ -106,6 +105,9 @@ public class OniController : YokaiController
         posTimer = 60;
         posTimer2 = 27;
         root = MazeGenerator.getSectionBasedOnLocation(home);
+        actorID = GetComponent<Actor>();
+        controller = GetComponent<CharacterController>();
+
         currentNode = StartingNode;
         int column = (int)((home.x - 8) / 6);
         int floor = (int)(home.y / 30);
@@ -245,7 +247,7 @@ public class OniController : YokaiController
             oldPosition = transform.position;
         }
 
-        MoveYokai();
+        MoveYokai(controller, agent);
     }
 
     void idle()
@@ -360,7 +362,6 @@ public class OniController : YokaiController
         System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < KillDistance;
         if (playerCloseToEnemy)
         {
-            actorID = GetComponent<Actor>();
             GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
             State = OniState.GameOver;
             GameManager.Instance.GameOver();
