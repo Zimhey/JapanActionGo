@@ -305,7 +305,7 @@ public class GameManager : MonoBehaviour {
 
         Vector3 location = new Vector3(20, -119, 8);
         PlayerObj = Instantiate(Resources.Load(PlayerTypeLoc), location, tutorial1[0, 0].GetRotation()) as GameObject;
-        PlayerObj.AddComponent<Actor>().ActorID = AnalyticsManager.AddActor(SessionID, ActorType.Player);
+        GameObject.FindGameObjectWithTag("Player").AddComponent<Actor>().ActorID = AnalyticsManager.AddActor(SessionID, ActorType.Player);
         PlayerObj.transform.parent = GameParent.transform;
     }
 
