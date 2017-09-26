@@ -155,6 +155,7 @@ public class InuController : YokaiController
 
     void LateUpdate()
     {
+        playerTransform = PlayerObject.transform;
         if (VRDevice.isPresent)
         {
             if (PlayerObject.transform.childCount != 0)
@@ -165,10 +166,6 @@ public class InuController : YokaiController
             {
                 print("player has no children");
             }
-        }
-        else
-        {
-            playerTransform = PlayerObject.transform;
         }
 
         //print(rb.transform.position.y);

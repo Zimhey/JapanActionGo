@@ -123,6 +123,7 @@ public class OniController : YokaiController
 
     void LateUpdate()
     {
+        playerTransform = PlayerObject.transform;
         if (VRDevice.isPresent)
         {
             if (PlayerObject.transform.childCount != 0)
@@ -133,10 +134,6 @@ public class OniController : YokaiController
             {
                 print("player has no children");
             }
-        }
-        else
-        {
-            playerTransform = PlayerObject.transform;
         }
 
         //manage state machine each update, call functions based on state
