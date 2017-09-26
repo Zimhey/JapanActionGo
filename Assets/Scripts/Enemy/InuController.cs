@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 using System;
 using UnityEngine.AI;
-using UnityEngine.VR;
 
 //state machine for inu AI
 public enum InuState
@@ -156,17 +155,6 @@ public class InuController : YokaiController
     void LateUpdate()
     {
         playerTransform = PlayerObject.transform;
-        if (VRDevice.isPresent)
-        {
-            if (PlayerObject.transform.childCount != 0)
-            {
-                playerTransform = PlayerObject.transform.GetChild(0);
-            }
-            else
-            {
-                print("player has no children");
-            }
-        }
 
         //print(rb.transform.position.y);
         //print("InuState" + state);

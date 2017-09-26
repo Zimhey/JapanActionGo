@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.VR;
 
 //state machine for oni AI
 public enum OniState
@@ -124,17 +123,6 @@ public class OniController : YokaiController
     void LateUpdate()
     {
         playerTransform = PlayerObject.transform;
-        if (VRDevice.isPresent)
-        {
-            if (PlayerObject.transform.childCount != 0)
-            {
-                playerTransform = PlayerObject.transform.GetChild(0);
-            }
-            else
-            {
-                print("player has no children");
-            }
-        }
 
         //manage state machine each update, call functions based on state
         //print("Onistate " + state);

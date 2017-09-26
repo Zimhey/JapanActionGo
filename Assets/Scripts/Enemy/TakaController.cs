@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.VR;
 
 //state machine for taka AI
 public enum TakaState
@@ -105,14 +104,7 @@ public class TakaController : YokaiController
         animState = TakaAnim.Idle;
         awake = false;
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
-        if (!VRDevice.isPresent)
-        {
-            cam = PlayerObject.GetComponentInChildren<Camera>();
-        }
-        else
-        {
-            //code to assign camera once VR player is understood
-        }
+        cam = Camera.main;
         oldPosition = home;
         posTimer = 60;
         posTimer2 = 27;
@@ -134,17 +126,6 @@ public class TakaController : YokaiController
     void LateUpdate()
     {
         playerTransform = PlayerObject.transform;
-        if (VRDevice.isPresent)
-        {
-            if (PlayerObject.transform.childCount != 0)
-            {
-                playerTransform = PlayerObject.transform.GetChild(0);
-            }
-            else
-            {
-                print("player has no children");
-            }
-        }
 
         //manage state machine each update, call functions based on state
         if (state != TakaState.Idle)
