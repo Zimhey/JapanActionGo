@@ -8,6 +8,7 @@ public class PlayerActions : MonoBehaviour
     private LayerMask drawingLayerMask;
     private int levelLayer;
     private int dynamicObjectLayer;
+    private bool compassActive;
 
     public Inventory PlayerInventory;
 
@@ -55,8 +56,9 @@ public class PlayerActions : MonoBehaviour
         dynamicObjectLayer = LayerMask.NameToLayer("DynamicObject");
         drawingLayerMask =  1 << levelLayer | 1 << dynamicObjectLayer;
 
+        compassActive = false;
         if (Compass != null)
-            Compass.SetActive(false);
+            Compass.SetActive(compassActive);
 
         if (UsingVR) 
 		{
@@ -74,7 +76,7 @@ public class PlayerActions : MonoBehaviour
         bool attemptThrow;
         if (!VRDevice.isPresent) {
             attemptDraw = (Input.GetKey(KeyBindingScript.buttons["Draw"]) || Input.GetKey(KeyBindingScript.controller["C_Draw"]));
-            attemptThrow = (Input.GetKeyDown(KeyBindingScript.buttons["Throw"]) || Input.GetKey(KeyBindingScript.controller["C_Throw"]));
+            attemptThrow = (Input.GetKey(KeyBindingScript.buttons["Throw"]) || Input.GetKey(KeyBindingScript.controller["C_Throw"]));
         }
 
         else {
@@ -97,22 +99,23 @@ public class PlayerActions : MonoBehaviour
 
         // Chalk Drawing
 
-		if (attemptDraw && PlayerInventory.CanUse(ItemType.Chalk))
+        if (attemptDraw && PlayerInventory.CanUse(ItemType.Chalk))
             DrawChalk();
         else
             drawing = false;
 
-		if (attemptThrow && PlayerInventory.CanUse(ItemType.Ofuda))
+        if (attemptThrow && PlayerInventory.CanUse(ItemType.Ofuda))
             ThrowOfuda();
         else
             thrown = false;
 
-        /*
-        if (Input.GetButtonDown("Use_Compass") && Compass != null)
-            Compass.SetActive(true);
-        if (Input.GetButtonUp("Use_Compass") && Compass != null)
-            Compass.SetActive(false);
+        if ((Input.GetKeyDown(KeyBindingScript.buttons["Compass"]) || Input.GetKey(KeyBindingScript.controller["C_Compass"])) && Compass != null)
+        {
+            compassActive = !compassActive;
+            Compass.SetActive(compassActive);
+        }
 
+        /*
         if(Input.GetKey(KeyCode.E))
         {
             Mirror.SetActive(true);
