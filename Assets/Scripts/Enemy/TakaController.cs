@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.VR;
 
 //state machine for taka AI
 public enum TakaState
@@ -105,10 +104,7 @@ public class TakaController : YokaiController
         animState = TakaAnim.Idle;
         awake = false;
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
-        if (!VRDevice.isPresent)
-            cam = PlayerObject.GetComponentInChildren<Camera>();
-        else
-            cam = null;
+        cam = PlayerObject.GetComponentInChildren<Camera>();
         oldPosition = home;
         posTimer = 60;
         posTimer2 = 27;
