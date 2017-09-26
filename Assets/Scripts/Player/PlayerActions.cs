@@ -10,12 +10,9 @@ public class PlayerActions : MonoBehaviour
     private int dynamicObjectLayer;
 
     public Inventory PlayerInventory;
-
-    public float PullLeverRadius;
     
     public float DrawingDistance;
     public float DistanceDrawn;
-    public List<GameObject> Marks;
     private GameObject chalkMarksParent;
 
     private bool drawing;
@@ -25,12 +22,50 @@ public class PlayerActions : MonoBehaviour
     private Vector3 lastDrawnPoint;
     private GameObject lastObjectDrawnOn;
 
+    // Analytics
+    public float TimeBetweenDrawings;
+    private float lastDrawTime;
+    private bool isDrawingToPush;
+    private List<LineRenderer> linesToPush;
+    int drawingEventID;
+    
+    private bool isUsingCompass;
+    public bool IsUsingCompass
+    {
+        get
+        {
+            return isUsingCompass;
+        }
+        set
+        {
+            if(!isUsingCompass && value) // if wasn't using compass and now using compass, report to analytics
+                GameManager.Instance.UsedItem(ItemType.Compass);
+            isUsingCompass = value;
+            Compass.SetActive(value);
+        }
+    }
 
+    private bool isUsingMirror;
+    public bool IsUsingMirror
+    {
+        get
+        {
+            return isUsingMirror;
+        }
+        set
+        {
+            if (!isUsingMirror && value) // if wasn't using mirror and now using mirror, report to analytics
+                GameManager.Instance.UsedItem(ItemType.Mirror);
+            isUsingMirror = value;
+            Mirror.SetActive(value);
+        }
+    }
+
+    // Ofuda
     private GameObject ofudaPrefab;
     private GameObject thrownOfudaParent;
     private bool thrown;
 
-	public bool UsingVR;
 	public GameObject DrawingHand;
 	private SteamVR_TrackedController drawingController;
 	public GameObject ThrowingHand;
@@ -55,94 +90,119 @@ public class PlayerActions : MonoBehaviour
         dynamicObjectLayer = LayerMask.NameToLayer("DynamicObject");
         drawingLayerMask =  1 << levelLayer | 1 << dynamicObjectLayer;
 
+        linesToPush = new List<LineRenderer>();
+
         if (Compass != null)
             Compass.SetActive(false);
-
-        if (UsingVR) 
-		{
-			drawingController = DrawingHand.GetComponent<SteamVR_TrackedController>();
-			throwingController = ThrowingHand.GetComponent<SteamVR_TrackedController>();
-		}
     }
 
     // Update is called once per frame
     void Update()
     {
-        //bool attemptDraw = UsingVR ? drawingController.triggerPressed : (Input.GetKey(KeyBindingScript.buttons["Draw"]) || Input.GetKey(KeyBindingScript.controller["Draw"]) || Input.GetKey(KeyBindingScript.vr["Draw"]));
-        //bool attemptThrow = UsingVR ? throwingController.triggerPressed : (Input.GetKeyDown(KeyBindingScript.buttons["Throw"]) || Input.GetKey(KeyBindingScript.controller["Throw"]) || Input.GetKey(KeyBindingScript.vr["Throw"]));
+        TryDraw();
+        TryThrow();
+        TryCompass();
+        TryMirror();
+    }
+
+    public void TryDraw()
+    {
         bool attemptDraw;
-        bool attemptThrow;
-        if (!VRDevice.isPresent) {
-            attemptDraw = (Input.GetKey(KeyBindingScript.buttons["Draw"]) || Input.GetKey(KeyBindingScript.controller["C_Draw"]));
-            attemptThrow = (Input.GetKeyDown(KeyBindingScript.buttons["Throw"]) || Input.GetKey(KeyBindingScript.controller["C_Throw"]));
-        }
-
-        else {
-            //print("VR Present");
-            if (KeyBindingScript.LeftController != null && KeyBindingScript.RightController != null)
-            {
+        if (!VRDevice.isPresent)
+            attemptDraw = (Input.GetKey(KeyBindingScript.buttons["Draw"]) || Input.GetKey(KeyBindingScript.controller["C_Draw"])); // TODO move this all into KeyBindScript with one function to call
+        else
+            if (KeyBindingScript.LeftController != null && KeyBindingScript.RightController != null) // TODO move this into KeyBindScript
                 attemptDraw = KeyBindingScript.DrawPressedVR();
-                attemptThrow = KeyBindingScript.ThrowPressedVR();
-            }
             else
-            {
                 attemptDraw = false;
-                attemptThrow = false;
-            }
-        }
 
-        // Use Lever
-        if (Input.GetButtonDown("Grab_Items"))
-            Use();
-
-        // Chalk Drawing
-
-		if (attemptDraw && PlayerInventory.CanUse(ItemType.Chalk))
+        if (attemptDraw && PlayerInventory.CanUse(ItemType.Chalk))
             DrawChalk();
         else
             drawing = false;
 
-		if (attemptThrow && PlayerInventory.CanUse(ItemType.Ofuda))
+        // analytics
+        if (drawing)
+        {
+            if (!isDrawingToPush)
+            {
+                isDrawingToPush = true;
+                drawingEventID = GameManager.Instance.UsedItem(ItemType.Chalk);
+            }
+
+            lastDrawTime = Time.time;
+        }
+        else if (isDrawingToPush && Time.time > lastDrawTime + TimeBetweenDrawings)
+        {
+            GameManager.Instance.MarkDrawn(drawingEventID, linesToPush);
+            linesToPush.Clear();
+            isDrawingToPush = false;
+        }
+    }
+
+    public void TryThrow()
+    {
+        bool attemptThrow;
+        if (!VRDevice.isPresent)
+            attemptThrow = (Input.GetKeyDown(KeyBindingScript.buttons["Throw"]) || Input.GetKey(KeyBindingScript.controller["C_Throw"]));
+        else
+        {
+            if (KeyBindingScript.LeftController != null && KeyBindingScript.RightController != null)
+            {
+                attemptThrow = KeyBindingScript.ThrowPressedVR();
+            }
+            else
+            {
+                attemptThrow = false;
+            }
+        }
+
+        if (attemptThrow && PlayerInventory.CanUse(ItemType.Ofuda))
             ThrowOfuda();
         else
             thrown = false;
-
-        /*
-        if (Input.GetButtonDown("Use_Compass") && Compass != null)
-            Compass.SetActive(true);
-        if (Input.GetButtonUp("Use_Compass") && Compass != null)
-            Compass.SetActive(false);
-
-        if(Input.GetKey(KeyCode.E))
-        {
-            Mirror.SetActive(true);
-            Mirror.transform.localRotation = Quaternion.Euler(-90, -45, 0);
-        }
-        else if (Input.GetKey(KeyCode.Q))
-        {
-            Mirror.SetActive(true);
-            Mirror.transform.localRotation = Quaternion.Euler(-90, 45, 0);
-        }
-        else if (Input.GetKey(KeyCode.R))
-        {
-            Mirror.SetActive(true);
-            Mirror.transform.localRotation = Quaternion.Euler(-90, 0, 0);
-        }
-        else
-            Mirror.SetActive(false);
-        */
     }
 
-    public void Use()
+    public void TryMirror()
     {
-        foreach (GameObject obj in GameObject.FindObjectsOfType<GameObject>())
+        if (!PlayerInventory.CanUse(ItemType.Mirror))
+            return; // can't use mirror
+        if(GameManager.Instance.PlayersVRType == VirtualRealityType.None)
         {
-            if (obj.tag == "Lever" && Vector3.Distance(transform.position, obj.transform.position) < PullLeverRadius)
-                obj.SendMessage("Pull");
-            else if (obj.tag == "Ofuda" && Vector3.Distance(transform.position, obj.transform.position) < PullLeverRadius)
+            if (Input.GetKey(KeyCode.E))
             {
-                Destroy(obj);
-                PlayerInventory.Found(ItemType.Ofuda);
+                IsUsingMirror = true;
+                Mirror.transform.localRotation = Quaternion.Euler(-90, -45, 0);
+            }
+            else if (Input.GetKey(KeyCode.Q))
+            {
+                IsUsingMirror = true;
+                Mirror.transform.localRotation = Quaternion.Euler(-90, 45, 0);
+            }
+            else if (Input.GetKey(KeyCode.R))
+            {
+                IsUsingMirror = true;
+                Mirror.transform.localRotation = Quaternion.Euler(-90, 0, 0);
+            }
+            else
+                IsUsingMirror = false;
+        }
+    }
+
+    public void TryCompass()
+    {
+        if (!PlayerInventory.CanUse(ItemType.Compass))
+            return; // can't use compass
+        if (GameManager.Instance.PlayersVRType == VirtualRealityType.None)
+        {
+            if (Input.GetButtonDown("Use_Compass") && Compass != null)
+            {
+                IsUsingCompass = true;
+            }
+
+            if (Input.GetButtonUp("Use_Compass") && Compass != null)
+            {
+                IsUsingCompass = false;
             }
         }
     }
@@ -151,8 +211,8 @@ public class PlayerActions : MonoBehaviour
     {
         GameObject chalkMark = Instantiate(chalkPrefab);
         chalkMark.transform.parent = chalkMarksParent.transform;
-        Marks.Add(chalkMark);
         currentMark = chalkMark.GetComponentInChildren<LineRenderer>();
+        linesToPush.Add(currentMark);
         return chalkMark;
     }
 
@@ -160,10 +220,10 @@ public class PlayerActions : MonoBehaviour
     {
         Transform pointer;
 
-		if (UsingVR)
-			pointer = DrawingHand.transform;
-		else
-			pointer = cam.transform;
+        if (GameManager.Instance.PlayersVRType == VirtualRealityType.None)
+            pointer = cam.transform;
+        else
+            pointer = DrawingHand.transform;
 
 		Vector3 dir = pointer.transform.rotation * Vector3.forward; 
 		Ray ray = new Ray(pointer.transform.position, dir);	         
@@ -172,8 +232,8 @@ public class PlayerActions : MonoBehaviour
         if (Physics.Raycast(ray, out rayHit, DrawingDistance, drawingLayerMask)) // if object to draw on
         {
 
-            // If can't draw across objects, start a new line when objects change
-            if (rayHit.normal != chalkFaceNormal || !drawing || (lastObjectDrawnOn != rayHit.collider.gameObject && rayHit.collider.gameObject.layer == dynamicObjectLayer))
+            // if first segment or different face normals or moved onto a dynamic object
+            if (!drawing || rayHit.normal != chalkFaceNormal || (lastObjectDrawnOn != rayHit.collider.gameObject && rayHit.collider.gameObject.layer == dynamicObjectLayer))
             {
                 drawing = true;
                 StartNewMark();
@@ -187,7 +247,7 @@ public class PlayerActions : MonoBehaviour
                 }
             }
 
-            //
+            // prevent z fighting
             Vector3 offset = rayHit.normal * 0.002f;
             Vector3 position = (Vector3)(currentMark.transform.worldToLocalMatrix * (rayHit.point + offset)) - currentMark.transform.position;
             
@@ -217,11 +277,11 @@ public class PlayerActions : MonoBehaviour
         if(!thrown)
         {
 			Transform pointer;
-			if (UsingVR)
-				pointer = ThrowingHand.transform;
-			else
-				pointer = cam.transform;
-			GameObject ofuda = Instantiate(ofudaPrefab, pointer.position + pointer.forward, pointer.rotation);
+            if (GameManager.Instance.PlayersVRType == VirtualRealityType.None)
+                pointer = cam.transform;
+            else
+                pointer = ThrowingHand.transform;
+            GameObject ofuda = Instantiate(ofudaPrefab, pointer.position + pointer.forward, pointer.rotation);
             ofuda.transform.parent = thrownOfudaParent.transform;
             PlayerInventory.Used(ItemType.Ofuda);
             thrown = true;
