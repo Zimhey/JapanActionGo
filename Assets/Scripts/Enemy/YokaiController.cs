@@ -15,7 +15,6 @@ public class YokaiController : MonoBehaviour {
     {
         float maxDistance = 25;
         Vector3 rayOrigin = gameObject.transform.position;
-        //print("ray origin " + rayOrigin);
         if (gameObject.CompareTag("Oni"))
         {
             rayOrigin = new Vector3(rayOrigin.x, home.y + 2.5F, rayOrigin.z);
@@ -31,7 +30,6 @@ public class YokaiController : MonoBehaviour {
         Vector3 rayDirection = desiredObject.transform.position - gameObject.transform.position;
         rayDirection.y = 0;
         maxDistance = rayDirection.magnitude;
-        //rayDirection = Vector3.MoveTowards
         rayDirection.Normalize();
         rayDirection.Scale(new Vector3(maxDistance, 1, maxDistance));
         Ray ray = new Ray(rayOrigin, rayDirection);
@@ -94,10 +92,8 @@ public class YokaiController : MonoBehaviour {
                 System.Boolean noWallfound = NoWall(valid[iter3], levelMask, home);
                 if (noWallfound)
                 {
-                    //print("found footprint at" + valid[iter3].transform.position);
                     return valid[iter3];
                 }
-                //print("wallfound");
             }
         }
         return null;
@@ -171,12 +167,8 @@ public class YokaiController : MonoBehaviour {
         rayDirection.Normalize();
         observerDirection.Normalize();
         float angleDot = Vector3.Dot(observerDirection, rayDirection);
-        //print("see angle " + angleDot);
-        
         System.Boolean objectInFrontOfObserver = angleDot > 0.0;
-        //print("in front " + objectInFrontOfObserver);
         System.Boolean noWallfound = NoWall(desiredObject, levelMask, home);
-        //print("no wall " + noWallfound);
         if (objectInFrontOfObserver)
         {
             System.Boolean seenPlayer = objectInFrontOfObserver && objectCloseToObserver && noWallfound;
@@ -188,7 +180,7 @@ public class YokaiController : MonoBehaviour {
         }
     }
 
-    public MazeNode setClosest(MazeNode closest, MazeNode home, List<MazeNode> nodes, Rigidbody rb)
+    public MazeNode SetClosest(MazeNode closest, MazeNode home, List<MazeNode> nodes, Rigidbody rb)
     {
         for (int iter = 0; iter < nodes.Count; iter++)
         {
@@ -213,7 +205,7 @@ public class YokaiController : MonoBehaviour {
         return closest;
     }
 
-    public MazeNode updateClosest(MazeNode closest, List<MazeNode> nodes, MazeNode currentNode, MazeNode previous, MazeNode previous2, Rigidbody rb)
+    public MazeNode UpdateClosest(MazeNode closest, List<MazeNode> nodes, MazeNode currentNode, MazeNode previous, MazeNode previous2, Rigidbody rb)
     {
         for (int iter = 0; iter < nodes.Count; iter++)
         {
@@ -241,14 +233,5 @@ public class YokaiController : MonoBehaviour {
             }
         }
         return closest;
-    }
-
-    public bool isStuck(Vector3 oldPosition, Vector3 newPosition)
-    {
-        if (oldPosition == newPosition)
-        {
-            return true;
-        }
-        return false;
     }
 }

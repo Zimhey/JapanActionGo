@@ -86,7 +86,6 @@ public class OniController : YokaiController
         {
             state = value;
             GameManager.Instance.ActorStateChange(actorID, (int) state);
-            //print("OniState " + state);
         }
     }
 
@@ -133,12 +132,6 @@ public class OniController : YokaiController
         }
 
         playerTransform = PlayerObject.transform;
-        
-
-        if (nextFootprint != null)
-        {
-            //print(nextFootprint.transform.position);
-        }
 
         /*if (newPosition != null)
         {
@@ -258,11 +251,9 @@ public class OniController : YokaiController
     void idle()
     {
         seen = false;
-        //print("idling");
         seen = SeeObject(PlayerObject, LevelMask, home);
         if (seen)
         {
-            //print("idle to chase");
             awake = true;
             State = OniState.Chase;
             return;
@@ -270,17 +261,14 @@ public class OniController : YokaiController
         GameObject foundFootprint = SeeFootprint(LevelMask, home);
         if (foundFootprint != null)
         {
-            //print("idle to follow");
             State = OniState.Follow;
             return;
         }
-        if (root != null)//awake == true && 
+        if (root != null)
         {
-            //print("idle to patrol");
             State = OniState.Patrol;
             return;
         }
-        //print("noothing to interact with");
     }
     
     void patrol()
@@ -303,7 +291,6 @@ public class OniController : YokaiController
 
         if (root != null)
         {
-            //print("patrolling");
             List<MazeNode> nodes = MazeGenerator.GetIntersectionNodes(root);
 
             Vector3 currentNodePosition;
@@ -311,7 +298,7 @@ public class OniController : YokaiController
             if (currentNode == null)
             {
                 MazeNode closest = null;
-                closest = setClosest(closest, homeNode, nodes, rb);
+                closest = SetClosest(closest, homeNode, nodes, rb);
                 currentNode = closest;
             }
 
@@ -324,7 +311,7 @@ public class OniController : YokaiController
                     if (transform.position.z < currentNodePosition.z + 2 && transform.position.z > currentNodePosition.z - 2)
                     {
                         MazeNode closest = null;
-                        closest = updateClosest(closest, nodes, currentNode, previous, previous2, rb);
+                        closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
                         previous2 = previous;
                         previous = currentNode;
                         currentNode = closest;
@@ -501,7 +488,6 @@ public class OniController : YokaiController
 
     void animAttack()
     {
-        // if attacking player
         anim.SetInteger("State", 3);
     }
 
@@ -512,7 +498,6 @@ public class OniController : YokaiController
 
     void animLook()
     {
-        // if looking around
         anim.SetInteger("State", 5);
     }
 }
