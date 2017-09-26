@@ -68,6 +68,8 @@ public class InuController : YokaiController
         set
         {
             state = value;
+
+            actorID = GetComponent<Actor>();
             GameManager.Instance.ActorStateChange(actorID, (int)state);
             //print("InuState " + state);
         }
@@ -118,7 +120,6 @@ public class InuController : YokaiController
     private int sitTimer;
 
     private Transform playerTransform;
-    private CharacterController controller;
 
     void Start()
     {
@@ -141,8 +142,6 @@ public class InuController : YokaiController
         agent.updatePosition = false;
         agent.updateRotation = true;
         retreating = false;
-        actorID = GetComponent<Actor>();
-        controller = GetComponent<CharacterController>();
 
         int column = (int)((home.x - 8) / 6);
         int floor = (int)(home.y / 30);
@@ -156,10 +155,21 @@ public class InuController : YokaiController
     void LateUpdate()
     {
         playerTransform = PlayerObject.transform;
+
+        //print(rb.transform.position.y);
+        //print("InuState" + state);
         if (PlayerObject != null)
         {
             PlayerObject = GameObject.FindGameObjectWithTag("Player");
         }
+
+        //manage state machine each update, call functions based on state
+        if (state != InuState.Idle)
+        {
+            //print("InuState " + state);
+        }
+        //print("AnimState " + animState);
+        //print("AnimStateInt " + anim.GetInteger(" State"));
 
         if (newPosition != null)
         {
@@ -253,6 +263,8 @@ public class InuController : YokaiController
                 break;
         }
 
+        //print("after second switch");
+
         if (awake == true)
         {
             TurnTowardsPlayer(PlayerObject);
@@ -265,8 +277,10 @@ public class InuController : YokaiController
             if (newPosition != null)
             {
                 oldPosition = newPosition;
+                //print("oldpos" + oldPosition);
             }
             newPosition = transform.position;
+            //print("newpos" + newPosition);
         }
         posTimer2--;
         if (posTimer2 <= 0)
@@ -278,8 +292,10 @@ public class InuController : YokaiController
             }
             oldPosition = transform.position;
         }
-        
-        MoveYokai(controller, agent);
+
+        //print(rb.transform.position.y);
+        MoveYokai();
+        //print(rb.transform.position.y);
     }
 
     void idle()
@@ -758,6 +774,7 @@ public class InuController : YokaiController
 
         if (hasPlayerTripped())
         {
+            actorID = GetComponent<Actor>();
             GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
             GameManager.Instance.GameOver();
             PlayerObject.SetActive(false);
@@ -815,6 +832,7 @@ public class InuController : YokaiController
         //print("cornered dist " + rayDirection.sqrMagnitude);
         if (playerKillDistance && beenTooClose == true)
         {
+            actorID = GetComponent<Actor>();
             GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
             GameManager.Instance.GameOver();
         }
