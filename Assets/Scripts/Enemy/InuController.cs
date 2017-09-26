@@ -161,7 +161,7 @@ public class InuController : YokaiController
         if (controller == null)
         {
             controller = GetComponent<CharacterController>();
-            print("assigned controller");
+            //print("assigned controller");
         }
 
         playerTransform = PlayerObject.transform;
