@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.VR;
 
 public class YokaiController : MonoBehaviour {
 
@@ -27,6 +28,9 @@ public class YokaiController : MonoBehaviour {
         {
             rayOrigin = new Vector3(rayOrigin.x, home.y + 4.5F, rayOrigin.z);
         }
+        Vector3 playerLoc = desiredObject.transform.position;
+        if (VRDevice.isPresent)
+            playerLoc = desiredObject.transform.TransformPoint(playerLoc);
         Vector3 rayDirection = desiredObject.transform.position - gameObject.transform.position;
         rayDirection.y = 0;
         maxDistance = rayDirection.magnitude;
