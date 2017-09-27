@@ -168,7 +168,14 @@ public class YokaiController : MonoBehaviour {
         observerDirection.Normalize();
         float angleDot = Vector3.Dot(observerDirection, rayDirection);
         System.Boolean objectInFrontOfObserver = angleDot > 0.0;
-        System.Boolean noWallfound = NoWall(desiredObject, levelMask, home);
+        System.Boolean noWallfound = false;
+        if (objectInFrontOfObserver)
+        {
+            if (objectCloseToObserver)
+            {
+                noWallfound = NoWall(desiredObject, levelMask, home);
+            }
+        }
         if (objectInFrontOfObserver)
         {
             System.Boolean seenPlayer = objectInFrontOfObserver && objectCloseToObserver && noWallfound;

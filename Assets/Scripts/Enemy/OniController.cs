@@ -72,6 +72,7 @@ public class OniController : YokaiController
     private int posTimer2;
     private GameObject nextFootprint;
     private NavMeshAgent agent;
+    private int fleeTimer;
 
     private Animator anim;
 
@@ -86,6 +87,11 @@ public class OniController : YokaiController
         {
             state = value;
             GameManager.Instance.ActorStateChange(actorID, (int) state);
+            if(state == OniState.Flee)
+            {
+                fleeTimer = 30;
+                print(fleeTimer);
+            }
         }
     }
 
@@ -105,6 +111,7 @@ public class OniController : YokaiController
         posTimer = 60;
         posTimer2 = 27;
         root = MazeGenerator.getSectionBasedOnLocation(home);
+        fleeTimer = 30;
 
         currentNode = StartingNode;
         int column = (int)((home.x - 8) / 6);
@@ -137,27 +144,34 @@ public class OniController : YokaiController
         {
             if (oldPosition2 != null)
             {*/
-                if (state != OniState.Idle)
+        if (state != OniState.Idle && state != OniState.Flee)
+        {
+            //print("checking if stuck");
+            Vector3 difference = newPosition - oldPosition;
+            difference.y = 0;
+            float difMag = difference.magnitude;
+            //print("dif1 " + difMag);
+            if (difMag < .05)
+            {
+                Vector3 difference2 = oldPosition - oldPosition2;
+                difference2.y = 0;
+                float difMag2 = difference2.magnitude;
+                //print("dif2 " + difMag2);
+                if (difMag < .05)
                 {
-                    Vector3 difference = newPosition - oldPosition;
-                    float difMag = difference.magnitude;
-                    if (difMag < .25)
-                    {
-                        Vector3 difference2 = oldPosition - oldPosition2;
-                        float difMag2 = difference2.magnitude;
-                        if (difMag < .25)
-                        {
-                            print("resetting path");
-                            agent.ResetPath();
-                            previous2 = previous;
-                            previous = currentNode;
-                            currentNode = null;
-                            State = OniState.Idle;
-                        }
-                    }
+                    posTimer = 0;
+                    posTimer = 5;
+                    print("resetting path");
+                    agent.ResetPath();
+                    previous2 = previous;
+                    previous = currentNode;
+                    currentNode = null;
+                    State = OniState.Flee;
                 }
-            /*}
-        }*/
+            }
+        }
+        /*}
+    }*/
 
         switch (state)
         {
@@ -229,20 +243,22 @@ public class OniController : YokaiController
             //if(newPosition != null)
             //{
                 oldPosition = newPosition;
-                //print("oldpos" + oldPosition);
+                //print("oldpos " + oldPosition);
             //}
             newPosition = transform.position;
-            //print("newpos" + newPosition);
+            //print("newpos " + newPosition);
         }
         posTimer2--;
         if (posTimer2 <= 0)
         {
-            posTimer = 77;
+            posTimer2 = 77;
             //if (oldPosition != null)
             //{
                 oldPosition2 = oldPosition;
+                //print("oldpos2 " + oldPosition2);
             //}
             oldPosition = transform.position;
+            //print("oldpos " + oldPosition);
         }
 
         MoveYokai(controller, agent);
@@ -365,6 +381,24 @@ public class OniController : YokaiController
 
     void flee()
     {
+        fleeTimer--;
+        if (fleeTimer <= 0)
+        {
+            seen = false;
+            seen = SeeObject(PlayerObject, LevelMask, home);
+            if (seen)
+            {
+                awake = true;
+                State = OniState.Chase;
+                return;
+            }
+            GameObject foundFootprint = SeeFootprint(LevelMask, home);
+            if (foundFootprint != null)
+            {
+                State = OniState.Follow;
+                return;
+            }
+        }
         agent.ResetPath();
         agent.SetDestination(home);
         if (transform.position.x < home.x + 2 && transform.position.x > home.x - 2)
