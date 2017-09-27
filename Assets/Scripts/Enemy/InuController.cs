@@ -95,6 +95,7 @@ public class InuController : YokaiController
     //has player been seen
     private System.Boolean awake;
     //current node for patrol
+    private List<MazeNode> nodes;
     private MazeNode currentNode;
     private MazeNode root;
     private MazeNode previous;
@@ -139,6 +140,10 @@ public class InuController : YokaiController
         posTimer = 60;
         posTimer2 = 27;
         root = MazeGenerator.getSectionBasedOnLocation(home);
+        if (root != null)
+        {
+            nodes = MazeGenerator.GetIntersectionNodes(root);
+        }
         currentNode = StartingNode;
         agent = GetComponent<NavMeshAgent>();
         agent.updatePosition = false;
@@ -194,6 +199,7 @@ public class InuController : YokaiController
                     previous = currentNode;
                     currentNode = null;
                     State = InuState.Flee;
+                    return;
                 }
             }
         }
@@ -340,8 +346,8 @@ public class InuController : YokaiController
 
         if (root != null)
         {
-            List<MazeNode> nodes = MazeGenerator.GetIntersectionNodes(root);
             Vector3 currentNodePosition;
+            bool setCurrent = false;
 
             if (currentNode == null)
             {
@@ -353,25 +359,29 @@ public class InuController : YokaiController
                     previous = currentNode;
                     previous2 = previous;
                 }
+                setCurrent = true;
             }
-
+            
             if (currentNode != null)
             {
                 currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
 
-                if (transform.position.x < currentNodePosition.x + 2 && transform.position.x > currentNodePosition.x - 2)
+                if (setCurrent == false)
                 {
-                    if (transform.position.z < currentNodePosition.z + 2 && transform.position.z > currentNodePosition.z - 2)
+                    if (transform.position.x < currentNodePosition.x + 2 && transform.position.x > currentNodePosition.x - 2)
                     {
-                        MazeNode closest = null;
-                        closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
-                        previous2 = previous;
-                        previous = currentNode;
-                        currentNode = closest;
+                        if (transform.position.z < currentNodePosition.z + 2 && transform.position.z > currentNodePosition.z - 2)
+                        {
+                            MazeNode closest = null;
+                            closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
+                            previous2 = previous;
+                            previous = currentNode;
+                            currentNode = closest;
+                        }
                     }
-                }
 
-                currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
+                    currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
+                }
                 agent.SetDestination(currentNodePosition);
             }
         }
