@@ -78,6 +78,7 @@ public class TakaController : YokaiController
     private int posTimer2;
     private GameObject nextFootprint;
     private NavMeshAgent agent;
+    private int fleeTimer;
 
     private Transform playerTransform;
     private MeshRenderer mr;
@@ -89,6 +90,10 @@ public class TakaController : YokaiController
         {
             state = value;
             GameManager.Instance.ActorStateChange(actorID, (int)state);
+            if(state == TakaState.Flee)
+            {
+                fleeTimer = 30;
+            }
         }
     }
 
@@ -146,27 +151,34 @@ public class TakaController : YokaiController
         {
             if (oldPosition2 != null)
             {*/
-                if (state != TakaState.Idle && state != TakaState.Taunt)
+        if (state != TakaState.Idle && state != TakaState.Taunt && state != TakaState.Flee)
+        {
+            //print("checking if stuck");
+            Vector3 difference = newPosition - oldPosition;
+            difference.y = 0;
+            float difMag = difference.magnitude;
+            //print("dif1 " + difMag);
+            if (difMag < .05)
+            {
+                Vector3 difference2 = oldPosition - oldPosition2;
+                difference2.y = 0;
+                float difMag2 = difference2.magnitude;
+                //print("dif2 " + difMag2);
+                if (difMag < .05)
                 {
-                    Vector3 difference = newPosition - oldPosition;
-                    float difMag = difference.magnitude;
-                    if (difMag < .25)
-                    {
-                        Vector3 difference2 = oldPosition - oldPosition2;
-                        float difMag2 = difference2.magnitude;
-                        if (difMag < .25)
-                        {
-                            print("resetting path");
-                            agent.ResetPath();
-                            previous2 = previous;
-                            previous = currentNode;
-                            currentNode = null;
-                            State = TakaState.Idle;
-                        }
-                    }
+                    posTimer = 0;
+                    posTimer = 5;
+                    print("resetting path");
+                    agent.ResetPath();
+                    previous2 = previous;
+                    previous = currentNode;
+                    currentNode = null;
+                    State = TakaState.Flee;
                 }
-            /*}
-        }*/
+            }
+        }
+        /*}
+    }*/
 
         switch (state)
         {
@@ -249,7 +261,7 @@ public class TakaController : YokaiController
         posTimer2--;
         if (posTimer2 <= 0)
         {
-            posTimer = 77;
+            posTimer2 = 77;
             //if (oldPosition != null)
             //{
                 oldPosition2 = oldPosition;
@@ -438,6 +450,25 @@ public class TakaController : YokaiController
 
     void flee()
     {
+        fleeTimer--;
+        if (fleeTimer <= 0)
+        {
+            seen = false;
+            seen = SeeObject(PlayerObject, LevelMask, home);
+            if (seen)
+            {
+                awake = true;
+                State = TakaState.Chase;
+                return;
+            }
+            GameObject foundFootprint = SeeFootprint(LevelMask, home);
+            if (foundFootprint != null)
+            {
+                State = TakaState.Follow;
+                return;
+            }
+        }
+
         agent.ResetPath();
 
         if (mr == null)

@@ -21,6 +21,11 @@ public class Pickup : MonoBehaviour {
         if (collider.gameObject != null && collider.gameObject.tag == "Player")
         {
             collider.gameObject.SendMessage("Found", item);
+            Actor a = GetComponent<Actor>();
+            if (a != null)
+                GameManager.Instance.FoundItem(a);
+            else
+                Debug.LogWarning("Item found without Actor set");
             Destroy(gameObject);
         }
     }

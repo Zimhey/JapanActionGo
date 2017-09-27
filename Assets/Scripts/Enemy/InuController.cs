@@ -69,6 +69,10 @@ public class InuController : YokaiController
         {
             state = value;
             GameManager.Instance.ActorStateChange(actorID, (int)state);
+            if(state == InuState.Flee)
+            {
+                fleeTimer = 30;
+            }
         }
     }
 
@@ -108,6 +112,7 @@ public class InuController : YokaiController
     private int posTimer2;
     private GameObject nextFootprint;
     private NavMeshAgent agent;
+    private int fleeTimer;
 
     private Animator anim;
     private Vector3 oldSitPosition;
@@ -164,28 +169,35 @@ public class InuController : YokaiController
 
         //if (newPosition != null)
         //{
-            //if (oldPosition2 != null)
-            //{
-                if (state != InuState.Idle && state != InuState.Stalk && state != InuState.Cornered)
+        //if (oldPosition2 != null)
+        //{
+        if (state != InuState.Idle && state != InuState.Stalk && state != InuState.Cornered && state != InuState.Flee)
+        {
+            //print("checking if stuck");
+            Vector3 difference = newPosition - oldPosition;
+            difference.y = 0;
+            float difMag = difference.magnitude;
+            //print("dif1 " + difMag);
+            if (difMag < .05)
+            {
+                Vector3 difference2 = oldPosition - oldPosition2;
+                difference2.y = 0;
+                float difMag2 = difference2.magnitude;
+                //print("dif2 " + difMag2);
+                if (difMag < .05)
                 {
-                    Vector3 difference = newPosition - oldPosition;
-                    float difMag = difference.magnitude;
-                    if (difMag < .25)
-                    {
-                        Vector3 difference2 = oldPosition - oldPosition2;
-                        float difMag2 = difference2.magnitude;
-                        if (difMag < .25)
-                        {
-                            print("resetting path");
-                            agent.ResetPath();
-                            previous2 = previous;
-                            previous = currentNode;
-                            currentNode = null;
-                            State = InuState.Idle;
-                        }
-                    }
+                    posTimer = 0;
+                    posTimer = 5;
+                    print("resetting path");
+                    agent.ResetPath();
+                    previous2 = previous;
+                    previous = currentNode;
+                    currentNode = null;
+                    State = InuState.Flee;
                 }
-            //}
+            }
+        }
+        //}
         //}
 
         switch (state)
@@ -272,7 +284,7 @@ public class InuController : YokaiController
         posTimer2--;
         if (posTimer2 <= 0)
         {
-            posTimer = 77;
+            posTimer2 = 77;
             //if (oldPosition != null)
             //{
                 oldPosition2 = oldPosition;
@@ -807,6 +819,24 @@ public class InuController : YokaiController
 
     void flee()
     {
+        fleeTimer--;
+        if (fleeTimer <= 0)
+        {
+            seen = false;
+            seen = SeeObject(PlayerObject, LevelMask, home);
+            if (seen)
+            {
+                awake = true;
+                State = InuState.Chase;
+                return;
+            }
+            GameObject foundFootprint = SeeFootprint(LevelMask, home);
+            if (foundFootprint != null)
+            {
+                State = InuState.Follow;
+                return;
+            }
+        }
         agent.ResetPath();
         agent.SetDestination(home);
         if (transform.position.x < home.x + 2 && transform.position.x > home.x - 2)
