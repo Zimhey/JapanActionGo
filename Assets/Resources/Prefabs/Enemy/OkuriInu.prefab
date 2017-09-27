@@ -2223,7 +2223,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   StalkDistance: 100
-  StartCorneredDistance: 12
+  StartCorneredDistance: 15
   StayCorneredDistance: 15
   CorneredChaseDistance: 5
   KillDistance: 3

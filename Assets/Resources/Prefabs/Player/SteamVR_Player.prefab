@@ -178,7 +178,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1286270689211982
 GameObject:
   m_ObjectHideFlags: 1
@@ -2132,11 +2132,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerInventory: {fileID: 114915756354470422}
-  PullLeverRadius: 3
   DrawingDistance: 5
   DistanceDrawn: 0
-  Marks: []
-  UsingVR: 1
+  TimeBetweenDrawings: 0
   DrawingHand: {fileID: 1911283267415512}
   ThrowingHand: {fileID: 1658113145236434}
   Compass: {fileID: 1936561465849210}

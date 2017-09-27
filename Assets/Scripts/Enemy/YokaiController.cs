@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.VR;
 
 public class YokaiController : MonoBehaviour {
 
@@ -27,6 +28,9 @@ public class YokaiController : MonoBehaviour {
         {
             rayOrigin = new Vector3(rayOrigin.x, home.y + 4.5F, rayOrigin.z);
         }
+        Vector3 playerLoc = desiredObject.transform.position;
+        if (VRDevice.isPresent)
+            playerLoc = desiredObject.transform.TransformPoint(playerLoc);
         Vector3 rayDirection = desiredObject.transform.position - gameObject.transform.position;
         rayDirection.y = 0;
         maxDistance = rayDirection.magnitude;
@@ -160,7 +164,13 @@ public class YokaiController : MonoBehaviour {
     {
         int maxDistance = 25;
         int maxDistanceSquared = maxDistance * maxDistance;
-        Vector3 rayDirection = desiredObject.transform.localPosition - transform.localPosition;
+        Vector3 rayDirection;
+
+        if (desiredObject != null)
+            rayDirection = desiredObject.transform.localPosition - transform.localPosition;
+        else
+            rayDirection = new Vector3(0, 0, 0);
+
         rayDirection.y = 0;
         Vector3 observerDirection = transform.TransformDirection(Vector3.forward);
         System.Boolean objectCloseToObserver = rayDirection.sqrMagnitude < maxDistanceSquared;
@@ -168,7 +178,14 @@ public class YokaiController : MonoBehaviour {
         observerDirection.Normalize();
         float angleDot = Vector3.Dot(observerDirection, rayDirection);
         System.Boolean objectInFrontOfObserver = angleDot > 0.0;
-        System.Boolean noWallfound = NoWall(desiredObject, levelMask, home);
+        System.Boolean noWallfound = false;
+        if (objectInFrontOfObserver)
+        {
+            if (objectCloseToObserver)
+            {
+                noWallfound = NoWall(desiredObject, levelMask, home);
+            }
+        }
         if (objectInFrontOfObserver)
         {
             System.Boolean seenPlayer = objectInFrontOfObserver && objectCloseToObserver && noWallfound;

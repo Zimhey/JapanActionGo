@@ -62,6 +62,7 @@ public class TakaController : YokaiController
     //has player been seen
     private System.Boolean awake;
     //current node for patrol
+    private List<MazeNode> nodes;
     private MazeNode currentNode;
     private MazeNode root;
     private MazeNode previous;
@@ -78,6 +79,8 @@ public class TakaController : YokaiController
     private int posTimer2;
     private GameObject nextFootprint;
     private NavMeshAgent agent;
+    private int fleeTimer;
+    private bool fleeingInu;
 
     private Transform playerTransform;
     private MeshRenderer mr;
@@ -89,6 +92,10 @@ public class TakaController : YokaiController
         {
             state = value;
             GameManager.Instance.ActorStateChange(actorID, (int)state);
+            if(state == TakaState.Flee)
+            {
+                fleeTimer = 30;
+            }
         }
     }
 
@@ -109,10 +116,15 @@ public class TakaController : YokaiController
         posTimer = 60;
         posTimer2 = 27;
         root = MazeGenerator.getSectionBasedOnLocation(home);
+        if (root != null)
+        {
+            nodes = MazeGenerator.GetIntersectionNodes(root);
+        }
         currentNode = StartingNode;
         agent = GetComponent<NavMeshAgent>();
         agent.updatePosition = false;
         agent.updateRotation = true;
+        fleeingInu = false;
 
         int column = (int)((home.x - 8) / 6);
         int row = (int)((home.z - 8) / 6);
@@ -134,7 +146,10 @@ public class TakaController : YokaiController
             controller = GetComponent<CharacterController>();
         }
 
-        playerTransform = PlayerObject.transform;
+        if (PlayerObject != null)
+            playerTransform = PlayerObject.transform;
+        else
+            playerTransform = null;
 
         //manage state machine each update, call functions based on state
         if (state != TakaState.Idle)
@@ -146,57 +161,87 @@ public class TakaController : YokaiController
         {
             if (oldPosition2 != null)
             {*/
-                if (state != TakaState.Idle && state != TakaState.Taunt)
-                {
-                    Vector3 difference = newPosition - oldPosition;
-                    float difMag = difference.magnitude;
-                    if (difMag < .25)
-                    {
-                        Vector3 difference2 = oldPosition - oldPosition2;
-                        float difMag2 = difference2.magnitude;
-                        if (difMag < .25)
-                        {
-                            print("resetting path");
-                            agent.ResetPath();
-                            previous2 = previous;
-                            previous = currentNode;
-                            currentNode = null;
-                            State = TakaState.Idle;
-                        }
-                    }
-                }
-            /*}
-        }*/
-
-        switch (state)
+        if (state != TakaState.Idle && state != TakaState.Taunt && state != TakaState.Flee)
         {
-            case TakaState.Idle:
-                idle();
-                break;
-            case TakaState.Patrol:
-                patrol();
-                break;
-            case TakaState.Search:
-                search();
-                break;
-            case TakaState.Chase:
-                chase();
-                break;
-            case TakaState.Taunt:
-                taunt();
-                break;
-            case TakaState.Flee:
-                flee();
-                break;
-            case TakaState.Dead:
-                dead();
-                break;
-            case TakaState.Follow:
-                follow();
-                break;
-            case TakaState.Stun:
-                stun();
-                break;
+            //print("checking if stuck");
+            Vector3 difference = newPosition - oldPosition;
+            difference.y = 0;
+            float difMag = difference.magnitude;
+            //print("dif1 " + difMag);
+            if (difMag < .05)
+            {
+                Vector3 difference2 = oldPosition - oldPosition2;
+                difference2.y = 0;
+                float difMag2 = difference2.magnitude;
+                //print("dif2 " + difMag2);
+                if (difMag < .05)
+                {
+                    posTimer = 0;
+                    posTimer = 5;
+                    print("resetting path");
+                    agent.ResetPath();
+                    previous2 = previous;
+                    previous = currentNode;
+                    currentNode = null;
+                    State = TakaState.Flee;
+                    return;
+                }
+            }
+        }
+        /*}
+    }*/
+
+
+        if (state != TakaState.Flee)
+        {
+            if (FleeInu(LevelMask, home))
+            {
+                State = TakaState.Flee;
+                fleeingInu = true;
+                return;
+            }
+        }
+
+        if (state == TakaState.Flee)
+        {
+            if (!FleeInu(LevelMask, home))
+            {
+                fleeingInu = false;
+            }
+        }
+
+        if (fleeingInu == false)
+        {
+            switch (state)
+            {
+                case TakaState.Idle:
+                    idle();
+                    break;
+                case TakaState.Patrol:
+                    patrol();
+                    break;
+                case TakaState.Search:
+                    search();
+                    break;
+                case TakaState.Chase:
+                    chase();
+                    break;
+                case TakaState.Taunt:
+                    taunt();
+                    break;
+                case TakaState.Flee:
+                    flee();
+                    break;
+                case TakaState.Dead:
+                    dead();
+                    break;
+                case TakaState.Follow:
+                    follow();
+                    break;
+                case TakaState.Stun:
+                    stun();
+                    break;
+            }
         }
 
         switch (animState)
@@ -228,11 +273,6 @@ public class TakaController : YokaiController
         {
             TurnTowardsPlayer(PlayerObject);
         }
-        
-        if (FleeInu(LevelMask, home))
-        {
-            State = TakaState.Flee;
-        }
 
         posTimer--;
         if (posTimer <= 0)
@@ -249,7 +289,7 @@ public class TakaController : YokaiController
         posTimer2--;
         if (posTimer2 <= 0)
         {
-            posTimer = 77;
+            posTimer2 = 77;
             //if (oldPosition != null)
             //{
                 oldPosition2 = oldPosition;
@@ -307,33 +347,42 @@ public class TakaController : YokaiController
 
         if (root != null)
         {
-            List<MazeNode> nodes = MazeGenerator.GetIntersectionNodes(root);
             Vector3 currentNodePosition;
+            bool setCurrent = false;
 
             if (currentNode == null)
             {
                 MazeNode closest = null;
                 closest = SetClosest(closest, homeNode, nodes, rb);
                 currentNode = closest;
+                if (previous == null)
+                {
+                    previous = currentNode;
+                    previous2 = previous;
+                }
+                setCurrent = true;
             }
 
             if (currentNode != null)
             {
                 currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
 
-                if (transform.position.x < currentNodePosition.x + 2 && transform.position.x > currentNodePosition.x - 2)
+                if (setCurrent == false)
                 {
-                    if (transform.position.z < currentNodePosition.z + 2 && transform.position.z > currentNodePosition.z - 2)
+                    if (transform.position.x < currentNodePosition.x + 2 && transform.position.x > currentNodePosition.x - 2)
                     {
-                        MazeNode closest = null;
-                        closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
-                        previous2 = previous;
-                        previous = currentNode;
-                        currentNode = closest;
+                        if (transform.position.z < currentNodePosition.z + 2 && transform.position.z > currentNodePosition.z - 2)
+                        {
+                            MazeNode closest = null;
+                            closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
+                            previous2 = previous;
+                            previous = currentNode;
+                            currentNode = closest;
+                        }
                     }
-                }
 
-                currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
+                    currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
+                }
                 agent.SetDestination(currentNodePosition);
             }
         }
@@ -438,6 +487,25 @@ public class TakaController : YokaiController
 
     void flee()
     {
+        fleeTimer--;
+        if (fleeTimer <= 0)
+        {
+            seen = false;
+            seen = SeeObject(PlayerObject, LevelMask, home);
+            if (seen)
+            {
+                awake = true;
+                State = TakaState.Chase;
+                return;
+            }
+            GameObject foundFootprint = SeeFootprint(LevelMask, home);
+            if (foundFootprint != null)
+            {
+                State = TakaState.Follow;
+                return;
+            }
+        }
+
         agent.ResetPath();
 
         if (mr == null)

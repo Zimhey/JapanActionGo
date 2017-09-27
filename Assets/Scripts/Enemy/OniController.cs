@@ -58,6 +58,7 @@ public class OniController : YokaiController
     //has player been seen
     private System.Boolean awake;
     //current node for patrol
+    private List<MazeNode> nodes;
     private MazeNode currentNode;
     private MazeNode root;
     private MazeNode previous;
@@ -72,6 +73,7 @@ public class OniController : YokaiController
     private int posTimer2;
     private GameObject nextFootprint;
     private NavMeshAgent agent;
+    private int fleeTimer;
 
     private Animator anim;
 
@@ -79,6 +81,7 @@ public class OniController : YokaiController
 
     private Transform playerTransform;
     private CharacterController controller;
+    private bool fleeingInu;
 
     public OniState State
     {
@@ -86,6 +89,11 @@ public class OniController : YokaiController
         {
             state = value;
             GameManager.Instance.ActorStateChange(actorID, (int) state);
+            if(state == OniState.Flee)
+            {
+                fleeTimer = 30;
+                //print(fleeTimer);
+            }
         }
     }
 
@@ -105,6 +113,12 @@ public class OniController : YokaiController
         posTimer = 60;
         posTimer2 = 27;
         root = MazeGenerator.getSectionBasedOnLocation(home);
+        if(root != null)
+        {
+            nodes = MazeGenerator.GetIntersectionNodes(root);
+        }
+        fleeTimer = 30;
+        fleeingInu = false;
 
         currentNode = StartingNode;
         int column = (int)((home.x - 8) / 6);
@@ -131,65 +145,97 @@ public class OniController : YokaiController
             controller = GetComponent<CharacterController>();
         }
 
-        playerTransform = PlayerObject.transform;
+        if (PlayerObject != null)
+            playerTransform = PlayerObject.transform;
+        else
+            playerTransform = null;
 
         /*if (newPosition != null)
         {
             if (oldPosition2 != null)
             {*/
-                if (state != OniState.Idle)
-                {
-                    Vector3 difference = newPosition - oldPosition;
-                    float difMag = difference.magnitude;
-                    if (difMag < .25)
-                    {
-                        Vector3 difference2 = oldPosition - oldPosition2;
-                        float difMag2 = difference2.magnitude;
-                        if (difMag < .25)
-                        {
-                            print("resetting path");
-                            agent.ResetPath();
-                            previous2 = previous;
-                            previous = currentNode;
-                            currentNode = null;
-                            State = OniState.Idle;
-                        }
-                    }
-                }
-            /*}
-        }*/
-
-        switch (state)
+        if (state != OniState.Idle && state != OniState.Flee)
         {
-            case OniState.Idle:
-                idle();
-                break;
-            case OniState.Patrol:
-                patrol();
-                break;
-            case OniState.Search:
-                search();
-                break;
-            case OniState.Chase:
-                chase();
-                break;
-            case OniState.Flee:
-                flee();
-                break;
-            case OniState.Dead:
-                dead();
-                break;
-            case OniState.Follow:
-                follow();
-                break;
-            case OniState.Stun:
-                stun();
-                break;
-            case OniState.GameOver:
-                gameOver();
-                break;
+            //print("checking if stuck");
+            Vector3 difference = newPosition - oldPosition;
+            difference.y = 0;
+            float difMag = difference.magnitude;
+            //print("dif1 " + difMag);
+            if (difMag < .05)
+            {
+                Vector3 difference2 = oldPosition - oldPosition2;
+                difference2.y = 0;
+                float difMag2 = difference2.magnitude;
+                //print("dif2 " + difMag2);
+                if (difMag < .05)
+                {
+                    posTimer = 0;
+                    posTimer = 5;
+                    print("resetting path");
+                    agent.ResetPath();
+                    previous2 = previous;
+                    previous = currentNode;
+                    currentNode = null;
+                    State = OniState.Flee;
+                    return;
+                }
+            }
+        }
+        /*}
+    }*/
+
+
+        if (state != OniState.Flee)
+        {
+            if (FleeInu(LevelMask, home))
+            {
+                State = OniState.Flee;
+                fleeingInu = true;
+                return;
+            }
         }
 
+        if(state == OniState.Flee)
+        {
+            if (!FleeInu(LevelMask, home))
+            {
+                fleeingInu = false;
+            }
+        }
+
+        if (fleeingInu == false)
+        {
+            switch (state)
+            {
+                case OniState.Idle:
+                    idle();
+                    break;
+                case OniState.Patrol:
+                    patrol();
+                    break;
+                case OniState.Search:
+                    search();
+                    break;
+                case OniState.Chase:
+                    chase();
+                    break;
+                case OniState.Flee:
+                    flee();
+                    break;
+                case OniState.Dead:
+                    dead();
+                    break;
+                case OniState.Follow:
+                    follow();
+                    break;
+                case OniState.Stun:
+                    stun();
+                    break;
+                case OniState.GameOver:
+                    gameOver();
+                    break;
+            }
+        }
         switch (animState)
         {
             case OniAnim.Idle:
@@ -216,11 +262,6 @@ public class OniController : YokaiController
         {
             TurnTowardsPlayer(PlayerObject);
         }
-        
-        if(FleeInu(LevelMask, home))
-        {
-            State = OniState.Flee;
-        }
 
         posTimer--;
         if(posTimer <= 0)
@@ -229,20 +270,22 @@ public class OniController : YokaiController
             //if(newPosition != null)
             //{
                 oldPosition = newPosition;
-                //print("oldpos" + oldPosition);
+                //print("oldpos " + oldPosition);
             //}
             newPosition = transform.position;
-            //print("newpos" + newPosition);
+            //print("newpos " + newPosition);
         }
         posTimer2--;
         if (posTimer2 <= 0)
         {
-            posTimer = 77;
+            posTimer2 = 77;
             //if (oldPosition != null)
             //{
                 oldPosition2 = oldPosition;
+                //print("oldpos2 " + oldPosition2);
             //}
             oldPosition = transform.position;
+            //print("oldpos " + oldPosition);
         }
 
         MoveYokai(controller, agent);
@@ -291,34 +334,42 @@ public class OniController : YokaiController
 
         if (root != null)
         {
-            List<MazeNode> nodes = MazeGenerator.GetIntersectionNodes(root);
-
             Vector3 currentNodePosition;
+            bool setCurrent = false;
 
             if (currentNode == null)
             {
                 MazeNode closest = null;
                 closest = SetClosest(closest, homeNode, nodes, rb);
                 currentNode = closest;
+                if (previous == null)
+                {
+                    previous = currentNode;
+                    previous2 = previous;
+                }
+                setCurrent = true;
             }
 
             if (currentNode != null)
             {
                 currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
 
-                if (transform.position.x < currentNodePosition.x + 2 && transform.position.x > currentNodePosition.x - 2)
+                if (setCurrent == false)
                 {
-                    if (transform.position.z < currentNodePosition.z + 2 && transform.position.z > currentNodePosition.z - 2)
+                    if (transform.position.x < currentNodePosition.x + 2 && transform.position.x > currentNodePosition.x - 2)
                     {
-                        MazeNode closest = null;
-                        closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
-                        previous2 = previous;
-                        previous = currentNode;
-                        currentNode = closest;
+                        if (transform.position.z < currentNodePosition.z + 2 && transform.position.z > currentNodePosition.z - 2)
+                        {
+                            MazeNode closest = null;
+                            closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
+                            previous2 = previous;
+                            previous = currentNode;
+                            currentNode = closest;
+                        }
                     }
-                }
 
-                currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
+                    currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
+                }
                 agent.SetDestination(currentNodePosition);
             }
         }
@@ -342,10 +393,12 @@ public class OniController : YokaiController
             if (foundFootprint != null)
             {
                 State = OniState.Follow;
+                return;
             }
             else
             {
                 State = OniState.Idle;
+                return;
             }
         }
 
@@ -365,6 +418,24 @@ public class OniController : YokaiController
 
     void flee()
     {
+        fleeTimer--;
+        if (fleeTimer <= 0)
+        {
+            seen = false;
+            seen = SeeObject(PlayerObject, LevelMask, home);
+            if (seen)
+            {
+                awake = true;
+                State = OniState.Chase;
+                return;
+            }
+            GameObject foundFootprint = SeeFootprint(LevelMask, home);
+            if (foundFootprint != null)
+            {
+                State = OniState.Follow;
+                return;
+            }
+        }
         agent.ResetPath();
         agent.SetDestination(home);
         if (transform.position.x < home.x + 2 && transform.position.x > home.x - 2)
@@ -373,6 +444,7 @@ public class OniController : YokaiController
             {
                 State = OniState.Idle;
                 gameObject.transform.rotation = startingRotation;
+                return;
             }
         }
     }
@@ -400,6 +472,7 @@ public class OniController : YokaiController
             if (foundFootprint == null)
             {
                 State = OniState.Idle;
+                return;
             }
             if (foundFootprint != null)
             {
@@ -432,14 +505,17 @@ public class OniController : YokaiController
             if (seen)
             {
                 State = OniState.Chase;
+                return;
             }
             else if (foundFootprint != null && awake == true)
             {
                 State = OniState.Follow;
+                return;
             }
             else
             {
                 State = OniState.Idle;
+                return;
             }
         }
     }
