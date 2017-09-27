@@ -164,7 +164,13 @@ public class YokaiController : MonoBehaviour {
     {
         int maxDistance = 25;
         int maxDistanceSquared = maxDistance * maxDistance;
-        Vector3 rayDirection = desiredObject.transform.localPosition - transform.localPosition;
+        Vector3 rayDirection;
+
+        if (desiredObject != null)
+            rayDirection = desiredObject.transform.localPosition - transform.localPosition;
+        else
+            rayDirection = new Vector3(0, 0, 0);
+
         rayDirection.y = 0;
         Vector3 observerDirection = transform.TransformDirection(Vector3.forward);
         System.Boolean objectCloseToObserver = rayDirection.sqrMagnitude < maxDistanceSquared;

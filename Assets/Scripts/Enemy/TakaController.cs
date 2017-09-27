@@ -146,7 +146,10 @@ public class TakaController : YokaiController
             controller = GetComponent<CharacterController>();
         }
 
-        playerTransform = PlayerObject.transform;
+        if (PlayerObject != null)
+            playerTransform = PlayerObject.transform;
+        else
+            playerTransform = null;
 
         //manage state machine each update, call functions based on state
         if (state != TakaState.Idle)

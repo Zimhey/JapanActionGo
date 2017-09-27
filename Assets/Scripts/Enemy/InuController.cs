@@ -170,7 +170,10 @@ public class InuController : YokaiController
             controller = GetComponent<CharacterController>();
         }
 
-        playerTransform = PlayerObject.transform;
+        if (PlayerObject != null)
+            playerTransform = PlayerObject.transform;
+        else
+            playerTransform = null;
 
         //if (newPosition != null)
         //{
