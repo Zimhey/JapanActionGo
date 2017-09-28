@@ -1580,7 +1580,7 @@ MonoBehaviour:
   PlayerMask:
     serializedVersion: 2
     m_Bits: 512
-  KillDistance: 4
+  KillDistance: 5
 --- !u!136 &136622460490851784
 CapsuleCollider:
   m_ObjectHideFlags: 1
