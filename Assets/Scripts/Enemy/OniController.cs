@@ -206,6 +206,10 @@ public class OniController : YokaiController
 
         if (fleeingInu == false)
         {
+            if(stunTimer > 0)
+            {
+                state = OniState.Stun;
+            }
             switch (state)
             {
                 case OniState.Idle:

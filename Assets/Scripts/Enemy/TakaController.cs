@@ -213,6 +213,10 @@ public class TakaController : YokaiController
 
         if (fleeingInu == false)
         {
+            if (stunTimer > 0)
+            {
+                state = TakaState.Stun;
+            }
             switch (state)
             {
                 case TakaState.Idle:
