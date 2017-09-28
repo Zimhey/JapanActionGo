@@ -171,7 +171,7 @@ public class YokaiController : MonoBehaviour {
         Vector3 rayDirection;
 
         if (desiredObject != null)
-            rayDirection = desiredObject.transform.localPosition - transform.localPosition;
+            rayDirection = desiredObject.transform.position - transform.position;
         else
             rayDirection = new Vector3(0, 0, 0);
 
