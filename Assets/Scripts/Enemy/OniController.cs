@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.VR;
 
 //state machine for oni AI
 public enum OniState
@@ -288,6 +289,11 @@ public class OniController : YokaiController
             //print("oldpos " + oldPosition);
         }
 
+        if (fleeingInu == true)
+        {
+            agent.SetDestination(home);
+        }
+
         MoveYokai(controller, agent);
     }
 
@@ -362,9 +368,12 @@ public class OniController : YokaiController
                         {
                             MazeNode closest = null;
                             closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
-                            previous2 = previous;
-                            previous = currentNode;
-                            currentNode = closest;
+                            if (closest != null)
+                            {
+                                previous2 = previous;
+                                previous = currentNode;
+                                currentNode = closest;
+                            }
                         }
                     }
 
@@ -402,12 +411,28 @@ public class OniController : YokaiController
             }
         }
 
-        Vector3 rayDirection = playerTransform.localPosition - transform.localPosition;
+        Vector3 rayDirection = playerTransform.position - transform.position;
         rayDirection.y = 0;
-        System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < KillDistance;
+        System.Boolean playerCloseToEnemy;
+        /*if (VRDevice.isPresent)
+        {
+            playerCloseToEnemy = Vector3.Magnitude(rayDirection) < KillDistance * KillDistance;
+        }
+        else
+        {*/
+            playerCloseToEnemy = rayDirection.sqrMagnitude < KillDistance;
+        //}
         if (playerCloseToEnemy)
         {
-            GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
+            if (VRDevice.isPresent)
+            {
+                Actor player = PlayerObject.GetComponentInParent<Actor>();
+                GameManager.Instance.ActorKilled(actorID, player);
+            }
+            else
+            {
+                GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
+            }
             State = OniState.GameOver;
             GameManager.Instance.GameOver();
             print("GameOver");

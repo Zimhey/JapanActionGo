@@ -1573,7 +1573,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerObject: {fileID: 0}
-  Speed: 7
+  Speed: 6
   LevelMask:
     serializedVersion: 2
     m_Bits: 256
