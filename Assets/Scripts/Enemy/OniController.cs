@@ -155,7 +155,7 @@ public class OniController : YokaiController
         {
             if (oldPosition2 != null)
             {*/
-        if (state != OniState.Idle && state != OniState.Flee)
+        if (state != OniState.Idle && state != OniState.Flee && state != OniState.Stun)
         {
             //print("checking if stuck");
             Vector3 difference = newPosition - oldPosition;
@@ -186,7 +186,7 @@ public class OniController : YokaiController
     }*/
 
 
-        if (state != OniState.Flee)
+        if (state != OniState.Flee && state != OniState.Stun)
         {
             if (FleeInu(LevelMask, home))
             {

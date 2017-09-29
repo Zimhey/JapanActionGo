@@ -162,7 +162,7 @@ public class TakaController : YokaiController
         {
             if (oldPosition2 != null)
             {*/
-        if (state != TakaState.Idle && state != TakaState.Taunt && state != TakaState.Flee)
+        if (state != TakaState.Idle && state != TakaState.Taunt && state != TakaState.Flee && state != TakaState.Stun)
         {
             //print("checking if stuck");
             Vector3 difference = newPosition - oldPosition;
@@ -193,7 +193,7 @@ public class TakaController : YokaiController
     }*/
 
 
-        if (state != TakaState.Flee)
+        if (state != TakaState.Flee && state != TakaState.Stun)
         {
             if (FleeInu(LevelMask, home))
             {

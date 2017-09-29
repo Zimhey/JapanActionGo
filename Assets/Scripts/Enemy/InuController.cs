@@ -181,7 +181,7 @@ public class InuController : YokaiController
         //{
         //if (oldPosition2 != null)
         //{
-        if (state != InuState.Idle && state != InuState.Stalk && state != InuState.Cornered && state != InuState.Flee)
+        if (state != InuState.Idle && state != InuState.Stalk && state != InuState.Cornered && state != InuState.Flee && state != InuState.Stun)
         {
             //print("checking if stuck");
             Vector3 difference = newPosition - oldPosition;
