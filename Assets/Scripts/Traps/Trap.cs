@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VR;
 
 public enum TrapState
 {
@@ -145,9 +146,21 @@ public class Trap : MonoBehaviour
 
     void OnTriggerEnter(Collider collider)
     {
+        print("trap collided");
         if (collider.gameObject != null && State != TrapState.Resetting)
         {
-            GameManager.Instance.ActorKilled(collider.gameObject.GetComponent<Actor>(), ThisActor);
+            if (collider.CompareTag("Player"))
+            {
+                if (VRDevice.isPresent)
+                {
+                    Actor player = collider.GetComponentInParent<Actor>();
+                    GameManager.Instance.ActorKilled(ThisActor, player);
+                }
+            }
+            else
+            {
+                GameManager.Instance.ActorKilled(ThisActor, collider.gameObject.GetComponent<Actor>());
+            }
             print("Killing " + collider.gameObject);
             collider.gameObject.SendMessage("Die");
         }
