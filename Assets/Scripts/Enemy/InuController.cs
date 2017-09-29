@@ -140,6 +140,7 @@ public class InuController : YokaiController
         oldPosition = home;
         posTimer = 60;
         posTimer2 = 27;
+        stunTimer = 0;
         root = MazeGenerator.getSectionBasedOnLocation(home);
         if (root != null)
         {
@@ -209,6 +210,11 @@ public class InuController : YokaiController
         }
         //}
         //}
+
+        if (stunTimer > 0)
+        {
+            state = InuState.Stun;
+        }
 
         switch (state)
         {
@@ -966,6 +972,7 @@ public class InuController : YokaiController
     void Stun()
     {
         State = InuState.Stun;
+        AnimState = InuAnim.Stunned;
         stunTimer = 480;
         agent.SetDestination(transform.position);
     }
