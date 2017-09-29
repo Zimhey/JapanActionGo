@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 using System;
 using UnityEngine.AI;
+using UnityEngine.VR;
 
 //state machine for inu AI
 public enum InuState
@@ -139,6 +140,7 @@ public class InuController : YokaiController
         oldPosition = home;
         posTimer = 60;
         posTimer2 = 27;
+        stunTimer = 0;
         root = MazeGenerator.getSectionBasedOnLocation(home);
         if (root != null)
         {
@@ -179,7 +181,7 @@ public class InuController : YokaiController
         //{
         //if (oldPosition2 != null)
         //{
-        if (state != InuState.Idle && state != InuState.Stalk && state != InuState.Cornered && state != InuState.Flee)
+        if (state != InuState.Idle && state != InuState.Stalk && state != InuState.Cornered && state != InuState.Flee && state != InuState.Stun)
         {
             //print("checking if stuck");
             Vector3 difference = newPosition - oldPosition;
@@ -208,6 +210,11 @@ public class InuController : YokaiController
         }
         //}
         //}
+
+        if (stunTimer > 0)
+        {
+            state = InuState.Stun;
+        }
 
         switch (state)
         {
@@ -377,9 +384,12 @@ public class InuController : YokaiController
                         {
                             MazeNode closest = null;
                             closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
-                            previous2 = previous;
-                            previous = currentNode;
-                            currentNode = closest;
+                            if (closest != null)
+                            {
+                                previous2 = previous;
+                                previous = currentNode;
+                                currentNode = closest;
+                            }
                         }
                     }
 
@@ -428,9 +438,16 @@ public class InuController : YokaiController
     void stalk()
     {
         AnimState = InuAnim.Creep;
-        Vector3 rayDirection = playerTransform.localPosition - transform.localPosition;
+        Vector3 rayDirection = playerTransform.position - transform.position;
         rayDirection.y = 0;
-        System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < StalkDistance;
+        System.Boolean playerCloseToEnemy;
+        /*if (VRDevice.isPresent) {
+            playerCloseToEnemy = Vector3.Magnitude(rayDirection) < StalkDistance * StalkDistance;
+        }
+        else
+        {*/
+            playerCloseToEnemy = rayDirection.sqrMagnitude < StalkDistance;
+        //}
         if (!playerCloseToEnemy)
         {
             beenTooClose = false;
@@ -458,14 +475,22 @@ public class InuController : YokaiController
                 return;
             }
         }
-        System.Boolean playerTooCloseToEnemy = rayDirection.sqrMagnitude < StartCorneredDistance;
+        System.Boolean playerTooCloseToEnemy;
+        /*if (VRDevice.isPresent)
+        {
+            playerTooCloseToEnemy = Vector3.Magnitude(rayDirection) < StartCorneredDistance * StartCorneredDistance;
+        }
+        else
+        {*/
+            playerTooCloseToEnemy = rayDirection.sqrMagnitude < StartCorneredDistance;
+        //}
         if (playerTooCloseToEnemy)
         {
             //signify the player is too close to the inu
             //print("too close");
             beenTooClose = true;
             //get the distance from player to inu
-            Vector3 newdir = transform.localPosition - playerTransform.localPosition;
+            Vector3 newdir = transform.position - playerTransform.position;
             MazeNode destinationNode = null;
             MazeNode secondDestNode = null;
             MazeNode tertDestNode = null;
@@ -619,8 +644,8 @@ public class InuController : YokaiController
                 if(adjacent[iter] != destinationNode && adjacent[iter] != secondDestNode && adjacent[iter] != playerNode)
                 {
                     tertDestNode = adjacent[iter];
-                    Vector3 inuToPlayer = playerTransform.localPosition - transform.localPosition;
-                    Vector3 inuToTert = new Vector3(tertDestNode.Col * 6 + 8, tertDestNode.Floor * 30, tertDestNode.Row * 6 + 8) - transform.localPosition;
+                    Vector3 inuToPlayer = playerTransform.position - transform.position;
+                    Vector3 inuToTert = new Vector3(tertDestNode.Col * 6 + 8, tertDestNode.Floor * 30, tertDestNode.Row * 6 + 8) - transform.position;
                     if(inuToPlayer.x > 0 && inuToTert.x > 0)
                     {
                         if(inuToPlayer.z > 0 && inuToTert.z > 0)
@@ -693,7 +718,7 @@ public class InuController : YokaiController
                         newdir.Scale(new Vector3(scalar, 1, scalar));
                         //set inu to go from current direction to scalar distance in normalized direction
 
-                        Vector3 goal = playerTransform.localPosition + newdir;
+                        Vector3 goal = playerTransform.position + newdir;
                         float wallDistance = newdir.magnitude;
                         Ray ray = new Ray(playerTransform.position, newdir);
                         RaycastHit rayHit;
@@ -769,7 +794,15 @@ public class InuController : YokaiController
 
         if (hasPlayerTripped())
         {
-            GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
+            if (VRDevice.isPresent)
+            {
+                Actor player = PlayerObject.GetComponentInParent<Actor>();
+                GameManager.Instance.ActorKilled(actorID, player);
+            }
+            else
+            {
+                GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
+            }
             GameManager.Instance.GameOver();
             PlayerObject.SetActive(false);
             print("GameOver");
@@ -778,7 +811,7 @@ public class InuController : YokaiController
 
     void cornered()
     {
-        Vector3 rayDirection = playerTransform.localPosition - transform.localPosition;
+        Vector3 rayDirection = playerTransform.position - transform.position;
         rayDirection.y = 0;
         System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < StayCorneredDistance;
 
@@ -823,7 +856,15 @@ public class InuController : YokaiController
         System.Boolean playerKillDistance = rayDirection.sqrMagnitude < KillDistance;
         if (playerKillDistance && beenTooClose == true)
         {
-            GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
+            if (VRDevice.isPresent)
+            {
+                Actor player = PlayerObject.GetComponentInParent<Actor>();
+                GameManager.Instance.ActorKilled(actorID, player);
+            }
+            else
+            {
+                GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
+            }
             GameManager.Instance.GameOver();
         }
 
@@ -931,6 +972,7 @@ public class InuController : YokaiController
     void Stun()
     {
         State = InuState.Stun;
+        AnimState = InuAnim.Stunned;
         stunTimer = 480;
         agent.SetDestination(transform.position);
     }

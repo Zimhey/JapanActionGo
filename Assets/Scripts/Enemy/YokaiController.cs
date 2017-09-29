@@ -163,11 +163,15 @@ public class YokaiController : MonoBehaviour {
     public bool SeeObject(GameObject desiredObject, LayerMask levelMask, Vector3 home)
     {
         int maxDistance = 25;
+        /*if (VRDevice.isPresent)
+        {
+            maxDistance = 50;
+        }*/
         int maxDistanceSquared = maxDistance * maxDistance;
         Vector3 rayDirection;
 
         if (desiredObject != null)
-            rayDirection = desiredObject.transform.localPosition - transform.localPosition;
+            rayDirection = desiredObject.transform.position - transform.position;
         else
             rayDirection = new Vector3(0, 0, 0);
 

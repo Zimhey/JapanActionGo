@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.VR;
 
 //state machine for taka AI
 public enum TakaState
@@ -161,7 +162,7 @@ public class TakaController : YokaiController
         {
             if (oldPosition2 != null)
             {*/
-        if (state != TakaState.Idle && state != TakaState.Taunt && state != TakaState.Flee)
+        if (state != TakaState.Idle && state != TakaState.Taunt && state != TakaState.Flee && state != TakaState.Stun)
         {
             //print("checking if stuck");
             Vector3 difference = newPosition - oldPosition;
@@ -192,7 +193,7 @@ public class TakaController : YokaiController
     }*/
 
 
-        if (state != TakaState.Flee)
+        if (state != TakaState.Flee && state != TakaState.Stun)
         {
             if (FleeInu(LevelMask, home))
             {
@@ -212,6 +213,10 @@ public class TakaController : YokaiController
 
         if (fleeingInu == false)
         {
+            if (stunTimer > 0)
+            {
+                state = TakaState.Stun;
+            }
             switch (state)
             {
                 case TakaState.Idle:
@@ -302,6 +307,11 @@ public class TakaController : YokaiController
             distanceToFloor = 0.0F;
         }
         
+        if(fleeingInu == true)
+        {
+            agent.SetDestination(home);
+        }
+
         MoveYokai(controller, agent);
     }
 
@@ -375,9 +385,12 @@ public class TakaController : YokaiController
                         {
                             MazeNode closest = null;
                             closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
-                            previous2 = previous;
-                            previous = currentNode;
-                            currentNode = closest;
+                            if (closest != null)
+                            {
+                                previous2 = previous;
+                                previous = currentNode;
+                                currentNode = closest;
+                            }
                         }
                     }
 
@@ -429,9 +442,17 @@ public class TakaController : YokaiController
 
     void taunt() 
     {
-        Vector3 rayDirection = playerTransform.localPosition - transform.localPosition;
+        Vector3 rayDirection = playerTransform.position - transform.position;
         rayDirection.y = 0;
-        System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < TauntDistance;
+        System.Boolean playerCloseToEnemy;
+        /*if (VRDevice.isPresent)
+        {
+            playerCloseToEnemy = Vector3.Magnitude(rayDirection) < TauntDistance * TauntDistance;
+        }
+        else
+        {*/
+            playerCloseToEnemy = rayDirection.sqrMagnitude < TauntDistance;
+        //}
         if (!playerCloseToEnemy)
         {
             seen = false;
@@ -478,7 +499,15 @@ public class TakaController : YokaiController
 
         if (playerLookingUp())
         {
-            GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
+            if (VRDevice.isPresent)
+            {
+                Actor player = PlayerObject.GetComponentInParent<Actor>();
+                GameManager.Instance.ActorKilled(actorID, player);
+            }
+            else
+            {
+                GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
+            }
             GameManager.Instance.GameOver();
             PlayerObject.SetActive(false);
             print("GameOver");
