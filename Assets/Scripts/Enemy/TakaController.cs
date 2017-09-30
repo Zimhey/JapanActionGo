@@ -178,7 +178,7 @@ public class TakaController : YokaiController
                 {
                     posTimer = 0;
                     posTimer = 5;
-                    print("resetting path");
+                    //print("resetting path");
                     agent.ResetPath();
                     previous2 = previous;
                     previous = currentNode;
@@ -381,7 +381,8 @@ public class TakaController : YokaiController
                         }
                     }
 
-                    currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
+                    if(currentNode != null)
+                        currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
                 }
                 agent.SetDestination(currentNodePosition);
             }

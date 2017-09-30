@@ -6,6 +6,9 @@ using UnityEngine.VR;
 
 public class YokaiController : MonoBehaviour {
 
+    private LinkedList<MazeNode> previousPath;
+    private LinkedList<MazeNode> currentPath;
+
     public void Die()
     {
         print(gameObject);
@@ -199,13 +202,20 @@ public class YokaiController : MonoBehaviour {
 
     public MazeNode SetClosest(MazeNode closest, MazeNode home, List<MazeNode> nodes, Rigidbody rb)
     {
+        LinkedList<MazeNode> shortestPathNodes = new LinkedList<MazeNode>();
         for (int iter = 0; iter < nodes.Count; iter++)
         {
             bool trapInWay = false;
-            foreach (MazeNode n in MazeGenerator.GetPath2(home, nodes[iter]))
+            bool enemyInWay = false;
+            LinkedList<MazeNode> pathNodes = MazeGenerator.GetPath2(home, nodes[iter]);
+            foreach (MazeNode n in pathNodes)
+            {
                 if (GameManager.trapNode(n))
                     trapInWay = true;
-            if (!trapInWay)
+                if (n.EnemyPathNode)
+                    enemyInWay = true;
+            }
+            if (!trapInWay && !enemyInWay)
             {
                 if (closest == null)
                 {
@@ -216,23 +226,50 @@ public class YokaiController : MonoBehaviour {
                 Vector3 iterPosition = new Vector3(nodes[iter].Col * 6 + 8, nodes[iter].Floor * 30, nodes[iter].Row * 6 + 8) - transform.position;
                 float iterMag = iterPosition.magnitude;
                 if (iterMag < closestMag)
+                {
                     closest = nodes[iter];
+                    shortestPathNodes = pathNodes;
+                }
             }
         }
+        if(shortestPathNodes != null)
+            foreach(MazeNode n in shortestPathNodes)
+                n.EnemyPathNode = true;
+        previousPath = shortestPathNodes;
+        currentPath = shortestPathNodes;
         return closest;
     }
 
     public MazeNode UpdateClosest(MazeNode closest, List<MazeNode> nodes, MazeNode currentNode, MazeNode previous, MazeNode previous2, Rigidbody rb)
     {
+        LinkedList<MazeNode> shortestPathNodes = new LinkedList<MazeNode>();
         for (int iter = 0; iter < nodes.Count; iter++)
         {
             bool trapInWay = false;
-            foreach (MazeNode n in MazeGenerator.GetPath2(currentNode, nodes[iter]))
-                if (GameManager.trapNode(n))
-                    trapInWay = true;
-            if (!trapInWay)
+            bool enemyInWay = false;
+            LinkedList<MazeNode> pathNodes = MazeGenerator.GetPath2(currentNode, nodes[iter]);
+            foreach (MazeNode n in pathNodes)
             {
-                if (nodes[iter] != currentNode && nodes[iter] != previous && nodes[iter] != previous2)
+                if (GameManager.trapNode(n))
+                {
+                    trapInWay = true;
+                    print("Trap in the way at location: " + n.Col + " " + n.Row);
+                    print("Target Node: " + nodes[iter].Col + " " + nodes[iter].Row);
+                    print("Current Node: " + currentNode.Col + " " + currentNode.Row);
+                    break;
+                }
+                if (n.EnemyPathNode && n != currentNode)
+                {
+                    enemyInWay = true;
+                    print("Enemy in the way at location: " + n.Col + " " + n.Row);
+                    print("Target Node: " + nodes[iter].Col + " " + nodes[iter].Row);
+                    print("Current Node: " + currentNode.Col + " " + currentNode.Row);
+                    break;
+                }
+            }
+            if (!trapInWay && !enemyInWay)
+            {
+                if (nodes[iter] != currentNode && (nodes[iter] != previous || pathNodes.Count >= 2))
                 {
                     if (closest == null)
                     {
@@ -245,10 +282,18 @@ public class YokaiController : MonoBehaviour {
                     if (iterMag < closestMag)
                     {
                         closest = nodes[iter];
+                        shortestPathNodes = pathNodes;
                     }
                 }
             }
         }
+        previousPath = currentPath;
+        currentPath = shortestPathNodes;
+        foreach (MazeNode node in previousPath)
+            node.EnemyPathNode = false;
+        if (shortestPathNodes != null)
+            foreach (MazeNode n in shortestPathNodes)
+                n.EnemyPathNode = true;
         return closest;
     }
 }
