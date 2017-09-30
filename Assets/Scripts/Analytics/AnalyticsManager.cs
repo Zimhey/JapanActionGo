@@ -4,14 +4,18 @@ using System.Data;
 using Mono.Data;
 using Mono.Data.Sqlite;
 using UnityEngine;
+using System.Threading;
 
 
-
-public class AnalyticsManager : MonoBehaviour
+public class AnalyticsManager
 {
     private static string dbName = "Analytics/GameAnalytics.sqlite";
     private static string ConnectionStr;
     private static bool initialized = false;
+
+    private static Queue QueryQueue;
+    private static Thread QueryThread;
+    public static int ThreadSleepTime = 500;
 
     public static string DatabaseName
     {
@@ -22,61 +26,12 @@ public class AnalyticsManager : MonoBehaviour
         set
         {
             dbName = value;
-            init();
+            Init();
         }
-    }
-
-    public void Start()
-    {
-        init();
-
-        /*
-         // Tests
-        // AddLevel
-        int levelID = AddLevel(2323, (int)Difficulty.Small);
-        // AddCells
-        int numCells = 3;
-        int[] cellIDs = new int[numCells];
-
-        for(int i = 0; i < numCells; i++)
-        {
-            int x = AddSection(levelID, i, 1);
-            cellIDs[i] = AddCell(x, i, i);
-        }
-        // AddSession
-        ses = AddSession(levelID, 0);
-
-        // AddActors
-        int a = AddActor(ses, ActorType.Oni);
-        int b = AddActor(ses, ActorType.Ofuda_Pickup);
-
-        ActorStateChange(a, (int)OniState.Chase);
-
-        ActorKilled(a, b);
-
-        EnteredCell(a, cellIDs[0]);
-        FoundItem(b);
-        int u = UsedItem(ses, ItemType.Chalk);
-        OfudaHit(u, a);
-     
-        */
-    }
-
-    public void Update()
-    {
-        // Update Session PlayTime;
-        // Tests UpdateSessionTime(ses);
-    }
-
-    private static void init()
-    {
-        initialized = true;
-        ConnectionStr = "Data Source=" + dbName + ";Version=3;";
-        CreateDatabase();
     }
 
     private static string[] tables =
-    {
+{
         "CREATE TABLE `Levels` ( `LevelID` INTEGER, `Seed` INTEGER, `Difficulty` INTEGER, PRIMARY KEY(`LevelID`));",
         "CREATE TABLE `Sections` ( `SectionID` INTEGER, `LevelID` INTEGER, `Index` INTEGER, `Floor` INTEGER, PRIMARY KEY(`SectionID`));",
         "CREATE TABLE `Cells` ( `SectionID` INTEGER, `CellID` INTEGER, `CellRow` INTEGER, `CellCol` INTEGER, PRIMARY KEY(`CellID`));",
@@ -92,6 +47,18 @@ public class AnalyticsManager : MonoBehaviour
         "CREATE TABLE `StateChanges` ( `EventID` INTEGER, `ActorID` INTEGER, `State` INTEGER, `TimeChanged`	REAL, PRIMARY KEY(`EventID`));"
     };
 
+    private static void Init()
+    {
+        if (initialized)
+            return;
+        initialized = true;
+        ConnectionStr = "Data Source=" + dbName + ";Version=3;";
+        CreateDatabase();
+        QueryQueue = Queue.Synchronized(new Queue());
+        QueryThread = new Thread(QueryThreadRun);
+        QueryThread.Start();
+    }
+
     private static void CreateDatabase()
     {
         string directoryPath = System.IO.Path.GetDirectoryName(dbName);
@@ -104,11 +71,26 @@ public class AnalyticsManager : MonoBehaviour
         if (!System.IO.File.Exists(dbName))
         {
             SqliteConnection.CreateFile(dbName);
-            //SqliteConnection.ClearAllPools();
             foreach (string sql in tables)
             {
                 SimpleQuery(sql);
             }
+        }
+    }
+
+    private static void QueryThreadRun()
+    {
+        string query;
+
+        while(true)
+        {
+            if (QueryQueue.Count > 0)
+            {
+                query = (string)QueryQueue.Dequeue();
+                SimpleQuery(query);
+            }
+            else
+                Thread.Sleep(ThreadSleepTime);
         }
     }
 
@@ -118,7 +100,7 @@ public class AnalyticsManager : MonoBehaviour
         SqliteCommand cmd;
 
         if (!initialized)
-            init();
+            Init();
 
         using (con = new SqliteConnection(ConnectionStr))
         {
@@ -136,7 +118,7 @@ public class AnalyticsManager : MonoBehaviour
         object o = null;
 
         if (!initialized)
-            init();
+            Init();
 
         using (con = new SqliteConnection(ConnectionStr))
         {
@@ -162,7 +144,7 @@ public class AnalyticsManager : MonoBehaviour
         object o = null;
 
         if (!initialized)
-            init();
+            Init();
 
         using (con = new SqliteConnection(ConnectionStr))
         {
@@ -246,7 +228,7 @@ public class AnalyticsManager : MonoBehaviour
     public static void UpdateSessionTime(int sessionID, float time)
     {
         string update = "UPDATE `Sessions` SET `PlayTime` = " + time + " WHERE `SessionID` = " + sessionID + ";";
-        SimpleQuery(update);
+        QueryQueue.Enqueue(update);
     }
 
     public static int AddActor(int sessionID, ActorType type)
@@ -259,19 +241,19 @@ public class AnalyticsManager : MonoBehaviour
     public static void ActorKilled(int deadActorID, int killerID)
     {
         string insert = "INSERT INTO `Deaths` (`DeadActorID`, `KillerActorID`, `TimeDied`) VALUES (" + deadActorID + ", " + killerID + ", " + Time.time + ");";
-        SimpleQuery(insert);
+        QueryQueue.Enqueue(insert);
     }
 
     public static void EnteredCell(int actorID, int cellID)
     {
         string insert = "INSERT INTO `VisitedCells` (`ActorID`, `CellID`, `VisitTime`) VALUES (" + actorID + ", " + cellID + ", " + Time.time + ");";
-        SimpleQuery(insert);
+        QueryQueue.Enqueue(insert);
     }
 
     public static void FoundItem(int actorID)
     {
         string insert = "INSERT INTO `ItemsFound` (`ActorID`, `TimeFound`) VALUES (" + actorID + ", " + Time.time + ");";
-        SimpleQuery(insert);
+        QueryQueue.Enqueue(insert);
     }
 
     public static int UsedItem(int sessionID, ItemType item)
@@ -284,7 +266,7 @@ public class AnalyticsManager : MonoBehaviour
     public static void OfudaHit(int eventID, int actorID)
     {
         string insert = "INSERT INTO `OfudaHits` (`eventID`, `ActorID`, `HitTime`) VALUES (" + eventID + ", " + actorID + ", " + Time.time + ");";
-        SimpleQuery(insert);
+        QueryQueue.Enqueue(insert);
     }
 
     public static void ChalkLine(int eventID, LineRenderer line)
@@ -297,14 +279,14 @@ public class AnalyticsManager : MonoBehaviour
         {
             Vector3 point = line.GetPosition(i);
             string insertPoint = "INSERT INTO `ChalkPoints` (`LineID`, `Index`, `x`, `y`, `z`) VALUES (" + lineID + ", " + i + ", " + point.x + ", " + point.y + ", " + point.z + ");";
-            SimpleQuery(insertPoint);
+            QueryQueue.Enqueue(insertPoint);
         }
     }
 
     public static void ActorStateChange(int actorID, int state)
     {
         string insert = "INSERT INTO `StateChanges` (`ActorID`, `State`, `TimeChanged`) VALUES (" + actorID + ", " + state + ", " + Time.time + ");";
-        SimpleQuery(insert);
+        QueryQueue.Enqueue(insert);
     }
 
 }

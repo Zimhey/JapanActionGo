@@ -1573,14 +1573,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerObject: {fileID: 0}
-  Speed: 7
+  Speed: 6
   LevelMask:
     serializedVersion: 2
     m_Bits: 256
   PlayerMask:
     serializedVersion: 2
     m_Bits: 512
-  KillDistance: 4
+  KillDistance: 3
 --- !u!136 &136622460490851784
 CapsuleCollider:
   m_ObjectHideFlags: 1
