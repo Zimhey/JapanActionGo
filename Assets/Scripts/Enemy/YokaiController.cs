@@ -276,14 +276,22 @@ public class YokaiController : MonoBehaviour {
     //  nodes is the list of available nodes to patrol, and rb is the A.I.'s rigidbody used to obtain position
     public MazeNode SetClosest(MazeNode closest, MazeNode home, List<MazeNode> nodes, Rigidbody rb)
     {
+<<<<<<< HEAD
+        List<MazeNode> notIntersections = new List<MazeNode>();
+=======
         //the container for the path 
+>>>>>>> f0701e82004a988a175e65532ea3099056051cc6
         LinkedList<MazeNode> shortestPathNodes = new LinkedList<MazeNode>();
         //iterate through all nodes
         for (int iter = 0; iter < nodes.Count; iter++)
         {
             bool trapInWay = false;
             bool enemyInWay = false;
+<<<<<<< HEAD
+            MazeNode prevCheck = null;
+=======
             //list of nodes constituting a path from the starting node to the current node from iteration
+>>>>>>> f0701e82004a988a175e65532ea3099056051cc6
             LinkedList<MazeNode> pathNodes = MazeGenerator.GetPath2(home, nodes[iter]);
             foreach (MazeNode n in pathNodes)
             {
@@ -292,12 +300,12 @@ public class YokaiController : MonoBehaviour {
                     trapInWay = true;
                 //check to see if there is an enemy or an enemy path along the currently checked path
                 if (n.EnemyPathNode || (n != home && (n.actor == ActorType.Oni || n.actor == ActorType.Okuri_Inu || n.actor == ActorType.Taka_Nyudo)))
-                {
-                    //print("Home: " + home.Col + " " + home.Row);
-                    //print("Target: " + nodes[iter].Col + " " + nodes[iter].Row);
-                    //print("Column: " + n.Col + " Row: " + n.Row + " " + "ActorType: " + n.actor);
                     enemyInWay = true;
-                }
+
+                if(trapInWay || enemyInWay)
+                    if (prevCheck != null)
+                        notIntersections.Add(prevCheck);
+                prevCheck = n;
             }
             //if no obstructions along path
             if (!trapInWay && !enemyInWay)
@@ -319,7 +327,29 @@ public class YokaiController : MonoBehaviour {
                 }
             }
         }
+<<<<<<< HEAD
+        if(shortestPathNodes == null)
+        {
+            foreach(MazeNode n in notIntersections)
+            {
+                if (closest == null)
+                {
+                    closest = n;
+                }
+                Vector3 closestPosition = new Vector3(closest.Col * 6 + 8, closest.Floor * 30, closest.Row * 6 + 8) - transform.position;
+                float closestMag = closestPosition.magnitude;
+                Vector3 iterPosition = new Vector3(n.Col * 6 + 8, n.Floor * 30, n.Row * 6 + 8) - transform.position;
+                float iterMag = iterPosition.magnitude;
+                if (iterMag < closestMag)
+                {
+                    closest = n;
+                    shortestPathNodes = MazeGenerator.GetPath2(home, n);
+                }
+            }
+        }
+=======
         //if shortest path exists, indicate that an A.I. will be using that path
+>>>>>>> f0701e82004a988a175e65532ea3099056051cc6
         if(shortestPathNodes != null)
             foreach(MazeNode n in shortestPathNodes)
                 n.EnemyPathNode = true;
