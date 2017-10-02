@@ -284,27 +284,33 @@ public class YokaiController : MonoBehaviour {
         {
             bool trapInWay = false;
             bool enemyInWay = false;
-            MazeNode prevCheck;
+            MazeNode prevCheck = null;
+            bool obstacleFound = false;
             //list of nodes constituting a path from the starting node to the current node from iteration
             LinkedList<MazeNode> pathNodes = MazeGenerator.GetPath2(home, nodes[iter]);
             foreach (MazeNode n in pathNodes)
             {
                 bool trapInWayTemp = false;
                 bool enemyInWayTemp = false;
-                prevCheck = null;
                 //check to see if there is a trap node along the path
                 if (GameManager.trapNode(n))
                 {
                     trapInWay = true;
-                    if(prevCheck == null)
+                    if (obstacleFound == false)
+                    {
                         trapInWayTemp = true;
+                        obstacleFound = true;
+                    }
                 }
                 //check to see if there is an enemy or an enemy path along the currently checked path
                 if (n.EnemyPathNode || (n != home && (n.actor == ActorType.Oni || n.actor == ActorType.Okuri_Inu || n.actor == ActorType.Taka_Nyudo)))
                 {
                     enemyInWay = true;
-                    if(prevCheck == null)
+                    if (obstacleFound == false)
+                    {
                         enemyInWayTemp = true;
+                        obstacleFound = true;
+                    }
                 }
 
                 if (trapInWayTemp || enemyInWayTemp)
@@ -332,6 +338,7 @@ public class YokaiController : MonoBehaviour {
                 }
             }
         }
+        print(notIntersections.Count);
         if(closest == null)
         {
             foreach(MazeNode n in notIntersections)
@@ -358,10 +365,12 @@ public class YokaiController : MonoBehaviour {
         //update previous and current paths to not be null
         previousPath = shortestPathNodes;
         currentPath = shortestPathNodes;
+        /*
         if (closest != null)
             print("Closest not null " + closest.Col + " " + closest.Row);
         else
             print("Closest was null " + home.Col + " " + home.Row);
+            */
         return closest;
     }
 
