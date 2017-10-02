@@ -216,8 +216,13 @@ public class YokaiController : MonoBehaviour {
             {
                 if (GameManager.trapNode(n))
                     trapInWay = true;
-                if (n.EnemyPathNode)
+                if (n.EnemyPathNode || (n != home && (n.actor == ActorType.Oni || n.actor == ActorType.Okuri_Inu || n.actor == ActorType.Taka_Nyudo)))
+                {
+                    //print("Home: " + home.Col + " " + home.Row);
+                    //print("Target: " + nodes[iter].Col + " " + nodes[iter].Row);
+                    //print("Column: " + n.Col + " Row: " + n.Row + " " + "ActorType: " + n.actor);
                     enemyInWay = true;
+                }
             }
             if (!trapInWay && !enemyInWay)
             {
@@ -246,6 +251,8 @@ public class YokaiController : MonoBehaviour {
 
     public MazeNode UpdateClosest(MazeNode closest, List<MazeNode> nodes, MazeNode currentNode, MazeNode previous, MazeNode previous2, Rigidbody rb)
     {
+        foreach (MazeNode node in currentPath)
+            node.EnemyPathNode = false;
         LinkedList<MazeNode> shortestPathNodes = new LinkedList<MazeNode>();
         for (int iter = 0; iter < nodes.Count; iter++)
         {
@@ -257,24 +264,24 @@ public class YokaiController : MonoBehaviour {
                 if (GameManager.trapNode(n))
                 {
                     trapInWay = true;
-                    print("Trap in the way at location: " + n.Col + " " + n.Row);
-                    print("Target Node: " + nodes[iter].Col + " " + nodes[iter].Row);
-                    print("Current Node: " + currentNode.Col + " " + currentNode.Row);
                     break;
                 }
-                if (n.EnemyPathNode && n != currentNode)
+                if ((n.EnemyPathNode && n != currentNode) || (n.actor == ActorType.Oni || n.actor == ActorType.Okuri_Inu || n.actor == ActorType.Taka_Nyudo))
                 {
                     enemyInWay = true;
-                    print("Enemy in the way at location: " + n.Col + " " + n.Row);
-                    print("Target Node: " + nodes[iter].Col + " " + nodes[iter].Row);
-                    print("Current Node: " + currentNode.Col + " " + currentNode.Row);
+                    //print("Enemy in the way at Node: " + n.Col + " " + n.Row);
+                    //print("Target Node: " + nodes[iter].Col + " " + nodes[iter].Row);
+                    //print("Curent Node: " + currentNode.Col + " " + currentNode.Row);
                     break;
                 }
             }
             if (!trapInWay && !enemyInWay)
             {
-                if (nodes[iter] != currentNode && (nodes[iter] != previous || pathNodes.Count >= 2))
+                if (nodes[iter] != currentNode && (nodes[iter] != previous || pathNodes.Count >= 3))
                 {
+                    //print("Previous: " + previous.Col + " " + previous.Row);
+                    //print("Check: " + nodes[iter].Col + " " + nodes[iter].Row);
+                    //print("Current: " + currentNode.Col + " " + currentNode.Row);
                     if (closest == null)
                     {
                         closest = nodes[iter];
@@ -293,11 +300,13 @@ public class YokaiController : MonoBehaviour {
         }
         previousPath = currentPath;
         currentPath = shortestPathNodes;
-        foreach (MazeNode node in previousPath)
-            node.EnemyPathNode = false;
         if (shortestPathNodes != null)
             foreach (MazeNode n in shortestPathNodes)
                 n.EnemyPathNode = true;
+        //foreach (MazeNode n in previousPath)
+            //print("Previous Path Column: " + n.Col + " Row: " + n.Row + " Occupied: " + n.EnemyPathNode);
+        //foreach (MazeNode n in currentPath)
+            //print("Current Path Column: " + n.Col + " Row: " + n.Row + " Occupied: " + n.EnemyPathNode);
         return closest;
     }
 }

@@ -636,4 +636,14 @@ public class GameManager : MonoBehaviour {
         if (AnalyticsEnabled)
             AnalyticsManager.FoundItem(actor.ActorID);
     }
+
+    public static string PathToString(LinkedList<MazeNode> nodes)
+    {
+        string path = "";
+        foreach (MazeNode n in nodes)
+        {
+            path += "Col: " + n.Col + " Row: " + n.Row + " ";
+        }
+        return path;
+    }
 }
