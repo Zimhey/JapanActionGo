@@ -738,7 +738,7 @@ public class InuController : YokaiController
                     //move to tertiary destination
                     else
                     {
-                        print("trying to go to tert " + new Vector3(tertDestNode.Col * 6 + 8, fromNode.Floor * 30, tertDestNode.Row * 6 + 8));
+                        //print("trying to go to tert " + new Vector3(tertDestNode.Col * 6 + 8, fromNode.Floor * 30, tertDestNode.Row * 6 + 8));
                         agent.ResetPath();
                         agent.SetDestination(new Vector3(tertDestNode.Col * 6 + 8, fromNode.Floor * 30, tertDestNode.Row * 6 + 8));
                         retreating = true;
@@ -748,7 +748,7 @@ public class InuController : YokaiController
                 //move to secondary destination
                 else
                 {
-                    print("trying to go to second " + new Vector3(secondDestNode.Col * 6 + 8, fromNode.Floor * 30, secondDestNode.Row * 6 + 8));
+                    //print("trying to go to second " + new Vector3(secondDestNode.Col * 6 + 8, fromNode.Floor * 30, secondDestNode.Row * 6 + 8));
                     agent.ResetPath();
                     agent.SetDestination(new Vector3(secondDestNode.Col * 6 + 8, fromNode.Floor * 30, secondDestNode.Row * 6 + 8));
                     retreating = true;
