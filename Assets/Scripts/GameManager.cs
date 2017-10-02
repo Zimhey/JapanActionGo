@@ -404,7 +404,10 @@ public class GameManager : MonoBehaviour {
             surface.BuildNavMesh();
 
         foreach (MazeNode n in MazeGenerator.nodesInSection(msection.Root))
+        {
             SpawnActor(n, actors);
+            SpawnLantern(n);
+        }
         // Spawn Actors
         // Add Actors to Analytics
     }
@@ -476,6 +479,13 @@ public class GameManager : MonoBehaviour {
         }
     }
     // TODO Add an Actor Component to each actor GameObject
+
+    public void SpawnLantern(MazeNode node)
+    {
+        Vector3 loc = new Vector3(node.Col * 6 + 8, (float) (node.Floor * 30 + 6.5), node.Row * 6 + 8);
+        if ((node.Col + node.Row) % 2 == 0)
+            Instantiate(Resources.Load("Prefabs/Level/Lantern"), loc, node.GetRotation());
+    }
 
     public void EnterSection(GameObject ladder, GameObject player)
     {
