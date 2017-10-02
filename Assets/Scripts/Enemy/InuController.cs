@@ -44,10 +44,15 @@ public class InuController : YokaiController
     //layermask to raycast against
     public LayerMask LevelMask;
     public LayerMask PlayerMask;
+    //distance to stay stalking the player
     public int StalkDistance;
+    //distance to start trying to avoid being cornered
     public int StartCorneredDistance;
+    //distance to stay cornered
     public int StayCorneredDistance;
+    //distance lash back at player in cornered
     public int CorneredChaseDistance;
+    //distance to kill player while cornered
     public int KillDistance;
 
     //inu physics body
@@ -62,6 +67,7 @@ public class InuController : YokaiController
     //current anim state
     private InuAnim animState;
     private Actor actorID;
+    //bool containing if the inu is attempting to avoid being cornered
     private bool retreating;
 
     public InuState State
@@ -176,11 +182,7 @@ public class InuController : YokaiController
             playerTransform = PlayerObject.transform;
         else
             playerTransform = null;
-
-        //if (newPosition != null)
-        //{
-        //if (oldPosition2 != null)
-        //{
+        
         if (state != InuState.Idle && state != InuState.Stalk && state != InuState.Cornered && state != InuState.Flee && state != InuState.Stun)
         {
             //print("checking if stuck");
@@ -198,7 +200,7 @@ public class InuController : YokaiController
                 {
                     posTimer = 0;
                     posTimer = 5;
-                    print("resetting path");
+                    //print("resetting path");
                     agent.ResetPath();
                     previous2 = previous;
                     previous = currentNode;
@@ -208,8 +210,6 @@ public class InuController : YokaiController
                 }
             }
         }
-        //}
-        //}
 
         if (stunTimer > 0)
         {
@@ -291,20 +291,14 @@ public class InuController : YokaiController
         if (posTimer <= 0)
         {
             posTimer = 90;
-            //if (newPosition != null)
-            //{
-                oldPosition = newPosition;
-            //}
+            oldPosition = newPosition;
             newPosition = transform.position;
         }
         posTimer2--;
         if (posTimer2 <= 0)
         {
             posTimer2 = 77;
-            //if (oldPosition != null)
-            //{
-                oldPosition2 = oldPosition;
-            //}
+            oldPosition2 = oldPosition;
             oldPosition = transform.position;
         }
         
@@ -393,7 +387,8 @@ public class InuController : YokaiController
                         }
                     }
 
-                    currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
+                    if(currentNode != null)
+                        currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
                 }
                 agent.SetDestination(currentNodePosition);
             }
@@ -429,25 +424,20 @@ public class InuController : YokaiController
         {
             if (transform.position.z < dest.z + 5 && transform.position.z > dest.z - 5)
             {
+                //if close enough to player attempt to stalk player
                 State = InuState.Stalk;
                 agent.SetDestination(transform.position);
             }
         }
     }
 
+    //function to execute in stalk state, contains transitions, and code to maintain distance from player and attempt to avoid being cornered
     void stalk()
     {
         AnimState = InuAnim.Creep;
         Vector3 rayDirection = playerTransform.position - transform.position;
         rayDirection.y = 0;
-        System.Boolean playerCloseToEnemy;
-        /*if (VRDevice.isPresent) {
-            playerCloseToEnemy = Vector3.Magnitude(rayDirection) < StalkDistance * StalkDistance;
-        }
-        else
-        {*/
-            playerCloseToEnemy = rayDirection.sqrMagnitude < StalkDistance;
-        //}
+        System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < StalkDistance;
         if (!playerCloseToEnemy)
         {
             beenTooClose = false;
@@ -475,15 +465,8 @@ public class InuController : YokaiController
                 return;
             }
         }
-        System.Boolean playerTooCloseToEnemy;
-        /*if (VRDevice.isPresent)
-        {
-            playerTooCloseToEnemy = Vector3.Magnitude(rayDirection) < StartCorneredDistance * StartCorneredDistance;
-        }
-        else
-        {*/
-            playerTooCloseToEnemy = rayDirection.sqrMagnitude < StartCorneredDistance;
-        //}
+        //check to see if plyaer is close enough to trigger cornered state
+        System.Boolean playerTooCloseToEnemy = rayDirection.sqrMagnitude < StartCorneredDistance;
         if (playerTooCloseToEnemy)
         {
             //signify the player is too close to the inu
@@ -491,23 +474,31 @@ public class InuController : YokaiController
             beenTooClose = true;
             //get the distance from player to inu
             Vector3 newdir = transform.position - playerTransform.position;
+            //create containers for attempted destinations
             MazeNode destinationNode = null;
             MazeNode secondDestNode = null;
             MazeNode tertDestNode = null;
+            //get current node based on location
             Vector3 currentLocation = new Vector3(transform.position.x, home.y + 1.5F, transform.position.z);
             MazeNode fromNode = MazeGenerator.getNodeBasedOnLocation(currentLocation);
             //print("current location " + new Vector3(transform.position.x, home.y + 1.5F, transform.position.z));
             //print("from node " + new Vector3(fromNode.Col * 6 + 8, fromNode.Floor * 30, fromNode.Row * 6 + 8));
+            //get the player's current node
             MazeNode playerNode = MazeGenerator.getNodeBasedOnLocation(playerTransform.position);
 
+            //if the change in x is greater than the change in z try to move in the x direction first
             if (Math.Abs(newdir.x) > Math.Abs(newdir.z))
             {
+                //if the change in x is positive
                 if(newdir.x > 0)
                 {
+                    //set primary destination to be the node with the next higher value in the x direction
                     destinationNode = MazeGenerator.getNodeBasedOnLocation(new Vector3((fromNode.Col + 1)  * 6 + 8, fromNode.Floor * 30, fromNode.Row * 6 + 8));
 
+                    //if change in z is positive
                     if (newdir.z > 0)
                     {
+                        //set secondary destination to be the node with the next higher value in the z direction
                         secondDestNode = MazeGenerator.getNodeBasedOnLocation(new Vector3(fromNode.Col * 6 + 8, fromNode.Floor * 30, (fromNode.Row + 1) * 6 + 8));
                     }
 
@@ -532,7 +523,7 @@ public class InuController : YokaiController
                     }
                 }
             }
-
+            //if the change in x is the same as the change in the z direction, used rand with two possible values
             if (Math.Abs(newdir.x) == Math.Abs(newdir.z))
             {
                 int rand = UnityEngine.Random.Range(0, 1);
@@ -604,6 +595,7 @@ public class InuController : YokaiController
                     }
                 }
             }
+            //if the change in x is less than the change in z try to move in the z direction first
             if (Math.Abs(newdir.x) < Math.Abs(newdir.z))
             {
 
@@ -638,12 +630,15 @@ public class InuController : YokaiController
                 }
             }
 
+            //get the list of nodes adjacent to the inu's current node
             List<MazeNode> adjacent = fromNode.GetAdjacentNodes();
             for(int iter = 0; iter < adjacent.Count; iter++)
             {
+                //if new node, it is recored as tertiary destination
                 if(adjacent[iter] != destinationNode && adjacent[iter] != secondDestNode && adjacent[iter] != playerNode)
                 {
                     tertDestNode = adjacent[iter];
+                    //check to see if tertiary is behind player and thus not valid
                     Vector3 inuToPlayer = playerTransform.position - transform.position;
                     Vector3 inuToTert = new Vector3(tertDestNode.Col * 6 + 8, tertDestNode.Floor * 30, tertDestNode.Row * 6 + 8) - transform.position;
                     if(inuToPlayer.x > 0 && inuToTert.x > 0)
@@ -673,6 +668,7 @@ public class InuController : YokaiController
                 }
             }
 
+            //check if primary and secondary are valid nodes
             if(adjacent.Contains(destinationNode) == false)
             {
                 if (destinationNode != null)
@@ -699,7 +695,7 @@ public class InuController : YokaiController
             }
 
 
-
+            //try nodes in order
             if(destinationNode == null)
             {
                 //print("primary not valid");
@@ -709,6 +705,7 @@ public class InuController : YokaiController
                     if(tertDestNode == null)
                     {
                         //print("tertiary not valid");
+                        //try to move backwards anyways
                         newdir.y = 0;
                         //normalize to get direction only
                         newdir.Normalize();
@@ -723,11 +720,13 @@ public class InuController : YokaiController
                         Ray ray = new Ray(playerTransform.position, newdir);
                         RaycastHit rayHit;
 
+                        //if wall in the way transition to cornered
                         if (Physics.Raycast(ray, out rayHit, wallDistance, LevelMask))
                         {
                             State = InuState.Cornered;
                             return;
                         }
+                        //else move backwards away from player
                         else
                         {
                             agent.ResetPath();
@@ -736,7 +735,7 @@ public class InuController : YokaiController
                             return;
                         }
                     }
-
+                    //move to tertiary destination
                     else
                     {
                         print("trying to go to tert " + new Vector3(tertDestNode.Col * 6 + 8, fromNode.Floor * 30, tertDestNode.Row * 6 + 8));
@@ -746,6 +745,7 @@ public class InuController : YokaiController
                         return;
                     }
                 }
+                //move to secondary destination
                 else
                 {
                     print("trying to go to second " + new Vector3(secondDestNode.Col * 6 + 8, fromNode.Floor * 30, secondDestNode.Row * 6 + 8));
@@ -755,6 +755,7 @@ public class InuController : YokaiController
                     return;
                 }
             }
+            //move to primary destination
             else
             {
                 print("trying to go to primary " + new Vector3(destinationNode.Col * 6 + 8, fromNode.Floor * 30, destinationNode.Row * 6 + 8));
@@ -766,12 +767,14 @@ public class InuController : YokaiController
 
         }
 
+        //if player is not close enough for cornered
         if(!playerTooCloseToEnemy && beenTooClose == true)
         {
             retreating = false;
             beenTooClose = false;
         }
 
+        //if not retrreating maintain distance from player
         if (retreating != true)
         {
             agent.ResetPath();
@@ -792,6 +795,7 @@ public class InuController : YokaiController
             }
         }
 
+        //if player has tripper kill them, trip not currently implemented
         if (hasPlayerTripped())
         {
             if (VRDevice.isPresent)
@@ -809,6 +813,7 @@ public class InuController : YokaiController
         }
     }
 
+    //function to execute in cornered state, contains transitions, and code to deal with player
     void cornered()
     {
         Vector3 rayDirection = playerTransform.position - transform.position;
@@ -845,6 +850,7 @@ public class InuController : YokaiController
 
         //play growl
 
+        //if player gets to close inu should charge at player
         System.Boolean playerTooCloseToEnemy = rayDirection.sqrMagnitude < CorneredChaseDistance;
         if (playerTooCloseToEnemy && beenTooClose == true)
         {
@@ -853,6 +859,7 @@ public class InuController : YokaiController
             agent.SetDestination(goal);
         }
 
+        //if inu gets close enough to player kill the player
         System.Boolean playerKillDistance = rayDirection.sqrMagnitude < KillDistance;
         if (playerKillDistance && beenTooClose == true)
         {

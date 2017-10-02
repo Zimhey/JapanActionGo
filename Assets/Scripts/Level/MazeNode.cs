@@ -43,6 +43,7 @@ public class MazeNode
     public GameObject ladder;
     public GameObject floorPrefab;
     public int SectionID;
+    public bool EnemyPathNode;
 
 
     public MazeNode()

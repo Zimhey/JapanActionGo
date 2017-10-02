@@ -42,7 +42,9 @@ public class TakaController : YokaiController
     //layermask to raycast against
     public LayerMask LevelMask;
     public LayerMask PlayerMask;
+    //distance at which the taka continues to taunt the player
     public int TauntDistance;
+    //distance at which the taka can kill the player
     public int KillDistance;
 
     //taka physics body
@@ -84,6 +86,7 @@ public class TakaController : YokaiController
     private bool fleeingInu;
 
     private Transform playerTransform;
+    //mesh renderer to change the look of the taka
     private MeshRenderer mr;
     private CharacterController controller;
 
@@ -157,11 +160,7 @@ public class TakaController : YokaiController
         {
             //print("TakaState " + state);
         }
-
-        /*if (newPosition != null)
-        {
-            if (oldPosition2 != null)
-            {*/
+        
         if (state != TakaState.Idle && state != TakaState.Taunt && state != TakaState.Flee && state != TakaState.Stun)
         {
             //print("checking if stuck");
@@ -179,7 +178,7 @@ public class TakaController : YokaiController
                 {
                     posTimer = 0;
                     posTimer = 5;
-                    print("resetting path");
+                    //print("resetting path");
                     agent.ResetPath();
                     previous2 = previous;
                     previous = currentNode;
@@ -189,9 +188,6 @@ public class TakaController : YokaiController
                 }
             }
         }
-        /*}
-    }*/
-
 
         if (state != TakaState.Flee && state != TakaState.Stun)
         {
@@ -283,22 +279,14 @@ public class TakaController : YokaiController
         if (posTimer <= 0)
         {
             posTimer = 90;
-            //if (newPosition != null)
-            //{
-                oldPosition = newPosition;
-                //print("oldpos" + oldPosition);
-            //}
+            oldPosition = newPosition;
             newPosition = transform.position;
-            //print("newpos" + newPosition);
         }
         posTimer2--;
         if (posTimer2 <= 0)
         {
             posTimer2 = 77;
-            //if (oldPosition != null)
-            //{
-                oldPosition2 = oldPosition;
-            //}
+            oldPosition2 = oldPosition;
             oldPosition = transform.position;
         }
 
@@ -394,7 +382,8 @@ public class TakaController : YokaiController
                         }
                     }
 
-                    currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
+                    if(currentNode != null)
+                        currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
                 }
                 agent.SetDestination(currentNodePosition);
             }
@@ -432,27 +421,21 @@ public class TakaController : YokaiController
         {
             if (transform.position.z < dest.z + 5 && transform.position.z > dest.z - 5)
             {
+                //if taka close enough to player taunt them
                 State = TakaState.Taunt;
                 agent.SetDestination(transform.position);
-                gameObject.transform.rotation = startingRotation;
+                //gameObject.transform.rotation = startingRotation;
             }
         }
         
     }
 
+    //function to execute in taunt state
     void taunt() 
     {
         Vector3 rayDirection = playerTransform.position - transform.position;
         rayDirection.y = 0;
-        System.Boolean playerCloseToEnemy;
-        /*if (VRDevice.isPresent)
-        {
-            playerCloseToEnemy = Vector3.Magnitude(rayDirection) < TauntDistance * TauntDistance;
-        }
-        else
-        {*/
-            playerCloseToEnemy = rayDirection.sqrMagnitude < TauntDistance;
-        //}
+        System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < TauntDistance;
         if (!playerCloseToEnemy)
         {
             seen = false;
@@ -485,18 +468,21 @@ public class TakaController : YokaiController
         {
             mr = gameObject.GetComponentInChildren<MeshRenderer>();
         }
+        //make the taka appear to grow taller
         if (mr.transform.localScale.y < 8)
         {
             mr.transform.localScale += new Vector3(0, 0.02F, 0);
             mr.transform.position += new Vector3(0, 0.01F, 0);
             distanceToFloor += 0.01F;
         }
+        //if player has avoided looking up for a full taunt cycle the taka backs off
         else if (mr.transform.localScale.y >= 8)
         {
             State = TakaState.Flee;
             return;
         }
 
+        //if player looks up while taunted, kill it
         if (playerLookingUp())
         {
             if (VRDevice.isPresent)
@@ -541,6 +527,7 @@ public class TakaController : YokaiController
         {
             mr = gameObject.GetComponentInChildren<MeshRenderer>();
         }
+        //if taka has grown, shrink it
         if (mr.transform.localScale.y > 5)
         {
             mr.transform.localScale -= new Vector3(0, 0.02F, 0);
@@ -631,6 +618,7 @@ public class TakaController : YokaiController
         State = TakaState.Stun;
         stunTimer = 120;
         agent.SetDestination(transform.position);
+        fleeingInu = false;
     }
 
     void SafeZoneCollision()
@@ -638,13 +626,19 @@ public class TakaController : YokaiController
         State = TakaState.Flee;
     }
 
+    //function to check if the player is looking upwards
     bool playerLookingUp()
     {
+        //get player's camera orientation
         Vector3 dir = cam.transform.rotation * Vector3.up;
+        //get taka's forward direction
         Vector3 enemyDirection = PlayerObject.transform.TransformDirection(Vector3.forward);
+        //normalize vectors
         dir.Normalize();
         enemyDirection.Normalize();
+        //perform dot product on vectors
         float angleDot = Vector3.Dot(dir, enemyDirection);
+        //if value is less than -0.3 the player is looking suffieciently updwards to be killed
         System.Boolean playerlookup = angleDot < -0.3;
         if (playerlookup)
         {
