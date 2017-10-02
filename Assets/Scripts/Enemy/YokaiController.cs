@@ -331,6 +331,7 @@ public class YokaiController : MonoBehaviour {
         }
         if(shortestPathNodes == null)
         {
+            print("Here");
             foreach(MazeNode n in notIntersections)
             {
                 if (closest == null)
