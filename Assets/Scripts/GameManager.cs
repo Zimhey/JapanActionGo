@@ -448,10 +448,11 @@ public class GameManager : MonoBehaviour {
         Vector3 location = new Vector3(node.Col * 6 + 8, node.Floor * 30, node.Row * 6 + 8);
         if (node.actor != ActorType.Null)
         {
-            if (node.actor == ActorType.Pit_Trap || node.actor == ActorType.Spike_Trap)
+            if (node.actor == ActorType.Pit_Trap)// || node.actor == ActorType.Spike_Trap)
             {
                 node.floorPrefab.SetActive(false);
             }
+            /*
             if (node.actor == ActorType.Ladder)
             {
                 if(node.ladderMazeNode.Floor > node.Floor)
@@ -459,8 +460,9 @@ public class GameManager : MonoBehaviour {
                 else
                     actorObject = Instantiate(Resources.Load("Prefabs/Level/LadderDown"), location, node.GetRotation()) as GameObject;
             }
-            else
-                actorObject = Instantiate(Actors.Prefabs[node.actor], location, node.GetRotation());
+            */
+            //else
+            actorObject = Instantiate(Actors.Prefabs[node.actor], location, node.GetRotation());
             actorObject.transform.parent = actors.transform;
             if (node.actor == ActorType.Ladder)
             {
