@@ -206,23 +206,25 @@ public class YokaiController : MonoBehaviour {
 
     public MazeNode SetClosest(MazeNode closest, MazeNode home, List<MazeNode> nodes, Rigidbody rb)
     {
+        List<MazeNode> notIntersections = new List<MazeNode>();
         LinkedList<MazeNode> shortestPathNodes = new LinkedList<MazeNode>();
         for (int iter = 0; iter < nodes.Count; iter++)
         {
             bool trapInWay = false;
             bool enemyInWay = false;
+            MazeNode prevCheck = null;
             LinkedList<MazeNode> pathNodes = MazeGenerator.GetPath2(home, nodes[iter]);
             foreach (MazeNode n in pathNodes)
             {
                 if (GameManager.trapNode(n))
                     trapInWay = true;
                 if (n.EnemyPathNode || (n != home && (n.actor == ActorType.Oni || n.actor == ActorType.Okuri_Inu || n.actor == ActorType.Taka_Nyudo)))
-                {
-                    //print("Home: " + home.Col + " " + home.Row);
-                    //print("Target: " + nodes[iter].Col + " " + nodes[iter].Row);
-                    //print("Column: " + n.Col + " Row: " + n.Row + " " + "ActorType: " + n.actor);
                     enemyInWay = true;
-                }
+
+                if(trapInWay || enemyInWay)
+                    if (prevCheck != null)
+                        notIntersections.Add(prevCheck);
+                prevCheck = n;
             }
             if (!trapInWay && !enemyInWay)
             {
@@ -238,6 +240,25 @@ public class YokaiController : MonoBehaviour {
                 {
                     closest = nodes[iter];
                     shortestPathNodes = pathNodes;
+                }
+            }
+        }
+        if(shortestPathNodes == null)
+        {
+            foreach(MazeNode n in notIntersections)
+            {
+                if (closest == null)
+                {
+                    closest = n;
+                }
+                Vector3 closestPosition = new Vector3(closest.Col * 6 + 8, closest.Floor * 30, closest.Row * 6 + 8) - transform.position;
+                float closestMag = closestPosition.magnitude;
+                Vector3 iterPosition = new Vector3(n.Col * 6 + 8, n.Floor * 30, n.Row * 6 + 8) - transform.position;
+                float iterMag = iterPosition.magnitude;
+                if (iterMag < closestMag)
+                {
+                    closest = n;
+                    shortestPathNodes = MazeGenerator.GetPath2(home, n);
                 }
             }
         }
