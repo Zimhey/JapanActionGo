@@ -780,9 +780,9 @@ public class InuController : YokaiController
             agent.ResetPath();
             Vector3 dest = playerTransform.position;
 
-            if (transform.position.x < dest.x + 3 && transform.position.x > dest.x - 3)
+            if (transform.position.x < dest.x + 4 && transform.position.x > dest.x - 4)
             {
-                if (transform.position.z < dest.z + 3 && transform.position.z > dest.z - 3)
+                if (transform.position.z < dest.z + 4 && transform.position.z > dest.z - 4)
                 {
                     agent.ResetPath();
                     agent.SetDestination(transform.position);
