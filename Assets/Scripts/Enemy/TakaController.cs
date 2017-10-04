@@ -94,6 +94,11 @@ public class TakaController : YokaiController
     {
         set
         {
+            if (state == TakaState.Patrol)
+            {
+                ClearPaths();
+            }
+
             state = value;
             GameManager.Instance.ActorStateChange(actorID, (int)state);
             if(state == TakaState.Flee)

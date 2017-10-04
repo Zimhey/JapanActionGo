@@ -491,4 +491,11 @@ public class YokaiController : MonoBehaviour {
         }
         return closest;
     }
+
+    //function to clear paths upon a yokai leaving patrol state
+    public void ClearPaths()
+    {
+        foreach (MazeNode node in currentPath)
+            node.EnemyPathNode = false;
+    }
 }

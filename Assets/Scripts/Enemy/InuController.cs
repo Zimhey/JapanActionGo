@@ -74,6 +74,11 @@ public class InuController : YokaiController
     {
         set
         {
+            if (state == InuState.Patrol)
+            {
+                ClearPaths();
+            }
+
             state = value;
             GameManager.Instance.ActorStateChange(actorID, (int)state);
             if(state == InuState.Flee)

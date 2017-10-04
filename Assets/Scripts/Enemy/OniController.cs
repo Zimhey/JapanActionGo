@@ -109,6 +109,11 @@ public class OniController : YokaiController
     {
         set
         {
+            if(state == OniState.Patrol)
+            {
+                ClearPaths();
+            }
+
             state = value;
             //log state change to database
             GameManager.Instance.ActorStateChange(actorID, (int) state);
@@ -163,6 +168,7 @@ public class OniController : YokaiController
     //determin oni's actions for the current game loop
     void LateUpdate()
     {
+        print("Oni state " + state);
         if (actorID == null)
         {
             actorID = GetComponent<Actor>();
