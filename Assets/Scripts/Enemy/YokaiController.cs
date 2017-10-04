@@ -276,6 +276,7 @@ public class YokaiController : MonoBehaviour {
     //  nodes is the list of available nodes to patrol, and rb is the A.I.'s rigidbody used to obtain position
     public MazeNode SetClosest(MazeNode closest, MazeNode home, List<MazeNode> nodes, Rigidbody rb)
     {
+        //print("here");
         List<MazeNode> notIntersections = new List<MazeNode>();
         //the container for the path 
         LinkedList<MazeNode> shortestPathNodes = new LinkedList<MazeNode>();
@@ -318,6 +319,7 @@ public class YokaiController : MonoBehaviour {
                         notIntersections.Add(prevCheck);
                 prevCheck = n;
             }
+            //print(notIntersections.Count);
             //if no obstructions along path
             if (!trapInWay && !enemyInWay)
             {
@@ -338,7 +340,7 @@ public class YokaiController : MonoBehaviour {
                 }
             }
         }
-        print(notIntersections.Count);
+        
         if(closest == null)
         {
             foreach(MazeNode n in notIntersections)
@@ -367,10 +369,12 @@ public class YokaiController : MonoBehaviour {
         currentPath = shortestPathNodes;
         /*
         if (closest != null)
-            print("Closest not null " + closest.Col + " " + closest.Row);
+            print("Closest not null ");
         else
-            print("Closest was null " + home.Col + " " + home.Row);
-            */
+            print("Closest was null ");
+        print("Home: " + home.Col + " " + home.Row);
+        print("Destination " + closest.Col + " " + closest.Row);
+        */
         return closest;
     }
 
@@ -406,9 +410,8 @@ public class YokaiController : MonoBehaviour {
                         obstacleFound = true;
                         trapInWayTemp = true;
                     }
-                    break;
                 }
-                if ((n.EnemyPathNode && n != currentNode) || (n.actor == ActorType.Oni || n.actor == ActorType.Okuri_Inu || n.actor == ActorType.Taka_Nyudo))
+                if ((n.EnemyPathNode && n != currentNode))// || (n.actor == ActorType.Oni || n.actor == ActorType.Okuri_Inu || n.actor == ActorType.Taka_Nyudo))
                 {
                     enemyInWay = true;
                     if (obstacleFound == false)
@@ -416,11 +419,14 @@ public class YokaiController : MonoBehaviour {
                         obstacleFound = true;
                         enemyInWayTemp = true;
                     }
-                    break;
                 }
                 if (trapInWayTemp || enemyInWayTemp)
+                {
+                    //print("Current Location: " + currentNode.Col + " " + currentNode.Row);
+                    //print("Blocked Destination: " + n.Col + " " + n.Row);
                     if (prevCheck != null)
                         notIntersections.Add(prevCheck);
+                }
                 prevCheck = n;
             }
             if (!trapInWay && !enemyInWay)
@@ -443,22 +449,27 @@ public class YokaiController : MonoBehaviour {
                 }
             }
         }
+        //if(notIntersections.Count != 0)
+            //print("Number of options for " + currentNode.Col + " "  + currentNode.Row + " " + notIntersections.Count);
         if (closest == null)
         {
             foreach (MazeNode n in notIntersections)
             {
-                if (closest == null)
+                if (n != currentNode && (n != previous || MazeGenerator.GetPath2(currentNode, n).Count >= 3))
                 {
-                    closest = n;
-                }
-                Vector3 closestPosition = new Vector3(closest.Col * 6 + 8, closest.Floor * 30, closest.Row * 6 + 8) - transform.position;
-                float closestMag = closestPosition.magnitude;
-                Vector3 iterPosition = new Vector3(n.Col * 6 + 8, n.Floor * 30, n.Row * 6 + 8) - transform.position;
-                float iterMag = iterPosition.magnitude;
-                if (iterMag < closestMag)
-                {
-                    closest = n;
-                    shortestPathNodes = MazeGenerator.GetPath2(currentNode, n);
+                    if (closest == null)
+                    {
+                        closest = n;
+                    }
+                    Vector3 closestPosition = new Vector3(closest.Col * 6 + 8, closest.Floor * 30, closest.Row * 6 + 8) - transform.position;
+                    float closestMag = closestPosition.magnitude;
+                    Vector3 iterPosition = new Vector3(n.Col * 6 + 8, n.Floor * 30, n.Row * 6 + 8) - transform.position;
+                    float iterMag = iterPosition.magnitude;
+                    if (iterMag < closestMag)
+                    {
+                        closest = n;
+                        shortestPathNodes = MazeGenerator.GetPath2(currentNode, n);
+                    }
                 }
             }
         }
@@ -467,6 +478,17 @@ public class YokaiController : MonoBehaviour {
         if (shortestPathNodes != null)
             foreach (MazeNode n in shortestPathNodes)
                 n.EnemyPathNode = true;
+        if (closest != null)
+        {
+            //print("Closest was not null ");
+            //print("Current: " + currentNode.Col + " " + currentNode.Row);
+            //print("Destination " + closest.Col + " " + closest.Row);
+        }
+        else
+        {
+            //print("Closest was null ");
+            //print("Current: " + currentNode.Col + " " + currentNode.Row);
+        }
         return closest;
     }
 }
