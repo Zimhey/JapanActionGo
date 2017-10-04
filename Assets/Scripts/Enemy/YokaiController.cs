@@ -392,6 +392,7 @@ public class YokaiController : MonoBehaviour {
             bool trapInWay = false;
             bool enemyInWay = false;
             MazeNode prevCheck = null;
+            bool obstacleFound = false;
             LinkedList<MazeNode> pathNodes = MazeGenerator.GetPath2(currentNode, nodes[iter]);
             foreach (MazeNode n in pathNodes)
             {
@@ -400,15 +401,21 @@ public class YokaiController : MonoBehaviour {
                 if (GameManager.trapNode(n))
                 {
                     trapInWay = true;
-                    if (prevCheck == null)
+                    if (obstacleFound == false)
+                    {
+                        obstacleFound = true;
                         trapInWayTemp = true;
+                    }
                     break;
                 }
                 if ((n.EnemyPathNode && n != currentNode) || (n.actor == ActorType.Oni || n.actor == ActorType.Okuri_Inu || n.actor == ActorType.Taka_Nyudo))
                 {
                     enemyInWay = true;
-                    if (prevCheck == null)
+                    if (obstacleFound == false)
+                    {
+                        obstacleFound = true;
                         enemyInWayTemp = true;
+                    }
                     break;
                 }
                 if (trapInWayTemp || enemyInWayTemp)
