@@ -88,7 +88,8 @@ public class FootprintPlacer : MonoBehaviour {
         Ray ray = new Ray(footPosition, Vector3.down);
         RaycastHit rayHit;
         //print("placing footprint");
-        if(Physics.Raycast(ray, out rayHit, controller.height, mask))
+        Debug.DrawRay(footPosition, Vector3.down, Color.green, 5.0F);
+        if (Physics.Raycast(ray, out rayHit, controller.height, mask))
         {
             Vector3 position = rayHit.point + rayHit.normal * 0.001f;
             GameObject prefab = NextPrefab();

@@ -187,31 +187,35 @@ public class InuController : YokaiController
             playerTransform = PlayerObject.transform;
         else
             playerTransform = null;
-        
-        if (state != InuState.Idle && state != InuState.Stalk && state != InuState.Cornered && state != InuState.Flee && state != InuState.Stun)
+
+        if (transform.position.x > home.x + 2 || transform.position.x < home.x - 2 ||
+            transform.position.z > home.z + 2 || transform.position.z < home.z - 2)
         {
-            //print("checking if stuck");
-            Vector3 difference = newPosition - oldPosition;
-            difference.y = 0;
-            float difMag = difference.magnitude;
-            //print("dif1 " + difMag);
-            if (difMag < .05)
+            if (state != InuState.Idle && state != InuState.Stalk && state != InuState.Cornered && state != InuState.Flee && state != InuState.Stun)
             {
-                Vector3 difference2 = oldPosition - oldPosition2;
-                difference2.y = 0;
-                float difMag2 = difference2.magnitude;
-                //print("dif2 " + difMag2);
+                //print("checking if stuck");
+                Vector3 difference = newPosition - oldPosition;
+                difference.y = 0;
+                float difMag = difference.magnitude;
+                //print("dif1 " + difMag);
                 if (difMag < .05)
                 {
-                    posTimer = 0;
-                    posTimer = 5;
-                    //print("resetting path");
-                    agent.ResetPath();
-                    previous2 = previous;
-                    previous = currentNode;
-                    currentNode = null;
-                    State = InuState.Flee;
-                    return;
+                    Vector3 difference2 = oldPosition - oldPosition2;
+                    difference2.y = 0;
+                    float difMag2 = difference2.magnitude;
+                    //print("dif2 " + difMag2);
+                    if (difMag < .05)
+                    {
+                        posTimer = 0;
+                        posTimer = 5;
+                        //print("resetting path");
+                        agent.ResetPath();
+                        previous2 = previous;
+                        previous = currentNode;
+                        currentNode = null;
+                        State = InuState.Flee;
+                        return;
+                    }
                 }
             }
         }

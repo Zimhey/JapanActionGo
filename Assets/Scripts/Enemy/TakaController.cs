@@ -165,31 +165,35 @@ public class TakaController : YokaiController
         {
             //print("TakaState " + state);
         }
-        
-        if (state != TakaState.Idle && state != TakaState.Taunt && state != TakaState.Flee && state != TakaState.Stun)
+
+        if (transform.position.x > home.x + 2 || transform.position.x < home.x - 2 ||
+            transform.position.z > home.z + 2 || transform.position.z < home.z - 2)
         {
-            //print("checking if stuck");
-            Vector3 difference = newPosition - oldPosition;
-            difference.y = 0;
-            float difMag = difference.magnitude;
-            //print("dif1 " + difMag);
-            if (difMag < .05)
+            if (state != TakaState.Idle && state != TakaState.Taunt && state != TakaState.Flee && state != TakaState.Stun)
             {
-                Vector3 difference2 = oldPosition - oldPosition2;
-                difference2.y = 0;
-                float difMag2 = difference2.magnitude;
-                //print("dif2 " + difMag2);
+                //print("checking if stuck");
+                Vector3 difference = newPosition - oldPosition;
+                difference.y = 0;
+                float difMag = difference.magnitude;
+                //print("dif1 " + difMag);
                 if (difMag < .05)
                 {
-                    posTimer = 0;
-                    posTimer = 5;
-                    //print("resetting path");
-                    agent.ResetPath();
-                    previous2 = previous;
-                    previous = currentNode;
-                    currentNode = null;
-                    State = TakaState.Flee;
-                    return;
+                    Vector3 difference2 = oldPosition - oldPosition2;
+                    difference2.y = 0;
+                    float difMag2 = difference2.magnitude;
+                    //print("dif2 " + difMag2);
+                    if (difMag < .05)
+                    {
+                        posTimer = 0;
+                        posTimer = 5;
+                        //print("resetting path");
+                        agent.ResetPath();
+                        previous2 = previous;
+                        previous = currentNode;
+                        currentNode = null;
+                        State = TakaState.Flee;
+                        return;
+                    }
                 }
             }
         }

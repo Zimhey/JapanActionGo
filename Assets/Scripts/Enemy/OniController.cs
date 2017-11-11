@@ -184,34 +184,38 @@ public class OniController : YokaiController
             playerTransform = PlayerObject.transform;
         else
             playerTransform = null;
-        
+
         //if not in a stationary state check recorded positions to see if the oni is stuck
-        if (state != OniState.Idle && state != OniState.Flee && state != OniState.Stun)
+        if (transform.position.x > home.x + 2 || transform.position.x < home.x - 2 ||
+            transform.position.z > home.z + 2 || transform.position.z < home.z - 2)
         {
-            //print("checking if stuck");
-            Vector3 difference = newPosition - oldPosition;
-            difference.y = 0;
-            float difMag = difference.magnitude;
-            //print("dif1 " + difMag);
-            if (difMag < .05)
+            if (state != OniState.Idle && state != OniState.Flee && state != OniState.Stun)
             {
-                Vector3 difference2 = oldPosition - oldPosition2;
-                difference2.y = 0;
-                float difMag2 = difference2.magnitude;
-                //print("dif2 " + difMag2);
+                //print("checking if stuck");
+                Vector3 difference = newPosition - oldPosition;
+                difference.y = 0;
+                float difMag = difference.magnitude;
+                //print("dif1 " + difMag);
                 if (difMag < .05)
                 {
-                    //if positions have not changed enough determine Oni to be stuck and change behavior pattern
-                    //reset timers to give chance to move before checking again
-                    posTimer = 0;
-                    posTimer = 5;
-                    //print("resetting path");
-                    agent.ResetPath();
-                    previous2 = previous;
-                    previous = currentNode;
-                    currentNode = null;
-                    State = OniState.Flee;
-                    return;
+                    Vector3 difference2 = oldPosition - oldPosition2;
+                    difference2.y = 0;
+                    float difMag2 = difference2.magnitude;
+                    //print("dif2 " + difMag2);
+                    if (difMag < .05)
+                    {
+                        //if positions have not changed enough determine Oni to be stuck and change behavior pattern
+                        //reset timers to give chance to move before checking again
+                        posTimer = 0;
+                        posTimer = 5;
+                        //print("resetting path");
+                        agent.ResetPath();
+                        previous2 = previous;
+                        previous = currentNode;
+                        currentNode = null;
+                        State = OniState.Flee;
+                        return;
+                    }
                 }
             }
         }
