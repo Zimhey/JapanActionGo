@@ -186,7 +186,7 @@ public class TakaController : YokaiController
                     {
                         posTimer = 0;
                         posTimer = 5;
-                        //print("resetting path");
+                        print("resetting path");
                         agent.ResetPath();
                         previous2 = previous;
                         previous = currentNode;

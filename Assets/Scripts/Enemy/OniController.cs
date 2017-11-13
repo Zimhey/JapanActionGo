@@ -208,7 +208,7 @@ public class OniController : YokaiController
                         //reset timers to give chance to move before checking again
                         posTimer = 0;
                         posTimer = 5;
-                        //print("resetting path");
+                        print("resetting path");
                         agent.ResetPath();
                         previous2 = previous;
                         previous = currentNode;
