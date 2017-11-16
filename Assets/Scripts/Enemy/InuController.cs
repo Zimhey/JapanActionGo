@@ -188,41 +188,12 @@ public class InuController : YokaiController
         else
             playerTransform = null;
 
-        if (transform.position.x > home.x + 2 || transform.position.x < home.x - 2 ||
-            transform.position.z > home.z + 2 || transform.position.z < home.z - 2)
-        {
-            if (state != InuState.Idle && state != InuState.Stalk && state != InuState.Cornered && state != InuState.Flee && state != InuState.Stun)
-            {
-                //print("checking if stuck");
-                Vector3 difference = newPosition - oldPosition;
-                difference.y = 0;
-                float difMag = difference.magnitude;
-                //print("dif1 " + difMag);
-                if (difMag < .05)
-                {
-                    Vector3 difference2 = oldPosition - oldPosition2;
-                    difference2.y = 0;
-                    float difMag2 = difference2.magnitude;
-                    //print("dif2 " + difMag2);
-                    if (difMag < .05)
-                    {
-                        posTimer = 0;
-                        posTimer = 5;
-                        print("resetting path");
-                        agent.ResetPath();
-                        previous2 = previous;
-                        previous = currentNode;
-                        currentNode = null;
-                        State = InuState.Flee;
-                        return;
-                    }
-                }
-            }
-        }
-
         if (stunTimer > 0)
         {
-            state = InuState.Stun;
+            if (state != InuState.Stun)
+            {
+                state = InuState.Stun;
+            }
         }
 
         switch (state)
@@ -340,6 +311,22 @@ public class InuController : YokaiController
 
     void patrol()
     {
+        if (transform.position.x > home.x + 2 || transform.position.x < home.x - 2 ||
+            transform.position.z > home.z + 2 || transform.position.z < home.z - 2)
+        {
+            if (IsStuck(newPosition, oldPosition, oldPosition2))
+            {
+                posTimer = 0;
+                posTimer = 5;
+                print("resetting path");
+                agent.ResetPath();
+                previous2 = previous;
+                previous = currentNode;
+                currentNode = null;
+                State = InuState.Flee;
+                return;
+            }
+        }
         seen = false;
         seen = SeeObject(PlayerObject, LevelMask, home);
         if (seen)
@@ -411,6 +398,22 @@ public class InuController : YokaiController
 
     void chase()
     {
+        if (transform.position.x > home.x + 2 || transform.position.x < home.x - 2 ||
+            transform.position.z > home.z + 2 || transform.position.z < home.z - 2)
+        {
+            if (IsStuck(newPosition, oldPosition, oldPosition2))
+            {
+                posTimer = 0;
+                posTimer = 5;
+                print("resetting path");
+                agent.ResetPath();
+                previous2 = previous;
+                previous = currentNode;
+                currentNode = null;
+                State = InuState.Flee;
+                return;
+            }
+        }
         seen = false;
         seen = SeeObject(PlayerObject, LevelMask, home);
         if (!seen)
@@ -926,7 +929,23 @@ public class InuController : YokaiController
 
     void follow()
     {
-        agent.ResetPath();
+        //agent.ResetPath();
+        if (transform.position.x > home.x + 2 || transform.position.x < home.x - 2 ||
+            transform.position.z > home.z + 2 || transform.position.z < home.z - 2)
+        {
+            if (IsStuck(newPosition, oldPosition, oldPosition2))
+            {
+                posTimer = 0;
+                posTimer = 5;
+                print("resetting path");
+                agent.ResetPath();
+                previous2 = previous;
+                previous = currentNode;
+                currentNode = null;
+                State = InuState.Flee;
+                return;
+            }
+        }
         seen = false;
         seen = SeeObject(PlayerObject, LevelMask, home);
         if (seen)

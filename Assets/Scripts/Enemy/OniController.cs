@@ -184,101 +184,46 @@ public class OniController : YokaiController
             playerTransform = PlayerObject.transform;
         else
             playerTransform = null;
-
-        //if not in a stationary state check recorded positions to see if the oni is stuck
-        if (transform.position.x > home.x + 2 || transform.position.x < home.x - 2 ||
-            transform.position.z > home.z + 2 || transform.position.z < home.z - 2)
+        
+        if (stunTimer > 0)
         {
-            if (state != OniState.Idle && state != OniState.Flee && state != OniState.Stun)
-            {
-                //print("checking if stuck");
-                Vector3 difference = newPosition - oldPosition;
-                difference.y = 0;
-                float difMag = difference.magnitude;
-                //print("dif1 " + difMag);
-                if (difMag < .05)
-                {
-                    Vector3 difference2 = oldPosition - oldPosition2;
-                    difference2.y = 0;
-                    float difMag2 = difference2.magnitude;
-                    //print("dif2 " + difMag2);
-                    if (difMag < .05)
-                    {
-                        //if positions have not changed enough determine Oni to be stuck and change behavior pattern
-                        //reset timers to give chance to move before checking again
-                        posTimer = 0;
-                        posTimer = 5;
-                        print("resetting path");
-                        agent.ResetPath();
-                        previous2 = previous;
-                        previous = currentNode;
-                        currentNode = null;
-                        State = OniState.Flee;
-                        return;
-                    }
-                }
-            }
-        }
-
-        //if not fleeing or stuck check to see if the Oni needs to flee an inu
-        if (state != OniState.Flee && state != OniState.Stun)
-        {
-            if (FleeInu(LevelMask, home))
-            {
-                State = OniState.Flee;
-                fleeingInu = true;
-                return;
-            }
-        }
-
-        //if fleeing inu not true resume normal operation
-        if(state == OniState.Flee)
-        {
-            if (!FleeInu(LevelMask, home))
-            {
-                fleeingInu = false;
-            }
-        }
-
-        //fleeing inu has priority over normal actions
-        if (fleeingInu == false)
-        {
-            if(stunTimer > 0)
+            if (state != OniState.Stun)
             {
                 state = OniState.Stun;
             }
-            //determine action to take based on state in state machine
-            switch (state)
-            {
-                case OniState.Idle:
-                    idle();
-                    break;
-                case OniState.Patrol:
-                    patrol();
-                    break;
-                case OniState.Search:
-                    search();
-                    break;
-                case OniState.Chase:
-                    chase();
-                    break;
-                case OniState.Flee:
-                    flee();
-                    break;
-                case OniState.Dead:
-                    dead();
-                    break;
-                case OniState.Follow:
-                    follow();
-                    break;
-                case OniState.Stun:
-                    stun();
-                    break;
-                case OniState.GameOver:
-                    gameOver();
-                    break;
-            }
         }
+        //determine action to take based on state in state machine
+        switch (state)
+        {
+            case OniState.Idle:
+                idle();
+                break;
+            case OniState.Patrol:
+                patrol();
+                break;
+            case OniState.Search:
+                search();
+                break;
+            case OniState.Chase:
+                chase();
+                break;
+            case OniState.Flee:
+                flee();
+                break;
+            case OniState.Dead:
+                dead();
+                break;
+            case OniState.Follow:
+                follow();
+                break;
+            case OniState.Stun:
+                stun();
+                break;
+            case OniState.GameOver:
+                gameOver();
+                break;
+        }
+
         //update animations
         switch (animState)
         {
@@ -324,12 +269,6 @@ public class OniController : YokaiController
             oldPosition = transform.position;
         }
 
-        //if fleeing inu return to home
-        if (fleeingInu == true)
-        {
-            agent.SetDestination(home);
-        }
-
         //move yokai based on state
         MoveYokai(controller, agent);
     }
@@ -337,6 +276,11 @@ public class OniController : YokaiController
     //function to be performed in idle state, containes transitions to other states
     void idle()
     {
+        if (FleeInu(LevelMask, home))
+        {
+            State = OniState.Flee;
+            return;
+        }
         seen = false;
         seen = SeeObject(PlayerObject, LevelMask, home);
         if (seen)
@@ -364,6 +308,30 @@ public class OniController : YokaiController
     //function to execute in patrol state, contains transitions as well as code to navigate patrol nodes
     void patrol()
     {
+        if (FleeInu(LevelMask, home))
+        {
+            State = OniState.Flee;
+            return;
+        }
+        if (transform.position.x > home.x + 2 || transform.position.x < home.x - 2 ||
+            transform.position.z > home.z + 2 || transform.position.z < home.z - 2)
+        {
+            //if positions have not changed enough determine Oni to be stuck and change behavior pattern
+            //reset timers to give chance to move before checking again
+            if (IsStuck(newPosition, oldPosition, oldPosition2))
+            {
+                posTimer = 0;
+                posTimer = 5;
+                print("resetting path");
+                agent.ResetPath();
+                previous2 = previous;
+                previous = currentNode;
+                currentNode = null;
+                State = OniState.Flee;
+                return;
+            }
+        }
+
         seen = false;
         seen = SeeObject(PlayerObject, LevelMask, home);
         if (seen)
@@ -452,7 +420,30 @@ public class OniController : YokaiController
     void chase()
     {
         //ensure old path is cleared
-        agent.ResetPath();
+        //agent.ResetPath();
+        if (FleeInu(LevelMask, home))
+        {
+            State = OniState.Flee;
+            return;
+        }
+        if (transform.position.x > home.x + 2 || transform.position.x < home.x - 2 ||
+            transform.position.z > home.z + 2 || transform.position.z < home.z - 2)
+        {
+            //if positions have not changed enough determine Oni to be stuck and change behavior pattern
+            //reset timers to give chance to move before checking again
+            if (IsStuck(newPosition, oldPosition, oldPosition2))
+            {
+                posTimer = 0;
+                posTimer = 5;
+                print("resetting path");
+                agent.ResetPath();
+                previous2 = previous;
+                previous = currentNode;
+                currentNode = null;
+                State = OniState.Flee;
+                return;
+            }
+        }
         //check if oni can still see player
         seen = false;
         seen = SeeObject(PlayerObject, LevelMask, home);
@@ -544,7 +535,30 @@ public class OniController : YokaiController
     //function to execute in follow state, contains transitions, and code to follow footprints towards player
     void follow()
     {
-        agent.ResetPath();
+        //agent.ResetPath();
+        if (FleeInu(LevelMask, home))
+        {
+            State = OniState.Flee;
+            return;
+        }
+        if (transform.position.x > home.x + 2 || transform.position.x < home.x - 2 ||
+            transform.position.z > home.z + 2 || transform.position.z < home.z - 2)
+        {
+            //if positions have not changed enough determine Oni to be stuck and change behavior pattern
+            //reset timers to give chance to move before checking again
+            if (IsStuck(newPosition, oldPosition, oldPosition2))
+            {
+                posTimer = 0;
+                posTimer = 5;
+                print("resetting path");
+                agent.ResetPath();
+                previous2 = previous;
+                previous = currentNode;
+                currentNode = null;
+                State = OniState.Flee;
+                return;
+            }
+        }
         seen = false;
         seen = SeeObject(PlayerObject, LevelMask, home);
         if (seen)
