@@ -84,7 +84,7 @@ public class InuController : YokaiController
             }
 
             state = value;
-            //GameManager.Instance.ActorStateChange(actorID, (int)state);
+            GameManager.Instance.ActorStateChange(actorID, (int)state);
 
             if (state == InuState.Flee)
             {

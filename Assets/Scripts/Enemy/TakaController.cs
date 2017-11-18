@@ -100,7 +100,7 @@ public class TakaController : YokaiController
             }
 
             state = value;
-            //GameManager.Instance.ActorStateChange(actorID, (int)state);
+            GameManager.Instance.ActorStateChange(actorID, (int)state);
             if(state == TakaState.Flee)
             {
                 fleeTimer = 30;
