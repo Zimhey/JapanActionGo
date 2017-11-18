@@ -469,7 +469,7 @@ public class OniController : YokaiController
         if (playerCloseToEnemy)
         {
             //if VR device is present the player's actor component is in its parent
-            if (VRDevice.isPresent)
+            if (UnityEngine.XR.XRDevice.isPresent)
             {
                 Actor player = PlayerObject.GetComponentInParent<Actor>();
                 GameManager.Instance.ActorKilled(actorID, player);
