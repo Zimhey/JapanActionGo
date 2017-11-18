@@ -15,6 +15,7 @@ public class AnalyticsManager
 
     private static Queue QueryQueue;
     private static Thread QueryThread;
+    private static bool pauseThread;
     public static int ThreadSleepTime = 500;
 
     public static string DatabaseName
@@ -78,19 +79,32 @@ public class AnalyticsManager
         }
     }
 
+    public static void PauseThread()
+    {
+        pauseThread = true;
+    }
+
+    public static void ResumeThread()
+    {
+        pauseThread = false;
+    }
+
     private static void QueryThreadRun()
     {
         string query;
 
-        while(true)
+        if(!pauseThread)
         {
-            if (QueryQueue.Count > 0)
+            while (true)
             {
-                query = (string)QueryQueue.Dequeue();
-                SimpleQuery(query);
+                if (QueryQueue.Count > 0)
+                {
+                    query = (string)QueryQueue.Dequeue();
+                    SimpleQuery(query);
+                }
+                else
+                    Thread.Sleep(ThreadSleepTime);
             }
-            else
-                Thread.Sleep(ThreadSleepTime);
         }
     }
 

@@ -120,6 +120,10 @@ public class GameManager : MonoBehaviour {
         }
         set
         {
+            if(value == GameState.Play)
+                AnalyticsManager.PauseThread();
+            else
+                AnalyticsManager.ResumeThread();
             prevState = currState;
             currState = value;
         }
