@@ -22,55 +22,59 @@ public class YokaiController : MonoBehaviour {
     //  in order to determine if there exists an instance of levelMask obstructing vision
     public bool NoWall(GameObject desiredObject,  LayerMask levelMask, Vector3 home)
     {
-        // creating a float to hold the maximun distance the observation ray should cast
-        float maxDistance = 25;
-        //get the observer's location
-        Vector3 rayOrigin = gameObject.transform.position;
-        //ensure the y value is correct due to the decreasing y transform issue
-        // y value is based on type of yokai
-        if (gameObject.CompareTag("Oni"))
+        if (RCHelper(desiredObject))
         {
-            rayOrigin = new Vector3(rayOrigin.x, home.y + 2.5F, rayOrigin.z);
+            // creating a float to hold the maximun distance the observation ray should cast
+            float maxDistance = 25;
+            //get the observer's location
+            Vector3 rayOrigin = gameObject.transform.position;
+            //ensure the y value is correct due to the decreasing y transform issue
+            // y value is based on type of yokai
+            if (gameObject.CompareTag("Oni"))
+            {
+                rayOrigin = new Vector3(rayOrigin.x, home.y + 2.5F, rayOrigin.z);
+            }
+            if (gameObject.CompareTag("Inu"))
+            {
+                rayOrigin = new Vector3(rayOrigin.x, home.y + 1.5F, rayOrigin.z);
+            }
+            if (gameObject.CompareTag("Taka"))
+            {
+                rayOrigin = new Vector3(rayOrigin.x, home.y + 4.5F, rayOrigin.z);
+            }
+            // get the desired object's location
+            Vector3 objectLoc = desiredObject.transform.position;
+            //if looking for player
+            if (desiredObject.CompareTag("Player"))
+            {
+                //if using VR adjust for different player character
+                if (VRDevice.isPresent)
+                    objectLoc = desiredObject.transform.TransformPoint(objectLoc);
+            }
+            //get the vector describing how to get from observer to desired object
+            Vector3 rayDirection = desiredObject.transform.position - gameObject.transform.position;
+            //ensure y direction does not create errors by extending into the ground
+            rayDirection.y = 0;
+            //update max distance with the rays magnitude
+            maxDistance = rayDirection.magnitude;
+            //normalize the vector to ensure it is a directional vector
+            rayDirection.Normalize();
+            //scale the vector to the desired length
+            rayDirection.Scale(new Vector3(maxDistance, 1, maxDistance));
+            //create ray to be used in raycasting
+            Ray ray = new Ray(rayOrigin, rayDirection);
+            //Debug.DrawRay(rayOrigin, rayDirection, Color.green, 5.0F);
+            RaycastHit rayHit;
+
+            //check to see if the ray hits any walls, if it did then return false
+            if (Physics.Raycast(ray, out rayHit, maxDistance, levelMask))
+            {
+                return false;
+            }
+            //no wall found so return true
+            return true;
         }
-        if (gameObject.CompareTag("Inu"))
-        {
-            rayOrigin = new Vector3(rayOrigin.x, home.y + 1.5F, rayOrigin.z);
-        }
-        if (gameObject.CompareTag("Taka"))
-        {
-            rayOrigin = new Vector3(rayOrigin.x, home.y + 4.5F, rayOrigin.z);
-        }
-        // get the desired object's location
-        Vector3 objectLoc = desiredObject.transform.position;
-        //if looking for player
-        if (desiredObject.CompareTag("Player"))
-        {
-            //if using VR adjust for different player character
-            if (VRDevice.isPresent)
-                objectLoc = desiredObject.transform.TransformPoint(objectLoc);
-        }
-        //get the vector describing how to get from observer to desired object
-        Vector3 rayDirection = desiredObject.transform.position - gameObject.transform.position;
-        //ensure y direction does not create errors by extending into the ground
-        rayDirection.y = 0;
-        //update max distance with the rays magnitude
-        maxDistance = rayDirection.magnitude;
-        //normalize the vector to ensure it is a directional vector
-        rayDirection.Normalize();
-        //scale the vector to the desired length
-        rayDirection.Scale(new Vector3(maxDistance, 1, maxDistance));
-        //create ray to be used in raycasting
-        Ray ray = new Ray(rayOrigin, rayDirection);
-        //Debug.DrawRay(rayOrigin, rayDirection, Color.green, 5.0F);
-        RaycastHit rayHit;
-        
-        //check to see if the ray hits any walls, if it did then return false
-        if (Physics.Raycast(ray, out rayHit, maxDistance, levelMask))
-        {
-            return false;
-        }
-        //no wall found so return true
-        return true;
+        return false;
     }
 
     //function to move an A.I. after decisions have been made for that game loop
@@ -110,7 +114,11 @@ public class YokaiController : MonoBehaviour {
                 //if close enough add to the list of close footprints
                 if (mag < 25)
                 {
-                    close.Add(footprints[iter]);
+                    // if in a line with observer
+                    if (RCHelper(footprints[iter]))
+                    {
+                        close.Add(footprints[iter]);
+                    }
                 }
             }
         }
@@ -173,7 +181,10 @@ public class YokaiController : MonoBehaviour {
                 float mag = distanceToInu.magnitude;
                 if (mag < 15)
                 {
-                    close.Add(inus[iter]);
+                    if (RCHelper(inus[iter]))
+                    {
+                        close.Add(inus[iter]);
+                    }
                 }
             }
         }
@@ -256,7 +267,10 @@ public class YokaiController : MonoBehaviour {
         {
             if (objectCloseToObserver)
             {
-                noWallfound = NoWall(desiredObject, levelMask, home);
+                if (RCHelper(desiredObject))
+                {
+                    noWallfound = NoWall(desiredObject, levelMask, home);
+                }
             }
         }
         if (objectInFrontOfObserver)
@@ -497,5 +511,43 @@ public class YokaiController : MonoBehaviour {
     {
         foreach (MazeNode node in currentPath)
             node.EnemyPathNode = false;
+    }
+
+    public bool IsStuck(Vector3 newPosition, Vector3 oldPosition, Vector3 oldPosition2)
+    {
+        Vector3 difference = newPosition - oldPosition;
+        difference.y = 0;
+        float difMag = difference.magnitude;
+        //print("dif1 " + difMag);
+        if (difMag < .05)
+        {
+            Vector3 difference2 = oldPosition - oldPosition2;
+            difference2.y = 0;
+            float difMag2 = difference2.magnitude;
+            //print("dif2 " + difMag2);
+            if (difMag < .05)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool RCHelper(GameObject desiredObject)
+    {
+        int oColumn = (int)((gameObject.transform.position.x - 8) / 6);
+        int oRow = (int)((gameObject.transform.position.z - 8) / 6);
+        int dColumn = (int)((desiredObject.transform.position.x - 8) / 6);
+        int dRow = (int)((desiredObject.transform.position.z - 8) / 6);
+
+        if (oColumn - dColumn > -2 && oColumn - dColumn < 2)
+        {
+            return true;
+        }
+        else if (oRow - dRow > -2 && oRow - dRow < 2)
+        {
+            return true;
+        }
+        return false;
     }
 }

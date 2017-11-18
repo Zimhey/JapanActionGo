@@ -2227,6 +2227,7 @@ MonoBehaviour:
   StayCorneredDistance: 25
   CorneredChaseDistance: 5
   KillDistance: 3
+  AttackTime: 120
 --- !u!135 &135422344132124054
 SphereCollider:
   m_ObjectHideFlags: 1
