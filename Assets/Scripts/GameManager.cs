@@ -173,7 +173,7 @@ public class GameManager : MonoBehaviour {
             return;
         }
 
-        if (VRDevice.isPresent)
+        if (UnityEngine.XR.XRDevice.isPresent)
             PlayersVRType = VirtualRealityType.SteamVR;
         else
         {

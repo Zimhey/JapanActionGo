@@ -67,7 +67,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             if (!m_Jump)
             {
                 //m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
-                if (!VRDevice.isPresent)
+                if (!UnityEngine.XR.XRDevice.isPresent)
                     m_Jump = Input.GetKeyDown(KeyBindingScript.buttons["Jump"]) || Input.GetKeyDown(KeyBindingScript.controller["C_Jump"]);
                 else
                     m_Jump = KeyBindingScript.JumpPressedVR();
@@ -217,7 +217,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 #if !MOBILE_INPUT
             // On standalone builds, walk/run speed is modified by a key press.
             // keep track of whether or not the character is walking or running
-            if (!VRDevice.isPresent)
+            if (!UnityEngine.XR.XRDevice.isPresent)
                 m_IsWalking = !(Input.GetKey(KeyBindingScript.buttons["Run"]) || Input.GetKey(KeyBindingScript.controller["C_Run"]));
             else
                 m_IsWalking = !KeyBindingScript.RunPressedVR();

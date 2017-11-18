@@ -108,7 +108,7 @@ public class PlayerActions : MonoBehaviour
     public void TryDraw()
     {
         bool attemptDraw;
-        if (!VRDevice.isPresent)
+        if (!UnityEngine.XR.XRDevice.isPresent)
             attemptDraw = (Input.GetKey(KeyBindingScript.buttons["Draw"]) || Input.GetKey(KeyBindingScript.controller["C_Draw"])); // TODO move this all into KeyBindScript with one function to call
         else
             if (KeyBindingScript.LeftController != null && KeyBindingScript.RightController != null) // TODO move this into KeyBindScript
@@ -143,7 +143,7 @@ public class PlayerActions : MonoBehaviour
     public void TryThrow()
     {
         bool attemptThrow;
-        if (!VRDevice.isPresent)
+        if (!UnityEngine.XR.XRDevice.isPresent)
             attemptThrow = (Input.GetKeyDown(KeyBindingScript.buttons["Throw"]) || Input.GetKey(KeyBindingScript.controller["C_Throw"]));
         else
         {

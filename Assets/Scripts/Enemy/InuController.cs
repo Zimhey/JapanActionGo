@@ -842,7 +842,7 @@ public class InuController : YokaiController
         //if player has tripper kill them, trip not currently implemented
         if (hasPlayerTripped())
         {
-            if (VRDevice.isPresent)
+            if (UnityEngine.XR.XRDevice.isPresent)
             {
                 Actor player = PlayerObject.GetComponentInParent<Actor>();
                 GameManager.Instance.ActorKilled(actorID, player);
@@ -879,7 +879,7 @@ public class InuController : YokaiController
 
             if (playerKillDistance)
             {
-                if (VRDevice.isPresent)
+                if (UnityEngine.XR.XRDevice.isPresent)
                 {
                     Actor player = PlayerObject.GetComponentInParent<Actor>();
                     GameManager.Instance.ActorKilled(actorID, player);
@@ -937,7 +937,7 @@ public class InuController : YokaiController
         //if inu gets close enough to player kill the player
         if (playerKillDistance && beenTooClose == true)
         {
-            if (VRDevice.isPresent)
+            if (UnityEngine.XR.XRDevice.isPresent)
             {
                 Actor player = PlayerObject.GetComponentInParent<Actor>();
                 GameManager.Instance.ActorKilled(actorID, player);

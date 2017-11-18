@@ -151,7 +151,7 @@ public class Trap : MonoBehaviour
         {
             if (collider.CompareTag("Player"))
             {
-                if (VRDevice.isPresent)
+                if (UnityEngine.XR.XRDevice.isPresent)
                 {
                     Actor player = collider.GetComponentInParent<Actor>();
                     GameManager.Instance.ActorKilled(ThisActor, player);
