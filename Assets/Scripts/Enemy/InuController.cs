@@ -84,7 +84,7 @@ public class InuController : YokaiController
             }
 
             state = value;
-            GameManager.Instance.ActorStateChange(actorID, (int)state);
+            //GameManager.Instance.ActorStateChange(actorID, (int)state);
 
             if (state == InuState.Flee)
             {
@@ -469,7 +469,7 @@ public class InuController : YokaiController
         {
             AttackTimer--;
         }
-        print(AttackTimer);
+        //print(AttackTimer);
         //attack timer reachers 0 attack
         if (AttackTimer <= 0)
         {
@@ -866,7 +866,7 @@ public class InuController : YokaiController
             AttackTimer--;
             AttackTimer--;
         }
-        print(AttackTimer);
+        //print(AttackTimer);
         Vector3 rayDirection = playerTransform.position - transform.position;
         rayDirection.y = 0;
         System.Boolean playerKillDistance = rayDirection.sqrMagnitude < KillDistance;

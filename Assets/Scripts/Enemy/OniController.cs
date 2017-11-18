@@ -116,7 +116,7 @@ public class OniController : YokaiController
 
             state = value;
             //log state change to database
-            GameManager.Instance.ActorStateChange(actorID, (int) state);
+            //GameManager.Instance.ActorStateChange(actorID, (int) state);
             //set fleetimer if changing state to flee
             if(state == OniState.Flee)
             {
