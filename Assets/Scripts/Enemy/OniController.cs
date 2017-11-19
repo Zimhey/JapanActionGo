@@ -52,7 +52,8 @@ public class OniController : YokaiController
     private Vector3 home;
     //oni starting rotation
     private Quaternion startingRotation;
-    
+    private int floor;
+
     //current anim state
     private OniAnim animState;
 
@@ -164,6 +165,8 @@ public class OniController : YokaiController
         foreach (MazeNode n in MazeGenerator.nodesInSection(root))
             if (n.Col == column && n.Row == row)
                 homeNode = n;
+
+        floor = homeNode.Floor;
 
         agent = GetComponent<NavMeshAgent>();
         //turn of default nav mesh movement as it doesn't include gravity
@@ -335,8 +338,7 @@ public class OniController : YokaiController
             State = OniState.Flee;
             return;
         }
-        if (transform.position.x > home.x + 2 || transform.position.x < home.x - 2 ||
-            transform.position.z > home.z + 2 || transform.position.z < home.z - 2)
+        if(Vector3.Distance(transform.position, home) < 2)
         {
             //if positions have not changed enough determine Oni to be stuck and change behavior pattern
             //reset timers to give chance to move before checking again
@@ -408,14 +410,11 @@ public class OniController : YokaiController
                 //if current was not set this game loop, check to see if updating is necessary
                 if (setCurrent == false)
                 {
-                    if (transform.position.x < currentNodePosition.x + 2 && transform.position.x > currentNodePosition.x - 2)
+                    if (Vector3.Distance(transform.position, currentNodePosition) < 2)
                     {
-                        if (transform.position.z < currentNodePosition.z + 2 && transform.position.z > currentNodePosition.z - 2)
-                        {
-                            lookTimer = 60;
-                            agent.SetDestination(transform.position);
-                            state = OniState.LookAround;
-                        }
+                        lookTimer = 60;
+                        agent.SetDestination(transform.position);
+                        state = OniState.LookAround;
                     }
                     //update current node's postion
                     if(currentNode != null)
@@ -496,8 +495,7 @@ public class OniController : YokaiController
             State = OniState.Flee;
             return;
         }
-        if (transform.position.x > home.x + 2 || transform.position.x < home.x - 2 ||
-            transform.position.z > home.z + 2 || transform.position.z < home.z - 2)
+        if (Vector3.Distance(transform.position, home) < 2)
         {
             //if positions have not changed enough determine Oni to be stuck and change behavior pattern
             //reset timers to give chance to move before checking again
@@ -635,19 +633,16 @@ public class OniController : YokaiController
         targetPos = new Vector3(fleeTarget.Col * 6 + 8, fleeTarget.Floor * 30, fleeTarget.Row * 6 + 8);
         agent.SetDestination(targetPos);
 
-        if (transform.position.x < targetPos.x + 2 && transform.position.x > targetPos.x - 2)
+        if (Vector3.Distance(transform.position, targetPos) < 2)
         {
-            if (transform.position.z < targetPos.z + 2 && transform.position.z > targetPos.z - 2)
-            {
-                //undo path nodes except the one she ends on
-                foreach(MazeNode n in fleePath)
-                    if (n.Col != fleeTarget.Col || n.Row != fleeTarget.Row)
-                        n.EnemyPathNode = false;
-                fleeTarget = null;
-                State = OniState.Idle;
-                gameObject.transform.rotation = startingRotation;
-                return;
-            }
+            //undo path nodes except the one she ends on
+            foreach (MazeNode n in fleePath)
+                if (n.Col != fleeTarget.Col || n.Row != fleeTarget.Row)
+                    n.EnemyPathNode = false;
+            fleeTarget = null;
+            State = OniState.Idle;
+            gameObject.transform.rotation = startingRotation;
+            return;
         }
     }
 
@@ -667,8 +662,8 @@ public class OniController : YokaiController
             State = OniState.Flee;
             return;
         }
-        if (transform.position.x > home.x + 2 || transform.position.x < home.x - 2 ||
-            transform.position.z > home.z + 2 || transform.position.z < home.z - 2)
+        
+        if (Vector3.Distance(transform.position, home) < 2)
         {
             //if positions have not changed enough determine Oni to be stuck and change behavior pattern
             //reset timers to give chance to move before checking again
@@ -714,13 +709,10 @@ public class OniController : YokaiController
         //else move towards next footprint
         else
         {
-            if (transform.position.x < nextFootprint.transform.position.x + 2 && transform.position.x > nextFootprint.transform.position.x - 2)
+            if (Vector3.Distance(transform.position, nextFootprint.transform.position) < 2)
             {
-                if (transform.position.z < nextFootprint.transform.position.z + 2 && transform.position.z > nextFootprint.transform.position.z - 2)
-                {
                     //update next footprint to continue following the trail
                     nextFootprint = nextFootprint.GetComponent<FootprintList>().getNext();
-                }
             }
             agent.SetDestination(nextFootprint.transform.position);
         }

@@ -297,8 +297,7 @@ public class TakaController : YokaiController
             State = TakaState.Flee;
             return;
         }
-        if (transform.position.x > home.x + 2 || transform.position.x < home.x - 2 ||
-            transform.position.z > home.z + 2 || transform.position.z < home.z - 2)
+        if (Vector3.Distance(transform.position, home) < 2)
         {
             if (IsStuck(newPosition, oldPosition, oldPosition2))
             {
@@ -357,14 +356,11 @@ public class TakaController : YokaiController
 
                 if (setCurrent == false)
                 {
-                    if (transform.position.x < currentNodePosition.x + 2 && transform.position.x > currentNodePosition.x - 2)
+                    if (Vector3.Distance(transform.position, currentNodePosition) < 2)
                     {
-                        if (transform.position.z < currentNodePosition.z + 2 && transform.position.z > currentNodePosition.z - 2)
-                        {
                             lookTimer = 60;
                             agent.SetDestination(transform.position);
                             state = TakaState.LookAround;
-                        }
                     }
 
                     if(currentNode != null)
@@ -438,8 +434,7 @@ public class TakaController : YokaiController
             State = TakaState.Flee;
             return;
         }
-        if (transform.position.x > home.x + 2 || transform.position.x < home.x - 2 ||
-            transform.position.z > home.z + 2 || transform.position.z < home.z - 2)
+        if (Vector3.Distance(transform.position, home) < 2)
         {
             if (IsStuck(newPosition, oldPosition, oldPosition2))
             {
@@ -477,15 +472,12 @@ public class TakaController : YokaiController
 
         Vector3 dest = PlayerObject.transform.position;
 
-        if (transform.position.x < dest.x + 5 && transform.position.x > dest.x - 5)
+        if (Vector3.Distance(transform.position, dest) < 5)
         {
-            if (transform.position.z < dest.z + 5 && transform.position.z > dest.z - 5)
-            {
                 //if taka close enough to player taunt them
                 State = TakaState.Taunt;
                 agent.SetDestination(transform.position);
                 //gameObject.transform.rotation = startingRotation;
-            }
         }
         
     }
@@ -641,14 +633,11 @@ public class TakaController : YokaiController
         }
 
         targetPos = new Vector3(fleeTarget.Col * 6 + 8, fleeTarget.Floor * 30, fleeTarget.Row * 6 + 8);
-        
-        if (transform.position.x < targetPos.x + 2 && transform.position.x > targetPos.x - 2)
+
+        if (Vector3.Distance(transform.position, targetPos) < 2)
         {
-            if (transform.position.z < targetPos.z + 2 && transform.position.z > targetPos.z - 2)
-            {
                 State = TakaState.Idle;
                 gameObject.transform.rotation = startingRotation;
-            }
         }
 
         agent.SetDestination(targetPos);
@@ -680,8 +669,7 @@ public class TakaController : YokaiController
             State = TakaState.Flee;
             return;
         }
-        if (transform.position.x > home.x + 2 || transform.position.x < home.x - 2 ||
-            transform.position.z > home.z + 2 || transform.position.z < home.z - 2)
+        if (Vector3.Distance(transform.position, home) < 2)
         {
             if (IsStuck(newPosition, oldPosition, oldPosition2))
             {
@@ -722,12 +710,9 @@ public class TakaController : YokaiController
         }
         else
         {
-            if (transform.position.x < nextFootprint.transform.position.x + 1 && transform.position.x > nextFootprint.transform.position.x - 1)
+            if (Vector3.Distance(transform.position, nextFootprint.transform.position) < 1)
             {
-                if (transform.position.z < nextFootprint.transform.position.z + 1 && transform.position.z > nextFootprint.transform.position.z - 1)
-                {
                     nextFootprint = nextFootprint.GetComponent<FootprintList>().getNext();
-                }
             }
 
             agent.SetDestination(nextFootprint.transform.position);

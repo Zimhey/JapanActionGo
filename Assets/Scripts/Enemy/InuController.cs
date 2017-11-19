@@ -343,8 +343,7 @@ public class InuController : YokaiController
 
     void patrol()
     {
-        if (transform.position.x > home.x + 2 || transform.position.x < home.x - 2 ||
-            transform.position.z > home.z + 2 || transform.position.z < home.z - 2)
+        if (Vector3.Distance(transform.position, home) < 2)
         {
             if (IsStuck(newPosition, oldPosition, oldPosition2))
             {
@@ -403,16 +402,12 @@ public class InuController : YokaiController
 
                 if (setCurrent == false)
                 {
-                    if (transform.position.x < currentNodePosition.x + 2 && transform.position.x > currentNodePosition.x - 2)
-                    {
-                        if (transform.position.z < currentNodePosition.z + 2 && transform.position.z > currentNodePosition.z - 2)
-                        {
-                            lookTimer = 60;
+                    if (Vector3.Distance(transform.position, currentNodePosition) < 2)
+                    { 
+                        lookTimer = 60;
                             agent.SetDestination(transform.position);
                             state = InuState.LookAround;
-                        }
                     }
-
                     if(currentNode != null)
                         currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
                 }
@@ -476,8 +471,7 @@ public class InuController : YokaiController
 
     void chase()
     {
-        if (transform.position.x > home.x + 2 || transform.position.x < home.x - 2 ||
-            transform.position.z > home.z + 2 || transform.position.z < home.z - 2)
+        if (Vector3.Distance(transform.position, home) < 2)
         {
             if (IsStuck(newPosition, oldPosition, oldPosition2))
             {
@@ -513,14 +507,11 @@ public class InuController : YokaiController
         Vector3 dest = playerTransform.position;
         agent.SetDestination(dest);
 
-        if (transform.position.x < dest.x + 5 && transform.position.x > dest.x - 5)
+        if (Vector3.Distance(transform.position, dest) < 5)
         {
-            if (transform.position.z < dest.z + 5 && transform.position.z > dest.z - 5)
-            {
                 //if close enough to player attempt to stalk player
                 State = InuState.Stalk;
                 agent.SetDestination(transform.position);
-            }
         }
     }
 
@@ -888,13 +879,10 @@ public class InuController : YokaiController
             agent.ResetPath();
             Vector3 dest = playerTransform.position;
 
-            if (transform.position.x < dest.x + 5 && transform.position.x > dest.x - 5)
+            if (Vector3.Distance(transform.position, dest) < 5)
             {
-                if (transform.position.z < dest.z + 5 && transform.position.z > dest.z - 5)
-                {
                     agent.ResetPath();
                     agent.SetDestination(transform.position);
-                }
             }
             else
             {
@@ -1042,13 +1030,10 @@ public class InuController : YokaiController
         }
         agent.ResetPath();
         agent.SetDestination(home);
-        if (transform.position.x < home.x + 2 && transform.position.x > home.x - 2)
+        if (Vector3.Distance(transform.position, home) < 2)
         {
-            if (transform.position.z < home.z + 2 && transform.position.z > home.z - 2)
-            {
                 State = InuState.Idle;
                 gameObject.transform.rotation = startingRotation;
-            }
         }
     }
 
@@ -1060,8 +1045,7 @@ public class InuController : YokaiController
     void follow()
     {
         //agent.ResetPath();
-        if (transform.position.x > home.x + 2 || transform.position.x < home.x - 2 ||
-            transform.position.z > home.z + 2 || transform.position.z < home.z - 2)
+        if (Vector3.Distance(transform.position, home) < 2)
         {
             if (IsStuck(newPosition, oldPosition, oldPosition2))
             {
@@ -1102,12 +1086,9 @@ public class InuController : YokaiController
         }
         else
         {
-            if (transform.position.x < nextFootprint.transform.position.x + 1 && transform.position.x > nextFootprint.transform.position.x - 1)
+            if (Vector3.Distance(transform.position, nextFootprint.transform.position) < 2)
             {
-                if (transform.position.z < nextFootprint.transform.position.z + 1 && transform.position.z > nextFootprint.transform.position.z - 1)
-                {
                     nextFootprint = nextFootprint.GetComponent<FootprintList>().getNext();
-                }
             }
 
             agent.SetDestination(nextFootprint.transform.position);
