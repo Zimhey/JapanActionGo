@@ -54,6 +54,8 @@ public class InuController : YokaiController
     public int CorneredChaseDistance;
     //distance to kill player while cornered
     public int KillDistance;
+    //timer for inu to attack
+    public int AttackTime;
 
     //inu physics body
     private Rigidbody rb;
@@ -69,11 +71,13 @@ public class InuController : YokaiController
     private Actor actorID;
     //bool containing if the inu is attempting to avoid being cornered
     private bool retreating;
+    private int AttackTimer;
 
     public InuState State
     {
         set
         {
+            int checker = 0;
             if (state == InuState.Patrol)
             {
                 ClearPaths();
@@ -81,9 +85,23 @@ public class InuController : YokaiController
 
             state = value;
             GameManager.Instance.ActorStateChange(actorID, (int)state);
-            if(state == InuState.Flee)
+
+            if (state == InuState.Flee)
             {
                 fleeTimer = 30;
+            }
+            else if (state == InuState.Stalk)
+            {
+                checker = 1;
+            }
+            else if (state == InuState.Cornered)
+            {
+                checker = 1;
+            }
+
+            if(checker == 0)
+            {
+                AttackTimer = AttackTime;
             }
         }
     }
@@ -152,6 +170,7 @@ public class InuController : YokaiController
         posTimer = 60;
         posTimer2 = 27;
         stunTimer = 0;
+        AttackTimer = AttackTime;
         root = MazeGenerator.getSectionBasedOnLocation(home);
         if (root != null)
         {
@@ -446,6 +465,18 @@ public class InuController : YokaiController
     //function to execute in stalk state, contains transitions, and code to maintain distance from player and attempt to avoid being cornered
     void stalk()
     {
+        if (AttackTimer > 0)
+        {
+            AttackTimer--;
+        }
+        //print(AttackTimer);
+        //attack timer reachers 0 attack
+        if (AttackTimer <= 0)
+        {
+            State = InuState.Cornered;
+            return;
+        }
+
         AnimState = InuAnim.Creep;
         Vector3 rayDirection = playerTransform.position - transform.position;
         rayDirection.y = 0;
@@ -477,7 +508,8 @@ public class InuController : YokaiController
                 return;
             }
         }
-        //check to see if plyaer is close enough to trigger cornered state
+       
+        //check to see if player is close enough to trigger cornered state
         System.Boolean playerTooCloseToEnemy = rayDirection.sqrMagnitude < StartCorneredDistance;
         if (playerTooCloseToEnemy)
         {
@@ -792,9 +824,9 @@ public class InuController : YokaiController
             agent.ResetPath();
             Vector3 dest = playerTransform.position;
 
-            if (transform.position.x < dest.x + 4 && transform.position.x > dest.x - 4)
+            if (transform.position.x < dest.x + 5 && transform.position.x > dest.x - 5)
             {
-                if (transform.position.z < dest.z + 4 && transform.position.z > dest.z - 4)
+                if (transform.position.z < dest.z + 5 && transform.position.z > dest.z - 5)
                 {
                     agent.ResetPath();
                     agent.SetDestination(transform.position);
@@ -810,7 +842,7 @@ public class InuController : YokaiController
         //if player has tripper kill them, trip not currently implemented
         if (hasPlayerTripped())
         {
-            if (VRDevice.isPresent)
+            if (UnityEngine.XR.XRDevice.isPresent)
             {
                 Actor player = PlayerObject.GetComponentInParent<Actor>();
                 GameManager.Instance.ActorKilled(actorID, player);
@@ -823,13 +855,44 @@ public class InuController : YokaiController
             PlayerObject.SetActive(false);
             print("GameOver");
         }
+        
     }
 
     //function to execute in cornered state, contains transitions, and code to deal with player
     void cornered()
     {
+        if (AttackTimer > 0)
+        {
+            AttackTimer--;
+            AttackTimer--;
+        }
+        //print(AttackTimer);
         Vector3 rayDirection = playerTransform.position - transform.position;
         rayDirection.y = 0;
+        System.Boolean playerKillDistance = rayDirection.sqrMagnitude < KillDistance;
+        //attack timer reachers 0 attack
+        if (AttackTimer <= 0)
+        {
+            Vector3 goal = playerTransform.position;
+            agent.ResetPath();
+            agent.SetDestination(goal);
+
+            if (playerKillDistance)
+            {
+                if (UnityEngine.XR.XRDevice.isPresent)
+                {
+                    Actor player = PlayerObject.GetComponentInParent<Actor>();
+                    GameManager.Instance.ActorKilled(actorID, player);
+                }
+                else
+                {
+                    GameManager.Instance.ActorKilled(actorID, PlayerObject.GetComponent<Actor>());
+                }
+                GameManager.Instance.GameOver();
+            }
+            return;
+        }
+        
         System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < StayCorneredDistance;
 
         if (!playerCloseToEnemy)
@@ -872,10 +935,9 @@ public class InuController : YokaiController
         }
 
         //if inu gets close enough to player kill the player
-        System.Boolean playerKillDistance = rayDirection.sqrMagnitude < KillDistance;
         if (playerKillDistance && beenTooClose == true)
         {
-            if (VRDevice.isPresent)
+            if (UnityEngine.XR.XRDevice.isPresent)
             {
                 Actor player = PlayerObject.GetComponentInParent<Actor>();
                 GameManager.Instance.ActorKilled(actorID, player);

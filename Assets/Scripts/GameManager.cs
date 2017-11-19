@@ -120,6 +120,10 @@ public class GameManager : MonoBehaviour {
         }
         set
         {
+            if(value == GameState.Play)
+                AnalyticsManager.PauseThread();
+            else
+                AnalyticsManager.ResumeThread();
             prevState = currState;
             currState = value;
         }
@@ -169,7 +173,7 @@ public class GameManager : MonoBehaviour {
             return;
         }
 
-        if (VRDevice.isPresent)
+        if (UnityEngine.XR.XRDevice.isPresent)
             PlayersVRType = VirtualRealityType.SteamVR;
         else
         {

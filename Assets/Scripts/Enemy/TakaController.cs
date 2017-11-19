@@ -489,7 +489,7 @@ public class TakaController : YokaiController
         //if player looks up while taunted, kill it
         if (playerLookingUp())
         {
-            if (VRDevice.isPresent)
+            if (UnityEngine.XR.XRDevice.isPresent)
             {
                 Actor player = PlayerObject.GetComponentInParent<Actor>();
                 GameManager.Instance.ActorKilled(actorID, player);

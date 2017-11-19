@@ -48,7 +48,7 @@ public class YokaiController : MonoBehaviour {
             if (desiredObject.CompareTag("Player"))
             {
                 //if using VR adjust for different player character
-                if (VRDevice.isPresent)
+                if (UnityEngine.XR.XRDevice.isPresent)
                     objectLoc = desiredObject.transform.TransformPoint(objectLoc);
             }
             //get the vector describing how to get from observer to desired object

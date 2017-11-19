@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Pickup : MonoBehaviour {
 
+    public float SpinSpeed;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -11,7 +13,9 @@ public class Pickup : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        Vector3 currRot = transform.rotation.eulerAngles;
+        currRot.y += SpinSpeed * Time.deltaTime;
+        transform.rotation = Quaternion.Euler(currRot);
 	}
 
     public ItemType item;

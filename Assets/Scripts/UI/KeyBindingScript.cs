@@ -90,7 +90,7 @@ public class KeyBindingScript : MonoBehaviour {
                     currentKey = null;
                 }
             }
-            else if (VRDevice.isPresent)
+            else if (UnityEngine.XR.XRDevice.isPresent)
             {
                 if (LeftController.triggerPressed)
                 {
@@ -123,7 +123,7 @@ public class KeyBindingScript : MonoBehaviour {
 
     public static bool JumpPressedVR()
     {
-        if (!VRDevice.isPresent)
+        if (!UnityEngine.XR.XRDevice.isPresent)
             return false;
         if (vr["Jump"] == "Trigger1")
             return LeftController.triggerPressed;
@@ -139,7 +139,7 @@ public class KeyBindingScript : MonoBehaviour {
 
     public static bool RunPressedVR()
     {
-        if (!VRDevice.isPresent)
+        if (!UnityEngine.XR.XRDevice.isPresent)
             return false;
         if (vr["Run"] == "Trigger1")
             return LeftController.triggerPressed;
@@ -155,7 +155,7 @@ public class KeyBindingScript : MonoBehaviour {
 
     public static bool DrawPressedVR()
     {
-        if (!VRDevice.isPresent)
+        if (!UnityEngine.XR.XRDevice.isPresent)
             return false;
         if (vr["Draw"] == "Trigger1")
             return LeftController.triggerPressed;
@@ -171,7 +171,7 @@ public class KeyBindingScript : MonoBehaviour {
 
     public static bool ThrowPressedVR()
     {
-        if (!VRDevice.isPresent)
+        if (!UnityEngine.XR.XRDevice.isPresent)
             return false;
         if (vr["Throw"] == "Trigger1")
             return LeftController.triggerPressed;

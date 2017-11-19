@@ -170,9 +170,13 @@ public class OniController : YokaiController
     //determin oni's actions for the current game loop
     void LateUpdate()
     {
+<<<<<<< HEAD
         print("Oni state " + state);
         if (state == OniState.Flee)
             print(homeNode.Col + " " + homeNode.Row);
+=======
+        //print("Oni state " + state);
+>>>>>>> 5342a704179cc839c139cd823763a4ef7a3ec09b
         if (actorID == null)
         {
             actorID = GetComponent<Actor>();
@@ -473,7 +477,7 @@ public class OniController : YokaiController
         if (playerCloseToEnemy)
         {
             //if VR device is present the player's actor component is in its parent
-            if (VRDevice.isPresent)
+            if (UnityEngine.XR.XRDevice.isPresent)
             {
                 Actor player = PlayerObject.GetComponentInParent<Actor>();
                 GameManager.Instance.ActorKilled(actorID, player);
