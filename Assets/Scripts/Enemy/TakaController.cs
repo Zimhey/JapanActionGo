@@ -147,7 +147,8 @@ public class TakaController : YokaiController
 
     void LateUpdate()
     {
-        if(actorID == null)
+        print("Taka state " + state);
+        if (actorID == null)
         {
             actorID = GetComponent<Actor>();
         }
@@ -544,8 +545,8 @@ public class TakaController : YokaiController
         {
             MazeNode presentNode = new MazeNode();
             bool obstacle = false;
-            int column = (int)((transform.position.x - 8) / 6);
-            int row = (int)((transform.position.z - 8) / 6);
+            int column = homeNode.Col;
+            int row = homeNode.Row;
 
             foreach (MazeNode n in MazeGenerator.nodesInSection(root))
                 if (n.Col == column && n.Row == row)

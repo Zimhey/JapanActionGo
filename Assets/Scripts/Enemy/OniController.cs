@@ -530,8 +530,8 @@ public class OniController : YokaiController
         {
             MazeNode presentNode = new MazeNode();
             bool obstacle = false;
-            int column = (int)((transform.position.x - 8) / 6);
-            int row = (int)((transform.position.z - 8) / 6);
+            int column = homeNode.Col;
+            int row = homeNode.Row;
 
             foreach (MazeNode n in MazeGenerator.nodesInSection(root))
                 if (n.Col == column && n.Row == row)
@@ -544,6 +544,8 @@ public class OniController : YokaiController
             {
                 if (n.EnemyPathNode || GameManager.trapNode(n))
                 {
+                    if (homeNode.Col == 9 && homeNode.Row == 2)
+                        print(column + " " + row);
                     fleeTarget = prevCheckNode;
                     obstacle = true;
                     break;
@@ -559,6 +561,8 @@ public class OniController : YokaiController
         }
 
         targetPos = new Vector3(fleeTarget.Col * 6 + 8, fleeTarget.Floor * 30, fleeTarget.Row * 6 + 8);
+        if (homeNode.Col == 9 && homeNode.Row == 2)
+            print(fleeTarget.Col + " " + fleeTarget.Row);
         agent.SetDestination(targetPos);
 
         if (transform.position.x < targetPos.x + 2 && transform.position.x > targetPos.x - 2)

@@ -761,8 +761,12 @@ public class MazeGenerator : MonoBehaviour
             actorLocations[i] = PossiblePlaces;
         }
 
+        int superCounter = 0;
         for (int i = 0; i < actors; i++)
         {
+            superCounter++;
+            if (superCounter > 1000)
+                break;
             counter = 0;
             int temp = 0;
             bool listContains = true;
@@ -777,7 +781,16 @@ public class MazeGenerator : MonoBehaviour
                 }
                 counter++;
             }
-            actorLocations[i] = temp;
+            bool tempCorrectDis = true;
+            foreach (int num in actorLocations)
+                if (num - temp < 3 && num - temp > -3)
+                    tempCorrectDis = false;
+            if (tempCorrectDis)
+                actorLocations[i] = temp;
+            else
+                i--;
+
+            //actorLocations[i] = temp;
         }
 
         counter = 0;

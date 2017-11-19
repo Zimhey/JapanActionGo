@@ -329,9 +329,13 @@ public class YokaiController : MonoBehaviour {
                 }
 
                 if (trapInWayTemp || enemyInWayTemp)
+                {
                     if (prevCheck != null)
                         notIntersections.Add(prevCheck);
-                prevCheck = n;
+                }
+                else
+                    prevCheck = n;
+                
             }
             //print(notIntersections.Count);
             //if no obstructions along path
@@ -441,7 +445,8 @@ public class YokaiController : MonoBehaviour {
                     if (prevCheck != null)
                         notIntersections.Add(prevCheck);
                 }
-                prevCheck = n;
+                //else
+                    prevCheck = n;
             }
             if (!trapInWay && !enemyInWay)
             {
