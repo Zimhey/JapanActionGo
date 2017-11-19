@@ -10,6 +10,7 @@ public enum TakaState
 {
     Idle, // taka currently doing nothing
     Patrol, // taka has not seen player, wandering maze
+    LookAround,
     Search, // taka has seen player, cannot see player or footprints, is looking for player in maze
     Chase, // taka sees player, is moving towards player to taunt
     Taunt, // taka is next to player and taunts so player will look up
@@ -71,6 +72,7 @@ public class TakaController : YokaiController
     private MazeNode previous;
     private MazeNode previous2;
     private MazeNode homeNode;
+    private int lookTimer;
     //countdown until no longer stunned
     private int stunTimer;
     private Camera cam;
@@ -179,6 +181,9 @@ public class TakaController : YokaiController
             case TakaState.Patrol:
                 patrol();
                 break;
+            case TakaState.LookAround:
+                look();
+                break;
             case TakaState.Search:
                 search();
                 break;
@@ -257,6 +262,8 @@ public class TakaController : YokaiController
 
     void idle()
     {
+        posTimer = 90;
+        posTimer2 = 77;
         if (FleeInu(LevelMask, home))
         {
             State = TakaState.Flee;
@@ -349,14 +356,9 @@ public class TakaController : YokaiController
                     {
                         if (transform.position.z < currentNodePosition.z + 2 && transform.position.z > currentNodePosition.z - 2)
                         {
-                            MazeNode closest = null;
-                            closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
-                            if (closest != null)
-                            {
-                                previous2 = previous;
-                                previous = currentNode;
-                                currentNode = closest;
-                            }
+                            lookTimer = 60;
+                            agent.SetDestination(transform.position);
+                            state = TakaState.LookAround;
                         }
                     }
 
@@ -364,6 +366,54 @@ public class TakaController : YokaiController
                         currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
                 }
                 agent.SetDestination(currentNodePosition);
+            }
+        }
+    }
+
+    void look()
+    {
+        posTimer = 90;
+        posTimer2 = 77;
+        lookTimer--;
+        //print(lookTimer);
+        if (FleeInu(LevelMask, home))
+        {
+            State = TakaState.Flee;
+            return;
+        }
+        seen = false;
+        seen = SeeObject(PlayerObject, LevelMask, home);
+        if (seen)
+        {
+            //if player has been seen chase
+            awake = true;
+            State = TakaState.Chase;
+            return;
+        }
+        GameObject foundFootprint = SeeFootprint(LevelMask, home);
+        if (foundFootprint != null)
+        {
+            //if footprints found follow
+            State = TakaState.Follow;
+            return;
+        }
+        transform.Rotate(Vector3.up * (360 * Time.deltaTime));
+        if (lookTimer <= 0)
+        {
+            if (root != null)
+            {
+                //old destination reached, update patrol path
+                MazeNode closest = null;
+                closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
+                if (closest != null)
+                {
+                    previous2 = previous;
+                    previous = currentNode;
+                    currentNode = closest;
+                }
+
+                State = TakaState.Patrol;
+                return;
             }
         }
     }
@@ -430,8 +480,10 @@ public class TakaController : YokaiController
     }
 
     //function to execute in taunt state
-    void taunt() 
+    void taunt()
     {
+        posTimer = 90;
+        posTimer2 = 77;
         if (FleeInu(LevelMask, home))
         {
             State = TakaState.Flee;
@@ -506,6 +558,8 @@ public class TakaController : YokaiController
 
     void flee()
     {
+        posTimer = 90;
+        posTimer2 = 77;
         fleeTimer--;
         if (fleeTimer <= 0)
         {
@@ -665,6 +719,8 @@ public class TakaController : YokaiController
 
     void stun()
     {
+        posTimer = 90;
+        posTimer2 = 77;
         stunTimer--;
         if (stunTimer <= 0)
         {
@@ -694,7 +750,7 @@ public class TakaController : YokaiController
         fleeingInu = false;
     }
 
-    void SafeZoneCollision()
+    void safeZoneCollision()
     {
         State = TakaState.Flee;
     }

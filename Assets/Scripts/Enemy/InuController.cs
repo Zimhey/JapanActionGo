@@ -11,6 +11,7 @@ public enum InuState
 {
     Idle, // inu currently doing nothing
     Patrol, // inu has not seen player, wandering maze
+    LookAround,
     Search, // inu has seen player, cannot see player or footprints, is looking for player in maze
     Chase, // inu sees player, is moving towards player to stalk
     Stalk, // inu is following player until they trip, then they attack
@@ -131,6 +132,7 @@ public class InuController : YokaiController
     private MazeNode previous;
     private MazeNode previous2;
     private MazeNode homeNode;
+    private int lookTimer;
     //countdown until no longer stunned
     private int stunTimer;
     //has player been too close
@@ -192,6 +194,7 @@ public class InuController : YokaiController
 
     void LateUpdate()
     {
+       // print(state);
         if (actorID == null)
         {
             actorID = GetComponent<Actor>();
@@ -222,6 +225,9 @@ public class InuController : YokaiController
                 break;
             case InuState.Patrol:
                 patrol();
+                break;
+            case InuState.LookAround:
+                look();
                 break;
             case InuState.Search:
                 search();
@@ -306,6 +312,8 @@ public class InuController : YokaiController
 
     void idle()
     {
+        posTimer = 90;
+        posTimer2 = 77;
         if (PlayerObject != null)
         {
             seen = false;
@@ -391,14 +399,9 @@ public class InuController : YokaiController
                     {
                         if (transform.position.z < currentNodePosition.z + 2 && transform.position.z > currentNodePosition.z - 2)
                         {
-                            MazeNode closest = null;
-                            closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
-                            if (closest != null)
-                            {
-                                previous2 = previous;
-                                previous = currentNode;
-                                currentNode = closest;
-                            }
+                            lookTimer = 60;
+                            agent.SetDestination(transform.position);
+                            state = InuState.LookAround;
                         }
                     }
 
@@ -406,6 +409,54 @@ public class InuController : YokaiController
                         currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
                 }
                 agent.SetDestination(currentNodePosition);
+            }
+        }
+    }
+
+    void look()
+    {
+        posTimer = 90;
+        posTimer2 = 77;
+        lookTimer--;
+        //print(lookTimer);
+        if (FleeInu(LevelMask, home))
+        {
+            State = InuState.Flee;
+            return;
+        }
+        seen = false;
+        seen = SeeObject(PlayerObject, LevelMask, home);
+        if (seen)
+        {
+            //if player has been seen chase
+            awake = true;
+            State = InuState.Chase;
+            return;
+        }
+        GameObject foundFootprint = SeeFootprint(LevelMask, home);
+        if (foundFootprint != null)
+        {
+            //if footprints found follow
+            State = InuState.Follow;
+            return;
+        }
+        transform.Rotate(Vector3.up * (360 * Time.deltaTime));
+        if (lookTimer <= 0)
+        {
+            if (root != null)
+            {
+                //old destination reached, update patrol path
+                MazeNode closest = null;
+                closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
+                if (closest != null)
+                {
+                    previous2 = previous;
+                    previous = currentNode;
+                    currentNode = closest;
+                }
+
+                State = InuState.Patrol;
+                return;
             }
         }
     }
@@ -465,6 +516,8 @@ public class InuController : YokaiController
     //function to execute in stalk state, contains transitions, and code to maintain distance from player and attempt to avoid being cornered
     void stalk()
     {
+        posTimer = 90;
+        posTimer2 = 77;
         if (AttackTimer > 0)
         {
             AttackTimer--;
@@ -861,6 +914,8 @@ public class InuController : YokaiController
     //function to execute in cornered state, contains transitions, and code to deal with player
     void cornered()
     {
+        posTimer = 90;
+        posTimer2 = 77;
         if (AttackTimer > 0)
         {
             AttackTimer--;
@@ -954,6 +1009,8 @@ public class InuController : YokaiController
 
     void flee()
     {
+        posTimer = 90;
+        posTimer2 = 77;
         fleeTimer--;
         if (fleeTimer <= 0)
         {
@@ -1045,6 +1102,8 @@ public class InuController : YokaiController
 
     void stun()
     {
+        posTimer = 90;
+        posTimer2 = 77;
         stunTimer--;
         if (stunTimer <= 0)
         {
