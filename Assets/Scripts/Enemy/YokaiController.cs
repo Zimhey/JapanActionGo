@@ -74,7 +74,10 @@ public class YokaiController : MonoBehaviour {
             //no wall found so return true
             return true;
         }
-        return false;
+        else
+        {
+            return false;
+        }
     }
 
     //function to move an A.I. after decisions have been made for that game loop
@@ -545,11 +548,11 @@ public class YokaiController : MonoBehaviour {
         int dColumn = (int)((desiredObject.transform.position.x - 8) / 6);
         int dRow = (int)((desiredObject.transform.position.z - 8) / 6);
 
-        if (oColumn - dColumn > -2 && oColumn - dColumn < 2)
+        if ((oColumn - dColumn) > -2 && (oColumn - dColumn) < 2)
         {
             return true;
         }
-        else if (oRow - dRow > -2 && oRow - dRow < 2)
+        else if ((oRow - dRow) > -2 && (oRow - dRow) < 2)
         {
             return true;
         }

@@ -10,6 +10,7 @@ public enum OniState
 {
     Idle, // oni currently doing nothing
     Patrol, // oni has not seen player, wandering maze
+    LookAround, // on reaching intersection in patrol look around
     Search, // oni has seen player, cannot see player or footprints, is looking for player in maze
     Chase, // oni sees player, is moving towards player to attack
     Flee, // oni has encountered safe zone, is returning to home position
@@ -43,6 +44,7 @@ public class OniController : YokaiController
     public LayerMask PlayerMask;
     //distance at which the oni kills the player while in chase
     public int KillDistance;
+    public bool TestDebug;
 
     //oni physics body
     private Rigidbody rb;
@@ -50,7 +52,8 @@ public class OniController : YokaiController
     private Vector3 home;
     //oni starting rotation
     private Quaternion startingRotation;
-    
+    private int floor;
+
     //current anim state
     private OniAnim animState;
 
@@ -73,6 +76,8 @@ public class OniController : YokaiController
     private MazeNode previous2;
     //the node the oni spawned in
     private MazeNode homeNode;
+    //countdown to continue patroling
+    private int lookTimer;
     //countdown until no longer stunned
     private int stunTimer;
     //the last visited position recored
@@ -161,16 +166,27 @@ public class OniController : YokaiController
             if (n.Col == column && n.Row == row)
                 homeNode = n;
 
+        floor = homeNode.Floor;
+
         agent = GetComponent<NavMeshAgent>();
         //turn of default nav mesh movement as it doesn't include gravity
         agent.updatePosition = false;
         agent.updateRotation = true;
+        agent.nextPosition = transform.position;
+        print("trans" + transform.position);
+        print("nav" + agent.nextPosition);
     }
 
     //determin oni's actions for the current game loop
     void LateUpdate()
     {
-        print("Oni state " + state);
+        agent.nextPosition = transform.position;
+        if (TestDebug)
+        {
+            print("trans2" + transform.position);
+            print("nav2" + agent.nextPosition);
+        }
+        //print("Oni state " + state);
         if (state == OniState.Flee)
             print(homeNode.Col + " " + homeNode.Row);
         if (actorID == null)
@@ -204,6 +220,9 @@ public class OniController : YokaiController
                 break;
             case OniState.Patrol:
                 patrol();
+                break;
+            case OniState.LookAround:
+                look();
                 break;
             case OniState.Search:
                 search();
@@ -280,6 +299,8 @@ public class OniController : YokaiController
     //function to be performed in idle state, containes transitions to other states
     void idle()
     {
+        posTimer = 90;
+        posTimer2 = 77;
         if (FleeInu(LevelMask, home))
         {
             State = OniState.Flee;
@@ -317,8 +338,7 @@ public class OniController : YokaiController
             State = OniState.Flee;
             return;
         }
-        if (transform.position.x > home.x + 2 || transform.position.x < home.x - 2 ||
-            transform.position.z > home.z + 2 || transform.position.z < home.z - 2)
+        if(Vector3.Distance(transform.position, home) < 2)
         {
             //if positions have not changed enough determine Oni to be stuck and change behavior pattern
             //reset timers to give chance to move before checking again
@@ -326,7 +346,10 @@ public class OniController : YokaiController
             {
                 posTimer = 0;
                 posTimer = 5;
-                print("resetting path");
+                if (TestDebug)
+                {
+                    print("resetting path");
+                }
                 agent.ResetPath();
                 previous2 = previous;
                 previous = currentNode;
@@ -387,20 +410,11 @@ public class OniController : YokaiController
                 //if current was not set this game loop, check to see if updating is necessary
                 if (setCurrent == false)
                 {
-                    if (transform.position.x < currentNodePosition.x + 2 && transform.position.x > currentNodePosition.x - 2)
+                    if (Vector3.Distance(transform.position, currentNodePosition) < 2)
                     {
-                        if (transform.position.z < currentNodePosition.z + 2 && transform.position.z > currentNodePosition.z - 2)
-                        {
-                            //old destination reached, update patrol path
-                            MazeNode closest = null;
-                            closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
-                            if (closest != null)
-                            {
-                                previous2 = previous;
-                                previous = currentNode;
-                                currentNode = closest;
-                            }
-                        }
+                        lookTimer = 60;
+                        agent.SetDestination(transform.position);
+                        state = OniState.LookAround;
                     }
                     //update current node's postion
                     if(currentNode != null)
@@ -408,6 +422,57 @@ public class OniController : YokaiController
                 }
                 //set A.I. to move to current node
                 agent.SetDestination(currentNodePosition);
+            }
+        }
+    }
+
+    void look()
+    {
+        posTimer = 90;
+        posTimer2 = 77;
+        lookTimer--;
+        if (TestDebug)
+        {
+            print(lookTimer);
+        }
+        if (FleeInu(LevelMask, home))
+        {
+            State = OniState.Flee;
+            return;
+        }
+        seen = false;
+        seen = SeeObject(PlayerObject, LevelMask, home);
+        if (seen)
+        {
+            //if player has been seen chase
+            awake = true;
+            State = OniState.Chase;
+            return;
+        }
+        GameObject foundFootprint = SeeFootprint(LevelMask, home);
+        if (foundFootprint != null)
+        {
+            //if footprints found follow
+            State = OniState.Follow;
+            return;
+        }
+        transform.Rotate(Vector3.up * (360 * Time.deltaTime));
+        if (lookTimer <= 0)
+        {
+            if (root != null)
+            {
+                //old destination reached, update patrol path
+                MazeNode closest = null;
+                closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
+                if (closest != null)
+                {
+                    previous2 = previous;
+                    previous = currentNode;
+                    currentNode = closest;
+                }
+
+                State = OniState.Patrol;
+                return;
             }
         }
     }
@@ -430,8 +495,7 @@ public class OniController : YokaiController
             State = OniState.Flee;
             return;
         }
-        if (transform.position.x > home.x + 2 || transform.position.x < home.x - 2 ||
-            transform.position.z > home.z + 2 || transform.position.z < home.z - 2)
+        if (Vector3.Distance(transform.position, home) < 2)
         {
             //if positions have not changed enough determine Oni to be stuck and change behavior pattern
             //reset timers to give chance to move before checking again
@@ -439,7 +503,10 @@ public class OniController : YokaiController
             {
                 posTimer = 0;
                 posTimer = 5;
-                print("resetting path");
+                if (TestDebug)
+                {
+                    print("resetting path");
+                }
                 agent.ResetPath();
                 previous2 = previous;
                 previous = currentNode;
@@ -486,7 +553,10 @@ public class OniController : YokaiController
             State = OniState.GameOver;
             //let game manager know that the game should end
             GameManager.Instance.GameOver();
-            print("GameOver");
+            if (TestDebug)
+            {
+                print("GameOver");
+            }
         }
 
         //have oni set the player's current position to be its destination
@@ -496,6 +566,8 @@ public class OniController : YokaiController
     //function to execute in flee state, contains transitions, and code to return to spawn position
     void flee()
     {
+        posTimer = 90;
+        posTimer2 = 77;
         //if enough time has passed the oni may interrupt flee to chase player or follow footprints
         fleeTimer--;
         if (fleeTimer <= 0)
@@ -565,19 +637,16 @@ public class OniController : YokaiController
             print(fleeTarget.Col + " " + fleeTarget.Row);
         agent.SetDestination(targetPos);
 
-        if (transform.position.x < targetPos.x + 2 && transform.position.x > targetPos.x - 2)
+        if (Vector3.Distance(transform.position, targetPos) < 2)
         {
-            if (transform.position.z < targetPos.z + 2 && transform.position.z > targetPos.z - 2)
-            {
-                //undo path nodes except the one she ends on
-                foreach(MazeNode n in fleePath)
-                    if (n.Col != fleeTarget.Col || n.Row != fleeTarget.Row)
-                        n.EnemyPathNode = false;
-                fleeTarget = null;
-                State = OniState.Idle;
-                gameObject.transform.rotation = startingRotation;
-                return;
-            }
+            //undo path nodes except the one she ends on
+            foreach (MazeNode n in fleePath)
+                if (n.Col != fleeTarget.Col || n.Row != fleeTarget.Row)
+                    n.EnemyPathNode = false;
+            fleeTarget = null;
+            State = OniState.Idle;
+            gameObject.transform.rotation = startingRotation;
+            return;
         }
     }
 
@@ -597,8 +666,8 @@ public class OniController : YokaiController
             State = OniState.Flee;
             return;
         }
-        if (transform.position.x > home.x + 2 || transform.position.x < home.x - 2 ||
-            transform.position.z > home.z + 2 || transform.position.z < home.z - 2)
+        
+        if (Vector3.Distance(transform.position, home) < 2)
         {
             //if positions have not changed enough determine Oni to be stuck and change behavior pattern
             //reset timers to give chance to move before checking again
@@ -606,7 +675,10 @@ public class OniController : YokaiController
             {
                 posTimer = 0;
                 posTimer = 5;
-                print("resetting path");
+                if (TestDebug)
+                {
+                    print("resetting path");
+                }
                 agent.ResetPath();
                 previous2 = previous;
                 previous = currentNode;
@@ -641,13 +713,10 @@ public class OniController : YokaiController
         //else move towards next footprint
         else
         {
-            if (transform.position.x < nextFootprint.transform.position.x + 2 && transform.position.x > nextFootprint.transform.position.x - 2)
+            if (Vector3.Distance(transform.position, nextFootprint.transform.position) < 2)
             {
-                if (transform.position.z < nextFootprint.transform.position.z + 2 && transform.position.z > nextFootprint.transform.position.z - 2)
-                {
                     //update next footprint to continue following the trail
                     nextFootprint = nextFootprint.GetComponent<FootprintList>().getNext();
-                }
             }
             agent.SetDestination(nextFootprint.transform.position);
         }
@@ -656,6 +725,8 @@ public class OniController : YokaiController
     //function to execute in stun state, containes transitions, and decrements stun timer
     void stun()
     {
+        posTimer = 90;
+        posTimer2 = 77;
         //decrement stun timer
         stunTimer--;
         //if enough timer has passed transition to appropiate state
