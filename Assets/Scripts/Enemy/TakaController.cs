@@ -89,6 +89,8 @@ public class TakaController : YokaiController
     //mesh renderer to change the look of the taka
     private MeshRenderer mr;
     private CharacterController controller;
+    private MazeNode fleeTarget = null;
+    LinkedList<MazeNode> fleePath = new LinkedList<MazeNode>();
 
     public TakaState State
     {
@@ -537,6 +539,53 @@ public class TakaController : YokaiController
             distanceToFloor -= 0.01F;
         }
 
+        Vector3 targetPos = new Vector3();
+        if (fleeTarget == null)
+        {
+            MazeNode presentNode = new MazeNode();
+            bool obstacle = false;
+            int column = (int)((transform.position.x - 8) / 6);
+            int row = (int)((transform.position.z - 8) / 6);
+
+            foreach (MazeNode n in MazeGenerator.nodesInSection(root))
+                if (n.Col == column && n.Row == row)
+                    presentNode = n;
+
+            LinkedList<MazeNode> possiblePath = MazeGenerator.GetPath2(presentNode, homeNode);
+            MazeNode prevCheckNode = presentNode;
+
+            foreach (MazeNode n in possiblePath)
+            {
+                if (n.EnemyPathNode || GameManager.trapNode(n))
+                {
+                    fleeTarget = prevCheckNode;
+                    obstacle = true;
+                    break;
+                }
+                prevCheckNode = n;
+            }
+            if (!obstacle)
+                fleeTarget = homeNode;
+
+            fleePath = MazeGenerator.GetPath2(presentNode, fleeTarget);
+            foreach (MazeNode n in fleePath)
+                n.EnemyPathNode = true;
+        }
+
+        targetPos = new Vector3(fleeTarget.Col * 6 + 8, fleeTarget.Floor * 30, fleeTarget.Row * 6 + 8);
+        
+        if (transform.position.x < targetPos.x + 2 && transform.position.x > targetPos.x - 2)
+        {
+            if (transform.position.z < targetPos.z + 2 && transform.position.z > targetPos.z - 2)
+            {
+                State = TakaState.Idle;
+                gameObject.transform.rotation = startingRotation;
+            }
+        }
+
+        agent.SetDestination(targetPos);
+        
+        /*
         if (transform.position.x < home.x + 2 && transform.position.x > home.x - 2)
         {
             if (transform.position.z < home.z + 2 && transform.position.z > home.z - 2)
@@ -547,6 +596,7 @@ public class TakaController : YokaiController
         }
 
         agent.SetDestination(home);
+        */
     }
 
     void dead()

@@ -9,7 +9,7 @@ public class YokaiController : MonoBehaviour {
 
     //Lists of nodes to track paths of A.I. to find better patrol routes
     private LinkedList<MazeNode> previousPath;
-    private LinkedList<MazeNode> currentPath;
+    protected LinkedList<MazeNode> currentPath;
 
     //function to destroy an A.I. when it dies
     public void Die()
@@ -318,7 +318,7 @@ public class YokaiController : MonoBehaviour {
                     }
                 }
                 //check to see if there is an enemy or an enemy path along the currently checked path
-                if (n.EnemyPathNode || (n != home && (n.actor == ActorType.Oni || n.actor == ActorType.Okuri_Inu || n.actor == ActorType.Taka_Nyudo)))
+                if ((n != home && n.EnemyPathNode) || (n != home && (n.actor == ActorType.Oni || n.actor == ActorType.Okuri_Inu || n.actor == ActorType.Taka_Nyudo)))
                 {
                     enemyInWay = true;
                     if (obstacleFound == false)

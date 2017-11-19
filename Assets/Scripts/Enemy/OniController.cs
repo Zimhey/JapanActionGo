@@ -91,6 +91,8 @@ public class OniController : YokaiController
     private NavMeshAgent agent;
     //the countdown timer ensuring the oni flees for a short while before being capable of other actions
     private int fleeTimer;
+    private MazeNode fleeTarget = null;
+    LinkedList<MazeNode> fleePath = new LinkedList<MazeNode>();
 
     //the animator controlling which animations play
     private Animator anim;
@@ -169,6 +171,8 @@ public class OniController : YokaiController
     void LateUpdate()
     {
         print("Oni state " + state);
+        if (state == OniState.Flee)
+            print(homeNode.Col + " " + homeNode.Row);
         if (actorID == null)
         {
             actorID = GetComponent<Actor>();
@@ -513,11 +517,59 @@ public class OniController : YokaiController
         }
         //return to home position
         agent.ResetPath();
-        agent.SetDestination(home);
-        if (transform.position.x < home.x + 2 && transform.position.x > home.x - 2)
+        foreach (MazeNode n in currentPath)
+            n.EnemyPathNode = false;
+
+        //make sure that all the current pathnodes are made not enemy path nodes
+        //check iterate through to see if there is an obstacle in the way
+        //if there is, set the new destination as the spot right before the obstacle
+        //otherwise, set the home as destination
+        //either way, set path to location as enemy path nodes
+        Vector3 targetPos = new Vector3();
+        if (fleeTarget == null)
         {
-            if (transform.position.z < home.z + 2 && transform.position.z > home.z - 2)
+            MazeNode presentNode = new MazeNode();
+            bool obstacle = false;
+            int column = (int)((transform.position.x - 8) / 6);
+            int row = (int)((transform.position.z - 8) / 6);
+
+            foreach (MazeNode n in MazeGenerator.nodesInSection(root))
+                if (n.Col == column && n.Row == row)
+                    presentNode = n;
+
+            LinkedList<MazeNode> possiblePath = MazeGenerator.GetPath2(presentNode, homeNode);
+            MazeNode prevCheckNode = presentNode;
+
+            foreach (MazeNode n in possiblePath)
             {
+                if (n.EnemyPathNode || GameManager.trapNode(n))
+                {
+                    fleeTarget = prevCheckNode;
+                    obstacle = true;
+                    break;
+                }
+                prevCheckNode = n;
+            }
+            if (!obstacle)
+                fleeTarget = homeNode;
+
+            fleePath = MazeGenerator.GetPath2(presentNode, fleeTarget);
+            foreach (MazeNode n in fleePath)
+                n.EnemyPathNode = true;
+        }
+
+        targetPos = new Vector3(fleeTarget.Col * 6 + 8, fleeTarget.Floor * 30, fleeTarget.Row * 6 + 8);
+        agent.SetDestination(targetPos);
+
+        if (transform.position.x < targetPos.x + 2 && transform.position.x > targetPos.x - 2)
+        {
+            if (transform.position.z < targetPos.z + 2 && transform.position.z > targetPos.z - 2)
+            {
+                //undo path nodes except the one she ends on
+                foreach(MazeNode n in fleePath)
+                    if (n.Col != fleeTarget.Col || n.Row != fleeTarget.Row)
+                        n.EnemyPathNode = false;
+                fleeTarget = null;
                 State = OniState.Idle;
                 gameObject.transform.rotation = startingRotation;
                 return;

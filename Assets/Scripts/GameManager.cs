@@ -451,6 +451,8 @@ public class GameManager : MonoBehaviour {
         Vector3 location = new Vector3(node.Col * 6 + 8, node.Floor * 30, node.Row * 6 + 8);
         if (node.actor != ActorType.Null)
         {
+            if (node.actor == ActorType.Okuri_Inu || node.actor == ActorType.Oni || node.actor == ActorType.Taka_Nyudo)
+                node.EnemyPathNode = true;
             if (node.actor == ActorType.Pit_Trap)// || node.actor == ActorType.Spike_Trap)
             {
                 node.floorPrefab.SetActive(false);
