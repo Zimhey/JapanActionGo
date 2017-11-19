@@ -44,6 +44,7 @@ public class OniController : YokaiController
     public LayerMask PlayerMask;
     //distance at which the oni kills the player while in chase
     public int KillDistance;
+    public bool TestDebug;
 
     //oni physics body
     private Rigidbody rb;
@@ -168,11 +169,20 @@ public class OniController : YokaiController
         //turn of default nav mesh movement as it doesn't include gravity
         agent.updatePosition = false;
         agent.updateRotation = true;
+        agent.nextPosition = transform.position;
+        print("trans" + transform.position);
+        print("nav" + agent.nextPosition);
     }
 
     //determin oni's actions for the current game loop
     void LateUpdate()
     {
+        agent.nextPosition = transform.position;
+        if (TestDebug)
+        {
+            print("trans2" + transform.position);
+            print("nav2" + agent.nextPosition);
+        }
         //print("Oni state " + state);
         if (state == OniState.Flee)
             print(homeNode.Col + " " + homeNode.Row);
@@ -334,7 +344,10 @@ public class OniController : YokaiController
             {
                 posTimer = 0;
                 posTimer = 5;
-                print("resetting path");
+                if (TestDebug)
+                {
+                    print("resetting path");
+                }
                 agent.ResetPath();
                 previous2 = previous;
                 previous = currentNode;
@@ -419,7 +432,10 @@ public class OniController : YokaiController
         posTimer = 90;
         posTimer2 = 77;
         lookTimer--;
-        //print(lookTimer);
+        if (TestDebug)
+        {
+            print(lookTimer);
+        }
         if (FleeInu(LevelMask, home))
         {
             State = OniState.Flee;
@@ -489,7 +505,10 @@ public class OniController : YokaiController
             {
                 posTimer = 0;
                 posTimer = 5;
-                print("resetting path");
+                if (TestDebug)
+                {
+                    print("resetting path");
+                }
                 agent.ResetPath();
                 previous2 = previous;
                 previous = currentNode;
@@ -536,7 +555,10 @@ public class OniController : YokaiController
             State = OniState.GameOver;
             //let game manager know that the game should end
             GameManager.Instance.GameOver();
-            print("GameOver");
+            if (TestDebug)
+            {
+                print("GameOver");
+            }
         }
 
         //have oni set the player's current position to be its destination
@@ -654,7 +676,10 @@ public class OniController : YokaiController
             {
                 posTimer = 0;
                 posTimer = 5;
-                print("resetting path");
+                if (TestDebug)
+                {
+                    print("resetting path");
+                }
                 agent.ResetPath();
                 previous2 = previous;
                 previous = currentNode;

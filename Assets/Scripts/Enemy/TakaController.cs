@@ -47,6 +47,7 @@ public class TakaController : YokaiController
     public int TauntDistance;
     //distance at which the taka can kill the player
     public int KillDistance;
+    public bool TestDebug;
 
     //taka physics body
     private Rigidbody rb;
@@ -137,6 +138,7 @@ public class TakaController : YokaiController
         agent = GetComponent<NavMeshAgent>();
         agent.updatePosition = false;
         agent.updateRotation = true;
+        agent.nextPosition = transform.position;
         fleeingInu = false;
 
         int column = (int)((home.x - 8) / 6);
@@ -302,7 +304,10 @@ public class TakaController : YokaiController
             {
                 posTimer = 0;
                 posTimer = 5;
-                print("resetting path");
+                if (TestDebug)
+                {
+                    print("resetting path");
+                }
                 agent.ResetPath();
                 previous2 = previous;
                 previous = currentNode;
@@ -375,7 +380,10 @@ public class TakaController : YokaiController
         posTimer = 90;
         posTimer2 = 77;
         lookTimer--;
-        //print(lookTimer);
+        if (TestDebug)
+        {
+            print(lookTimer);
+        }
         if (FleeInu(LevelMask, home))
         {
             State = TakaState.Flee;
@@ -437,7 +445,10 @@ public class TakaController : YokaiController
             {
                 posTimer = 0;
                 posTimer = 5;
-                print("resetting path");
+                if (TestDebug)
+                {
+                    print("resetting path");
+                }
                 agent.ResetPath();
                 previous2 = previous;
                 previous = currentNode;
@@ -552,7 +563,10 @@ public class TakaController : YokaiController
             }
             GameManager.Instance.GameOver();
             PlayerObject.SetActive(false);
-            print("GameOver");
+            if (TestDebug)
+            {
+                print("GameOver");
+            }
         }
     }
 
@@ -673,7 +687,10 @@ public class TakaController : YokaiController
             {
                 posTimer = 0;
                 posTimer = 5;
-                print("resetting path");
+                if (TestDebug)
+                {
+                    print("resetting path");
+                }
                 agent.ResetPath();
                 previous2 = previous;
                 previous = currentNode;

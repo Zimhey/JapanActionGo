@@ -57,6 +57,7 @@ public class InuController : YokaiController
     public int KillDistance;
     //timer for inu to attack
     public int AttackTime;
+    public bool TestDebug;
 
     //inu physics body
     private Rigidbody rb;
@@ -182,6 +183,7 @@ public class InuController : YokaiController
         agent = GetComponent<NavMeshAgent>();
         agent.updatePosition = false;
         agent.updateRotation = true;
+        agent.nextPosition = transform.position;
         retreating = false;
 
         int column = (int)((home.x - 8) / 6);
@@ -194,7 +196,10 @@ public class InuController : YokaiController
 
     void LateUpdate()
     {
-       // print(state);
+        if (TestDebug)
+        {
+             print(state);
+        }
         if (actorID == null)
         {
             actorID = GetComponent<Actor>();
@@ -345,7 +350,10 @@ public class InuController : YokaiController
             {
                 posTimer = 0;
                 posTimer = 5;
-                print("resetting path");
+                if (TestDebug)
+                {
+                    print("resetting path");
+                }
                 agent.ResetPath();
                 previous2 = previous;
                 previous = currentNode;
@@ -475,7 +483,10 @@ public class InuController : YokaiController
             {
                 posTimer = 0;
                 posTimer = 5;
-                print("resetting path");
+                if (TestDebug)
+                {
+                    print("resetting path");
+                }
                 agent.ResetPath();
                 previous2 = previous;
                 previous = currentNode;
@@ -1056,7 +1067,10 @@ public class InuController : YokaiController
             {
                 posTimer = 0;
                 posTimer = 5;
-                print("resetting path");
+                if (TestDebug)
+                {
+                    print("resetting path");
+                }
                 agent.ResetPath();
                 previous2 = previous;
                 previous = currentNode;
