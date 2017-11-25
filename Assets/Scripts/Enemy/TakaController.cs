@@ -139,7 +139,8 @@ public class TakaController : YokaiController
         agent.updatePosition = false;
         agent.updateRotation = true;
         agent.nextPosition = transform.position;
-        transform.position = agent.nextPosition;
+        //transform.position = agent.nextPosition;
+        agent.Warp(transform.position);
         fleeingInu = false;
 
         int column = (int)((home.x - 8) / 6);
@@ -152,7 +153,10 @@ public class TakaController : YokaiController
 
     void LateUpdate()
     {
-        print("Taka state " + state);
+        if (TestDebug)
+        {
+            print("Taka state " + state);
+        }
         if (actorID == null)
         {
             actorID = GetComponent<Actor>();

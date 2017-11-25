@@ -78,6 +78,7 @@ public class OniController : YokaiController
     private MazeNode homeNode;
     //countdown to continue patroling
     private float lookTimer;
+    private float lookBlocker;
     //countdown until no longer stunned
     private float stunTimer;
     //the last visited position recored
@@ -173,7 +174,8 @@ public class OniController : YokaiController
         agent.updatePosition = false;
         agent.updateRotation = true;
         agent.nextPosition = transform.position;
-        transform.position = agent.nextPosition;
+        //transform.position = agent.nextPosition;
+        agent.Warp(transform.position);
         print("trans" + transform.position);
         print("nav" + agent.nextPosition);
     }
@@ -185,8 +187,9 @@ public class OniController : YokaiController
         agent.nextPosition = transform.position;
         if (TestDebug)
         {
-            print("trans2" + transform.position);
-            print("nav2" + agent.nextPosition);
+            print("onistate" + state);
+            //print("trans2" + transform.position);
+            //print("nav2" + agent.nextPosition);
             /*agent.destination = new Vector3(0, 0, 0);
             MoveYokai(controller, agent);
             return;*/
@@ -299,6 +302,15 @@ public class OniController : YokaiController
             oldPosition = transform.position;
         }
 
+        if(lookBlocker > 0)
+        {
+            lookBlocker -= Time.deltaTime;
+            if (TestDebug)
+            {
+                print("look blocker" + lookBlocker);
+            }
+        }
+
         //move yokai based on state
         MoveYokai(controller, agent);
     }
@@ -355,7 +367,7 @@ public class OniController : YokaiController
                 posTimer = 5;
                 if (TestDebug)
                 {
-                    print("resetting path");
+                    print("resetting path in patrol");
                 }
                 agent.ResetPath();
                 previous2 = previous;
@@ -419,9 +431,23 @@ public class OniController : YokaiController
                 {
                     if (Vector3.Distance(transform.position, currentNodePosition) < 2)
                     {
-                        lookTimer = 6;
-                        agent.SetDestination(transform.position);
-                        state = OniState.LookAround;
+                        if (lookBlocker <= 0)
+                        {
+                            lookTimer = 6;
+                            agent.SetDestination(transform.position);
+                            state = OniState.LookAround;
+                        }
+                        else
+                        {
+                            MazeNode closest = null;
+                            closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
+                            if (closest != null)
+                            {
+                                previous2 = previous;
+                                previous = currentNode;
+                                currentNode = closest;
+                            }
+                        }
                     }
                     //update current node's postion
                     if(currentNode != null)
@@ -468,6 +494,7 @@ public class OniController : YokaiController
         {
             if (root != null)
             {
+                lookBlocker = 10;
                 //old destination reached, update patrol path
                 MazeNode closest = null;
                 closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
@@ -512,7 +539,7 @@ public class OniController : YokaiController
                 posTimer = 5;
                 if (TestDebug)
                 {
-                    print("resetting path");
+                    print("resetting path in chase");
                 }
                 agent.ResetPath();
                 previous2 = previous;
@@ -684,7 +711,7 @@ public class OniController : YokaiController
                 posTimer = 5;
                 if (TestDebug)
                 {
-                    print("resetting path");
+                    print("resetting path in follow");
                 }
                 agent.ResetPath();
                 previous2 = previous;

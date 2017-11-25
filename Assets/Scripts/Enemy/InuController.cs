@@ -184,7 +184,8 @@ public class InuController : YokaiController
         agent.updatePosition = false;
         agent.updateRotation = true;
         agent.nextPosition = transform.position;
-        transform.position = agent.nextPosition;
+        //transform.position = agent.nextPosition;
+        agent.Warp(transform.position);
         retreating = false;
 
         int column = (int)((home.x - 8) / 6);
