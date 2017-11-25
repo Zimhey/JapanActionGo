@@ -180,12 +180,18 @@ public class OniController : YokaiController
     //determin oni's actions for the current game loop
     void LateUpdate()
     {
+
         agent.nextPosition = transform.position;
         if (TestDebug)
         {
             print("trans2" + transform.position);
             print("nav2" + agent.nextPosition);
+            /*agent.destination = new Vector3(0, 0, 0);
+            MoveYokai(controller, agent);
+            return;*/
         }
+
+        
         //print("Oni state " + state);
         if (state == OniState.Flee)
             print(homeNode.Col + " " + homeNode.Row);
