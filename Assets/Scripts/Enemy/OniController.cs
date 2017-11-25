@@ -77,9 +77,9 @@ public class OniController : YokaiController
     //the node the oni spawned in
     private MazeNode homeNode;
     //countdown to continue patroling
-    private int lookTimer;
+    private float lookTimer;
     //countdown until no longer stunned
-    private int stunTimer;
+    private float stunTimer;
     //the last visited position recored
     private Vector3 oldPosition;
     //the second latest visited position recored
@@ -87,15 +87,15 @@ public class OniController : YokaiController
     //the currently recored visited position
     private Vector3 newPosition;
     //countdown timer for updating new position and old position
-    private int posTimer;
+    private float posTimer;
     //countdown timer for updating old position2
-    private int posTimer2;
+    private float posTimer2;
     //the footprint the agent is going to attempt to navigate towards
     private GameObject nextFootprint;
     //the oni's navigation agent
     private NavMeshAgent agent;
     //the countdown timer ensuring the oni flees for a short while before being capable of other actions
-    private int fleeTimer;
+    private float fleeTimer;
     private MazeNode fleeTarget = null;
     LinkedList<MazeNode> fleePath = new LinkedList<MazeNode>();
 
@@ -173,6 +173,7 @@ public class OniController : YokaiController
         agent.updatePosition = false;
         agent.updateRotation = true;
         agent.nextPosition = transform.position;
+        transform.position = agent.nextPosition;
         print("trans" + transform.position);
         print("nav" + agent.nextPosition);
     }
@@ -283,14 +284,14 @@ public class OniController : YokaiController
         }
 
         //if enough timer has passed update recordings of positions
-        posTimer--;
+        posTimer -= Time.deltaTime;
         if(posTimer <= 0)
         {
             posTimer = 90;
             oldPosition = newPosition;
             newPosition = transform.position;
         }
-        posTimer2--;
+        posTimer2 -= Time.deltaTime;
         if (posTimer2 <= 0)
         {
             posTimer2 = 77;
@@ -418,7 +419,7 @@ public class OniController : YokaiController
                 {
                     if (Vector3.Distance(transform.position, currentNodePosition) < 2)
                     {
-                        lookTimer = 60;
+                        lookTimer = 6;
                         agent.SetDestination(transform.position);
                         state = OniState.LookAround;
                     }
@@ -436,10 +437,10 @@ public class OniController : YokaiController
     {
         posTimer = 90;
         posTimer2 = 77;
-        lookTimer--;
+        lookTimer -= Time.deltaTime;
         if (TestDebug)
         {
-            print(lookTimer);
+            print("lookTimer" + lookTimer);
         }
         if (FleeInu(LevelMask, home))
         {
@@ -575,7 +576,7 @@ public class OniController : YokaiController
         posTimer = 90;
         posTimer2 = 77;
         //if enough time has passed the oni may interrupt flee to chase player or follow footprints
-        fleeTimer--;
+        fleeTimer -= Time.deltaTime;
         if (fleeTimer <= 0)
         {
             seen = false;
@@ -734,7 +735,7 @@ public class OniController : YokaiController
         posTimer = 90;
         posTimer2 = 77;
         //decrement stun timer
-        stunTimer--;
+        stunTimer -= Time.deltaTime;
         //if enough timer has passed transition to appropiate state
         if(stunTimer <= 0)
         {
@@ -767,7 +768,7 @@ public class OniController : YokaiController
         State = OniState.Stun;
         animState = OniAnim.Stunned;
         //set timer
-        stunTimer = 300;
+        stunTimer = 180;
         //stop motion
         agent.SetDestination(transform.position);
         //stun has priority over fleeing inu

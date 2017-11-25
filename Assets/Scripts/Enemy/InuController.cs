@@ -73,7 +73,7 @@ public class InuController : YokaiController
     private Actor actorID;
     //bool containing if the inu is attempting to avoid being cornered
     private bool retreating;
-    private int AttackTimer;
+    private float AttackTimer;
 
     public InuState State
     {
@@ -133,25 +133,25 @@ public class InuController : YokaiController
     private MazeNode previous;
     private MazeNode previous2;
     private MazeNode homeNode;
-    private int lookTimer;
+    private float lookTimer;
     //countdown until no longer stunned
-    private int stunTimer;
+    private float stunTimer;
     //has player been too close
     private System.Boolean beenTooClose;
     //private float distanceToFloor = 0.8F;
     private Vector3 oldPosition;
     private Vector3 oldPosition2;
     private Vector3 newPosition;
-    private int posTimer;
-    private int posTimer2;
+    private float posTimer;
+    private float posTimer2;
     private GameObject nextFootprint;
     private NavMeshAgent agent;
-    private int fleeTimer;
+    private float fleeTimer;
 
     private Animator anim;
     private Vector3 oldSitPosition;
     private Vector3 newSitPosition;
-    private int sitTimer;
+    private float sitTimer;
 
     private Transform playerTransform;
     private CharacterController controller;
@@ -184,6 +184,7 @@ public class InuController : YokaiController
         agent.updatePosition = false;
         agent.updateRotation = true;
         agent.nextPosition = transform.position;
+        transform.position = agent.nextPosition;
         retreating = false;
 
         int column = (int)((home.x - 8) / 6);
@@ -297,14 +298,14 @@ public class InuController : YokaiController
             TurnTowardsPlayer(PlayerObject);
         }
 
-        posTimer--;
+        posTimer -= Time.deltaTime;
         if (posTimer <= 0)
         {
             posTimer = 90;
             oldPosition = newPosition;
             newPosition = transform.position;
         }
-        posTimer2--;
+        posTimer2 -= Time.deltaTime;
         if (posTimer2 <= 0)
         {
             posTimer2 = 77;
@@ -404,7 +405,7 @@ public class InuController : YokaiController
                 {
                     if (Vector3.Distance(transform.position, currentNodePosition) < 2)
                     { 
-                        lookTimer = 60;
+                        lookTimer = 6;
                             agent.SetDestination(transform.position);
                             state = InuState.LookAround;
                     }
@@ -420,7 +421,7 @@ public class InuController : YokaiController
     {
         posTimer = 90;
         posTimer2 = 77;
-        lookTimer--;
+        lookTimer -= Time.deltaTime;
         //print(lookTimer);
         if (FleeInu(LevelMask, home))
         {
@@ -522,7 +523,7 @@ public class InuController : YokaiController
         posTimer2 = 77;
         if (AttackTimer > 0)
         {
-            AttackTimer--;
+            AttackTimer -= Time.deltaTime;
         }
         //print(AttackTimer);
         //attack timer reachers 0 attack
@@ -917,8 +918,7 @@ public class InuController : YokaiController
         posTimer2 = 77;
         if (AttackTimer > 0)
         {
-            AttackTimer--;
-            AttackTimer--;
+            AttackTimer -= Time.deltaTime;
         }
         //print(AttackTimer);
         Vector3 rayDirection = playerTransform.position - transform.position;
@@ -1010,7 +1010,7 @@ public class InuController : YokaiController
     {
         posTimer = 90;
         posTimer2 = 77;
-        fleeTimer--;
+        fleeTimer -= Time.deltaTime;
         if (fleeTimer <= 0)
         {
             seen = false;
@@ -1099,7 +1099,7 @@ public class InuController : YokaiController
     {
         posTimer = 90;
         posTimer2 = 77;
-        stunTimer--;
+        stunTimer -= Time.deltaTime;
         if (stunTimer <= 0)
         {
             seen = false;
@@ -1124,7 +1124,7 @@ public class InuController : YokaiController
     {
         State = InuState.Stun;
         AnimState = InuAnim.Stunned;
-        stunTimer = 480;
+        stunTimer = 120;
         agent.SetDestination(transform.position);
     }
 

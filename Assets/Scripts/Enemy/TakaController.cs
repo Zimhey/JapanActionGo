@@ -73,19 +73,19 @@ public class TakaController : YokaiController
     private MazeNode previous;
     private MazeNode previous2;
     private MazeNode homeNode;
-    private int lookTimer;
+    private float lookTimer;
     //countdown until no longer stunned
-    private int stunTimer;
+    private float stunTimer;
     private Camera cam;
     private float distanceToFloor = 2.5F;
     private Vector3 oldPosition;
     private Vector3 oldPosition2;
     private Vector3 newPosition;
-    private int posTimer;
-    private int posTimer2;
+    private float posTimer;
+    private float posTimer2;
     private GameObject nextFootprint;
     private NavMeshAgent agent;
-    private int fleeTimer;
+    private float fleeTimer;
     private bool fleeingInu;
 
     private Transform playerTransform;
@@ -139,6 +139,7 @@ public class TakaController : YokaiController
         agent.updatePosition = false;
         agent.updateRotation = true;
         agent.nextPosition = transform.position;
+        transform.position = agent.nextPosition;
         fleeingInu = false;
 
         int column = (int)((home.x - 8) / 6);
@@ -240,14 +241,14 @@ public class TakaController : YokaiController
             TurnTowardsPlayer(PlayerObject);
         }
 
-        posTimer--;
+        posTimer -= Time.deltaTime;
         if (posTimer <= 0)
         {
             posTimer = 90;
             oldPosition = newPosition;
             newPosition = transform.position;
         }
-        posTimer2--;
+        posTimer2 -= Time.deltaTime;
         if (posTimer2 <= 0)
         {
             posTimer2 = 77;
@@ -359,7 +360,7 @@ public class TakaController : YokaiController
                 {
                     if (Vector3.Distance(transform.position, currentNodePosition) < 2)
                     {
-                            lookTimer = 60;
+                            lookTimer = 6;
                             agent.SetDestination(transform.position);
                             state = TakaState.LookAround;
                     }
@@ -376,7 +377,7 @@ public class TakaController : YokaiController
     {
         posTimer = 90;
         posTimer2 = 77;
-        lookTimer--;
+        lookTimer -= Time.deltaTime;
         if (TestDebug)
         {
             print(lookTimer);
@@ -567,7 +568,7 @@ public class TakaController : YokaiController
     {
         posTimer = 90;
         posTimer2 = 77;
-        fleeTimer--;
+        fleeTimer -= Time.deltaTime;
         if (fleeTimer <= 0)
         {
             seen = false;
@@ -724,7 +725,7 @@ public class TakaController : YokaiController
     {
         posTimer = 90;
         posTimer2 = 77;
-        stunTimer--;
+        stunTimer -= Time.deltaTime;
         if (stunTimer <= 0)
         {
             seen = false;
