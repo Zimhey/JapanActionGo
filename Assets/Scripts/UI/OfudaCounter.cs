@@ -23,6 +23,7 @@ public class OfudaCounter : MonoBehaviour {
     {
         player = GameObject.FindGameObjectWithTag("Player");
         playerInventory = player.GetComponent<Inventory>();
-        ofudaLabel.text = string.Format("{0:00}:{1:00}", "Ofuda tags", playerInventory.OfudaCharges);
+        //ofudaLabel.text = string.Format("{0:00}:{1:00}", "Ofuda tags", playerInventory.OfudaCharges);
+        ofudaLabel.text = "Ofuda: " + playerInventory.OfudaCharges;
     }
 }
