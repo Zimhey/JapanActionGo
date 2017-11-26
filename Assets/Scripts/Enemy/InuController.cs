@@ -83,6 +83,8 @@ public class InuController : YokaiController
             if (state == InuState.Patrol)
             {
                 ClearPaths();
+                if (currentNode != null)
+                    currentNode.EnemyPathNode = true;
             }
 
             state = value;
@@ -147,6 +149,8 @@ public class InuController : YokaiController
     private GameObject nextFootprint;
     private NavMeshAgent agent;
     private float fleeTimer;
+    private MazeNode fleeTarget = null;
+    LinkedList<MazeNode> fleePath = new LinkedList<MazeNode>();
 
     private Animator anim;
     private Vector3 oldSitPosition;
@@ -405,12 +409,25 @@ public class InuController : YokaiController
                 if (setCurrent == false)
                 {
                     if (Vector3.Distance(transform.position, currentNodePosition) < 2)
-                    { 
-                        lookTimer = 6;
-                            agent.SetDestination(transform.position);
-                            state = InuState.LookAround;
+                    {
+                        MazeNode closest = null;
+                        closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
+                        if (closest != null)
+                        {
+                            previous2 = previous;
+                            previous = currentNode;
+                            currentNode = closest;
+                        }
+                        /*
+                        if (Vector3.Distance(transform.position, currentNodePosition) < 2)
+                        { 
+                            lookTimer = 6;
+                                agent.SetDestination(transform.position);
+                                state = InuState.LookAround;
+                        }
+                        */
                     }
-                    if(currentNode != null)
+                    if (currentNode != null)
                         currentNodePosition = new Vector3(currentNode.Col * 6 + 8, currentNode.Floor * 30, currentNode.Row * 6 + 8);
                 }
                 agent.SetDestination(currentNodePosition);
@@ -1030,12 +1047,55 @@ public class InuController : YokaiController
             }
         }
         agent.ResetPath();
-        agent.SetDestination(home);
+
+        Vector3 targetPos = new Vector3();
+        if (fleeTarget == null)
+        {
+            MazeNode presentNode = new MazeNode();
+            bool obstacle = false;
+            int column = homeNode.Col;
+            int row = homeNode.Row;
+
+            foreach (MazeNode n in MazeGenerator.nodesInSection(root))
+                if (n.Col == column && n.Row == row)
+                    presentNode = n;
+
+            LinkedList<MazeNode> possiblePath = MazeGenerator.GetPath2(presentNode, homeNode);
+            MazeNode prevCheckNode = presentNode;
+
+            foreach (MazeNode n in possiblePath)
+            {
+                if (n.EnemyPathNode || GameManager.trapNode(n))
+                {
+                    fleeTarget = prevCheckNode;
+                    obstacle = true;
+                    break;
+                }
+                prevCheckNode = n;
+            }
+            if (!obstacle)
+                fleeTarget = homeNode;
+
+            fleePath = MazeGenerator.GetPath2(presentNode, fleeTarget);
+            foreach (MazeNode n in fleePath)
+                n.EnemyPathNode = true;
+        }
+
+        targetPos = new Vector3(fleeTarget.Col * 6 + 8, fleeTarget.Floor * 30, fleeTarget.Row * 6 + 8);
+
+        if (Vector3.Distance(transform.position, targetPos) < 2)
+        {
+            State = InuState.Idle;
+            gameObject.transform.rotation = startingRotation;
+        }
+
+        /*
         if (Vector3.Distance(transform.position, home) < 2)
         {
                 State = InuState.Idle;
                 gameObject.transform.rotation = startingRotation;
         }
+        */
     }
 
     void dead()

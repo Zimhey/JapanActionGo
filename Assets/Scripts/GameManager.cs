@@ -456,7 +456,10 @@ public class GameManager : MonoBehaviour {
         if (node.actor != ActorType.Null)
         {
             if (node.actor == ActorType.Okuri_Inu || node.actor == ActorType.Oni || node.actor == ActorType.Taka_Nyudo)
+            {
+                //print("Column: " + node.Col + " Row: " + node.Row);
                 node.EnemyPathNode = true;
+            }
             if (node.actor == ActorType.Pit_Trap)// || node.actor == ActorType.Spike_Trap)
             {
                 node.floorPrefab.SetActive(false);

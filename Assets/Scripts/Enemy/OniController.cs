@@ -120,6 +120,8 @@ public class OniController : YokaiController
             if(state == OniState.Patrol)
             {
                 ClearPaths();
+                if (currentNode != null)
+                    currentNode.EnemyPathNode = true;
             }
 
             state = value;
@@ -431,22 +433,19 @@ public class OniController : YokaiController
                 {
                     if (Vector3.Distance(transform.position, currentNodePosition) < 2)
                     {
-                        if (lookBlocker <= 0)
+                        /*if (lookBlocker <= 0)
                         {
                             lookTimer = 6;
                             agent.SetDestination(transform.position);
                             state = OniState.LookAround;
-                        }
-                        else
+                        }*/
+                        MazeNode closest = null;
+                        closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
+                        if (closest != null)
                         {
-                            MazeNode closest = null;
-                            closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
-                            if (closest != null)
-                            {
-                                previous2 = previous;
-                                previous = currentNode;
-                                currentNode = closest;
-                            }
+                            previous2 = previous;
+                            previous = currentNode;
+                            currentNode = closest;
                         }
                     }
                     //update current node's postion

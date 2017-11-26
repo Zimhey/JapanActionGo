@@ -293,7 +293,6 @@ public class YokaiController : MonoBehaviour {
     //  nodes is the list of available nodes to patrol, and rb is the A.I.'s rigidbody used to obtain position
     public MazeNode SetClosest(MazeNode closest, MazeNode home, List<MazeNode> nodes, Rigidbody rb)
     {
-        //print("here");
         List<MazeNode> notIntersections = new List<MazeNode>();
         //the container for the path 
         LinkedList<MazeNode> shortestPathNodes = new LinkedList<MazeNode>();
@@ -334,7 +333,11 @@ public class YokaiController : MonoBehaviour {
                 if (trapInWayTemp || enemyInWayTemp)
                 {
                     if (prevCheck != null)
+                    {
+                        //if (home.Col == 4 && home.Row == 6 || home.Col == 2 && home.Row == 6)
+                            //print("More stuff going right");
                         notIntersections.Add(prevCheck);
+                    }
                 }
                 else
                     prevCheck = n;
@@ -348,6 +351,7 @@ public class YokaiController : MonoBehaviour {
                 {
                     //update closest if null
                     closest = nodes[iter];
+                    shortestPathNodes = pathNodes;
                 }
                 Vector3 closestPosition = new Vector3(closest.Col * 6 + 8, closest.Floor * 30, closest.Row * 6 + 8) - transform.position;
                 float closestMag = closestPosition.magnitude;
@@ -356,6 +360,7 @@ public class YokaiController : MonoBehaviour {
                 //current iteration node is closer than previous closest, update closest and shortest path
                 if (iterMag < closestMag)
                 {
+                    print("made it here");
                     closest = nodes[iter];
                     shortestPathNodes = pathNodes;
                 }
@@ -364,11 +369,14 @@ public class YokaiController : MonoBehaviour {
         
         if(closest == null)
         {
-            foreach(MazeNode n in notIntersections)
+            foreach (MazeNode n in notIntersections)
             {
+                //if (home.Col == 6 && home.Row == 2)
+                    //print("Column: " + n.Col + " Row: " + n.Row);
                 if (closest == null)
                 {
                     closest = n;
+                    shortestPathNodes = MazeGenerator.GetPath2(home, n);
                 }
                 Vector3 closestPosition = new Vector3(closest.Col * 6 + 8, closest.Floor * 30, closest.Row * 6 + 8) - transform.position;
                 float closestMag = closestPosition.magnitude;
@@ -396,6 +404,8 @@ public class YokaiController : MonoBehaviour {
         print("Home: " + home.Col + " " + home.Row);
         print("Destination " + closest.Col + " " + closest.Row);
         */
+        if (home.Col == 6 && home.Row == 2)
+            print("Column: " + closest.Col + " Row: " + closest.Row);
         return closest;
     }
 
@@ -458,6 +468,7 @@ public class YokaiController : MonoBehaviour {
                     if (closest == null)
                     {
                         closest = nodes[iter];
+                        shortestPathNodes = pathNodes;
                     }
                     Vector3 closestPosition = new Vector3(closest.Col * 6 + 8, closest.Floor * 30, closest.Row * 6 + 8) - transform.position;
                     float closestMag = closestPosition.magnitude;
@@ -477,11 +488,14 @@ public class YokaiController : MonoBehaviour {
         {
             foreach (MazeNode n in notIntersections)
             {
+                //if (currentNode.Col == 4 && currentNode.Row == 5 || currentNode.Col == 2 && currentNode.Row == 5)
+                    //print("Column: " + n.Col + " Row: " + n.Row);
                 if (n != currentNode && (n != previous || MazeGenerator.GetPath2(currentNode, n).Count >= 3))
                 {
                     if (closest == null)
                     {
                         closest = n;
+                        shortestPathNodes = MazeGenerator.GetPath2(currentNode, n);
                     }
                     Vector3 closestPosition = new Vector3(closest.Col * 6 + 8, closest.Floor * 30, closest.Row * 6 + 8) - transform.position;
                     float closestMag = closestPosition.magnitude;
@@ -494,12 +508,35 @@ public class YokaiController : MonoBehaviour {
                     }
                 }
             }
+
+            if (closest == null)
+            {
+                foreach (MazeNode n in notIntersections)
+                {
+                    closest = n;
+                    Vector3 closestPosition = new Vector3(closest.Col * 6 + 8, closest.Floor * 30, closest.Row * 6 + 8) - transform.position;
+                    float furthestMag = closestPosition.magnitude;
+                    Vector3 iterPosition = new Vector3(n.Col * 6 + 8, n.Floor * 30, n.Row * 6 + 8) - transform.position;
+                    float iterMag = iterPosition.magnitude;
+                    if (iterMag < furthestMag)
+                    {
+                        closest = n;
+                        shortestPathNodes = MazeGenerator.GetPath2(currentNode, n);
+                    }
+                }
+            }
         }
         previousPath = currentPath;
         currentPath = shortestPathNodes;
-        if (shortestPathNodes != null)
+        if (shortestPathNodes.Count != 0)
+        {
             foreach (MazeNode n in shortestPathNodes)
+            {
+                //if (currentNode.Col == 4 && currentNode.Row == 5 || currentNode.Col == 2 && currentNode.Row == 5)
+                    //print("Column: " + n.Col + " Row: " + n.Row);
                 n.EnemyPathNode = true;
+            }
+        }
         if (closest != null)
         {
             //print("Closest was not null ");

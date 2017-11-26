@@ -102,6 +102,8 @@ public class TakaController : YokaiController
             if (state == TakaState.Patrol)
             {
                 ClearPaths();
+                if (currentNode != null)
+                    currentNode.EnemyPathNode = true;
             }
 
             state = value;
@@ -364,9 +366,17 @@ public class TakaController : YokaiController
                 {
                     if (Vector3.Distance(transform.position, currentNodePosition) < 2)
                     {
-                            lookTimer = 6;
-                            agent.SetDestination(transform.position);
-                            state = TakaState.LookAround;
+                        MazeNode closest = null;
+                        closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
+                        if (closest != null)
+                        {
+                            previous2 = previous;
+                            previous = currentNode;
+                            currentNode = closest;
+                        }
+                        //lookTimer = 6;
+                        //agent.SetDestination(transform.position);
+                        //state = TakaState.LookAround;
                     }
 
                     if(currentNode != null)
