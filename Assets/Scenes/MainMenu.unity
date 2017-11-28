@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731725, g: 0.13414745, b: 0.12107873, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -144,6 +144,13 @@ MonoBehaviour:
   DebugLabelsOn: 0
   DebugPlay: 0
   CanPause: 1
+  lanternColors:
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 1, g: 0, b: 1, a: 1}
+  - {r: 0, g: 0, b: 1, a: 1}
+  - {r: 0, g: 1, b: 0, a: 1}
+  - {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  sectionLanternColor: {r: 0, g: 0, b: 0, a: 0}
   Maze: {fileID: 0}
   SessionID: 0
   PlayersVRType: 1
@@ -794,12 +801,12 @@ Prefab:
     - target: {fileID: 224463132188383916, guid: e6851efdabfcd48408ed7d24aacbba4c,
         type: 2}
       propertyPath: m_LocalPosition.x
-      value: 574
+      value: 517
       objectReference: {fileID: 0}
     - target: {fileID: 224463132188383916, guid: e6851efdabfcd48408ed7d24aacbba4c,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: 270.5
+      value: 220
       objectReference: {fileID: 0}
     - target: {fileID: 224252007991745538, guid: e6851efdabfcd48408ed7d24aacbba4c,
         type: 2}
