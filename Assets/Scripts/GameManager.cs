@@ -67,6 +67,7 @@ public class GameManager : MonoBehaviour {
     public bool DebugLabelsOn;
     public bool DebugPlay;
     public bool CanPause;
+    public Dictionary<int, MazeNode[,]>[] storedMaps = new Dictionary<int, MazeNode[,]>[6];
 
     private GameObject parent;
 
@@ -199,6 +200,11 @@ public class GameManager : MonoBehaviour {
             CurrentState = GameState.Play;
             AnalyticsEnabled = false;
         }
+
+        for(int i = 0; i < 6; i++)
+        {
+            storedMaps[i] = new Dictionary<int, MazeNode[,]>();
+        }
     }
 
     // Update is called once per frame
@@ -327,7 +333,21 @@ public class GameManager : MonoBehaviour {
         // Add Level to Analytics
         // Add Sections to Analytics
         // Add Cells to Analytics
-        MazeGenerator.GenerateMaze(difficulty);
+        Dictionary<int, MazeNode[,]> storedDifficultyMaps = storedMaps[(int)difficulty];
+        print(storedDifficultyMaps);
+        if (storedDifficultyMaps.ContainsKey(MazeGenerator.Seed))
+        {
+            MazeGenerator.DifferentSections = storedMaps[(int)difficulty][MazeGenerator.Seed];
+            MazeGenerator.connectLadderNodes(difficulty, MazeGenerator.DifferentSections);
+        }
+        
+        else
+        {
+            MazeGenerator.GenerateMaze(difficulty);
+            storedMaps[(int)difficulty].Add(MazeGenerator.Seed, MazeGenerator.DifferentSections);
+        }
+
+        print("Something");
 
         if (TutorialOn)
         {
@@ -399,6 +419,8 @@ public class GameManager : MonoBehaviour {
         cells.transform.parent = SectionObject.transform;
         GameObject actors = new GameObject("Actors");
         actors.transform.parent = SectionObject.transform;
+        GameObject lanterns = new GameObject("Lantern");
+        lanterns.transform.parent = SectionObject.transform;
 
         foreach (MazeNode n in MazeGenerator.nodesInSection(msection.Root))
             SpawnPiece(n, cells);
@@ -410,7 +432,7 @@ public class GameManager : MonoBehaviour {
         foreach (MazeNode n in MazeGenerator.nodesInSection(msection.Root))
         {
             SpawnActor(n, actors);
-            SpawnLantern(n);
+            SpawnLantern(n, lanterns);
         }
         // Spawn Actors
         // Add Actors to Analytics
@@ -490,11 +512,15 @@ public class GameManager : MonoBehaviour {
     }
     // TODO Add an Actor Component to each actor GameObject
 
-    public void SpawnLantern(MazeNode node)
+    public void SpawnLantern(MazeNode node, GameObject lanterns)
     {
+        GameObject lantern;
         Vector3 loc = new Vector3(node.Col * 6 + 8, (float) (node.Floor * 30 + 6.5), node.Row * 6 + 8);
         if ((node.Col + node.Row) % 2 == 0)
-            Instantiate(Resources.Load("Prefabs/Level/Lantern"), loc, node.GetRotation());
+        {
+            lantern = Instantiate(Resources.Load("Prefabs/Level/Lantern"), loc, node.GetRotation()) as GameObject;
+            lantern.transform.parent = lanterns.transform;
+        }
     }
 
     public void EnterSection(GameObject ladder, GameObject player)
