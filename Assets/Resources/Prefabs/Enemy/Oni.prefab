@@ -1554,11 +1554,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LeftPrefabs:
-  - {fileID: 1150202406731512, guid: 84908a3528f904f499fee595f06e5ab2, type: 2}
+  - {fileID: 1414902603733134, guid: 4fc32dbb2fdb60e45b0164350113966e, type: 2}
+  - {fileID: 1334783618173326, guid: c0cd17d644bc4404d81c9f02b3342db6, type: 2}
+  - {fileID: 1025616343917288, guid: c76371624e169a948b979f94c2ec9b11, type: 2}
   RightPrefabs:
-  - {fileID: 1150202406731512, guid: 84908a3528f904f499fee595f06e5ab2, type: 2}
-  Stride: 6
-  Radius: 0.5
+  - {fileID: 1251936150935702, guid: ea78a174fbaff444b955dcc799d4c32e, type: 2}
+  - {fileID: 1492154154672476, guid: 7a24e92bf79d59b49a4c81c968ca4558, type: 2}
+  - {fileID: 1911367918654942, guid: 2d73d61c1b8c1114cb4fbd13e2d0838b, type: 2}
+  Stride: 0.75
+  Radius: 0.8
   FootprintLifetime: 120
   PlaceFootprintOnLanding: 0
 --- !u!114 &114733998702376110
