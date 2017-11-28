@@ -84,6 +84,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -99,6 +100,7 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -126,10 +128,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LeftPrefabs:
-  - {fileID: 1150202406731512, guid: 84908a3528f904f499fee595f06e5ab2, type: 2}
+  - {fileID: 1763358519108480, guid: 9350930db17c52f49b22de2355eff571, type: 2}
+  - {fileID: 1148792255852100, guid: 72c4e4091c54d8a4bb2a424136865cd9, type: 2}
+  - {fileID: 1477032524736948, guid: 811023133c82b0f4fb72609a33c6fa50, type: 2}
+  - {fileID: 1986084589888234, guid: d25b0f8d919dc084c89117cc4005fe03, type: 2}
   RightPrefabs:
-  - {fileID: 1150202406731512, guid: 84908a3528f904f499fee595f06e5ab2, type: 2}
-  Stride: 6
+  - {fileID: 1545416240028088, guid: 418a9bfad5e687b44ac0b19ad5fba0ca, type: 2}
+  - {fileID: 1733484661953936, guid: 13917fcbce976814285dd1a00781445e, type: 2}
+  - {fileID: 1507841936914624, guid: 5a4e99812d6044b44af649f2a86b2ec5, type: 2}
+  - {fileID: 1843138814148904, guid: fefac20b20a538f468065e2b0024c677, type: 2}
+  Stride: 0.5
   Radius: 0.5
   FootprintLifetime: 120
   PlaceFootprintOnLanding: 0
@@ -154,6 +162,7 @@ MonoBehaviour:
     m_Bits: 512
   TauntDistance: 50
   KillDistance: 3
+  TestDebug: 0
 --- !u!136 &136733453209516976
 CapsuleCollider:
   m_ObjectHideFlags: 1
