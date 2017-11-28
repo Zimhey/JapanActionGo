@@ -12,7 +12,7 @@
 				</SoundBank>
 				<SoundBank Name="Main" ID="{747365C1-5083-4FDA-A79E-8DE1D3E47872}">
 					<ObjectInclusionList>
-						<ObjectRef Name="Player_Walk" ID="{2CF10B7C-A6FF-4D58-95BE-E24FD53E8C48}" WorkUnitID="{04DB0B75-80DF-476E-9EE7-8B1F40736277}" Filter="7" Origin="Manual"/>
+						<ObjectRef Name="Default Work Unit" ID="{04DB0B75-80DF-476E-9EE7-8B1F40736277}" WorkUnitID="{04DB0B75-80DF-476E-9EE7-8B1F40736277}" Filter="7" Origin="Manual"/>
 					</ObjectInclusionList>
 					<ObjectExclusionList/>
 					<GameSyncExclusionList/>

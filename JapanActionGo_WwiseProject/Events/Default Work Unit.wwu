@@ -19,6 +19,34 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="BGM" ID="{6A402DD7-43A0-45A2-B28B-264CE5FB6A9B}">
+					<ChildrenList>
+						<Action Name="" ID="{78769262-3F41-459E-AF90-E7AED83A3ECA}" ShortID="143470826">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="BGM" ID="{1D2745C6-2F92-4797-91C0-83A5674728C0}" WorkUnitID="{0BC13EA6-0E28-4E36-9EB1-FA8CF0C31B64}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="StartMenuMusic" ID="{8DE99A8A-6156-4C69-8028-B3281DEA764B}">
+					<ChildrenList>
+						<Action Name="" ID="{909B6280-7A36-4649-93CC-50EF85383F4A}" ShortID="856099461">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="StartScreen" ID="{59B3089B-FD49-45F3-9ADA-243976729AC7}" WorkUnitID="{0BC13EA6-0E28-4E36-9EB1-FA8CF0C31B64}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

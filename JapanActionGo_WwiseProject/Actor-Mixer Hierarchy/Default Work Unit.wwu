@@ -436,6 +436,53 @@
 						<ItemRef Name="Footsteps_Right" ID="{D8145A46-83EC-48D0-8F9A-26AE5224B681}"/>
 					</Playlist>
 				</RandomSequenceContainer>
+				<Sound Name="BGM" ID="{1D2745C6-2F92-4797-91C0-83A5674728C0}" ShortID="740460828">
+					<PropertyList>
+						<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{336E5602-0BF9-43A7-9D2E-B706A82B9322}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{406444DB-8A2A-4432-BB15-553BD64BA7D7}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="bgm_01" ID="{64C67A84-E968-42C5-9AEC-08690438309E}" ShortID="407240601">
+							<Language>SFX</Language>
+							<AudioFile>bgm_01.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="bgm_01" ID="{64C67A84-E968-42C5-9AEC-08690438309E}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="StartScreen" ID="{59B3089B-FD49-45F3-9ADA-243976729AC7}" ShortID="692045288">
+					<PropertyList>
+						<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{336E5602-0BF9-43A7-9D2E-B706A82B9322}"/>
+						</Reference>
+						<Reference Name="Effect0" CompanyID="4095" PluginID="65535" PluginType="15">
+							<ObjectRef Name="Fear_no_Evil" ID="{A1F17D99-0801-4F32-B74E-ADB2D9ACC556}" WorkUnitID="{E8613F7D-BAD3-45CD-A3ED-505576F31277}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{406444DB-8A2A-4432-BB15-553BD64BA7D7}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="ambient_track_2" ID="{A14774D6-8F74-4EB3-B20E-9ACDF06EBCC4}" ShortID="510043677">
+							<Language>SFX</Language>
+							<AudioFile>ambient_track_2.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="ambient_track_2" ID="{A14774D6-8F74-4EB3-B20E-9ACDF06EBCC4}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
 			</ChildrenList>
 		</WorkUnit>
 	</AudioObjects>
