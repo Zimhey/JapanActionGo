@@ -68,6 +68,9 @@ public class GameManager : MonoBehaviour {
     public bool DebugPlay;
     public bool CanPause;
     public Dictionary<int, MazeNode[,]>[] storedMaps = new Dictionary<int, MazeNode[,]>[6];
+    public Color[] lanternColors = { Color.red, Color.magenta, Color.blue, Color.green, Color.yellow };
+    public Color sectionLanternColor;
+    System.Random rand;
 
     private GameObject parent;
 
@@ -130,6 +133,10 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public Color getRandomColor()
+    {
+        return lanternColors[(int) rand.Next(0, 5)];
+    }
 
     public VirtualRealityType PlayersVRType;
 
@@ -321,6 +328,7 @@ public class GameManager : MonoBehaviour {
 
     public void BeginPlay()
     {
+        rand = new System.Random(MazeGenerator.Seed);
         if (!TutorialOn)
         {
             Maze = new GameObject("Maze");
@@ -405,6 +413,7 @@ public class GameManager : MonoBehaviour {
 
     public void SpawnSection(MazeSection msection)
     {
+        sectionLanternColor = getRandomColor();
         NavMeshSurface surface;
         GameObject SectionObject = new GameObject("Section " + msection.SectionID);
         SectionObject.transform.parent = Maze.transform;
@@ -419,7 +428,7 @@ public class GameManager : MonoBehaviour {
         cells.transform.parent = SectionObject.transform;
         GameObject actors = new GameObject("Actors");
         actors.transform.parent = SectionObject.transform;
-        GameObject lanterns = new GameObject("Lantern");
+        GameObject lanterns = new GameObject("Lanterns");
         lanterns.transform.parent = SectionObject.transform;
 
         foreach (MazeNode n in MazeGenerator.nodesInSection(msection.Root))
@@ -519,6 +528,7 @@ public class GameManager : MonoBehaviour {
         if ((node.Col + node.Row) % 2 == 0)
         {
             lantern = Instantiate(Resources.Load("Prefabs/Level/Lantern"), loc, node.GetRotation()) as GameObject;
+            lantern.transform.GetChild(1).GetComponent<Light>().color = sectionLanternColor;
             lantern.transform.parent = lanterns.transform;
         }
     }
