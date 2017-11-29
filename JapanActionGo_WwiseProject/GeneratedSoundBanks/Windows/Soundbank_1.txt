@@ -1,6 +1,0 @@
-Event	ID	Name			Wwise Object Path	Notes
-	2147561130	Player_Walk			\Default Work Unit\Player_Walk	Needs to attach to the main player.
-
-In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
-	880820432	sfx_player_footstep_01	C:\Users\MarcoCustom\Documents\GitHub\JapanActionGo\JapanActionGo_WwiseProject\.cache\Windows\SFX\sfx_player_footstep_01_1C9C67B2.wem		\Actor-Mixer Hierarchy\Default Work Unit\Footsteps\Footsteps_Left\sfx_player_footstep_01		88640
-

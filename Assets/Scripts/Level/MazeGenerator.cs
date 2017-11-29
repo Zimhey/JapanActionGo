@@ -123,6 +123,7 @@ public class MazeGenerator : MonoBehaviour
 
     public static void GenerateMazeHelper(int size, int[] sections, int loops, int floors, Difficulty difficulty, int seed)
     {
+        System.Random msgRand = new System.Random(seed);
         MazeNode[,] roots = new MazeNode[5, 8];
         for (int i = 0; i < floors; i++)
         {
@@ -140,6 +141,7 @@ public class MazeGenerator : MonoBehaviour
                 r.isRoot = true;
                 GenerateLoops(r, loops, size);
                 GenerateLadders(i, section, r, floors, sections[i]);
+                GenerateMessages(r, msgRand);
                 ActorGenerator.GenerateActorsHelper(difficulty, r, seed);
                 SetIntersectionNodes(r);
                 section++;
@@ -918,6 +920,45 @@ public class MazeGenerator : MonoBehaviour
         }
 
         resetPath(root, FarthestDeadEndFromNode(root));
+    }
+
+    public static void GenerateMessages(MazeNode root, System.Random rand)
+    {
+        LinkedList<MazeNode> exitPath = GetPath2(root, FarthestDeadEndFromNode(root));
+        int max = exitPath.Count;
+        int[] places = { -1, -1, -1 };
+        int placement = 0;
+        for(int i = 0; i < 3; i++)
+        {
+            bool match = false;
+            int temp = (int) rand.Next(0, max);
+            if (root.Floor == 0)
+                print(temp);
+            for (int j = 0; j < 3; j++)
+            {
+                if (match)
+                    break;
+                if (temp == places[j])
+                {
+                    i--;
+                    match = true;
+                }
+            }
+            if (!match)
+                places[i] = temp;
+        }
+
+        foreach (MazeNode n in exitPath)
+        {
+            if (root.Floor == 0)
+                print("exitpath not empty");
+            foreach (int place in places)
+            {
+                if (placement == place)
+                    n.MessageNode = true;
+            }
+            placement++;
+        }
     }
 
     public static void GenerateLoops(MazeNode root, int loops, int size)

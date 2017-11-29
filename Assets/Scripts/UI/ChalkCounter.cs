@@ -22,9 +22,12 @@ public class ChalkCounter : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         player = GameObject.FindGameObjectWithTag("Player");
-        playerInventory = player.GetComponent<Inventory>();
+        playerInventory = player.GetComponent<Inventory>(); // TODO GROSS FIX THIS LETS NOT GRAB THE COMPONENT EVERY FRAME
         playerActions = player.GetComponent<PlayerActions>();
 
+        chalkLabel.text = "Chalk: " + playerInventory.ChalkCharges * 100 + playerActions.DistanceDrawn / playerInventory.DistancePerCharge * 100;
+
+        /*
         //whole charges
         if (playerInventory.ChalkCharges > 0 && playerActions.DistanceDrawn > 0)
         {
@@ -44,6 +47,6 @@ public class ChalkCounter : MonoBehaviour {
         {
             chalkLabel2.text = string.Format("{0:00}:{1:00}", "Current charge", 0);
         }
-
+        */
     }
 }

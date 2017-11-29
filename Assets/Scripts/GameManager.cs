@@ -69,6 +69,11 @@ public class GameManager : MonoBehaviour {
     public bool DebugLabelsOn;
     public bool DebugPlay;
     public bool CanPause;
+    public Dictionary<int, MazeNode[,]>[] storedMaps = new Dictionary<int, MazeNode[,]>[6];
+    public Color[] lanternColors = { Color.red, Color.magenta, Color.blue, Color.green, Color.yellow };
+    public Color sectionLanternColor;
+    System.Random rand;
+    System.Random messageRand;
 
     private GameObject parent;
 
@@ -131,6 +136,10 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public Color getRandomColor()
+    {
+        return lanternColors[(int) rand.Next(0, 5)];
+    }
 
     public VirtualRealityType PlayersVRType;
 
@@ -200,6 +209,11 @@ public class GameManager : MonoBehaviour {
         {
             CurrentState = GameState.Play;
             AnalyticsEnabled = false;
+        }
+
+        for(int i = 0; i < 6; i++)
+        {
+            storedMaps[i] = new Dictionary<int, MazeNode[,]>();
         }
     }
 
@@ -317,6 +331,8 @@ public class GameManager : MonoBehaviour {
 
     public void BeginPlay()
     {
+        rand = new System.Random(MazeGenerator.Seed);
+        messageRand = new System.Random(MazeGenerator.Seed);
         if (!TutorialOn)
         {
             Maze = new GameObject("Maze");
@@ -329,7 +345,21 @@ public class GameManager : MonoBehaviour {
         // Add Level to Analytics
         // Add Sections to Analytics
         // Add Cells to Analytics
-        MazeGenerator.GenerateMaze(difficulty);
+        Dictionary<int, MazeNode[,]> storedDifficultyMaps = storedMaps[(int)difficulty];
+        print(storedDifficultyMaps);
+        if (storedDifficultyMaps.ContainsKey(MazeGenerator.Seed))
+        {
+            MazeGenerator.DifferentSections = storedMaps[(int)difficulty][MazeGenerator.Seed];
+            MazeGenerator.connectLadderNodes(difficulty, MazeGenerator.DifferentSections);
+        }
+        
+        else
+        {
+            MazeGenerator.GenerateMaze(difficulty);
+            storedMaps[(int)difficulty].Add(MazeGenerator.Seed, MazeGenerator.DifferentSections);
+        }
+
+        print("Something");
 
         if (TutorialOn)
         {
@@ -387,6 +417,7 @@ public class GameManager : MonoBehaviour {
 
     public void SpawnSection(MazeSection msection)
     {
+        sectionLanternColor = getRandomColor();
         NavMeshSurface surface;
         GameObject SectionObject = new GameObject("Section " + msection.SectionID);
         SectionObject.transform.parent = Maze.transform;
@@ -401,6 +432,10 @@ public class GameManager : MonoBehaviour {
         cells.transform.parent = SectionObject.transform;
         GameObject actors = new GameObject("Actors");
         actors.transform.parent = SectionObject.transform;
+        GameObject lanterns = new GameObject("Lanterns");
+        lanterns.transform.parent = SectionObject.transform;
+        GameObject messages = new GameObject("Messages");
+        messages.transform.parent = SectionObject.transform;
 
         foreach (MazeNode n in MazeGenerator.nodesInSection(msection.Root))
             SpawnPiece(n, cells);
@@ -412,7 +447,8 @@ public class GameManager : MonoBehaviour {
         foreach (MazeNode n in MazeGenerator.nodesInSection(msection.Root))
         {
             SpawnActor(n, actors);
-            SpawnLantern(n);
+            SpawnLantern(n, lanterns);
+            SpawnMessage(n, messages);
         }
         // Spawn Actors
         // Add Actors to Analytics
@@ -458,7 +494,10 @@ public class GameManager : MonoBehaviour {
         if (node.actor != ActorType.Null)
         {
             if (node.actor == ActorType.Okuri_Inu || node.actor == ActorType.Oni || node.actor == ActorType.Taka_Nyudo)
+            {
+                //print("Column: " + node.Col + " Row: " + node.Row);
                 node.EnemyPathNode = true;
+            }
             if (node.actor == ActorType.Pit_Trap)// || node.actor == ActorType.Spike_Trap)
             {
                 node.floorPrefab.SetActive(false);
@@ -489,11 +528,28 @@ public class GameManager : MonoBehaviour {
     }
     // TODO Add an Actor Component to each actor GameObject
 
-    public void SpawnLantern(MazeNode node)
+    public void SpawnLantern(MazeNode node, GameObject lanterns)
     {
+        GameObject lantern;
         Vector3 loc = new Vector3(node.Col * 6 + 8, (float) (node.Floor * 30 + 6.5), node.Row * 6 + 8);
         if ((node.Col + node.Row) % 2 == 0)
-            Instantiate(Resources.Load("Prefabs/Level/Lantern"), loc, node.GetRotation());
+        {
+            lantern = Instantiate(Resources.Load("Prefabs/Level/Lantern"), loc, node.GetRotation()) as GameObject;
+            lantern.transform.GetChild(1).GetComponent<Light>().color = sectionLanternColor;
+            lantern.transform.parent = lanterns.transform;
+        }
+    }
+
+    public void SpawnMessage(MazeNode node, GameObject messages)
+    {
+        int messageType = (int) messageRand.Next(0, 3) + 1;
+        GameObject message;
+        Vector3 loc = new Vector3(node.Col * 6 + 8, (float)(node.Floor * 30 + 3), node.Row * 6 + 8);
+        if(node.MessageNode)
+        {
+            message = Instantiate(Resources.Load("Prefabs/Messages/Message" + messageType.ToString()), loc, node.GetRotation()) as GameObject;
+            message.transform.parent = messages.transform;
+        }
     }
 
     public void EnterSection(GameObject ladder, GameObject player)
