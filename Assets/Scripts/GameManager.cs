@@ -61,6 +61,8 @@ public class GameManager : MonoBehaviour {
 
     public static GameObject PlayerObj;
 
+    public Dictionary<int,List<FootprintList>> FootprintMap = new Dictionary<int, List<FootprintList>>();
+
     public string PlayerTypeLoc;
 
     public bool TutorialOn;
@@ -71,6 +73,7 @@ public class GameManager : MonoBehaviour {
     public Color[] lanternColors = { Color.red, Color.magenta, Color.blue, Color.green, Color.yellow };
     public Color sectionLanternColor;
     System.Random rand;
+    System.Random messageRand;
 
     private GameObject parent;
 
@@ -329,6 +332,7 @@ public class GameManager : MonoBehaviour {
     public void BeginPlay()
     {
         rand = new System.Random(MazeGenerator.Seed);
+        messageRand = new System.Random(MazeGenerator.Seed);
         if (!TutorialOn)
         {
             Maze = new GameObject("Maze");
@@ -430,6 +434,8 @@ public class GameManager : MonoBehaviour {
         actors.transform.parent = SectionObject.transform;
         GameObject lanterns = new GameObject("Lanterns");
         lanterns.transform.parent = SectionObject.transform;
+        GameObject messages = new GameObject("Messages");
+        messages.transform.parent = SectionObject.transform;
 
         foreach (MazeNode n in MazeGenerator.nodesInSection(msection.Root))
             SpawnPiece(n, cells);
@@ -442,6 +448,7 @@ public class GameManager : MonoBehaviour {
         {
             SpawnActor(n, actors);
             SpawnLantern(n, lanterns);
+            SpawnMessage(n, messages);
         }
         // Spawn Actors
         // Add Actors to Analytics
@@ -530,6 +537,18 @@ public class GameManager : MonoBehaviour {
             lantern = Instantiate(Resources.Load("Prefabs/Level/Lantern"), loc, node.GetRotation()) as GameObject;
             lantern.transform.GetChild(1).GetComponent<Light>().color = sectionLanternColor;
             lantern.transform.parent = lanterns.transform;
+        }
+    }
+
+    public void SpawnMessage(MazeNode node, GameObject messages)
+    {
+        int messageType = (int) messageRand.Next(0, 3) + 1;
+        GameObject message;
+        Vector3 loc = new Vector3(node.Col * 6 + 8, (float)(node.Floor * 30 + 3), node.Row * 6 + 8);
+        if(node.MessageNode)
+        {
+            message = Instantiate(Resources.Load("Prefabs/Messages/Message" + messageType.ToString()), loc, node.GetRotation()) as GameObject;
+            message.transform.parent = messages.transform;
         }
     }
 
@@ -711,5 +730,54 @@ public class GameManager : MonoBehaviour {
             path += "Col: " + n.Col + " Row: " + n.Row + " ";
         }
         return path;
+    }
+
+    public void AddFootprint(FootprintList newFootprint, Vector3 fposition)
+    {
+        int key = 0;
+        
+        key = GetKey(fposition);
+
+        //FootprintMap.Add(key, newFootprint);
+        if (FootprintMap.ContainsKey(key))
+        {
+            //print("updating key");
+            List<FootprintList> prints = new List<FootprintList>();
+            prints = FootprintMap[key];
+            prints.Add(newFootprint);
+            FootprintMap[key] = prints;
+        }
+        else
+        {
+            //print("created key and added to dictionary");
+            List<FootprintList> prints = new List<FootprintList>();
+            prints.Add(newFootprint);
+            FootprintMap.Add(key, prints);
+        }
+    }
+
+    public int GetKey(Vector3 keyPosition)
+    {
+        int key = 0;
+        //print("position: x: " + keyPosition.x + " y: " + keyPosition.y + " z: " + keyPosition.z);
+        int column = Mathf.RoundToInt(((keyPosition.x - 8) / 6));
+        int row = Mathf.RoundToInt((((keyPosition.z - 8) / 6)));
+        int floor = Mathf.RoundToInt(((keyPosition.y / 30)));
+        key += column;
+        key += row << 6;
+        key += floor << 12;
+        //print("col: " + column + " row: " + row + " floor: " + floor);
+        //print("getkey " + key);
+        return key;
+    }
+
+    public int GetKeyFromNode(MazeNode mn)
+    {
+        int key = 0;
+        key += mn.Col;
+        key += mn.Row << 6;
+        key += mn.Floor << 12;
+        //print("getkeyfromnode " + key);
+        return key;
     }
 }

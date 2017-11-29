@@ -66,6 +66,7 @@ public class OniController : YokaiController
     private System.Boolean awake;
     //list of patrol nodes for a section
     private List<MazeNode> nodes;
+    private List<MazeNode> allNodes;
     //current node for patrol
     private MazeNode currentNode;
     //root node for a section
@@ -92,7 +93,7 @@ public class OniController : YokaiController
     //countdown timer for updating old position2
     private float posTimer2;
     //the footprint the agent is going to attempt to navigate towards
-    private GameObject nextFootprint;
+    private FootprintList nextFootprint;
     //the oni's navigation agent
     private NavMeshAgent agent;
     //the countdown timer ensuring the oni flees for a short while before being capable of other actions
@@ -113,6 +114,20 @@ public class OniController : YokaiController
     //a bool tracking if the oni should be focusing on fleeing
     private bool fleeingInu;
 
+    private FootprintList foundFootprint;
+    private Vector3 currentNodePosition;
+    private MazeNode closest;
+    private Vector3 rayDirection;
+    private System.Boolean playerCloseToEnemy;
+    private Vector3 targetPos;
+    private MazeNode presentNode;
+    private bool obstacle;
+    private int column;
+    private int row;
+    private LinkedList<MazeNode> possiblePath;
+    private MazeNode prevCheckNode;
+    private Actor player;
+
     public OniState State
     {
         set
@@ -123,7 +138,10 @@ public class OniController : YokaiController
                 if (currentNode != null)
                     currentNode.EnemyPathNode = true;
             }
-
+            if (state == OniState.Follow)
+            {
+                foundFootprint = null;
+            }
             state = value;
             //log state change to database
             GameManager.Instance.ActorStateChange(actorID, (int) state);
@@ -162,10 +180,12 @@ public class OniController : YokaiController
 
         currentNode = StartingNode;
         //find home node based on location, a nodes location is its individual values - 8 and then divided by 6
-        int column = (int)((home.x - 8) / 6);
-        int row = (int)((home.z - 8) / 6);
+        column = (int)((home.x - 8) / 6);
+        row = (int)((home.z - 8) / 6);
+        print("oni home: x " + home.x + " col: " + column + " z: " + home.z + " row: " + row);
+        allNodes = MazeGenerator.nodesInSection(root);
 
-        foreach (MazeNode n in MazeGenerator.nodesInSection(root))
+        foreach (MazeNode n in allNodes)
             if (n.Col == column && n.Row == row)
                 homeNode = n;
 
@@ -185,7 +205,10 @@ public class OniController : YokaiController
     //determin oni's actions for the current game loop
     void LateUpdate()
     {
-
+        /*if(Time.deltaTime > (2/100))
+        {
+            print("onistate" + state);
+        }*/
         agent.nextPosition = transform.position;
         if (TestDebug)
         {
@@ -336,10 +359,11 @@ public class OniController : YokaiController
             State = OniState.Chase;
             return;
         }
-        GameObject foundFootprint = SeeFootprint(LevelMask, home);
+        foundFootprint = SeeFootprint(allNodes, LevelMask, home);
         if (foundFootprint != null)
         {
             //if footprints found follow
+            nextFootprint = foundFootprint;
             State = OniState.Follow;
             return;
         }
@@ -389,9 +413,10 @@ public class OniController : YokaiController
             return;
         }
 
-        GameObject foundFootprint = SeeFootprint(LevelMask, home);
+        foundFootprint = SeeFootprint(allNodes, LevelMask, home);
         if (foundFootprint != null)
         {
+            nextFootprint = foundFootprint;
             State = OniState.Follow;
             return;
         }
@@ -400,14 +425,13 @@ public class OniController : YokaiController
         if (root != null)
         {
             //container for current node's position
-            Vector3 currentNodePosition;
             //bool to check if current was set and not updated
             bool setCurrent = false;
 
             if (currentNode == null)
             {
                 //if current does not exist
-                MazeNode closest = null;
+                closest = null;
                 //call set to start patrol path
                 closest = SetClosest(closest, homeNode, nodes, rb);
                 //update current
@@ -433,20 +457,28 @@ public class OniController : YokaiController
                 {
                     if (Vector3.Distance(transform.position, currentNodePosition) < 2)
                     {
-                        /*if (lookBlocker <= 0)
+                        if (lookBlocker <= 0)
                         {
-                            lookTimer = 6;
+                            lookTimer = 4;
                             agent.SetDestination(transform.position);
                             state = OniState.LookAround;
-                        }*/
-                        MazeNode closest = null;
+                        }
+                        /*MazeNode closest = null;
                         closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
                         if (closest != null)
                         {
+                            closest = null;
+                            closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
+                            if (closest != null)
+                            {
+                                previous2 = previous;
+                                previous = currentNode;
+                                currentNode = closest;
+                            }
                             previous2 = previous;
                             previous = currentNode;
                             currentNode = closest;
-                        }
+                        }*/
                     }
                     //update current node's postion
                     if(currentNode != null)
@@ -481,10 +513,11 @@ public class OniController : YokaiController
             State = OniState.Chase;
             return;
         }
-        GameObject foundFootprint = SeeFootprint(LevelMask, home);
+        foundFootprint = SeeFootprint(allNodes, LevelMask, home);
         if (foundFootprint != null)
         {
             //if footprints found follow
+            nextFootprint = foundFootprint;
             State = OniState.Follow;
             return;
         }
@@ -495,7 +528,7 @@ public class OniController : YokaiController
             {
                 lookBlocker = 10;
                 //old destination reached, update patrol path
-                MazeNode closest = null;
+                closest = null;
                 closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
                 if (closest != null)
                 {
@@ -553,9 +586,10 @@ public class OniController : YokaiController
         seen = SeeObject(PlayerObject, LevelMask, home);
         if (!seen)
         {
-            GameObject foundFootprint = SeeFootprint(LevelMask, home);
+            foundFootprint = SeeFootprint(allNodes, LevelMask, home);
             if (foundFootprint != null)
             {
+                nextFootprint = foundFootprint;
                 State = OniState.Follow;
                 return;
             }
@@ -566,16 +600,16 @@ public class OniController : YokaiController
             }
         }
 
-        Vector3 rayDirection = playerTransform.position - transform.position;
+        rayDirection = playerTransform.position - transform.position;
         rayDirection.y = 0;
         //check if player is within the kill distance
-        System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < KillDistance;
+        playerCloseToEnemy = rayDirection.sqrMagnitude < KillDistance;
         if (playerCloseToEnemy)
         {
             //if VR device is present the player's actor component is in its parent
             if (UnityEngine.XR.XRDevice.isPresent)
             {
-                Actor player = PlayerObject.GetComponentInParent<Actor>();
+                player = PlayerObject.GetComponentInParent<Actor>();
                 GameManager.Instance.ActorKilled(actorID, player);
             }
             else
@@ -613,9 +647,10 @@ public class OniController : YokaiController
                 State = OniState.Chase;
                 return;
             }
-            GameObject foundFootprint = SeeFootprint(LevelMask, home);
+            foundFootprint = SeeFootprint(allNodes, LevelMask, home);
             if (foundFootprint != null)
             {
+                nextFootprint = foundFootprint;
                 State = OniState.Follow;
                 return;
             }
@@ -630,20 +665,20 @@ public class OniController : YokaiController
         //if there is, set the new destination as the spot right before the obstacle
         //otherwise, set the home as destination
         //either way, set path to location as enemy path nodes
-        Vector3 targetPos = new Vector3();
+        targetPos = new Vector3();
         if (fleeTarget == null)
         {
-            MazeNode presentNode = new MazeNode();
-            bool obstacle = false;
-            int column = homeNode.Col;
-            int row = homeNode.Row;
+            presentNode = new MazeNode();
+            obstacle = false;
+            column = homeNode.Col;
+            row = homeNode.Row;
 
             foreach (MazeNode n in MazeGenerator.nodesInSection(root))
                 if (n.Col == column && n.Row == row)
                     presentNode = n;
 
-            LinkedList<MazeNode> possiblePath = MazeGenerator.GetPath2(presentNode, homeNode);
-            MazeNode prevCheckNode = presentNode;
+            possiblePath = MazeGenerator.GetPath2(presentNode, homeNode);
+            prevCheckNode = presentNode;
 
             foreach (MazeNode n in possiblePath)
             {
@@ -731,7 +766,7 @@ public class OniController : YokaiController
         //if there is no next footprint try to find a new footprint to follow
         if (nextFootprint == null)
         {
-            GameObject foundFootprint = SeeFootprint(LevelMask, home);
+            foundFootprint = SeeFootprint(allNodes, LevelMask, home);
             if (foundFootprint == null)
             {
                 State = OniState.Idle;
@@ -746,12 +781,20 @@ public class OniController : YokaiController
         //else move towards next footprint
         else
         {
-            if (Vector3.Distance(transform.position, nextFootprint.transform.position) < 2)
+            if (Vector3.Distance(transform.position, nextFootprint.gameObject.transform.position) < 2)
             {
                     //update next footprint to continue following the trail
-                    nextFootprint = nextFootprint.GetComponent<FootprintList>().getNext();
+                    nextFootprint = nextFootprint.getNext();
+                if(nextFootprint == null)
+                {
+                    //print("next dne");
+                }
             }
-            agent.SetDestination(nextFootprint.transform.position);
+            if (nextFootprint != null)
+            {
+                //print("nextfootprint " + nextFootprint.gameObject.transform.position);
+                agent.SetDestination(nextFootprint.gameObject.transform.position);
+            }
         }
     }
 
@@ -768,9 +811,10 @@ public class OniController : YokaiController
             animState = OniAnim.Idle;
             seen = false;
             seen = SeeObject(PlayerObject, LevelMask, home);
-            GameObject foundFootprint = SeeFootprint(LevelMask, home);
+            foundFootprint = SeeFootprint(allNodes, LevelMask, home);
             if (seen)
             {
+                nextFootprint = foundFootprint;
                 State = OniState.Chase;
                 return;
             }

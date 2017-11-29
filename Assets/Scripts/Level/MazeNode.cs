@@ -44,6 +44,7 @@ public class MazeNode
     public GameObject floorPrefab;
     public int SectionID;
     public bool EnemyPathNode;
+    public bool MessageNode = false;
 
 
     public MazeNode()
