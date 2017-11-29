@@ -25,6 +25,9 @@ public class FootprintDecay : MonoBehaviour {
 
         if (timeAlive > Lifetime)
         {
+            int key = GameManager.Instance.GetKey(gameObject.transform.position);
+            GameManager.Instance.FootprintMap.Remove(key);
+            //print("footprint destroyed at " + gameObject.transform.position);
             Destroy(gameObject);
         }
 	}

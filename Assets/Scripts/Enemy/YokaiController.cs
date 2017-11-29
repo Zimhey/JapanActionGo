@@ -94,7 +94,7 @@ public class YokaiController : MonoBehaviour {
     }
 
     //function to determin if an A.I. can see any footprints at a given time
-    public GameObject SeeFootprint(LayerMask levelMask, Vector3 home)
+    public FootprintList SeeFootprintOld(List<MazeNode> nodes, LayerMask levelMask, Vector3 home)
     {
         //container object to hold all extent player footprints
         GameObject[] footprints;
@@ -156,11 +156,144 @@ public class YokaiController : MonoBehaviour {
                 if (noWallfound)
                 {
                     //return the first valid footprint that is seen
-                    return valid[iter3];
+                    return valid[iter3].GetComponent<FootprintList>();
                 }
             }
         }
         //if no footprints found return null
+        return null;
+    }
+
+    public FootprintList SeeFootprint(List<MazeNode> nodes, LayerMask levelMask, Vector3 home)
+    {
+        MazeNode findFootprintOrigin = new MazeNode();
+        List<MazeNode> nodesToCheck = new List<MazeNode>();
+        List<FootprintList> footprintsToFollow = new List<FootprintList>(); 
+        int column = Mathf.RoundToInt(((gameObject.transform.position.x - 8) / 6));
+        int row = Mathf.RoundToInt(((gameObject.transform.position.z - 8) / 6));
+        int floor = Mathf.RoundToInt((gameObject.transform.position.y / 30));
+
+        foreach (MazeNode n in nodes)
+            if (n.Col == column && n.Row == row)
+                findFootprintOrigin = n;
+
+        int direction = (int) Mathf.Round(transform.rotation.eulerAngles.y / 90);
+        //print("direction " + direction);
+        if (findFootprintOrigin == null)
+        {
+            //print("origin dne");
+        }
+        else
+        {
+            //print("origin found");
+            if (direction == 0 || direction == 4)
+            {
+                
+                if (findFootprintOrigin.Forward != null)
+                {
+                    //print("found node forward");
+                    nodesToCheck.Add(findFootprintOrigin.Forward);
+                    for (int iter = 0; iter < 4; iter++)
+                    {
+                        int curIndex = nodesToCheck.Count - 1;
+                        if (nodesToCheck[curIndex].Forward != null)
+                        {
+                            nodesToCheck.Add(nodesToCheck[curIndex].Forward);
+                        }
+                    }
+                }
+            }
+            if (direction == 1)
+            {
+                if (findFootprintOrigin.Right != null)
+                {
+                    //print("found node right");
+                    nodesToCheck.Add(findFootprintOrigin.Right);
+                    for (int iter = 0; iter < 4; iter++)
+                    {
+                        int curIndex = nodesToCheck.Count - 1;
+                        if (nodesToCheck[curIndex].Right != null)
+                        {
+                            nodesToCheck.Add(nodesToCheck[curIndex].Right);
+                        }
+                    }
+                }
+            }
+            if (direction == 2)
+            {
+                if (findFootprintOrigin.Backward != null)
+                {
+                    //print("found node backward");
+                    nodesToCheck.Add(findFootprintOrigin.Backward);
+                    for (int iter = 0; iter < 4; iter++)
+                    {
+                        int curIndex = nodesToCheck.Count - 1;
+                        if (nodesToCheck[curIndex].Backward != null)
+                        {
+                            nodesToCheck.Add(nodesToCheck[curIndex].Backward);
+                        }
+                    }
+                }
+            }
+            if (direction == 3)
+            {
+                if (findFootprintOrigin.Left != null)
+                {
+                    //print("found node left");
+                    nodesToCheck.Add(findFootprintOrigin.Left);
+                    for (int iter = 0; iter < 4; iter++)
+                    {
+                        int curIndex = nodesToCheck.Count - 1;
+                        if (nodesToCheck[curIndex].Left != null)
+                        {
+                            nodesToCheck.Add(nodesToCheck[curIndex].Left);
+                        }
+                    }
+                }
+            }
+            
+            for (int iterCheck = 0; iterCheck < nodesToCheck.Count; iterCheck++)
+            {
+                int key = GameManager.Instance.GetKeyFromNode(nodesToCheck[iterCheck]);
+                if (GameManager.Instance.FootprintMap.ContainsKey(key))
+                {
+                    //print("key found");
+                    footprintsToFollow.AddRange(GameManager.Instance.FootprintMap[key]);
+                }
+                else
+                {
+                    //print("key not in dictionary");
+                }
+            }
+            //create function to iterate through footprints until found last that can be seen, 
+            //saves last seen and checks next until seeobject fails, returns last
+            FootprintList mostRecent = null;
+            if (footprintsToFollow.Count == 0)
+            {
+                //print("no footprints to follow");
+            }
+            else
+            {
+                for (int printIter = 0; printIter < footprintsToFollow.Count; printIter++)
+                {
+                    if (printIter == 0)
+                    {
+                        mostRecent = footprintsToFollow[printIter];
+                    }
+                    if (footprintsToFollow[printIter].NextFootprint != null)
+                    {
+                        if (SeeObject(footprintsToFollow[printIter].NextFootprint.gameObject, levelMask, home))
+                        {
+                            mostRecent = footprintsToFollow[printIter].NextFootprint;
+                        }
+                    }
+                    else break;
+                }
+                //print("found footprint");
+                return mostRecent;
+            }
+        }
+        //print("did not find footprint");
         return null;
     }
 

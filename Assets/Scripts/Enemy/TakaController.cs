@@ -83,7 +83,7 @@ public class TakaController : YokaiController
     private Vector3 newPosition;
     private float posTimer;
     private float posTimer2;
-    private GameObject nextFootprint;
+    private FootprintList nextFootprint;
     private NavMeshAgent agent;
     private float fleeTimer;
     private bool fleeingInu;
@@ -94,6 +94,21 @@ public class TakaController : YokaiController
     private CharacterController controller;
     private MazeNode fleeTarget = null;
     LinkedList<MazeNode> fleePath = new LinkedList<MazeNode>();
+
+    private FootprintList foundFootprint;
+    private Vector3 currentNodePosition;
+    private MazeNode closest;
+    private Vector3 rayDirection;
+    private System.Boolean playerCloseToEnemy;
+    private Vector3 targetPos;
+    private MazeNode presentNode;
+    private bool obstacle;
+    private int column;
+    private int row;
+    private LinkedList<MazeNode> possiblePath;
+    private MazeNode prevCheckNode;
+    private Actor player;
+    private Vector3 dest;
 
     public TakaState State
     {
@@ -143,8 +158,8 @@ public class TakaController : YokaiController
         agent.Warp(transform.position);
         fleeingInu = false;
 
-        int column = (int)((home.x - 8) / 6);
-        int row = (int)((home.z - 8) / 6);
+        column = (int)((home.x - 8) / 6);
+        row = (int)((home.z - 8) / 6);
 
         foreach (MazeNode n in MazeGenerator.nodesInSection(root))
             if (n.Col == column && n.Row == row)
@@ -285,7 +300,7 @@ public class TakaController : YokaiController
             State = TakaState.Chase;
             return;
         }
-        GameObject foundFootprint = SeeFootprint(LevelMask, home);
+        foundFootprint = SeeFootprint(nodes, LevelMask, home);
         if (foundFootprint != null)
         {
             State = TakaState.Follow;
@@ -330,7 +345,7 @@ public class TakaController : YokaiController
             return;
         }
 
-        GameObject foundFootprint = SeeFootprint(LevelMask, home);
+        foundFootprint = SeeFootprint(nodes, LevelMask, home);
 
         if (foundFootprint != null)
         {
@@ -340,12 +355,11 @@ public class TakaController : YokaiController
 
         if (root != null)
         {
-            Vector3 currentNodePosition;
             bool setCurrent = false;
 
             if (currentNode == null)
             {
-                MazeNode closest = null;
+                closest = null;
                 closest = SetClosest(closest, homeNode, nodes, rb);
                 currentNode = closest;
                 if (previous == null)
@@ -364,7 +378,7 @@ public class TakaController : YokaiController
                 {
                     if (Vector3.Distance(transform.position, currentNodePosition) < 2)
                     {
-                            lookTimer = 6;
+                            lookTimer = 4;
                             agent.SetDestination(transform.position);
                             state = TakaState.LookAround;
                     }
@@ -400,7 +414,7 @@ public class TakaController : YokaiController
             State = TakaState.Chase;
             return;
         }
-        GameObject foundFootprint = SeeFootprint(LevelMask, home);
+        foundFootprint = SeeFootprint(nodes, LevelMask, home);
         if (foundFootprint != null)
         {
             //if footprints found follow
@@ -413,7 +427,7 @@ public class TakaController : YokaiController
             if (root != null)
             {
                 //old destination reached, update patrol path
-                MazeNode closest = null;
+                closest = null;
                 closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
                 if (closest != null)
                 {
@@ -463,7 +477,7 @@ public class TakaController : YokaiController
         seen = SeeObject(PlayerObject, LevelMask, home);
         if (!seen)
         {
-            GameObject foundFootprint = SeeFootprint(LevelMask, home);
+            foundFootprint = SeeFootprint(nodes, LevelMask, home);
             if (foundFootprint != null)
             {
                 State = TakaState.Follow;
@@ -476,7 +490,7 @@ public class TakaController : YokaiController
         
         agent.SetDestination(PlayerObject.transform.position);
 
-        Vector3 dest = PlayerObject.transform.position;
+        dest = PlayerObject.transform.position;
 
         if (Vector3.Distance(transform.position, dest) < 5)
         {
@@ -498,9 +512,9 @@ public class TakaController : YokaiController
             State = TakaState.Flee;
             return;
         }
-        Vector3 rayDirection = playerTransform.position - transform.position;
+        rayDirection = playerTransform.position - transform.position;
         rayDirection.y = 0;
-        System.Boolean playerCloseToEnemy = rayDirection.sqrMagnitude < TauntDistance;
+        playerCloseToEnemy = rayDirection.sqrMagnitude < TauntDistance;
         if (!playerCloseToEnemy)
         {
             seen = false;
@@ -510,7 +524,7 @@ public class TakaController : YokaiController
                 State = TakaState.Chase;
                 return;
             }
-            GameObject foundFootprint = SeeFootprint(LevelMask, home);
+            foundFootprint = SeeFootprint(nodes, LevelMask, home);
             if (foundFootprint != null)
             {
                 State = TakaState.Follow;
@@ -552,7 +566,7 @@ public class TakaController : YokaiController
         {
             if (UnityEngine.XR.XRDevice.isPresent)
             {
-                Actor player = PlayerObject.GetComponentInParent<Actor>();
+                player = PlayerObject.GetComponentInParent<Actor>();
                 GameManager.Instance.ActorKilled(actorID, player);
             }
             else
@@ -583,7 +597,7 @@ public class TakaController : YokaiController
                 State = TakaState.Chase;
                 return;
             }
-            GameObject foundFootprint = SeeFootprint(LevelMask, home);
+            foundFootprint = SeeFootprint(nodes, LevelMask, home);
             if (foundFootprint != null)
             {
                 State = TakaState.Follow;
@@ -605,20 +619,20 @@ public class TakaController : YokaiController
             distanceToFloor -= 0.01F;
         }
 
-        Vector3 targetPos = new Vector3();
+        targetPos = new Vector3();
         if (fleeTarget == null)
         {
-            MazeNode presentNode = new MazeNode();
-            bool obstacle = false;
-            int column = homeNode.Col;
-            int row = homeNode.Row;
+            presentNode = new MazeNode();
+            obstacle = false;
+            column = homeNode.Col;
+            row = homeNode.Row;
 
             foreach (MazeNode n in MazeGenerator.nodesInSection(root))
                 if (n.Col == column && n.Row == row)
                     presentNode = n;
 
-            LinkedList<MazeNode> possiblePath = MazeGenerator.GetPath2(presentNode, homeNode);
-            MazeNode prevCheckNode = presentNode;
+            possiblePath = MazeGenerator.GetPath2(presentNode, homeNode);
+            prevCheckNode = presentNode;
 
             foreach (MazeNode n in possiblePath)
             {
@@ -703,7 +717,7 @@ public class TakaController : YokaiController
         }
         if (nextFootprint == null)
         {
-            GameObject foundFootprint = SeeFootprint(LevelMask, home);
+            foundFootprint = SeeFootprint(nodes, LevelMask, home);
             if (foundFootprint == null)
             {
                 State = TakaState.Idle;
@@ -718,7 +732,7 @@ public class TakaController : YokaiController
         {
             if (Vector3.Distance(transform.position, nextFootprint.transform.position) < 1)
             {
-                    nextFootprint = nextFootprint.GetComponent<FootprintList>().getNext();
+                    nextFootprint = nextFootprint.getNext();
             }
 
             agent.SetDestination(nextFootprint.transform.position);
@@ -734,7 +748,7 @@ public class TakaController : YokaiController
         {
             seen = false;
             seen = SeeObject(PlayerObject, LevelMask, home);
-            GameObject foundFootprint = SeeFootprint(LevelMask, home);
+            foundFootprint = SeeFootprint(nodes, LevelMask, home);
             if (seen)
             {
                 State = TakaState.Chase;

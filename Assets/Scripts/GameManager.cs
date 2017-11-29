@@ -61,6 +61,8 @@ public class GameManager : MonoBehaviour {
 
     public static GameObject PlayerObj;
 
+    public Dictionary<int,List<FootprintList>> FootprintMap = new Dictionary<int, List<FootprintList>>();
+
     public string PlayerTypeLoc;
 
     public bool TutorialOn;
@@ -672,5 +674,54 @@ public class GameManager : MonoBehaviour {
             path += "Col: " + n.Col + " Row: " + n.Row + " ";
         }
         return path;
+    }
+
+    public void AddFootprint(FootprintList newFootprint, Vector3 fposition)
+    {
+        int key = 0;
+        
+        key = GetKey(fposition);
+
+        //FootprintMap.Add(key, newFootprint);
+        if (FootprintMap.ContainsKey(key))
+        {
+            //print("updating key");
+            List<FootprintList> prints = new List<FootprintList>();
+            prints = FootprintMap[key];
+            prints.Add(newFootprint);
+            FootprintMap[key] = prints;
+        }
+        else
+        {
+            //print("created key and added to dictionary");
+            List<FootprintList> prints = new List<FootprintList>();
+            FootprintMap[key] = prints;
+            FootprintMap.Add(key, prints);
+        }
+    }
+
+    public int GetKey(Vector3 keyPosition)
+    {
+        int key = 0;
+        //print("position: x: " + keyPosition.x + " y: " + keyPosition.y + " z: " + keyPosition.z);
+        int column = Mathf.RoundToInt(((keyPosition.x - 8) / 6));
+        int row = Mathf.RoundToInt((((keyPosition.z - 8) / 6)));
+        int floor = Mathf.RoundToInt(((keyPosition.y / 30)));
+        key += column;
+        key += row << 6;
+        key += floor << 12;
+        //print("col: " + column + " row: " + row + " floor: " + floor);
+        //print("getkey " + key);
+        return key;
+    }
+
+    public int GetKeyFromNode(MazeNode mn)
+    {
+        int key = 0;
+        key += mn.Col;
+        key += mn.Row << 6;
+        key += mn.Floor << 12;
+        //print("getkeyfromnode " + key);
+        return key;
     }
 }
