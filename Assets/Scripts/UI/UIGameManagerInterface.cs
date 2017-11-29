@@ -33,6 +33,9 @@ public class UIGameManagerInterface : MonoBehaviour {
     public GameObject WinPanel;
     public GameObject AchievementPanel;
 
+    public AudioClip MainMenuMusic;
+    public AudioClip[] BackgroundMusicPlaylist;
+
     public GameUIScreens StartScreen;
 
     // do not exit this directly

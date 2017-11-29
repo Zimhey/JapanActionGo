@@ -16,8 +16,8 @@ public class FootprintPlacer : MonoBehaviour {
     public float FootprintLifetime;
 
     private CharacterController controller;
-    private GameObject previousFootprint;
-    private GameObject currentFootprint;
+    private FootprintList previousFootprint;
+    private FootprintList currentFootprint;
     private GameObject footPrintParent;
 
     private Vector3 lastLocation;
@@ -97,11 +97,12 @@ public class FootprintPlacer : MonoBehaviour {
             previousFootprint = currentFootprint;
 
             // Spawn
-            currentFootprint = Instantiate(prefab);
+            currentFootprint = Instantiate(prefab).GetComponent<FootprintList>();
             currentFootprint.transform.position = position;
             currentFootprint.transform.rotation = transform.rotation;
             currentFootprint.transform.parent = footPrintParent.transform;
             currentFootprint.GetComponent<FootprintDecay>().SetLifeTime(FootprintLifetime);
+            
             //print("pos " + currentFootprint.transform.position);
 
             if (rayHit.collider.gameObject.layer == dynamicObjectLayer)
@@ -114,12 +115,18 @@ public class FootprintPlacer : MonoBehaviour {
 
             // Set Linked List
             if (previousFootprint != null)
-                previousFootprint.GetComponent<FootprintList>().setNext(currentFootprint);
-            currentFootprint.GetComponent<FootprintList>().setPrevious(previousFootprint);
+                previousFootprint.setNext(currentFootprint);
+            currentFootprint.setPrevious(previousFootprint);
 
             // Prep for next footprint
             distanceTraveled = 0f;
             rightFootLast = !rightFootLast;
+
+            if (gameObject.CompareTag("Player"))
+            {
+                //print("attempting to add footprint to dictionary");
+                GameManager.Instance.AddFootprint(currentFootprint, footPosition);
+            }
         }
     }
 

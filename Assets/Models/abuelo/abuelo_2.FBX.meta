@@ -1,0 +1,211 @@
+fileFormatVersion: 2
+guid: 77e3cad8d43988f4287121088016ff2c
+timeCreated: 1511928295
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Bone001
+    100004: Bone002
+    100006: Bone003
+    100008: Bone004
+    100010: Bone005
+    100012: Bone006
+    100014: Bone007
+    100016: Bone008
+    100018: Bone009
+    100020: Bone013
+    100022: Bone014
+    100024: Bone015
+    100026: Bone016
+    100028: Bone017
+    100030: Bone018
+    100032: Bone019
+    100034: Bone020
+    100036: Bone021
+    100038: Bone022
+    100040: Bone023
+    100042: Bone024
+    100044: Bone025
+    100046: Bone026
+    100048: brazo_deracho001
+    100050: brazo_deracho002
+    100052: brazo_deracho003
+    100054: brazo_isquierdo001
+    100056: brazo_isquierdo002
+    100058: brazo_isquierdo003
+    100060: cabeza
+    100062: columna001
+    100064: columna002
+    100066: columna003
+    100068: columna004
+    100070: columna005
+    100072: columna006
+    100074: cuerpo
+    100076: manos
+    100078: ojo001
+    100080: ojo002
+    100082: ojos
+    100084: P_derecha001
+    100086: P_derecha002
+    100088: P_derecha003
+    100090: P_isquierda001
+    100092: P_isquierda002
+    100094: P_isquierda003
+    400000: //RootNode
+    400002: Bone001
+    400004: Bone002
+    400006: Bone003
+    400008: Bone004
+    400010: Bone005
+    400012: Bone006
+    400014: Bone007
+    400016: Bone008
+    400018: Bone009
+    400020: Bone013
+    400022: Bone014
+    400024: Bone015
+    400026: Bone016
+    400028: Bone017
+    400030: Bone018
+    400032: Bone019
+    400034: Bone020
+    400036: Bone021
+    400038: Bone022
+    400040: Bone023
+    400042: Bone024
+    400044: Bone025
+    400046: Bone026
+    400048: brazo_deracho001
+    400050: brazo_deracho002
+    400052: brazo_deracho003
+    400054: brazo_isquierdo001
+    400056: brazo_isquierdo002
+    400058: brazo_isquierdo003
+    400060: cabeza
+    400062: columna001
+    400064: columna002
+    400066: columna003
+    400068: columna004
+    400070: columna005
+    400072: columna006
+    400074: cuerpo
+    400076: manos
+    400078: ojo001
+    400080: ojo002
+    400082: ojos
+    400084: P_derecha001
+    400086: P_derecha002
+    400088: P_derecha003
+    400090: P_isquierda001
+    400092: P_isquierda002
+    400094: P_isquierda003
+    4300000: cabeza
+    4300002: ojos
+    4300004: manos
+    4300006: cuerpo
+    7400000: Take 001
+    9500000: //RootNode
+    13700000: cabeza
+    13700002: cuerpo
+    13700004: manos
+    13700006: ojos
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material__102
+    second: {fileID: 2100000, guid: fa43e3f6abd419e4e8d1931e9e850fce, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: default
+    second: {fileID: 2100000, guid: 238c49fbb1246e641be526a954d616cd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: defaultMat
+    second: {fileID: 2100000, guid: 445a269b6c5a6a1489453de25ed82065, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wire_177028149
+    second: {fileID: 2100000, guid: 7218461a334d79b4baecea919d56e534, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
