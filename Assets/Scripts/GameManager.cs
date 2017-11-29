@@ -751,7 +751,7 @@ public class GameManager : MonoBehaviour {
         {
             //print("created key and added to dictionary");
             List<FootprintList> prints = new List<FootprintList>();
-            FootprintMap[key] = prints;
+            prints.Add(newFootprint);
             FootprintMap.Add(key, prints);
         }
     }

@@ -90,7 +90,10 @@ public class TakaController : YokaiController
 
     private Transform playerTransform;
     //mesh renderer to change the look of the taka
-    private MeshRenderer mr;
+    //private MeshRenderer mr;
+    private Transform mr;
+    private float growthTimer;
+    private float shrinkTimer;
     private CharacterController controller;
     private MazeNode fleeTarget = null;
     LinkedList<MazeNode> fleePath = new LinkedList<MazeNode>();
@@ -121,11 +124,25 @@ public class TakaController : YokaiController
                     currentNode.EnemyPathNode = true;
             }
 
+            if (state == TakaState.Taunt)
+            {
+                if (shrinkTimer <= 0)
+                {
+                    shrinkTimer = 2.5f - growthTimer;
+                }
+            }
             state = value;
             GameManager.Instance.ActorStateChange(actorID, (int)state);
             if(state == TakaState.Flee)
             {
                 fleeTimer = 30;
+            }
+            if (state == TakaState.Taunt)
+            {
+                if (growthTimer <= 0)
+                {
+                    growthTimer = 2.5f;
+                }
             }
         }
     }
@@ -558,17 +575,19 @@ public class TakaController : YokaiController
         //play taunt sounds
         if(mr == null)
         {
-            mr = gameObject.GetComponentInChildren<MeshRenderer>();
+            //mr = gameObject.GetComponentInChildren<MeshRenderer>();
+            mr = gameObject.GetComponentInChildren<Transform>();
         }
         //make the taka appear to grow taller
-        if (mr.transform.localScale.y < 8)
+        if (growthTimer > 0)
         {
-            mr.transform.localScale += new Vector3(0, 0.02F, 0);
-            mr.transform.position += new Vector3(0, 0.01F, 0);
+            growthTimer -= Time.deltaTime;
+            mr.transform.localScale += new Vector3(0, 0.002F, 0);
+            mr.transform.position += new Vector3(0, 0.001F, 0);
             distanceToFloor += 0.01F;
         }
         //if player has avoided looking up for a full taunt cycle the taka backs off
-        else if (mr.transform.localScale.y >= 8)
+        else if (growthTimer <= 0)
         {
             State = TakaState.Flee;
             return;
@@ -622,13 +641,15 @@ public class TakaController : YokaiController
 
         if (mr == null)
         {
-            mr = gameObject.GetComponentInChildren<MeshRenderer>();
+            //mr = gameObject.GetComponentInChildren<MeshRenderer>();
+            mr = gameObject.GetComponentInChildren<Transform>();
         }
         //if taka has grown, shrink it
-        if (mr.transform.localScale.y > 5)
+        if (shrinkTimer > 0)
         {
-            mr.transform.localScale -= new Vector3(0, 0.02F, 0);
-            mr.transform.position -= new Vector3(0, 0.01F, 0);
+            shrinkTimer -= Time.deltaTime;
+            mr.transform.localScale -= new Vector3(0, 0.002F, 0);
+            mr.transform.position -= new Vector3(0, 0.001F, 0);
             distanceToFloor -= 0.01F;
         }
 
