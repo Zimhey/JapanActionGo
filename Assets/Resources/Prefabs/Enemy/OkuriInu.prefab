@@ -2233,7 +2233,7 @@ MonoBehaviour:
   StayCorneredDistance: 25
   CorneredChaseDistance: 5
   KillDistance: 3
-  AttackTime: 240
+  AttackTime: 30
   TestDebug: 0
 --- !u!135 &135422344132124054
 SphereCollider:

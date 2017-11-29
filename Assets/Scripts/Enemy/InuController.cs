@@ -130,6 +130,7 @@ public class InuController : YokaiController
     private System.Boolean awake;
     //current node for patrol
     private List<MazeNode> nodes;
+    private List<MazeNode> allNodes;
     private MazeNode currentNode;
     private MazeNode root;
     private MazeNode previous;
@@ -224,7 +225,9 @@ public class InuController : YokaiController
         column = (int)((home.x - 8) / 6);
         row = (int)((home.z - 8) / 6);
 
-        foreach (MazeNode n in MazeGenerator.nodesInSection(root))
+        allNodes = MazeGenerator.nodesInSection(root);
+
+        foreach (MazeNode n in allNodes)
             if (n.Col == column && n.Row == row)
                 homeNode = n;
     }
@@ -364,9 +367,10 @@ public class InuController : YokaiController
                 State = InuState.Chase;
                 return;
             }
-            foundFootprint = SeeFootprint(nodes, LevelMask, home);
+            foundFootprint = SeeFootprint(allNodes, LevelMask, home);
             if (foundFootprint != null)
             {
+                nextFootprint = foundFootprint;
                 State = InuState.Follow;
             }
             else if (root != null)
@@ -405,10 +409,11 @@ public class InuController : YokaiController
             return;
         }
 
-        foundFootprint = SeeFootprint(nodes, LevelMask, home);
+        foundFootprint = SeeFootprint(allNodes, LevelMask, home);
 
         if (foundFootprint != null)
         {
+            nextFootprint = foundFootprint;
             State = InuState.Follow;
             return;
         }
@@ -488,10 +493,11 @@ public class InuController : YokaiController
             State = InuState.Chase;
             return;
         }
-        foundFootprint = SeeFootprint(nodes, LevelMask, home);
+        foundFootprint = SeeFootprint(allNodes, LevelMask, home);
         if (foundFootprint != null)
         {
             //if footprints found follow
+            nextFootprint = foundFootprint;
             State = InuState.Follow;
             return;
         }
@@ -545,9 +551,10 @@ public class InuController : YokaiController
         seen = SeeObject(PlayerObject, LevelMask, home);
         if (!seen)
         {
-            foundFootprint = SeeFootprint(nodes, LevelMask, home);
+            foundFootprint = SeeFootprint(allNodes, LevelMask, home);
             if (foundFootprint != null)
             {
+                nextFootprint = foundFootprint;
                 State = InuState.Follow;
             }
             else
@@ -598,7 +605,7 @@ public class InuController : YokaiController
                 State = InuState.Chase;
                 return;
             }
-            foundFootprint = SeeFootprint(nodes, LevelMask, home);
+            foundFootprint = SeeFootprint(allNodes, LevelMask, home);
             if (foundFootprint != null)
             {
                 State = InuState.Follow;
@@ -1009,9 +1016,10 @@ public class InuController : YokaiController
                 State = InuState.Chase;
                 return;
             }
-            foundFootprint = SeeFootprint(nodes, LevelMask, home);
+            foundFootprint = SeeFootprint(allNodes, LevelMask, home);
             if (foundFootprint != null)
             {
+                nextFootprint = foundFootprint;
                 State = InuState.Follow;
                 return;
             }
@@ -1071,9 +1079,10 @@ public class InuController : YokaiController
                 State = InuState.Chase;
                 return;
             }
-            foundFootprint = SeeFootprint(nodes, LevelMask, home);
+            foundFootprint = SeeFootprint(allNodes, LevelMask, home);
             if (foundFootprint != null)
             {
+                nextFootprint = foundFootprint;
                 State = InuState.Follow;
                 return;
             }
@@ -1166,9 +1175,10 @@ public class InuController : YokaiController
         }
         if (nextFootprint == null)
         {
-            foundFootprint = SeeFootprint(nodes, LevelMask, home);
+            foundFootprint = SeeFootprint(allNodes, LevelMask, home);
             if (foundFootprint == null)
             {
+                nextFootprint = foundFootprint;
                 State = InuState.Idle;
             }
             if (foundFootprint != null)
@@ -1204,6 +1214,7 @@ public class InuController : YokaiController
             }
             else if (foundFootprint != null && awake == true)
             {
+                nextFootprint = foundFootprint;
                 State = InuState.Follow;
             }
             else

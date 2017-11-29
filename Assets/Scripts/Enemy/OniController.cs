@@ -463,22 +463,25 @@ public class OniController : YokaiController
                             agent.SetDestination(transform.position);
                             state = OniState.LookAround;
                         }
-                        /*MazeNode closest = null;
-                        closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
-                        if (closest != null)
+                        else
                         {
-                            closest = null;
+                            MazeNode closest = null;
                             closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
                             if (closest != null)
                             {
+                                /*closest = null;
+                                closest = UpdateClosest(closest, nodes, currentNode, previous, previous2, rb);
+                                if (closest != null)
+                                {
+                                    previous2 = previous;
+                                    previous = currentNode;
+                                    currentNode = closest;
+                                }*/
                                 previous2 = previous;
                                 previous = currentNode;
                                 currentNode = closest;
                             }
-                            previous2 = previous;
-                            previous = currentNode;
-                            currentNode = closest;
-                        }*/
+                        }
                     }
                     //update current node's postion
                     if(currentNode != null)
@@ -814,12 +817,12 @@ public class OniController : YokaiController
             foundFootprint = SeeFootprint(allNodes, LevelMask, home);
             if (seen)
             {
-                nextFootprint = foundFootprint;
                 State = OniState.Chase;
                 return;
             }
             else if (foundFootprint != null && awake == true)
             {
+                nextFootprint = foundFootprint;
                 State = OniState.Follow;
                 return;
             }
