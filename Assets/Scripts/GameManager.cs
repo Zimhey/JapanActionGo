@@ -540,9 +540,36 @@ public class GameManager : MonoBehaviour {
 
     public void SpawnMessage(MazeNode node, GameObject messages)
     {
+        float xtranslation;
+        float ztranslation;
         int messageType = (int) messageRand.Next(0, 3) + 1;
         GameObject message;
-        Vector3 loc = new Vector3(node.Col * 6 + 8, (float)(node.Floor * 30 + 3), node.Row * 6 + 8);
+        if(node.GetRotation().Equals(Quaternion.Euler(new Vector3(0, 90, 0))))
+        {
+            xtranslation = (float) -6.2;
+            ztranslation = 0;
+        }
+        else if(node.GetRotation().Equals(Quaternion.Euler(new Vector3(0, -90, 0))))
+        {
+            xtranslation = (float) 5.3;
+            ztranslation = 0;
+        }
+        else if(node.GetRotation().Equals(Quaternion.Euler(new Vector3(0, 180, 0))))
+        {
+            xtranslation = 0;
+            ztranslation = (float) 5.3;
+        }
+        else if(node.GetRotation().Equals(Quaternion.Euler(new Vector3(0, 0, 0))))
+        {
+            xtranslation = 0;
+            ztranslation = (float) -6.2;
+        }
+        else
+        {
+            xtranslation = 0;
+            ztranslation = 0;
+        }
+        Vector3 loc = new Vector3(node.Col * 6 + 8 + xtranslation, (float)(node.Floor * 30 + 1), node.Row * 6 + 8 + ztranslation);
         if(node.MessageNode)
         {
             message = Instantiate(Resources.Load("Prefabs/Messages/Message" + messageType.ToString()), loc, node.GetRotation()) as GameObject;
