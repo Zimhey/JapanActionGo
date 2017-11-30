@@ -92,7 +92,7 @@ public class InuController : YokaiController
 
             if (state == InuState.Flee)
             {
-                fleeTimer = 30;
+                fleeTimer = 5;
             }
             else if (state == InuState.Stalk)
             {
@@ -204,8 +204,8 @@ public class InuController : YokaiController
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
         beenTooClose = false;
         oldPosition = home;
-        posTimer = 60;
-        posTimer2 = 27;
+        posTimer = 10;
+        posTimer2 = 5;
         stunTimer = 0;
         AttackTimer = AttackTime;
         root = MazeGenerator.getSectionBasedOnLocation(home);
@@ -338,14 +338,14 @@ public class InuController : YokaiController
         posTimer -= Time.deltaTime;
         if (posTimer <= 0)
         {
-            posTimer = 90;
+            posTimer = 9;
             oldPosition = newPosition;
             newPosition = transform.position;
         }
         posTimer2 -= Time.deltaTime;
         if (posTimer2 <= 0)
         {
-            posTimer2 = 77;
+            posTimer2 = 7;
             oldPosition2 = oldPosition;
             oldPosition = transform.position;
         }
@@ -355,8 +355,8 @@ public class InuController : YokaiController
 
     void idle()
     {
-        posTimer = 90;
-        posTimer2 = 77;
+        posTimer = 9;
+        posTimer2 = 7;
         if (PlayerObject != null)
         {
             seen = false;
@@ -475,8 +475,8 @@ public class InuController : YokaiController
 
     void look()
     {
-        posTimer = 90;
-        posTimer2 = 77;
+        posTimer = 9;
+        posTimer2 = 7;
         lookTimer -= Time.deltaTime;
         //print(lookTimer);
         if (FleeInu(LevelMask, home))
@@ -577,8 +577,8 @@ public class InuController : YokaiController
     //function to execute in stalk state, contains transitions, and code to maintain distance from player and attempt to avoid being cornered
     void stalk()
     {
-        posTimer = 90;
-        posTimer2 = 77;
+        posTimer = 9;
+        posTimer2 = 7;
         if (AttackTimer > 0)
         {
             AttackTimer -= Time.deltaTime;
@@ -971,8 +971,8 @@ public class InuController : YokaiController
     //function to execute in cornered state, contains transitions, and code to deal with player
     void cornered()
     {
-        posTimer = 90;
-        posTimer2 = 77;
+        posTimer = 9;
+        posTimer2 = 7;
         if (AttackTimer > 0)
         {
             AttackTimer -= Time.deltaTime;
@@ -1066,8 +1066,8 @@ public class InuController : YokaiController
 
     void flee()
     {
-        posTimer = 90;
-        posTimer2 = 77;
+        posTimer = 9;
+        posTimer2 = 7;
         fleeTimer -= Time.deltaTime;
         if (fleeTimer <= 0)
         {
@@ -1200,8 +1200,8 @@ public class InuController : YokaiController
 
     void stun()
     {
-        posTimer = 90;
-        posTimer2 = 77;
+        posTimer = 9;
+        posTimer2 = 7;
         stunTimer -= Time.deltaTime;
         if (stunTimer <= 0)
         {
@@ -1228,7 +1228,7 @@ public class InuController : YokaiController
     {
         State = InuState.Stun;
         AnimState = InuAnim.Stunned;
-        stunTimer = 120;
+        stunTimer = 10;
         agent.SetDestination(transform.position);
     }
 

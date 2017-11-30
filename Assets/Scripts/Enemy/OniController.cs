@@ -148,7 +148,7 @@ public class OniController : YokaiController
             //set fleetimer if changing state to flee
             if(state == OniState.Flee)
             {
-                fleeTimer = 30;
+                fleeTimer = 5;
                 //print(fleeTimer);
             }
         }
@@ -168,14 +168,14 @@ public class OniController : YokaiController
         awake = false;
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
         oldPosition = home;
-        posTimer = 60;
-        posTimer2 = 27;
+        posTimer = 6;
+        posTimer2 = 23;
         root = MazeGenerator.getSectionBasedOnLocation(home);
         if(root != null)
         {
             nodes = MazeGenerator.GetIntersectionNodes(root);
         }
-        fleeTimer = 30;
+        fleeTimer = 5;
         fleeingInu = false;
 
         currentNode = StartingNode;
@@ -315,14 +315,14 @@ public class OniController : YokaiController
         posTimer -= Time.deltaTime;
         if(posTimer <= 0)
         {
-            posTimer = 90;
+            posTimer = 9;
             oldPosition = newPosition;
             newPosition = transform.position;
         }
         posTimer2 -= Time.deltaTime;
         if (posTimer2 <= 0)
         {
-            posTimer2 = 77;
+            posTimer2 = 7;
             oldPosition2 = oldPosition;
             oldPosition = transform.position;
         }
@@ -343,8 +343,8 @@ public class OniController : YokaiController
     //function to be performed in idle state, containes transitions to other states
     void idle()
     {
-        posTimer = 90;
-        posTimer2 = 77;
+        posTimer = 9;
+        posTimer2 = 7;
         if (FleeInu(LevelMask, home))
         {
             State = OniState.Flee;
@@ -495,8 +495,8 @@ public class OniController : YokaiController
 
     void look()
     {
-        posTimer = 90;
-        posTimer2 = 77;
+        posTimer = 9;
+        posTimer2 = 7;
         lookTimer -= Time.deltaTime;
         if (TestDebug)
         {
@@ -636,8 +636,8 @@ public class OniController : YokaiController
     //function to execute in flee state, contains transitions, and code to return to spawn position
     void flee()
     {
-        posTimer = 90;
-        posTimer2 = 77;
+        posTimer = 9;
+        posTimer2 = 7;
         //if enough time has passed the oni may interrupt flee to chase player or follow footprints
         fleeTimer -= Time.deltaTime;
         if (fleeTimer <= 0)
@@ -804,8 +804,8 @@ public class OniController : YokaiController
     //function to execute in stun state, containes transitions, and decrements stun timer
     void stun()
     {
-        posTimer = 90;
-        posTimer2 = 77;
+        posTimer = 9;
+        posTimer2 = 7;
         //decrement stun timer
         stunTimer -= Time.deltaTime;
         //if enough timer has passed transition to appropiate state
@@ -841,7 +841,7 @@ public class OniController : YokaiController
         State = OniState.Stun;
         animState = OniAnim.Stunned;
         //set timer
-        stunTimer = 180;
+        stunTimer = 15;
         //stop motion
         agent.SetDestination(transform.position);
         //stun has priority over fleeing inu

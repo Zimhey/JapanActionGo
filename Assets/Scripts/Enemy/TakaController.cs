@@ -136,7 +136,7 @@ public class TakaController : YokaiController
             GameManager.Instance.ActorStateChange(actorID, (int)state);
             if(state == TakaState.Flee)
             {
-                fleeTimer = 30;
+                fleeTimer = 5;
             }
             if (state == TakaState.Taunt)
             {
@@ -162,8 +162,8 @@ public class TakaController : YokaiController
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
         cam = Camera.main;
         oldPosition = home;
-        posTimer = 60;
-        posTimer2 = 27;
+        posTimer = 6;
+        posTimer2 = 3;
         root = MazeGenerator.getSectionBasedOnLocation(home);
         if (root != null)
         {
@@ -285,14 +285,14 @@ public class TakaController : YokaiController
         posTimer -= Time.deltaTime;
         if (posTimer <= 0)
         {
-            posTimer = 90;
+            posTimer = 9;
             oldPosition = newPosition;
             newPosition = transform.position;
         }
         posTimer2 -= Time.deltaTime;
         if (posTimer2 <= 0)
         {
-            posTimer2 = 77;
+            posTimer2 = 7;
             oldPosition2 = oldPosition;
             oldPosition = transform.position;
         }
@@ -307,8 +307,8 @@ public class TakaController : YokaiController
 
     void idle()
     {
-        posTimer = 90;
-        posTimer2 = 77;
+        posTimer = 9;
+        posTimer2 = 7;
         if (FleeInu(LevelMask, home))
         {
             State = TakaState.Flee;
@@ -428,8 +428,8 @@ public class TakaController : YokaiController
 
     void look()
     {
-        posTimer = 90;
-        posTimer2 = 77;
+        posTimer = 9;
+        posTimer2 = 7;
         lookTimer -= Time.deltaTime;
         if (TestDebug)
         {
@@ -542,8 +542,8 @@ public class TakaController : YokaiController
     //function to execute in taunt state
     void taunt()
     {
-        posTimer = 90;
-        posTimer2 = 77;
+        posTimer = 9;
+        posTimer2 = 7;
         if (FleeInu(LevelMask, home))
         {
             State = TakaState.Flee;
@@ -624,8 +624,8 @@ public class TakaController : YokaiController
 
     void flee()
     {
-        posTimer = 90;
-        posTimer2 = 77;
+        posTimer = 9;
+        posTimer2 = 7;
         fleeTimer -= Time.deltaTime;
         if (fleeTimer <= 0)
         {
@@ -785,8 +785,8 @@ public class TakaController : YokaiController
 
     void stun()
     {
-        posTimer = 90;
-        posTimer2 = 77;
+        posTimer = 9;
+        posTimer2 = 7;
         stunTimer -= Time.deltaTime;
         if (stunTimer <= 0)
         {
@@ -812,7 +812,7 @@ public class TakaController : YokaiController
     void Stun()
     {
         State = TakaState.Stun;
-        stunTimer = 120;
+        stunTimer = 10;
         agent.SetDestination(transform.position);
         fleeingInu = false;
     }
