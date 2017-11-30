@@ -45,7 +45,7 @@ public class OfudaCounter : MonoBehaviour {
 
         if(ofudaLabelVR != null)
         {
-            VRCounter.text = "" + playerInventory.OfudaCharges; 
+            VRCounter.text = "Ofuda: " + playerInventory.OfudaCharges; 
         }
     }
 }
