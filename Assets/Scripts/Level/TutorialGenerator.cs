@@ -118,7 +118,7 @@ public static class TutorialGenerator {
         tutorial3[5, 4].AddEdge(tutorial3[4, 4]);
 
         tutorial3[0, 1].actor = ActorType.Oni;
-        tutorial3[5, 0].actor = ActorType.Oni;
+        tutorial3[4, 3].actor = ActorType.Oni;
         tutorial3[5, 3].actor = ActorType.Oni;
         tutorial3[0, 3].actor = ActorType.Oni;
         tutorial3[1, 1].actor = ActorType.Spike_Trap;

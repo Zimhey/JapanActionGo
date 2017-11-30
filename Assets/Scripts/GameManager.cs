@@ -560,9 +560,6 @@ public class GameManager : MonoBehaviour {
         colorTemp.r += rAlter;
         colorTemp.b += bAlter;
         colorTemp.g += gAlter;
-        print(colorTemp.r);
-        print(colorTemp.b);
-        print(colorTemp.g);
         GameObject lantern;
         Vector3 loc = new Vector3(node.Col * 6 + 8, (float) (node.Floor * 30 + 6.5), node.Row * 6 + 8);
         if ((node.Col + node.Row) % 2 == 0)
