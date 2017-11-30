@@ -740,7 +740,7 @@ public class GameManager : MonoBehaviour {
 
     public void ActorVisitedCell(Actor actor, int cellID)
     {
-        if (AnalyticsEnabled)
+        if (AnalyticsEnabled && actor != null)
             AnalyticsManager.EnteredCell(actor.ActorID, cellID);
     }
 
@@ -752,7 +752,7 @@ public class GameManager : MonoBehaviour {
 
     public void ActorStateChange(Actor actor, int state)
     {
-        if (AnalyticsEnabled)
+        if (AnalyticsEnabled && actor != null)
             AnalyticsManager.ActorStateChange(actor.ActorID, state);
     }
 
@@ -771,7 +771,7 @@ public class GameManager : MonoBehaviour {
 
     public void OfudaHit(int eventID, Actor actor)
     {
-        if (AnalyticsEnabled)
+        if (AnalyticsEnabled && actor != null)
             AnalyticsManager.OfudaHit(eventID, actor.ActorID);
     }
 
@@ -786,7 +786,7 @@ public class GameManager : MonoBehaviour {
 
     public void FoundItem(Actor actor)
     {
-        if (AnalyticsEnabled)
+        if (AnalyticsEnabled && actor != null)
             AnalyticsManager.FoundItem(actor.ActorID);
     }
 

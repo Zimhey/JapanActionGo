@@ -33,14 +33,14 @@ public class ActorGenerator : MonoBehaviour {
                 Nyudo = 1;
                 break;
             case 1:
-                Oni = 0;
-                Ofuda = 0;
-                Chalk = 0;
-                SpikeTrap = 0;
-                Inu = 0;
-                PitTrap = 0;
-                CrushingTrap = 0;
-                Nyudo = 0;
+                Oni = 3;
+                Ofuda = 3;
+                Chalk = 3;
+                SpikeTrap = 2;
+                Inu = 1;
+                PitTrap = 1;
+                CrushingTrap = 2;
+                Nyudo = 2;
                 break;
             case 2:
                 Oni = 9;
