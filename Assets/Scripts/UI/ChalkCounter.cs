@@ -42,7 +42,7 @@ public class ChalkCounter : MonoBehaviour {
         }
         if (chalkLabelVR != null)
         {
-            VRCounter.text = "" + playerInventory.ChalkCharges * 100 + playerActions.DistanceDrawn / playerInventory.DistancePerCharge * 100;
+            VRCounter.text = "" + playerInventory.ChalkCharges * 100 + playerActions.DistanceDrawn / playerInventory.DistancePerCharge * 100 +"%";
         }
         /*
         //whole charges
