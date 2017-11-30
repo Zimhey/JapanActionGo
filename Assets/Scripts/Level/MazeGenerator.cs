@@ -933,7 +933,7 @@ public class MazeGenerator : MonoBehaviour
             bool match = false;
             int temp = (int) rand.Next(0, max);
             if (root.Floor == 0)
-                print(temp);
+                //print(temp);
             for (int j = 0; j < 3; j++)
             {
                 if (match)
@@ -951,7 +951,7 @@ public class MazeGenerator : MonoBehaviour
         foreach (MazeNode n in exitPath)
         {
             if (root.Floor == 0)
-                print("exitpath not empty");
+                //print("exitpath not empty");
             foreach (int place in places)
             {
                 if (placement == place)

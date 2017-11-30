@@ -182,7 +182,7 @@ public class OniController : YokaiController
         //find home node based on location, a nodes location is its individual values - 8 and then divided by 6
         column = (int)((home.x - 8) / 6);
         row = (int)((home.z - 8) / 6);
-        print("oni home: x " + home.x + " col: " + column + " z: " + home.z + " row: " + row);
+        //print("oni home: x " + home.x + " col: " + column + " z: " + home.z + " row: " + row);
         allNodes = MazeGenerator.nodesInSection(root);
 
         foreach (MazeNode n in allNodes)
@@ -198,8 +198,8 @@ public class OniController : YokaiController
         agent.nextPosition = transform.position;
         //transform.position = agent.nextPosition;
         agent.Warp(transform.position);
-        print("trans" + transform.position);
-        print("nav" + agent.nextPosition);
+        //print("trans" + transform.position);
+        //print("nav" + agent.nextPosition);
     }
 
     //determin oni's actions for the current game loop
@@ -315,14 +315,14 @@ public class OniController : YokaiController
         posTimer -= Time.deltaTime;
         if(posTimer <= 0)
         {
-            posTimer = 9;
+            posTimer = 30;
             oldPosition = newPosition;
             newPosition = transform.position;
         }
         posTimer2 -= Time.deltaTime;
         if (posTimer2 <= 0)
         {
-            posTimer2 = 7;
+            posTimer2= 25;
             oldPosition2 = oldPosition;
             oldPosition = transform.position;
         }
@@ -343,8 +343,8 @@ public class OniController : YokaiController
     //function to be performed in idle state, containes transitions to other states
     void idle()
     {
-        posTimer = 9;
-        posTimer2 = 7;
+        posTimer = 30;
+        posTimer2= 25;
         if (FleeInu(LevelMask, home))
         {
             State = OniState.Flee;
@@ -495,8 +495,8 @@ public class OniController : YokaiController
 
     void look()
     {
-        posTimer = 9;
-        posTimer2 = 7;
+        posTimer = 30;
+        posTimer2= 25;
         lookTimer -= Time.deltaTime;
         if (TestDebug)
         {
@@ -603,10 +603,10 @@ public class OniController : YokaiController
             }
         }
 
-        rayDirection = playerTransform.position - transform.position;
-        rayDirection.y = 0;
+        //rayDirection = playerTransform.position - transform.position;
+        //rayDirection.y = 0;
         //check if player is within the kill distance
-        playerCloseToEnemy = rayDirection.sqrMagnitude < KillDistance;
+        playerCloseToEnemy = Vector3.Distance(playerTransform.position, transform.position) < KillDistance;
         if (playerCloseToEnemy)
         {
             //if VR device is present the player's actor component is in its parent
@@ -636,8 +636,8 @@ public class OniController : YokaiController
     //function to execute in flee state, contains transitions, and code to return to spawn position
     void flee()
     {
-        posTimer = 9;
-        posTimer2 = 7;
+        posTimer = 30;
+        posTimer2 = 10;
         //if enough time has passed the oni may interrupt flee to chase player or follow footprints
         fleeTimer -= Time.deltaTime;
         if (fleeTimer <= 0)
@@ -804,8 +804,8 @@ public class OniController : YokaiController
     //function to execute in stun state, containes transitions, and decrements stun timer
     void stun()
     {
-        posTimer = 9;
-        posTimer2 = 7;
+        posTimer = 30;
+        posTimer2= 25;
         //decrement stun timer
         stunTimer -= Time.deltaTime;
         //if enough timer has passed transition to appropiate state

@@ -540,8 +540,8 @@ public class GameManager : MonoBehaviour {
 
     public void SpawnLantern(MazeNode node, GameObject lanterns)
     {
-        System.Random intensityRand = new System.Random();
-        System.Random hueRand = new System.Random();
+        System.Random intensityRand = new System.Random(MazeGenerator.Seed);
+        System.Random hueRand = new System.Random(MazeGenerator.Seed);
         float rAlter;
         float bAlter;
         float gAlter;
@@ -576,7 +576,7 @@ public class GameManager : MonoBehaviour {
         {
             lantern = Instantiate(Resources.Load("Prefabs/Level/Lantern"), loc, node.GetRotation()) as GameObject;
             lantern.transform.GetChild(1).GetComponent<Light>().color = colorTemp;
-            lantern.transform.GetChild(1).GetComponent<Light>().intensity = ((float) intensityRand.Next(2, 7)) / 10;
+            lantern.transform.GetChild(1).GetComponent<Light>().intensity = ((float) intensityRand.Next(4, 7)) / 10;
             lantern.transform.parent = lanterns.transform;
         }
     }

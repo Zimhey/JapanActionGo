@@ -285,14 +285,14 @@ public class TakaController : YokaiController
         posTimer -= Time.deltaTime;
         if (posTimer <= 0)
         {
-            posTimer = 9;
+            posTimer = 30;
             oldPosition = newPosition;
             newPosition = transform.position;
         }
         posTimer2 -= Time.deltaTime;
         if (posTimer2 <= 0)
         {
-            posTimer2 = 7;
+            posTimer2 = 25;
             oldPosition2 = oldPosition;
             oldPosition = transform.position;
         }
@@ -307,8 +307,8 @@ public class TakaController : YokaiController
 
     void idle()
     {
-        posTimer = 9;
-        posTimer2 = 7;
+        posTimer = 30;
+        posTimer2 = 25;
         if (FleeInu(LevelMask, home))
         {
             State = TakaState.Flee;
@@ -428,8 +428,8 @@ public class TakaController : YokaiController
 
     void look()
     {
-        posTimer = 9;
-        posTimer2 = 7;
+        posTimer = 30;
+        posTimer2 = 25;
         lookTimer -= Time.deltaTime;
         if (TestDebug)
         {
@@ -542,16 +542,16 @@ public class TakaController : YokaiController
     //function to execute in taunt state
     void taunt()
     {
-        posTimer = 9;
-        posTimer2 = 7;
+        posTimer = 30;
+        posTimer2 = 25;
         if (FleeInu(LevelMask, home))
         {
             State = TakaState.Flee;
             return;
         }
-        rayDirection = playerTransform.position - transform.position;
-        rayDirection.y = 0;
-        playerCloseToEnemy = rayDirection.sqrMagnitude < TauntDistance;
+        //rayDirection = playerTransform.position - transform.position;
+        //rayDirection.y = 0;
+        playerCloseToEnemy = Vector3.Distance(playerTransform.position, transform.position) < TauntDistance;
         if (!playerCloseToEnemy)
         {
             seen = false;
@@ -624,8 +624,8 @@ public class TakaController : YokaiController
 
     void flee()
     {
-        posTimer = 9;
-        posTimer2 = 7;
+        posTimer = 30;
+        posTimer2 = 25;
         fleeTimer -= Time.deltaTime;
         if (fleeTimer <= 0)
         {
@@ -785,8 +785,8 @@ public class TakaController : YokaiController
 
     void stun()
     {
-        posTimer = 9;
-        posTimer2 = 7;
+        posTimer = 30;
+        posTimer2 = 25;
         stunTimer -= Time.deltaTime;
         if (stunTimer <= 0)
         {
