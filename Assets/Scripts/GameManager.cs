@@ -346,7 +346,7 @@ public class GameManager : MonoBehaviour {
         // Add Sections to Analytics
         // Add Cells to Analytics
         Dictionary<int, MazeNode[,]> storedDifficultyMaps = storedMaps[(int)difficulty];
-        print(storedDifficultyMaps);
+        //print(storedDifficultyMaps);
         if (storedDifficultyMaps.ContainsKey(MazeGenerator.Seed))
         {
             MazeGenerator.DifferentSections = storedMaps[(int)difficulty][MazeGenerator.Seed];
@@ -359,7 +359,7 @@ public class GameManager : MonoBehaviour {
             storedMaps[(int)difficulty].Add(MazeGenerator.Seed, MazeGenerator.DifferentSections);
         }
 
-        print("Something");
+        //print("Something");
 
         if (TutorialOn)
         {
@@ -530,12 +530,43 @@ public class GameManager : MonoBehaviour {
 
     public void SpawnLantern(MazeNode node, GameObject lanterns)
     {
+        System.Random intensityRand = new System.Random();
+        System.Random hueRand = new System.Random();
+        float rAlter;
+        float bAlter;
+        float gAlter;
+        Color colorTemp = sectionLanternColor;
+        if (sectionLanternColor.r == 1)
+            rAlter = ((float)(hueRand.Next(-10, 0))) / 255;
+        else if (sectionLanternColor.r == 0)
+            rAlter = ((float)(hueRand.Next(0, 11))) / 255;
+        else
+            rAlter = ((float)(hueRand.Next(-10, 11))) / 255;
+
+        if (sectionLanternColor.b == 1)
+            bAlter = ((float)(hueRand.Next(-10, 0))) / 255;
+        else if (sectionLanternColor.b == 0)
+            bAlter = ((float)(hueRand.Next(0, 11))) / 255;
+        else
+            bAlter = ((float)(hueRand.Next(-10, 11))) / 255;
+
+        if (sectionLanternColor.g == 1)
+            gAlter = ((float)(hueRand.Next(-10, 0))) / 255;
+        else if (sectionLanternColor.g == 0)
+            gAlter = ((float)(hueRand.Next(0, 11))) / 255;
+        else
+            gAlter = ((float)(hueRand.Next(-10, 11))) / 255;
+
+        colorTemp.r += rAlter;
+        colorTemp.b += bAlter;
+        colorTemp.g += gAlter;
         GameObject lantern;
         Vector3 loc = new Vector3(node.Col * 6 + 8, (float) (node.Floor * 30 + 6.5), node.Row * 6 + 8);
         if ((node.Col + node.Row) % 2 == 0)
         {
             lantern = Instantiate(Resources.Load("Prefabs/Level/Lantern"), loc, node.GetRotation()) as GameObject;
-            lantern.transform.GetChild(1).GetComponent<Light>().color = sectionLanternColor;
+            lantern.transform.GetChild(1).GetComponent<Light>().color = colorTemp;
+            lantern.transform.GetChild(1).GetComponent<Light>().intensity = ((float) intensityRand.Next(2, 7)) / 10;
             lantern.transform.parent = lanterns.transform;
         }
     }
