@@ -338,14 +338,14 @@ public class InuController : YokaiController
         posTimer -= Time.deltaTime;
         if (posTimer <= 0)
         {
-            posTimer = 9;
+            posTimer = 30;
             oldPosition = newPosition;
             newPosition = transform.position;
         }
         posTimer2 -= Time.deltaTime;
         if (posTimer2 <= 0)
         {
-            posTimer2 = 7;
+            posTimer2 = 25;
             oldPosition2 = oldPosition;
             oldPosition = transform.position;
         }
@@ -355,8 +355,8 @@ public class InuController : YokaiController
 
     void idle()
     {
-        posTimer = 9;
-        posTimer2 = 7;
+        posTimer = 30;
+        posTimer2 = 25;
         if (PlayerObject != null)
         {
             seen = false;
@@ -475,8 +475,8 @@ public class InuController : YokaiController
 
     void look()
     {
-        posTimer = 9;
-        posTimer2 = 7;
+        posTimer = 30;
+        posTimer2 = 25;
         lookTimer -= Time.deltaTime;
         //print(lookTimer);
         if (FleeInu(LevelMask, home))
@@ -577,8 +577,8 @@ public class InuController : YokaiController
     //function to execute in stalk state, contains transitions, and code to maintain distance from player and attempt to avoid being cornered
     void stalk()
     {
-        posTimer = 9;
-        posTimer2 = 7;
+        posTimer = 30;
+        posTimer2 = 25;
         if (AttackTimer > 0)
         {
             AttackTimer -= Time.deltaTime;
@@ -592,9 +592,9 @@ public class InuController : YokaiController
         }
 
         AnimState = InuAnim.Creep;
-        rayDirection = playerTransform.position - transform.position;
-        rayDirection.y = 0;
-        playerCloseToEnemy = rayDirection.sqrMagnitude < StalkDistance;
+        //rayDirection = playerTransform.position - transform.position;
+        //rayDirection.y = 0;
+        playerCloseToEnemy = Vector3.Distance(playerTransform.position, transform.position) < StalkDistance;
         if (!playerCloseToEnemy)
         {
             beenTooClose = false;
@@ -624,7 +624,7 @@ public class InuController : YokaiController
         }
        
         //check to see if player is close enough to trigger cornered state
-        playerTooCloseToEnemy = rayDirection.sqrMagnitude < StartCorneredDistance;
+        playerTooCloseToEnemy = Vector3.Distance(playerTransform.position, transform.position) < StartCorneredDistance;
         if (playerTooCloseToEnemy)
         {
             //signify the player is too close to the inu
@@ -971,16 +971,16 @@ public class InuController : YokaiController
     //function to execute in cornered state, contains transitions, and code to deal with player
     void cornered()
     {
-        posTimer = 9;
-        posTimer2 = 7;
+        posTimer = 30;
+        posTimer2 = 25;
         if (AttackTimer > 0)
         {
             AttackTimer -= Time.deltaTime;
         }
         //print(AttackTimer);
-        rayDirection = playerTransform.position - transform.position;
-        rayDirection.y = 0;
-        playerKillDistance = rayDirection.sqrMagnitude < KillDistance;
+        //rayDirection = playerTransform.position - transform.position;
+        //rayDirection.y = 0;
+        playerKillDistance = Vector3.Distance(playerTransform.position, transform.position) < KillDistance;
         //attack timer reachers 0 attack
         if (AttackTimer <= 0)
         {
@@ -1004,7 +1004,7 @@ public class InuController : YokaiController
             return;
         }
         
-        playerCloseToEnemy = rayDirection.sqrMagnitude < StayCorneredDistance;
+        playerCloseToEnemy = Vector3.Distance(playerTransform.position, transform.position) < StayCorneredDistance;
 
         if (!playerCloseToEnemy)
         {
@@ -1038,7 +1038,7 @@ public class InuController : YokaiController
         //play growl
 
         //if player gets to close inu should charge at player
-        playerTooCloseToEnemy = rayDirection.sqrMagnitude < CorneredChaseDistance;
+        playerTooCloseToEnemy = Vector3.Distance(playerTransform.position, transform.position) < CorneredChaseDistance;
         if (playerTooCloseToEnemy && beenTooClose == true)
         {
             goal = playerTransform.position;
@@ -1066,8 +1066,8 @@ public class InuController : YokaiController
 
     void flee()
     {
-        posTimer = 9;
-        posTimer2 = 7;
+        posTimer = 30;
+        posTimer2 = 25;
         fleeTimer -= Time.deltaTime;
         if (fleeTimer <= 0)
         {
@@ -1200,8 +1200,8 @@ public class InuController : YokaiController
 
     void stun()
     {
-        posTimer = 9;
-        posTimer2 = 7;
+        posTimer = 30;
+        posTimer2 = 25;
         stunTimer -= Time.deltaTime;
         if (stunTimer <= 0)
         {
