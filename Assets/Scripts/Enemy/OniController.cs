@@ -92,6 +92,7 @@ public class OniController : YokaiController
     private float posTimer;
     //countdown timer for updating old position2
     private float posTimer2;
+    private float stuckBlocker;
     //the footprint the agent is going to attempt to navigate towards
     private FootprintList nextFootprint;
     //the oni's navigation agent
@@ -247,6 +248,12 @@ public class OniController : YokaiController
                 state = OniState.Stun;
             }
         }
+
+        if(stuckBlocker > 0)
+        {
+            stuckBlocker -= Time.deltaTime;
+        }
+
         //determine action to take based on state in state machine
         switch (state)
         {
@@ -387,20 +394,24 @@ public class OniController : YokaiController
         {
             //if positions have not changed enough determine Oni to be stuck and change behavior pattern
             //reset timers to give chance to move before checking again
-            if (IsStuck(newPosition, oldPosition, oldPosition2))
+            if (stuckBlocker <= 0)
             {
-                posTimer = 0;
-                posTimer = 5;
-                if (TestDebug)
+                if (IsStuck(newPosition, oldPosition, oldPosition2))
                 {
-                    print("resetting path in patrol");
+                    posTimer = 0;
+                    posTimer = 5;
+                    if (TestDebug)
+                    {
+                        print("resetting path in patrol");
+                    }
+                    agent.ResetPath();
+                    previous2 = previous;
+                    previous = currentNode;
+                    currentNode = null;
+                    State = OniState.Flee;
+                    stuckBlocker = 30;
+                    return;
                 }
-                agent.ResetPath();
-                previous2 = previous;
-                previous = currentNode;
-                currentNode = null;
-                State = OniState.Flee;
-                return;
             }
         }
 
@@ -568,20 +579,24 @@ public class OniController : YokaiController
         {
             //if positions have not changed enough determine Oni to be stuck and change behavior pattern
             //reset timers to give chance to move before checking again
-            if (IsStuck(newPosition, oldPosition, oldPosition2))
+            if (stuckBlocker <= 0)
             {
-                posTimer = 0;
-                posTimer = 5;
-                if (TestDebug)
+                if (IsStuck(newPosition, oldPosition, oldPosition2))
                 {
-                    print("resetting path in chase");
+                    posTimer = 0;
+                    posTimer = 5;
+                    if (TestDebug)
+                    {
+                        print("resetting path in patrol");
+                    }
+                    agent.ResetPath();
+                    previous2 = previous;
+                    previous = currentNode;
+                    currentNode = null;
+                    State = OniState.Flee;
+                    stuckBlocker = 30;
+                    return;
                 }
-                agent.ResetPath();
-                previous2 = previous;
-                previous = currentNode;
-                currentNode = null;
-                State = OniState.Flee;
-                return;
             }
         }
         //check if oni can still see player
@@ -742,20 +757,24 @@ public class OniController : YokaiController
         {
             //if positions have not changed enough determine Oni to be stuck and change behavior pattern
             //reset timers to give chance to move before checking again
-            if (IsStuck(newPosition, oldPosition, oldPosition2))
+            if (stuckBlocker <= 0)
             {
-                posTimer = 0;
-                posTimer = 5;
-                if (TestDebug)
+                if (IsStuck(newPosition, oldPosition, oldPosition2))
                 {
-                    print("resetting path in follow");
+                    posTimer = 0;
+                    posTimer = 5;
+                    if (TestDebug)
+                    {
+                        print("resetting path in patrol");
+                    }
+                    agent.ResetPath();
+                    previous2 = previous;
+                    previous = currentNode;
+                    currentNode = null;
+                    State = OniState.Flee;
+                    stuckBlocker = 30;
+                    return;
                 }
-                agent.ResetPath();
-                previous2 = previous;
-                previous = currentNode;
-                currentNode = null;
-                State = OniState.Flee;
-                return;
             }
         }
         seen = false;

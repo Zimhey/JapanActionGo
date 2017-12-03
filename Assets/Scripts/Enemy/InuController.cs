@@ -147,6 +147,7 @@ public class InuController : YokaiController
     private Vector3 newPosition;
     private float posTimer;
     private float posTimer2;
+    private float stuckBlocker;
     private FootprintList nextFootprint;
     private NavMeshAgent agent;
     private float fleeTimer;
@@ -259,6 +260,11 @@ public class InuController : YokaiController
             {
                 state = InuState.Stun;
             }
+        }
+
+        if(stuckBlocker > 0)
+        {
+            stuckBlocker -= Time.deltaTime;
         }
 
         switch (state)
@@ -384,20 +390,23 @@ public class InuController : YokaiController
     {
         if (Vector3.Distance(transform.position, home) < 2)
         {
-            if (IsStuck(newPosition, oldPosition, oldPosition2))
+            if (stuckBlocker <= 0)
             {
-                posTimer = 0;
-                posTimer = 5;
-                if (TestDebug)
+                if (IsStuck(newPosition, oldPosition, oldPosition2))
                 {
-                    print("resetting path");
+                    posTimer = 0;
+                    posTimer = 5;
+                    if (TestDebug)
+                    {
+                        print("resetting path");
+                    }
+                    agent.ResetPath();
+                    previous2 = previous;
+                    previous = currentNode;
+                    currentNode = null;
+                    State = InuState.Flee;
+                    return;
                 }
-                agent.ResetPath();
-                previous2 = previous;
-                previous = currentNode;
-                currentNode = null;
-                State = InuState.Flee;
-                return;
             }
         }
         seen = false;
@@ -531,20 +540,23 @@ public class InuController : YokaiController
     {
         if (Vector3.Distance(transform.position, home) < 2)
         {
-            if (IsStuck(newPosition, oldPosition, oldPosition2))
+            if (stuckBlocker <= 0)
             {
-                posTimer = 0;
-                posTimer = 5;
-                if (TestDebug)
+                if (IsStuck(newPosition, oldPosition, oldPosition2))
                 {
-                    print("resetting path");
+                    posTimer = 0;
+                    posTimer = 5;
+                    if (TestDebug)
+                    {
+                        print("resetting path");
+                    }
+                    agent.ResetPath();
+                    previous2 = previous;
+                    previous = currentNode;
+                    currentNode = null;
+                    State = InuState.Flee;
+                    return;
                 }
-                agent.ResetPath();
-                previous2 = previous;
-                previous = currentNode;
-                currentNode = null;
-                State = InuState.Flee;
-                return;
             }
         }
         seen = false;
@@ -1149,20 +1161,23 @@ public class InuController : YokaiController
         //agent.ResetPath();
         if (Vector3.Distance(transform.position, home) < 2)
         {
-            if (IsStuck(newPosition, oldPosition, oldPosition2))
+            if (stuckBlocker <= 0)
             {
-                posTimer = 0;
-                posTimer = 5;
-                if (TestDebug)
+                if (IsStuck(newPosition, oldPosition, oldPosition2))
                 {
-                    print("resetting path");
+                    posTimer = 0;
+                    posTimer = 5;
+                    if (TestDebug)
+                    {
+                        print("resetting path");
+                    }
+                    agent.ResetPath();
+                    previous2 = previous;
+                    previous = currentNode;
+                    currentNode = null;
+                    State = InuState.Flee;
+                    return;
                 }
-                agent.ResetPath();
-                previous2 = previous;
-                previous = currentNode;
-                currentNode = null;
-                State = InuState.Flee;
-                return;
             }
         }
         seen = false;
