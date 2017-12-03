@@ -108,10 +108,10 @@ public class GameManager : MonoBehaviour {
             if (sessionTime < 1)
                 lastUpdateTime = sessionTime;
 
-            if (AnalyticsEnabled && sessionTime > lastUpdateTime + 1000) // only update once a second
+            if (AnalyticsEnabled && sessionTime > lastUpdateTime + 1) // only update once a second
             {
                 lastUpdateTime = sessionTime;
-                AnalyticsManager.UpdateSessionTime(SessionID, sessionTime);
+                AnalyticsManager.UpdateSessionTime(SessionID);
             }
         }
     }
@@ -233,6 +233,29 @@ public class GameManager : MonoBehaviour {
         if (CurrentState == GameState.Play)
         {
             SessionTime += Time.deltaTime;
+            // switch between fast and slow segments
+            if(PlayersVRType == VirtualRealityType.SteamVR)
+            {
+                if(Input.GetKeyDown("i"))
+                {
+                    VRPlayerController pc = PlayerObj.GetComponentInChildren<VRPlayerController>();
+                    if(pc != null)
+                        pc.DegreeSegment = 5;
+                }
+                if (Input.GetKeyDown("o"))
+                {
+                    VRPlayerController pc = PlayerObj.GetComponentInChildren<VRPlayerController>();
+                    if (pc != null)
+                        pc.DegreeSegment = 2;
+                }
+                if (Input.GetKeyDown("p"))
+                {
+                    VRPlayerController pc = PlayerObj.GetComponentInChildren<VRPlayerController>();
+
+                    if (pc != null)
+                        pc.DegreeSegment = 1;
+                }
+            }
         }
     }
 
@@ -316,10 +339,6 @@ public class GameManager : MonoBehaviour {
                 n.SectionID = section.SectionID;
             //Sections.Add(section);
             nodes = MazeGenerator.nodesInSection(section.Root);
-            foreach (MazeNode n in nodes)
-            {
-                AnalyticsManager.AddCell(section.SectionID, n.Col, n.Row);
-            }
             SpawnSection(section);
         }
 
@@ -386,17 +405,6 @@ public class GameManager : MonoBehaviour {
                     Sections.Add(section);
                 }
 
-        for (int i = 0; i < 5; i++)
-            for (int j = 0; j < 5; j++)
-                if (roots[i, j] != null)
-                {
-                    nodes = MazeGenerator.nodesInSection(roots[i, j]);
-                    foreach (MazeNode n in nodes)
-                    {
-                        AnalyticsManager.AddCell(sectionIDs[i, j], n.Col, n.Row);
-                    }
-                }
-
         // Spawn first section
         foreach (MazeSection s in Sections)
             if (s.Root.Col == 0 && s.Root.Row == 0 && s.Root.Floor == 0)
@@ -438,7 +446,7 @@ public class GameManager : MonoBehaviour {
         messages.transform.parent = SectionObject.transform;
 
         foreach (MazeNode n in MazeGenerator.nodesInSection(msection.Root))
-            SpawnPiece(n, cells);
+            SpawnPiece(n, cells, msection.SectionID);
 
         surface = msection.section.AddComponent<NavMeshSurface>();
         if (surface != null)
@@ -456,18 +464,20 @@ public class GameManager : MonoBehaviour {
 
     private static int piecesSpawned;
 
-    public void SpawnPiece(MazeNode node, GameObject cells)
+    public void SpawnPiece(MazeNode node, GameObject cells, int sectionID)
     {
         Vector3 location = new Vector3(node.Col * 6 + 8, node.Floor * 30, node.Row * 6 + 8);
 
         GameObject obj = Instantiate(Resources.Load(node.GetPrefabName()), location, node.GetRotation()) as GameObject;
         obj.transform.parent = cells.transform;
         node.floorPrefab = obj.transform.GetChild(0).gameObject;
-        obj = Instantiate(Resources.Load("Prefabs/Level/CellLog"), location, node.GetRotation()) as GameObject;
-        obj.transform.parent = cells.transform;
-        CellLog cellLog = obj.GetComponent<CellLog>();
+        GameObject cellObj = Instantiate(Resources.Load("Prefabs/Level/CellLog"), location, node.GetRotation()) as GameObject;
+        cellObj.transform.parent = obj.transform;
+        CellLog cellLog = cellObj.GetComponent<CellLog>();
         cellLog.Row = node.Row;
         cellLog.Col = node.Col;
+        cellLog.CellID = AnalyticsManager.AddCell(sectionID, node.Col, node.Row);
+        obj.name = "Cell " + cellLog.CellID;
 
         if (DebugLabelsOn)
         {
@@ -530,8 +540,8 @@ public class GameManager : MonoBehaviour {
 
     public void SpawnLantern(MazeNode node, GameObject lanterns)
     {
-        System.Random intensityRand = new System.Random();
-        System.Random hueRand = new System.Random();
+        System.Random intensityRand = new System.Random(MazeGenerator.Seed);
+        System.Random hueRand = new System.Random(MazeGenerator.Seed);
         float rAlter;
         float bAlter;
         float gAlter;
@@ -566,7 +576,7 @@ public class GameManager : MonoBehaviour {
         {
             lantern = Instantiate(Resources.Load("Prefabs/Level/Lantern"), loc, node.GetRotation()) as GameObject;
             lantern.transform.GetChild(1).GetComponent<Light>().color = colorTemp;
-            lantern.transform.GetChild(1).GetComponent<Light>().intensity = ((float) intensityRand.Next(2, 7)) / 10;
+            lantern.transform.GetChild(1).GetComponent<Light>().intensity = ((float) intensityRand.Next(4, 7)) / 10;
             lantern.transform.parent = lanterns.transform;
         }
     }
@@ -730,19 +740,19 @@ public class GameManager : MonoBehaviour {
 
     public void ActorVisitedCell(Actor actor, int cellID)
     {
-        if (AnalyticsEnabled)
+        if (AnalyticsEnabled && actor != null)
             AnalyticsManager.EnteredCell(actor.ActorID, cellID);
     }
 
     public void ActorKilled(Actor killer, Actor dead)
     {
-        if (AnalyticsEnabled)
+        if (AnalyticsEnabled && killer != null && dead != null)
             AnalyticsManager.ActorKilled(killer.ActorID, dead.ActorID);
     }
 
     public void ActorStateChange(Actor actor, int state)
     {
-        if (AnalyticsEnabled)
+        if (AnalyticsEnabled && actor != null)
             AnalyticsManager.ActorStateChange(actor.ActorID, state);
     }
 
@@ -761,7 +771,7 @@ public class GameManager : MonoBehaviour {
 
     public void OfudaHit(int eventID, Actor actor)
     {
-        if (AnalyticsEnabled)
+        if (AnalyticsEnabled && actor != null)
             AnalyticsManager.OfudaHit(eventID, actor.ActorID);
     }
 
@@ -776,7 +786,7 @@ public class GameManager : MonoBehaviour {
 
     public void FoundItem(Actor actor)
     {
-        if (AnalyticsEnabled)
+        if (AnalyticsEnabled && actor != null)
             AnalyticsManager.FoundItem(actor.ActorID);
     }
 

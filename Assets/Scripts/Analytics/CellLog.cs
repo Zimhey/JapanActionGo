@@ -22,7 +22,10 @@ public class CellLog : MonoBehaviour {
     {
         if (collider.gameObject != null)
         {
-            //Debug.Log(collider.gameObject.tag + " entered Cell R: " + Row + " C: " + Col + " at Time: " + Time.time);
+            //Debug.Log(collider.gameObject.tag + " entered Cell " + CellID + " R: " + Row + " C: " + Col + " at Time: " + Time.time);
+            Actor a = collider.gameObject.GetComponentInChildren<Actor>();
+            if (a != null)
+                GameManager.Instance.ActorVisitedCell(a, CellID);
         }
     }
 

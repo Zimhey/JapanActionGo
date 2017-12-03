@@ -5,7 +5,8 @@ using Mono.Data;
 using Mono.Data.Sqlite;
 using UnityEngine;
 using System.Threading;
-
+using System.Xml.Serialization;
+using System.IO;
 
 public class AnalyticsManager
 {
@@ -17,6 +18,7 @@ public class AnalyticsManager
     private static Thread QueryThread;
     private static bool pauseThread;
     public static int ThreadSleepTime = 500;
+    public static int ExcessiveQueryCount = 5000;
 
     public static string DatabaseName
     {
@@ -32,7 +34,7 @@ public class AnalyticsManager
     }
 
     private static string[] tables =
-{
+    {
         "CREATE TABLE `Levels` ( `LevelID` INTEGER, `Seed` INTEGER, `Difficulty` INTEGER, PRIMARY KEY(`LevelID`));",
         "CREATE TABLE `Sections` ( `SectionID` INTEGER, `LevelID` INTEGER, `Index` INTEGER, `Floor` INTEGER, PRIMARY KEY(`SectionID`));",
         "CREATE TABLE `Cells` ( `SectionID` INTEGER, `CellID` INTEGER, `CellRow` INTEGER, `CellCol` INTEGER, PRIMARY KEY(`CellID`));",
@@ -93,17 +95,33 @@ public class AnalyticsManager
     {
         string query;
 
-        if(!pauseThread)
+        while (true)
         {
-            while (true)
+            if (!pauseThread && QueryQueue.Count > 0)
             {
-                if (QueryQueue.Count > 0)
+                if (QueryQueue.Count > ExcessiveQueryCount)
+                {
+                    XmlSerializer ser = new XmlSerializer(typeof(List<string>));
+                    Debug.Log("Excessive Query Exception: " + QueryQueue.Count + " Queries");
+                    using (StreamWriter writer = new StreamWriter("Analytics/ExcessiveQueries-" + System.DateTime.Now.ToString("yyyy-dd-M--HH-mm-ss") + ".xml"))
+                    {
+                        List<string> queries = new List<string>();
+                        while(QueryQueue.Count > 0)
+                        {
+                            queries.Add((string)QueryQueue.Dequeue());
+                        }
+                        ser.Serialize(writer, queries);
+                    }
+                }
+                else
                 {
                     query = (string)QueryQueue.Dequeue();
                     SimpleQuery(query);
                 }
-                else
-                    Thread.Sleep(ThreadSleepTime);
+            }
+            else
+            {
+                Thread.Sleep(ThreadSleepTime);
             }
         }
     }
@@ -239,9 +257,9 @@ public class AnalyticsManager
         return ReturnSecondQueryAsInt(insert, getID);
     }
 
-    public static void UpdateSessionTime(int sessionID, float time)
+    public static void UpdateSessionTime(int sessionID)
     {
-        string update = "UPDATE `Sessions` SET `PlayTime` = " + time + " WHERE `SessionID` = " + sessionID + ";";
+        string update = "UPDATE `Sessions` SET `PlayTime` = " + GameManager.Instance.SessionTime + " WHERE `SessionID` = " + sessionID + ";";
         QueryQueue.Enqueue(update);
     }
 
@@ -254,32 +272,32 @@ public class AnalyticsManager
 
     public static void ActorKilled(int deadActorID, int killerID)
     {
-        string insert = "INSERT INTO `Deaths` (`DeadActorID`, `KillerActorID`, `TimeDied`) VALUES (" + deadActorID + ", " + killerID + ", " + Time.time + ");";
+        string insert = "INSERT INTO `Deaths` (`DeadActorID`, `KillerActorID`, `TimeDied`) VALUES (" + deadActorID + ", " + killerID + ", " + GameManager.Instance.SessionTime + ");";
         QueryQueue.Enqueue(insert);
     }
 
     public static void EnteredCell(int actorID, int cellID)
     {
-        string insert = "INSERT INTO `VisitedCells` (`ActorID`, `CellID`, `VisitTime`) VALUES (" + actorID + ", " + cellID + ", " + Time.time + ");";
+        string insert = "INSERT INTO `VisitedCells` (`ActorID`, `CellID`, `VisitTime`) VALUES (" + actorID + ", " + cellID + ", " + GameManager.Instance.SessionTime + ");";
         QueryQueue.Enqueue(insert);
     }
 
     public static void FoundItem(int actorID)
     {
-        string insert = "INSERT INTO `ItemsFound` (`ActorID`, `TimeFound`) VALUES (" + actorID + ", " + Time.time + ");";
+        string insert = "INSERT INTO `ItemsFound` (`ActorID`, `TimeFound`) VALUES (" + actorID + ", " + GameManager.Instance.SessionTime + ");";
         QueryQueue.Enqueue(insert);
     }
 
     public static int UsedItem(int sessionID, ItemType item)
     {
-        string insert = "INSERT INTO `ItemUses` (`SessionID`, `ItemType`, `TimeUsed`) VALUES (" + sessionID + ", " + (int)item + ", " + Time.time + ");";
+        string insert = "INSERT INTO `ItemUses` (`SessionID`, `ItemType`, `TimeUsed`) VALUES (" + sessionID + ", " + (int)item + ", " + GameManager.Instance.SessionTime + ");";
         string getID = "SELECT last_insert_rowid()";
         return ReturnSecondQueryAsInt(insert, getID);
     }
 
     public static void OfudaHit(int eventID, int actorID)
     {
-        string insert = "INSERT INTO `OfudaHits` (`eventID`, `ActorID`, `HitTime`) VALUES (" + eventID + ", " + actorID + ", " + Time.time + ");";
+        string insert = "INSERT INTO `OfudaHits` (`eventID`, `ActorID`, `HitTime`) VALUES (" + eventID + ", " + actorID + ", " + GameManager.Instance.SessionTime + ");";
         QueryQueue.Enqueue(insert);
     }
 
@@ -299,7 +317,7 @@ public class AnalyticsManager
 
     public static void ActorStateChange(int actorID, int state)
     {
-        string insert = "INSERT INTO `StateChanges` (`ActorID`, `State`, `TimeChanged`) VALUES (" + actorID + ", " + state + ", " + Time.time + ");";
+        string insert = "INSERT INTO `StateChanges` (`ActorID`, `State`, `TimeChanged`) VALUES (" + actorID + ", " + state + ", " + GameManager.Instance.SessionTime + ");";
         QueryQueue.Enqueue(insert);
     }
 

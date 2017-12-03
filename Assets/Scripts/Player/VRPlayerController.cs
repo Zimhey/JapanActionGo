@@ -75,7 +75,7 @@ public class VRPlayerController : MonoBehaviour
         {
             yVelocity = -10;
 
-            if (jumpPushed)
+            if (jumpPushed && false) // TODO Fix jumping sickness
             {
                 yVelocity = JumpSpeed;
                 jumpPushed = false;

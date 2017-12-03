@@ -38,11 +38,11 @@ public class ChalkCounter : MonoBehaviour {
 	void Update () {
         if (chalkLabel != null)
         {
-            chalkLabel.text = "Chalk: " + playerInventory.ChalkCharges * 100 + playerActions.DistanceDrawn / playerInventory.DistancePerCharge * 100;
+            chalkLabel.text = "Chalk: " + (playerInventory.ChalkCharges * 100 - (int)(playerActions.DistanceDrawn / playerInventory.DistancePerCharge * 100)) + "%";
         }
         if (chalkLabelVR != null)
         {
-            VRCounter.text = "Chalk: " + "\n" + playerInventory.ChalkCharges * 100 + playerActions.DistanceDrawn / playerInventory.DistancePerCharge * 100 +"%";
+            VRCounter.text = "Chalk: " + "\n" + (playerInventory.ChalkCharges * 100 - (int)(playerActions.DistanceDrawn / playerInventory.DistancePerCharge * 100)) + "%";
         }
         /*
         //whole charges
