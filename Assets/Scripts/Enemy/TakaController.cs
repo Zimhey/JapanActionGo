@@ -84,6 +84,7 @@ public class TakaController : YokaiController
     private Vector3 newPosition;
     private float posTimer;
     private float posTimer2;
+    private float stuckBlocker;
     private FootprintList nextFootprint;
     private NavMeshAgent agent;
     private float fleeTimer;
@@ -218,6 +219,12 @@ public class TakaController : YokaiController
                 state = TakaState.Stun;
             }
         }
+
+        if(stuckBlocker > 0)
+        {
+            stuckBlocker -= Time.deltaTime;
+        }
+
         switch (state)
         {
             case TakaState.Idle:
@@ -343,20 +350,23 @@ public class TakaController : YokaiController
         }
         if (Vector3.Distance(transform.position, home) < 2)
         {
-            if (IsStuck(newPosition, oldPosition, oldPosition2))
+            if (stuckBlocker <= 0)
             {
-                posTimer = 0;
-                posTimer = 5;
-                if (TestDebug)
+                if (IsStuck(newPosition, oldPosition, oldPosition2))
                 {
-                    print("resetting path");
+                    posTimer = 0;
+                    posTimer = 5;
+                    if (TestDebug)
+                    {
+                        print("resetting path");
+                    }
+                    agent.ResetPath();
+                    previous2 = previous;
+                    previous = currentNode;
+                    currentNode = null;
+                    State = TakaState.Flee;
+                    return;
                 }
-                agent.ResetPath();
-                previous2 = previous;
-                previous = currentNode;
-                currentNode = null;
-                State = TakaState.Flee;
-                return;
             }
         }
         seen = false;
@@ -492,20 +502,23 @@ public class TakaController : YokaiController
         }
         if (Vector3.Distance(transform.position, home) < 2)
         {
-            if (IsStuck(newPosition, oldPosition, oldPosition2))
+            if (stuckBlocker <= 0)
             {
-                posTimer = 0;
-                posTimer = 5;
-                if (TestDebug)
+                if (IsStuck(newPosition, oldPosition, oldPosition2))
                 {
-                    print("resetting path");
+                    posTimer = 0;
+                    posTimer = 5;
+                    if (TestDebug)
+                    {
+                        print("resetting path");
+                    }
+                    agent.ResetPath();
+                    previous2 = previous;
+                    previous = currentNode;
+                    currentNode = null;
+                    State = TakaState.Flee;
+                    return;
                 }
-                agent.ResetPath();
-                previous2 = previous;
-                previous = currentNode;
-                currentNode = null;
-                State = TakaState.Flee;
-                return;
             }
         }
         agent.ResetPath();
@@ -734,20 +747,23 @@ public class TakaController : YokaiController
         }
         if (Vector3.Distance(transform.position, home) < 2)
         {
-            if (IsStuck(newPosition, oldPosition, oldPosition2))
+            if (stuckBlocker <= 0)
             {
-                posTimer = 0;
-                posTimer = 5;
-                if (TestDebug)
+                if (IsStuck(newPosition, oldPosition, oldPosition2))
                 {
-                    print("resetting path");
+                    posTimer = 0;
+                    posTimer = 5;
+                    if (TestDebug)
+                    {
+                        print("resetting path");
+                    }
+                    agent.ResetPath();
+                    previous2 = previous;
+                    previous = currentNode;
+                    currentNode = null;
+                    State = TakaState.Flee;
+                    return;
                 }
-                agent.ResetPath();
-                previous2 = previous;
-                previous = currentNode;
-                currentNode = null;
-                State = TakaState.Flee;
-                return;
             }
         }
         seen = false;
