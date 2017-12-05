@@ -2487,7 +2487,7 @@ MonoBehaviour:
   JumpSpeed: 10
   GravityMultiplier: 2
   SnapRotationToHead: 1
-  DegreeSegment: 30
+  DegreeSegment: 5
   RotationSensitivity: 1
   Head: {fileID: 1021384057505752}
   Rig: {fileID: 1613150506977916}
