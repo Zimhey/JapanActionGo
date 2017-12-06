@@ -218,6 +218,29 @@ public class AnalyticsManager
         return -1;
     }
 
+    public static void Select(string from, System.Func<SqliteDataReader, int> method)
+    {
+        SqliteConnection con;
+        SqliteCommand cmd;
+        object o = null;
+
+        if (!initialized)
+            Init();
+
+        using (con = new SqliteConnection(ConnectionStr))
+        {
+            string query = "SELECT * FROM " + from;
+            con.Open();
+            using (cmd = new SqliteCommand(query, con))
+            {
+                SqliteDataReader reader = cmd.ExecuteReader();
+                method(reader);
+                reader.Close();
+            }
+            con.Close();
+        }
+    }
+
     public static int AddLevel(int seed, int difficulty)
     {
         string insert = "INSERT INTO `Levels` (`Seed`, `Difficulty`)" +
