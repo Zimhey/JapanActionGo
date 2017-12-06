@@ -413,7 +413,8 @@ public class GameManager : MonoBehaviour {
         foreach (MazeSection s in Sections)
             if (s.Root.Col == 0 && s.Root.Row == 0 && s.Root.Floor == 0)
             {
-                //SpawnSection(s);
+                if(!TutorialOn)
+                    SpawnSection(s);
             }
 
         // Spawn Player
