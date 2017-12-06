@@ -160,8 +160,11 @@ public class MazeGenerator : MonoBehaviour
             FarthestDeadEndFromNode(roots[1, 0]).AddLadderTo(roots[2, 0]);
             FarthestDeadEndFromNode(roots[2, 0]).AddLadderTo(roots[1, 1]);
             FarthestDeadEndFromNode(roots[1, 1]).AddLadderTo(roots[0, 1]);
+            print(FarthestDeadEndFromNode(roots[1, 1]).Col + " " + FarthestDeadEndFromNode(roots[1, 1]).Row);
+            print(roots[0, 1].Col + " " + roots[0, 1].Row);
+            print(FarthestDeadEndFromNode(roots[1, 1]).ladderMazeNode.Col + " " + FarthestDeadEndFromNode(roots[1, 1]).ladderMazeNode.Row);
         }
-        if(difficulty == Difficulty.Large)
+        if (difficulty == Difficulty.Large)
         {
             FarthestDeadEndFromNode(roots[0, 0]).AddLadderTo(roots[1, 0]);
             FarthestDeadEndFromNode(roots[1, 0]).AddLadderTo(roots[2, 0]);
@@ -903,6 +906,7 @@ public class MazeGenerator : MonoBehaviour
             if (section > 0)
             {
                 root.actor = ActorType.Ladder;
+                //print("Root of final section - Floor: " + root.Floor + " Column: " + root.Col + " Row: " + root.Row);
             }
             if (section < TotalSections - 1)
             {
@@ -910,7 +914,9 @@ public class MazeGenerator : MonoBehaviour
             }
             if(section == TotalSections - 1)
             {
+                //print("Made it here when it should - Section Number " + section);
                 FarthestDeadEndFromNode(root).actor = ActorType.Ladder;
+                //print("Target of final section " + FarthestDeadEndFromNode(root).Floor + " " + FarthestDeadEndFromNode(root).Col + " " + FarthestDeadEndFromNode(root).Row);
             }
         }
         else
