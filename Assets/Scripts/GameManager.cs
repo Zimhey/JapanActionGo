@@ -74,6 +74,8 @@ public class GameManager : MonoBehaviour {
     public Color sectionLanternColor;
     System.Random rand;
     System.Random messageRand;
+    System.Random intensityRand;
+    System.Random hueRand;
 
     private GameObject parent;
 
@@ -350,6 +352,8 @@ public class GameManager : MonoBehaviour {
 
     public void BeginPlay()
     {
+        intensityRand = new System.Random(MazeGenerator.Seed);
+        hueRand = new System.Random(MazeGenerator.Seed);
         rand = new System.Random(MazeGenerator.Seed);
         messageRand = new System.Random(MazeGenerator.Seed);
         if (!TutorialOn)
@@ -540,12 +544,11 @@ public class GameManager : MonoBehaviour {
 
     public void SpawnLantern(MazeNode node, GameObject lanterns)
     {
-        System.Random intensityRand = new System.Random(MazeGenerator.Seed);
-        System.Random hueRand = new System.Random(MazeGenerator.Seed);
         float rAlter;
         float bAlter;
         float gAlter;
         Color colorTemp = sectionLanternColor;
+
         if (sectionLanternColor.r == 1)
             rAlter = ((float)(hueRand.Next(-10, 0))) / 255;
         else if (sectionLanternColor.r == 0)
@@ -570,13 +573,16 @@ public class GameManager : MonoBehaviour {
         colorTemp.r += rAlter;
         colorTemp.b += bAlter;
         colorTemp.g += gAlter;
+
+        //print("Red: " + colorTemp.r + " Blue: " + colorTemp.b + " Green: " + colorTemp.g);
+
         GameObject lantern;
         Vector3 loc = new Vector3(node.Col * 6 + 8, (float) (node.Floor * 30 + 6.5), node.Row * 6 + 8);
         if ((node.Col + node.Row) % 2 == 0)
         {
             lantern = Instantiate(Resources.Load("Prefabs/Level/Lantern"), loc, node.GetRotation()) as GameObject;
             lantern.transform.GetChild(1).GetComponent<Light>().color = colorTemp;
-            lantern.transform.GetChild(1).GetComponent<Light>().intensity = ((float) intensityRand.Next(4, 7)) / 10;
+            lantern.transform.GetChild(1).GetComponent<Light>().intensity = ((float) intensityRand.Next(1, 6)) / 10;
             lantern.transform.parent = lanterns.transform;
         }
     }
