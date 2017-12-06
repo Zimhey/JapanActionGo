@@ -585,6 +585,8 @@ public class GameManager : MonoBehaviour {
         {
             lantern = Instantiate(Resources.Load("Prefabs/Level/Lantern"), loc, node.GetRotation()) as GameObject;
             lantern.transform.GetChild(1).GetComponent<Light>().color = colorTemp;
+            lantern.transform.GetChild(0).GetChild(0).GetComponent<Renderer>().material.color = colorTemp;
+            lantern.transform.GetChild(0).GetChild(0).GetComponent<Renderer>().material.SetColor("_EmissionColor", colorTemp);
             lantern.transform.GetChild(1).GetComponent<Light>().intensity = ((float) intensityRand.Next(1, 6)) / 10;
             lantern.transform.parent = lanterns.transform;
         }

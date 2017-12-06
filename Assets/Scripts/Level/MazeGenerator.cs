@@ -160,9 +160,9 @@ public class MazeGenerator : MonoBehaviour
             FarthestDeadEndFromNode(roots[1, 0]).AddLadderTo(roots[2, 0]);
             FarthestDeadEndFromNode(roots[2, 0]).AddLadderTo(roots[1, 1]);
             FarthestDeadEndFromNode(roots[1, 1]).AddLadderTo(roots[0, 1]);
-            print(FarthestDeadEndFromNode(roots[1, 1]).Col + " " + FarthestDeadEndFromNode(roots[1, 1]).Row);
-            print(roots[0, 1].Col + " " + roots[0, 1].Row);
-            print(FarthestDeadEndFromNode(roots[1, 1]).ladderMazeNode.Col + " " + FarthestDeadEndFromNode(roots[1, 1]).ladderMazeNode.Row);
+            //print(FarthestDeadEndFromNode(roots[1, 1]).Col + " " + FarthestDeadEndFromNode(roots[1, 1]).Row);
+            //print(roots[0, 1].Col + " " + roots[0, 1].Row);
+            //print(FarthestDeadEndFromNode(roots[1, 1]).ladderMazeNode.Col + " " + FarthestDeadEndFromNode(roots[1, 1]).ladderMazeNode.Row);
         }
         if (difficulty == Difficulty.Large)
         {
