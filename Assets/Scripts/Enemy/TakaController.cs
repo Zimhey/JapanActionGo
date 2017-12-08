@@ -828,7 +828,7 @@ public class TakaController : YokaiController
     void Stun()
     {
         State = TakaState.Stun;
-        stunTimer = 10;
+        stunTimer = 20;
         agent.SetDestination(transform.position);
         fleeingInu = false;
     }
