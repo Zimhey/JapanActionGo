@@ -21,69 +21,72 @@ public class SessionReport
 
 public struct ActorMap
 {
-    int ActorID;
-    ActorType Type;
-    // TODO add state changes here
-    // TODO add death here?
+    public int SessionID;
+    public int ActorID;
+    public ActorType Type;
+    public List<StateChange> StateChanges;
+    public Death MyDeath;
+    public List<Death> Kills;
 }
 
 public struct ChalkDrawing
 {
-    int EventID;
-    List<ChalkLine> Lines;
+    public int EventID;
+    public List<ChalkLine> Lines;
 }
 
 public struct ChalkLine
 {
-    int LineID;
-    List<ChalkPoint> Points;
+    public int LineID;
+    public List<ChalkPoint> Points;
 }
 
 public struct ChalkPoint
 {
-    int Index;
-    float x;
-    float y;
-    float z;
+    public int Index;
+    public float x;
+    public float y;
+    public float z;
 }
 
 public struct Death
 {
-    int DeadActorID;
-    int KillerActorID;
-    float TimeDied;
+    public int DeadActorID;
+    public int KillerActorID;
+    public float TimeDied;
 }
 
 public struct ItemUse
 {
-    int EventID;
-    ItemType item;
-    float TimeUsed;
+    public int SessionID;
+    public int EventID;
+    public ItemType item;
+    public float TimeUsed;
 }
 
 public struct itemFound
 {
-    int ActorID;
-    float TimeFound;
+    public int ActorID;
+    public float TimeFound;
 }
 
 public struct OfudaHit
 {
-    int EventID;
-    int ActorID;
-    float HitTime;
+    public int EventID;
+    public int ActorID;
+    public float HitTime;
 }
 
 public struct StateChange
 {
-    int ActorID;
-    int State;
-    float TimeChanged;
+    public int ActorID;
+    public int State;
+    public float TimeChanged;
 }
 
 public struct CellVisit
 {
-    int ActorID;
-    int CellID;
-    float VisitTime;
+    public int ActorID;
+    public int CellID;
+    public float VisitTime;
 }

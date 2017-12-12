@@ -16,6 +16,8 @@ public struct Section
     int SectionID;
     int Index;
     int Floor;
+
+    List<Cell> Cells;
 }
 
 public struct Cell
