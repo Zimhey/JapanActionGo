@@ -413,7 +413,8 @@ public class GameManager : MonoBehaviour {
         foreach (MazeSection s in Sections)
             if (s.Root.Col == 0 && s.Root.Row == 0 && s.Root.Floor == 0)
             {
-                SpawnSection(s);
+                if(!TutorialOn)
+                    SpawnSection(s);
             }
 
         // Spawn Player
@@ -519,7 +520,9 @@ public class GameManager : MonoBehaviour {
             
             if (node.actor == ActorType.Ladder)
             {
-                if(node.ladderMazeNode.Floor > node.Floor)
+                if(node.ladderMazeNode == null)
+                    actorObject = Instantiate(Resources.Load("Prefabs/Level/LadderUp"), location, node.GetRotation()) as GameObject;
+                else if (node.ladderMazeNode.Floor > node.Floor)
                     actorObject = Instantiate(Resources.Load("Prefabs/Level/LadderUp"), location, node.GetRotation()) as GameObject;
                 else
                     actorObject = Instantiate(Resources.Load("Prefabs/Level/LadderDown"), location, node.GetRotation()) as GameObject;
@@ -582,6 +585,8 @@ public class GameManager : MonoBehaviour {
         {
             lantern = Instantiate(Resources.Load("Prefabs/Level/Lantern"), loc, node.GetRotation()) as GameObject;
             lantern.transform.GetChild(1).GetComponent<Light>().color = colorTemp;
+            lantern.transform.GetChild(0).GetChild(0).GetComponent<Renderer>().material.color = colorTemp;
+            lantern.transform.GetChild(0).GetChild(0).GetComponent<Renderer>().material.SetColor("_EmissionColor", colorTemp);
             lantern.transform.GetChild(1).GetComponent<Light>().intensity = ((float) intensityRand.Next(1, 6)) / 10;
             lantern.transform.parent = lanterns.transform;
         }
@@ -628,8 +633,10 @@ public class GameManager : MonoBehaviour {
 
     public void EnterSection(GameObject ladder, GameObject player)
     {
+        print("Made it here as well!");
         if (ladder.GetComponent<Ladder>().ConnectedLadder == null)
         {
+            print("Even managed to make it here!");
             foreach (MazeSection sec in GameManager.Sections)
             {
                 if (sec.SectionID == ladder.GetComponent<Ladder>().ConnectedLadderNode.SectionID)
@@ -638,11 +645,12 @@ public class GameManager : MonoBehaviour {
                         SpawnSection(sec);
                 }
             }
-
+            print("made it here2");
             ladder.GetComponent<Ladder>().ConnectedLadder = ladder.GetComponent<Ladder>().ConnectedLadderNode.ladder;
             ladder.GetComponent<Ladder>().ConnectedLadder.GetComponent<Ladder>().ConnectedLadder = ladder;
         }
-
+        print("made it here as well!2");
+        print("Even managed to make it here!2");
         //Debug.Log(collider.gameObject.tag + " entered Cell R: " + Row + " C: " + Col + " at Time: " + Time.time);
         //ladder.GetComponent<Ladder>().ConnectedLadder.transform.parent.gameObject.SetActive(true);
 
@@ -651,6 +659,7 @@ public class GameManager : MonoBehaviour {
 
         if (ladder.GetComponent<Ladder>().teleportable == true && ladder.GetComponent<Ladder>().ConnectedLadder.GetComponent<Ladder>().teleportable == true)
         {
+            //print(ladder.GetComponent<Ladder>().ConnectedLadder.GetComponent<Ladder>().location.Floor + " " + ladder.GetComponent<Ladder>().ConnectedLadder.GetComponent<Ladder>().location.Col + " " + ladder.GetComponent<Ladder>().ConnectedLadder.GetComponent<Ladder>().location.Row);
             if (!(ladder.GetComponent<Ladder>().ConnectedLadderNode.Floor == -1 && ladder.GetComponent<Ladder>().ConnectedLadderNode.Col == 1 && ladder.GetComponent<Ladder>().ConnectedLadderNode.Row == 5))
             {
                 ladder.GetComponent<Ladder>().teleportable = false;
@@ -669,8 +678,10 @@ public class GameManager : MonoBehaviour {
         }
 
         else
+        {
+            //print(ladder.GetComponent<Ladder>().teleportable + " " + ladder.GetComponent<Ladder>().ConnectedLadder.GetComponent<Ladder>().teleportable);
             ladder.GetComponent<Ladder>().ConnectedLadder.transform.parent.gameObject.transform.parent.gameObject.SetActive(false);
-        // TODO change Ladder code to call this and add player movement to here
+        }
     }
 
     private void SetCurrentActive(bool state)

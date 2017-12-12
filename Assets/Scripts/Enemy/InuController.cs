@@ -1243,7 +1243,7 @@ public class InuController : YokaiController
     {
         State = InuState.Stun;
         AnimState = InuAnim.Stunned;
-        stunTimer = 10;
+        stunTimer = 20;
         agent.SetDestination(transform.position);
     }
 

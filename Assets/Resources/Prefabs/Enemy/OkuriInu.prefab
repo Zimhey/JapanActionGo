@@ -2229,8 +2229,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   StalkDistance: 100
-  StartCorneredDistance: 20
-  StayCorneredDistance: 25
+  StartCorneredDistance: 5
+  StayCorneredDistance: 10
   CorneredChaseDistance: 5
   KillDistance: 3
   AttackTime: 30
